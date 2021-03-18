@@ -1,0 +1,288 @@
+C:\Users\Davy Vargas\Desktop\MCWeb\CapaLogica\bin\CapaLogica.dll
+C:\Users\Davy Vargas\Desktop\MCWeb\CapaLogica\bin\CapaLogica.pdb
+C:\Users\Davy Vargas\Desktop\MCWeb\CapaLogica\bin\CapaDatos.dll
+C:\Users\Davy Vargas\Desktop\MCWeb\CapaLogica\bin\CapaDatos.pdb
+C:\Users\Davy Vargas\Desktop\MCWeb\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\Davy Vargas\Desktop\MCWeb\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\Davy Vargas\Desktop\MCWeb\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\inetpub\wwwroot\MCWeb\CapaLogica\bin\CapaLogica.dll.config
+C:\inetpub\wwwroot\MCWeb\CapaLogica\bin\CapaLogica.dll
+C:\inetpub\wwwroot\MCWeb\CapaLogica\bin\CapaLogica.pdb
+C:\inetpub\wwwroot\MCWeb\CapaLogica\bin\CapaDatos.dll
+C:\inetpub\wwwroot\MCWeb\CapaLogica\bin\CapaDatos.pdb
+C:\inetpub\wwwroot\MCWeb\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\inetpub\wwwroot\MCWeb\CapaLogica\obj\Debug\CapaLogica.dll
+C:\inetpub\wwwroot\MCWeb\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\inetpub\wwwroot\MCWebHogar\CapaLogica\bin\CapaLogica.dll.config
+C:\inetpub\wwwroot\MCWebHogar\CapaLogica\bin\CapaLogica.dll
+C:\inetpub\wwwroot\MCWebHogar\CapaLogica\bin\CapaLogica.pdb
+C:\inetpub\wwwroot\MCWebHogar\CapaLogica\bin\CapaDatos.dll
+C:\inetpub\wwwroot\MCWebHogar\CapaLogica\bin\CapaDatos.pdb
+C:\inetpub\wwwroot\MCWebHogar\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\inetpub\wwwroot\MCWebHogar\CapaLogica\obj\Debug\CapaLogica.dll
+C:\inetpub\wwwroot\MCWebHogar\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\JOSE\Documents\Jose\Sistemas\Hogar Web\Copias\09-11-2016\MCWebHogar\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\JOSE\Documents\Jose\Sistemas\Hogar Web\Copias\09-11-2016\MCWebHogar\CapaLogica\bin\CapaLogica.dll
+C:\Users\JOSE\Documents\Jose\Sistemas\Hogar Web\Copias\09-11-2016\MCWebHogar\CapaLogica\bin\CapaLogica.pdb
+C:\Users\JOSE\Documents\Jose\Sistemas\Hogar Web\Copias\09-11-2016\MCWebHogar\CapaLogica\bin\CapaDatos.dll
+C:\Users\JOSE\Documents\Jose\Sistemas\Hogar Web\Copias\09-11-2016\MCWebHogar\CapaLogica\bin\CapaDatos.pdb
+C:\Users\JOSE\Documents\Jose\Sistemas\Hogar Web\Copias\09-11-2016\MCWebHogar\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\JOSE\Documents\Jose\Sistemas\Hogar Web\Copias\09-11-2016\MCWebHogar\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\JOSE\Documents\Jose\Sistemas\Hogar Web\Copias\09-11-2016\MCWebHogar\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\JOSE\Documents\Jose\Sistemas\Exportaciones WEB\Copias\17-02-2017\MCWebHogar\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\JOSE\Documents\Jose\Sistemas\Exportaciones WEB\Copias\17-02-2017\MCWebHogar\CapaLogica\bin\CapaLogica.dll
+C:\Users\JOSE\Documents\Jose\Sistemas\Exportaciones WEB\Copias\17-02-2017\MCWebHogar\CapaLogica\bin\CapaLogica.pdb
+C:\Users\JOSE\Documents\Jose\Sistemas\Exportaciones WEB\Copias\17-02-2017\MCWebHogar\CapaLogica\bin\CapaDatos.dll
+C:\Users\JOSE\Documents\Jose\Sistemas\Exportaciones WEB\Copias\17-02-2017\MCWebHogar\CapaLogica\bin\CapaDatos.pdb
+C:\Users\JOSE\Documents\Jose\Sistemas\Exportaciones WEB\Copias\17-02-2017\MCWebHogar\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\JOSE\Documents\Jose\Sistemas\Exportaciones WEB\Copias\17-02-2017\MCWebHogar\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\JOSE\Documents\Jose\Sistemas\Exportaciones WEB\Copias\17-02-2017\MCWebHogar\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\JOSE\Documents\Jose\Sistemas\Exportaciones WEB\Copias\06-03-2017\MCWebHogar\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\JOSE\Documents\Jose\Sistemas\Exportaciones WEB\Copias\06-03-2017\MCWebHogar\CapaLogica\bin\CapaLogica.dll
+C:\Users\JOSE\Documents\Jose\Sistemas\Exportaciones WEB\Copias\06-03-2017\MCWebHogar\CapaLogica\bin\CapaLogica.pdb
+C:\Users\JOSE\Documents\Jose\Sistemas\Exportaciones WEB\Copias\06-03-2017\MCWebHogar\CapaLogica\bin\CapaDatos.dll
+C:\Users\JOSE\Documents\Jose\Sistemas\Exportaciones WEB\Copias\06-03-2017\MCWebHogar\CapaLogica\bin\CapaDatos.pdb
+C:\Users\JOSE\Documents\Jose\Sistemas\Exportaciones WEB\Copias\06-03-2017\MCWebHogar\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\JOSE\Documents\Jose\Sistemas\Exportaciones WEB\Copias\06-03-2017\MCWebHogar\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\JOSE\Documents\Jose\Sistemas\Exportaciones WEB\Copias\06-03-2017\MCWebHogar\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\emoreira\Desktop\Emanuel\MCWebHogar3\MCWebHogar\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\emoreira\Desktop\Emanuel\MCWebHogar3\MCWebHogar\CapaLogica\bin\CapaLogica.dll
+C:\Users\emoreira\Desktop\Emanuel\MCWebHogar3\MCWebHogar\CapaLogica\bin\CapaLogica.pdb
+C:\Users\emoreira\Desktop\Emanuel\MCWebHogar3\MCWebHogar\CapaLogica\bin\CapaDatos.dll
+C:\Users\emoreira\Desktop\Emanuel\MCWebHogar3\MCWebHogar\CapaLogica\bin\CapaDatos.pdb
+C:\Users\emoreira\Desktop\Emanuel\MCWebHogar3\MCWebHogar\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\emoreira\Desktop\Emanuel\MCWebHogar3\MCWebHogar\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\emoreira\Desktop\Emanuel\MCWebHogar3\MCWebHogar\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\emoreira\Desktop\Emanuel\MCWebHogar3\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\emoreira\Desktop\Emanuel\MCWebHogar3\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\emoreira\Desktop\Emanuel\MCWebHogar3\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\emoreira\Desktop\Emanuel\MCWebHogar3\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\emoreira\Desktop\Emanuel\MCWebHogar3\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\emoreira\Desktop\Emanuel\MCWebHogar3\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\emoreira\Desktop\Emanuel\MCWebHogar3\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\emoreira\Desktop\Emanuel\MCWebHogar3\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\JOSE\Documents\Jose\Sistemas\Compras WEB\Copias\06-06-2017\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\JOSE\Documents\Jose\Sistemas\Compras WEB\Copias\06-06-2017\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\JOSE\Documents\Jose\Sistemas\Compras WEB\Copias\06-06-2017\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\JOSE\Documents\Jose\Sistemas\Compras WEB\Copias\06-06-2017\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\JOSE\Documents\Jose\Sistemas\Compras WEB\Copias\06-06-2017\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\JOSE\Documents\Jose\Sistemas\Compras WEB\Copias\06-06-2017\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\JOSE\Documents\Jose\Sistemas\Compras WEB\Copias\06-06-2017\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\JOSE\Documents\Jose\Sistemas\Compras WEB\Copias\06-06-2017\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb
+F:\Jose\Sistemas\Compras WEB\Copias\26-06-2017\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll.config
+F:\Jose\Sistemas\Compras WEB\Copias\26-06-2017\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+F:\Jose\Sistemas\Compras WEB\Copias\26-06-2017\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+F:\Jose\Sistemas\Compras WEB\Copias\26-06-2017\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+F:\Jose\Sistemas\Compras WEB\Copias\26-06-2017\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+F:\Jose\Sistemas\Compras WEB\Copias\26-06-2017\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+F:\Jose\Sistemas\Compras WEB\Copias\26-06-2017\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+F:\Jose\Sistemas\Compras WEB\Copias\26-06-2017\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\03-11-2017\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\03-11-2017\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\03-11-2017\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\03-11-2017\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\03-11-2017\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\03-11-2017\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\03-11-2017\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\03-11-2017\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\eaguero\Documents\Proyectos\Compras Web\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\eaguero\Documents\Proyectos\Compras Web\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\eaguero\Documents\Proyectos\Compras Web\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\eaguero\Documents\Proyectos\Compras Web\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\eaguero\Documents\Proyectos\Compras Web\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\eaguero\Documents\Proyectos\Compras Web\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\eaguero\Documents\Proyectos\Compras Web\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\eaguero\Documents\Proyectos\Compras Web\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\15-12-2017\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\15-12-2017\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\15-12-2017\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\15-12-2017\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\15-12-2017\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\15-12-2017\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\15-12-2017\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\15-12-2017\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\14-03-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\14-03-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\14-03-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\14-03-2018\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\14-03-2018\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\14-03-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\14-03-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\14-03-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\02-04-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\02-04-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\02-04-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\02-04-2018\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\02-04-2018\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\02-04-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\02-04-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\02-04-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-04-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-04-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-04-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-04-2018\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-04-2018\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-04-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-04-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-04-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\13-06-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\13-06-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\13-06-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\13-06-2018\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\13-06-2018\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\13-06-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\13-06-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\13-06-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-06-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-06-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-06-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-06-2018\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-06-2018\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-06-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-06-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-06-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\29-06-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\29-06-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\29-06-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\29-06-2018\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\29-06-2018\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\29-06-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\29-06-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\29-06-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\04-07-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\04-07-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\04-07-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\04-07-2018\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\04-07-2018\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\04-07-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\04-07-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\04-07-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-07-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-07-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-07-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-07-2018\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-07-2018\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-07-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-07-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-07-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-08-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-08-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-08-2018\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-08-2018\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-08-2018\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-08-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-08-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-08-2018\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 22-04-19\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 22-04-19\CapaLogica\bin\CapaLogica.dll
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 22-04-19\CapaLogica\bin\CapaLogica.pdb
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 22-04-19\CapaLogica\bin\CapaDatos.dll
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 22-04-19\CapaLogica\bin\CapaDatos.pdb
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 22-04-19\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 22-04-19\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 22-04-19\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 30-04-19\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 30-04-19\CapaLogica\bin\CapaLogica.dll
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 30-04-19\CapaLogica\bin\CapaLogica.pdb
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 30-04-19\CapaLogica\bin\CapaDatos.dll
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 30-04-19\CapaLogica\bin\CapaDatos.pdb
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 30-04-19\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 30-04-19\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 30-04-19\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3 - 30-04-19 - actual\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3 - 30-04-19 - actual\CapaLogica\bin\CapaLogica.dll
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3 - 30-04-19 - actual\CapaLogica\bin\CapaLogica.pdb
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3 - 30-04-19 - actual\CapaLogica\bin\CapaDatos.dll
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3 - 30-04-19 - actual\CapaLogica\bin\CapaDatos.pdb
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3 - 30-04-19 - actual\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3 - 30-04-19 - actual\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3 - 30-04-19 - actual\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\Randy.Gutierrez\Documents\GitHub\WEB-Compras-Internacionales\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\Randy.Gutierrez\Documents\GitHub\WEB-Compras-Internacionales\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\Randy.Gutierrez\Documents\GitHub\WEB-Compras-Internacionales\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\Randy.Gutierrez\Documents\GitHub\WEB-Compras-Internacionales\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\Randy.Gutierrez\Documents\GitHub\WEB-Compras-Internacionales\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\Randy.Gutierrez\Documents\GitHub\WEB-Compras-Internacionales\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\Randy.Gutierrez\Documents\GitHub\WEB-Compras-Internacionales\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\Randy.Gutierrez\Documents\GitHub\WEB-Compras-Internacionales\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\Randy.Gutierrez\Desktop\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\Randy.Gutierrez\Desktop\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\Randy.Gutierrez\Desktop\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\Randy.Gutierrez\Desktop\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\Randy.Gutierrez\Desktop\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\Randy.Gutierrez\Desktop\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\Randy.Gutierrez\Desktop\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\Randy.Gutierrez\Desktop\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\Randy.Gutierrez\Desktop\Produccion\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\Randy.Gutierrez\Desktop\Produccion\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\Randy.Gutierrez\Desktop\Produccion\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\Randy.Gutierrez\Desktop\Produccion\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\Randy.Gutierrez\Desktop\Produccion\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\Randy.Gutierrez\Desktop\Produccion\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\Randy.Gutierrez\Desktop\Produccion\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\Randy.Gutierrez\Desktop\Produccion\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\Davy Vargas\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\Davy Vargas\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\Davy Vargas\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\Davy Vargas\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\Davy Vargas\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\Davy Vargas\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\Davy Vargas\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\Davy Vargas\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\kevin.picado\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\kevin.picado\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\kevin.picado\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\kevin.picado\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\kevin.picado\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\kevin.picado\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\kevin.picado\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\kevin.picado\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\Kevin\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll.config
+C:\Users\Kevin\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\Kevin\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\Kevin\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\Kevin\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\Kevin\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll.config
+C:\Users\Kevin\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojAssemblyReference.cache
+C:\Users\Kevin\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csproj.CoreCompileInputs.cache
+C:\Users\Kevin\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csproj.CopyComplete
+C:\Users\Kevin\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\Kevin\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\kevin\OneDrive\Documentos\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\kevin\OneDrive\Documentos\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\kevin\OneDrive\Documentos\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\kevin\OneDrive\Documentos\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\kevin\OneDrive\Documentos\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojAssemblyReference.cache
+C:\Users\kevin\OneDrive\Documentos\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csproj.CoreCompileInputs.cache
+C:\Users\kevin\OneDrive\Documentos\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csproj.CopyComplete
+C:\Users\kevin\OneDrive\Documentos\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\kevin\OneDrive\Documentos\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\kevin.picado\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\kevin.picado\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\kevin.picado\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\kevin.picado\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\kevin.picado\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\kevin.picado\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\kevin.picado\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\Administrator\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\Administrator\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\Administrator\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\Administrator\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\Administrator\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\Administrator\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.dll
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\CapaLogica\obj\Debug\CapaLogica.pdb

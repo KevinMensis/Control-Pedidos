@@ -1,0 +1,181 @@
+C:\Users\Davy Vargas\Desktop\MCWeb\CapaDatos\bin\CapaDatos.dll
+C:\Users\Davy Vargas\Desktop\MCWeb\CapaDatos\bin\CapaDatos.pdb
+C:\Users\Davy Vargas\Desktop\MCWeb\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\Davy Vargas\Desktop\MCWeb\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\inetpub\wwwroot\MCWeb\CapaDatos\bin\CapaDatos.dll.config
+C:\inetpub\wwwroot\MCWeb\CapaDatos\bin\CapaDatos.dll
+C:\inetpub\wwwroot\MCWeb\CapaDatos\bin\CapaDatos.pdb
+C:\inetpub\wwwroot\MCWeb\CapaDatos\obj\Debug\CapaDatos.dll
+C:\inetpub\wwwroot\MCWeb\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\inetpub\wwwroot\MCWebHogar\CapaDatos\bin\CapaDatos.dll.config
+C:\inetpub\wwwroot\MCWebHogar\CapaDatos\bin\CapaDatos.dll
+C:\inetpub\wwwroot\MCWebHogar\CapaDatos\bin\CapaDatos.pdb
+C:\inetpub\wwwroot\MCWebHogar\CapaDatos\obj\Debug\CapaDatos.dll
+C:\inetpub\wwwroot\MCWebHogar\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\inetpub\wwwroot\MCWebHogar\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\emoreira\Desktop\Emanuel\MCWebHogar3\MCWebHogar\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\emoreira\Desktop\Emanuel\MCWebHogar3\MCWebHogar\CapaDatos\bin\CapaDatos.dll
+C:\Users\emoreira\Desktop\Emanuel\MCWebHogar3\MCWebHogar\CapaDatos\bin\CapaDatos.pdb
+C:\Users\emoreira\Desktop\Emanuel\MCWebHogar3\MCWebHogar\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\emoreira\Desktop\Emanuel\MCWebHogar3\MCWebHogar\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\emoreira\Desktop\Emanuel\MCWebHogar3\MCWebHogar\CapaDatos\obj\Debug\CapaDatos.pdb
+F:\Jose\Sistemas\Compras WEB\Copias\26-06-2017\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config
+F:\Jose\Sistemas\Compras WEB\Copias\26-06-2017\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+F:\Jose\Sistemas\Compras WEB\Copias\26-06-2017\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+F:\Jose\Sistemas\Compras WEB\Copias\26-06-2017\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+F:\Jose\Sistemas\Compras WEB\Copias\26-06-2017\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.dll
+F:\Jose\Sistemas\Compras WEB\Copias\26-06-2017\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\03-11-2017\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\03-11-2017\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\03-11-2017\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\03-11-2017\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\03-11-2017\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\03-11-2017\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\eaguero\Documents\Proyectos\Compras Web\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\eaguero\Documents\Proyectos\Compras Web\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\eaguero\Documents\Proyectos\Compras Web\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\eaguero\Documents\Proyectos\Compras Web\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\eaguero\Documents\Proyectos\Compras Web\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\eaguero\Documents\Proyectos\Compras Web\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\15-12-2017\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\15-12-2017\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\15-12-2017\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\15-12-2017\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\15-12-2017\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\15-12-2017\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\14-03-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\14-03-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\14-03-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\14-03-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\14-03-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\14-03-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\02-04-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\02-04-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\02-04-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\02-04-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\02-04-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\02-04-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-04-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-04-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-04-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-04-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-04-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-04-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\13-06-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\13-06-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\13-06-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\13-06-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\13-06-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\13-06-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-06-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-06-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-06-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-06-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-06-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-06-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\29-06-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\29-06-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\29-06-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\29-06-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\29-06-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\29-06-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\04-07-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\04-07-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\04-07-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\04-07-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\04-07-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\04-07-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-07-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-07-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-07-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-07-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-07-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\09-07-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-08-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-08-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-08-2018\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-08-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-08-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\Jose-Sistemas\Documents\Jose\Sistemas\Compras WEB\Copias\20-08-2018\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 22-04-19\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 22-04-19\CapaDatos\bin\CapaDatos.dll
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 22-04-19\CapaDatos\bin\CapaDatos.pdb
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 22-04-19\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 22-04-19\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 22-04-19\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 30-04-19\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 30-04-19\CapaDatos\bin\CapaDatos.dll
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 30-04-19\CapaDatos\bin\CapaDatos.pdb
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 30-04-19\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 30-04-19\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\Copias\MCWebHogar_3 - 30-04-19\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3 - 30-04-19 - actual\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3 - 30-04-19 - actual\CapaDatos\bin\CapaDatos.dll
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3 - 30-04-19 - actual\CapaDatos\bin\CapaDatos.pdb
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3 - 30-04-19 - actual\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3 - 30-04-19 - actual\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\Randy.Gutierrez\Desktop\Compras Web\MCWebHogar_3 - 30-04-19 - actual\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\Randy.Gutierrez\Documents\GitHub\WEB-Compras-Internacionales\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\Randy.Gutierrez\Documents\GitHub\WEB-Compras-Internacionales\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\Randy.Gutierrez\Documents\GitHub\WEB-Compras-Internacionales\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\Randy.Gutierrez\Documents\GitHub\WEB-Compras-Internacionales\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\Randy.Gutierrez\Documents\GitHub\WEB-Compras-Internacionales\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\Randy.Gutierrez\Documents\GitHub\WEB-Compras-Internacionales\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\Randy.Gutierrez\Desktop\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\Randy.Gutierrez\Desktop\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\Randy.Gutierrez\Desktop\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\Randy.Gutierrez\Desktop\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\Randy.Gutierrez\Desktop\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\Randy.Gutierrez\Desktop\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\Randy.Gutierrez\Desktop\Produccion\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\Randy.Gutierrez\Desktop\Produccion\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\Randy.Gutierrez\Desktop\Produccion\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\Randy.Gutierrez\Desktop\Produccion\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\Randy.Gutierrez\Desktop\Produccion\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\Randy.Gutierrez\Desktop\Produccion\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\Davy Vargas\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\Davy Vargas\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\Davy Vargas\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\Davy Vargas\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\Davy Vargas\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\Davy Vargas\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\kevin.picado\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\kevin.picado\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\kevin.picado\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\kevin.picado\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\kevin.picado\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\kevin.picado\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\Kevin\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\Kevin\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\Kevin\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\Kevin\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.csprojAssemblyReference.cache
+C:\Users\Kevin\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.csproj.CoreCompileInputs.cache
+C:\Users\Kevin\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\Kevin\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\kevin\OneDrive\Documentos\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\kevin\OneDrive\Documentos\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\kevin\OneDrive\Documentos\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.csproj.CoreCompileInputs.cache
+C:\Users\kevin\OneDrive\Documentos\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\kevin\OneDrive\Documentos\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\kevin.picado\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\kevin.picado\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\kevin.picado\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\kevin.picado\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\kevin.picado\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\Administrator\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\Administrator\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\Administrator\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\Administrator\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.pdb
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.dll
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\CapaDatos\obj\Debug\CapaDatos.pdb

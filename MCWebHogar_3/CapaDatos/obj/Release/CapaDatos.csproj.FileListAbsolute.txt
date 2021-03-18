@@ -1,0 +1,43 @@
+C:\inetpub\wwwroot\MCWeb\CapaDatos\bin\CapaDatos.dll.config
+C:\inetpub\wwwroot\MCWeb\CapaDatos\bin\CapaDatos.dll
+C:\inetpub\wwwroot\MCWeb\CapaDatos\bin\CapaDatos.pdb
+C:\inetpub\wwwroot\MCWeb\CapaDatos\obj\Release\CapaDatos.csprojResolveAssemblyReference.cache
+C:\inetpub\wwwroot\MCWeb\CapaDatos\obj\Release\CapaDatos.dll
+C:\inetpub\wwwroot\MCWeb\CapaDatos\obj\Release\CapaDatos.pdb
+C:\inetpub\wwwroot\MCWebHogar\CapaDatos\bin\CapaDatos.dll.config
+C:\inetpub\wwwroot\MCWebHogar\CapaDatos\bin\CapaDatos.dll
+C:\inetpub\wwwroot\MCWebHogar\CapaDatos\bin\CapaDatos.pdb
+C:\inetpub\wwwroot\MCWebHogar\CapaDatos\obj\Release\CapaDatos.csprojResolveAssemblyReference.cache
+C:\inetpub\wwwroot\MCWebHogar\CapaDatos\obj\Release\CapaDatos.dll
+C:\inetpub\wwwroot\MCWebHogar\CapaDatos\obj\Release\CapaDatos.pdb
+C:\Users\Randy.Gutierrez\Desktop\Produccion\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\Randy.Gutierrez\Desktop\Produccion\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\Randy.Gutierrez\Desktop\Produccion\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\Randy.Gutierrez\Desktop\Produccion\MCWebHogar_3\CapaDatos\obj\Release\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\Randy.Gutierrez\Desktop\Produccion\MCWebHogar_3\CapaDatos\obj\Release\CapaDatos.dll
+C:\Users\Randy.Gutierrez\Desktop\Produccion\MCWebHogar_3\CapaDatos\obj\Release\CapaDatos.pdb
+C:\Users\Davy Vargas\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\Davy Vargas\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\Davy Vargas\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\Davy Vargas\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaDatos\obj\Release\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\Davy Vargas\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaDatos\obj\Release\CapaDatos.dll
+C:\Users\Davy Vargas\Documents\GitHub\Control-de-Tiempos-Planta\MCWebHogar_3\CapaDatos\obj\Release\CapaDatos.pdb
+C:\Users\kevin.picado\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\kevin.picado\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\kevin.picado\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\kevin.picado\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\obj\Release\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\kevin.picado\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\obj\Release\CapaDatos.dll
+C:\Users\kevin.picado\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\obj\Release\CapaDatos.pdb
+C:\Users\Kevin\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config
+C:\Users\Kevin\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\Kevin\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\Kevin\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\obj\Release\CapaDatos.csproj.CoreCompileInputs.cache
+C:\Users\Kevin\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\obj\Release\CapaDatos.dll
+C:\Users\Kevin\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\obj\Release\CapaDatos.pdb
+C:\Users\Kevin\Documents\GitHub\EficienciaEnergetica\MCWebHogar_3\CapaDatos\obj\Release\CapaDatos.csprojAssemblyReference.cache
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\CapaDatos\bin\CapaDatos.pdb
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\CapaDatos\obj\Release\CapaDatos.csprojResolveAssemblyReference.cache
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\CapaDatos\obj\Release\CapaDatos.dll
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\CapaDatos\obj\Release\CapaDatos.pdb
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\CapaDatos\bin\CapaDatos.dll.config

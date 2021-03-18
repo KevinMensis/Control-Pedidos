@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="DB_A6F48F_mikfepz-Web.config Connection String" description="DB_A6F48F_mikfepz Connection String used in web.config by the application to access the database." defaultValue="Server=SQL5102.site4now.net;Database=DB_A6F48F_mikfepz;User ID=DB_A6F48F_mikfepz_admin;Password=desiree15" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\kevin\\OneDrive\\Documentos\\GitHub\\Control-Pedidos\\MCWebHogar_3\\MCWeb\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DB_A6F48F_mikfepz']/@connectionString" />
+  </parameter>
+</parameters>
