@@ -23,8 +23,8 @@ namespace MCWebHogar.ControlPedidos
                 }
                 else
                 {
-                    cargarEmpaques();
-                    // cargarDDLs();
+                    cargarDDLs();
+                    cargarEmpaques();                    
                     ViewState["Ordenamiento"] = "ASC";
                 }
             }
@@ -36,12 +36,40 @@ namespace MCWebHogar.ControlPedidos
             Session.RemoveAll();
             Response.Redirect("../Default.aspx");
         }
+        private void cargarDDLs()
+        {
+            TXT_FechaEmpaqueDesde.Text = "1900-01-01";
+            TXT_FechaEmpaqueHasta.Text = "1900-01-01";
+
+            UpdatePanel_FiltrosEmpaques.Update();
+        }
         #endregion
 
         #region Empaques
         private DataTable cargarEmpaquesConsulta()
         {
             DT.DT1.Clear();
+            #region Fechas
+            string fechaEmpaqueDesde = "1900-01-01";
+            string fechaEmpaqueHasta = "1900-01-01";
+
+            try
+            {
+                fechaEmpaqueDesde = Convert.ToDateTime(TXT_FechaEmpaqueDesde.Text).ToString();
+                fechaEmpaqueHasta = Convert.ToDateTime(TXT_FechaEmpaqueHasta.Text).ToString();
+
+            }
+            catch (Exception e)
+            {
+                fechaEmpaqueDesde = "1900-01-01";
+                fechaEmpaqueHasta = "1900-01-01";
+            }
+
+            DT.DT1.Rows.Add("@fechaEmpaqueDesde", fechaEmpaqueDesde, SqlDbType.Date);
+            DT.DT1.Rows.Add("@fechaEmpaqueHasta", fechaEmpaqueHasta, SqlDbType.Date);
+            #endregion
+            
+            UpdatePanel_FiltrosEmpaques.Update();
 
             DT.DT1.Rows.Add("@Buscar", TXT_Buscar.Text, SqlDbType.VarChar);
 

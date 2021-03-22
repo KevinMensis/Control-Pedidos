@@ -35,6 +35,26 @@
             document.getElementById('fade2').style.display = 'none';
             document.getElementById('modalloading').style.display = 'none';
         }
+
+        function TXT_FechaDevolucionDesdeChange() {
+            var fechaDevolucionDesde = $(<%= TXT_FechaDevolucionDesde.ClientID %>)[0].value
+            var fechaDevolucionHasta = $(<%= TXT_FechaDevolucionHasta.ClientID %>)[0].value
+
+            if (fechaDevolucionHasta === '1900-01-01') {
+                $(<%= TXT_FechaDevolucionHasta.ClientID %>)[0].value = fechaDevolucionDesde
+            }
+            return true
+        }
+
+        function TXT_FechaDevolucionHastaChange() {
+            var fechaDevolucionDesde = $(<%= TXT_FechaDevolucionDesde.ClientID %>)[0].value
+            var fechaDevolucionHasta = $(<%= TXT_FechaDevolucionHasta.ClientID %>)[0].value
+
+            if (fechaDevolucionDesde === '1900-01-01') {
+                $(<%= TXT_FechaDevolucionDesde.ClientID %>)[0].value = fechaDevolucionHasta
+            }
+            return true
+        }
     </script>
 </asp:Content>
 
@@ -144,17 +164,27 @@
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Devoluciones</h1>
                     <div class="card shadow mb-4">
-                        <asp:UpdatePanel ID="UpdatePanel_DevolucionEvents" runat="server" UpdateMode="Conditional">
-                            <ContentTemplate>
-                                <div class="card-header" style="text-align: right;">
-                                    <asp:Button ID="BTN_CrearDevoluciones" runat="server" Text="Crear nueva devolucion" CssClass="btn btn-secondary" OnClick="BTN_CrearDevoluciones_Click"></asp:Button>                                    
-                                </div>
-                            </ContentTemplate>
-                        </asp:UpdatePanel>
                         <div class="card-body" style="padding-top: 0px;">
                             <div class="card-body">
                                 <asp:UpdatePanel ID="UpdatePanel_FiltrosDevoluciones" runat="server" UpdateMode="Conditional">
                                     <ContentTemplate> 
+                                        <div class="row">
+                                            <div class="col-md-6">                                            
+                                                <div class="input-group no-border col-md-6">     
+                                                    <label for="TXT_FechaDevolucionDesde"> Fecha devolución desde:</label>                                          
+                                                    <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaDevolucionDesde" runat="server" TextMode="Date" onchange="TXT_FechaDevolucionDesdeChange();" OnTextChanged="TXT_FiltrarDevoluciones_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
+                                                </div>
+                                                <div class="input-group no-border col-md-6">
+                                                    <label for="TXT_FechaDevolucionHasta"> Fecha devolución hasta:</label>
+                                                    <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaDevolucionHasta" runat="server" TextMode="Date" onchange="TXT_FechaDevolucionHastaChange();" OnTextChanged="TXT_FiltrarDevoluciones_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" style="text-align: right;">
+                                                <div class="card-header" style="text-align: right;">
+                                                    <asp:Button ID="BTN_CrearDevoluciones" runat="server" Text="Crear nueva devolucion" CssClass="btn btn-secondary" OnClick="BTN_CrearDevoluciones_Click"></asp:Button>                                    
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="row">                         
                                             <div class="input-group no-border col-md-12">
                                                 <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar número devolución..." OnTextChanged="TXT_FiltrarDevoluciones_OnTextChanged" AutoPostBack="true"></asp:TextBox>

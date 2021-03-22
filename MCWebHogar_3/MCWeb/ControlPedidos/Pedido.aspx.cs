@@ -24,8 +24,8 @@ namespace MCWebHogar.ControlPedidos
                 }
                 else
                 {
-                    cargarPedido("");
                     cargarDDLs();
+                    cargarPedido("");                    
                     ViewState["Ordenamiento"] = "ASC";
                 }
             }
@@ -179,9 +179,9 @@ namespace MCWebHogar.ControlPedidos
             plantaProduccionText = plantaProduccionText.TrimEnd(',');
             if (plantaProduccionText != "")
             {
-                LBL_Filtro.Text += " Plantas Producción=" + puntosVentaText + "; ";
+                LBL_Filtro.Text += " Plantas Producción=" + plantaProduccionText + "; ";
                 DT.DT1.Rows.Add("@FiltrarPlantasProduccion", 1, SqlDbType.Int);
-                DT.DT1.Rows.Add("@FiltrpPlantasProduccion", plantaProduccion, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@FiltroPlantasProduccion", plantaProduccion, SqlDbType.VarChar);
             }
             #endregion
 
@@ -203,7 +203,7 @@ namespace MCWebHogar.ControlPedidos
                 DT.DT1.Rows.Add("@FiltroEstados", estados, SqlDbType.VarChar);
             }
             #endregion
-
+            
             #region Usuarios
             foreach (ListItem l in LB_Solicitante.Items)
             {
@@ -223,13 +223,54 @@ namespace MCWebHogar.ControlPedidos
             }
             #endregion
 
+            #region Fechas
+            string fechaCreacionDesde = "1900-01-01";
+            string fechaCreacionHasta = "1900-01-01";
+            string fechaPedidoDesde = "1900-01-01";
+            string fechaPedidoHasta = "1900-01-01";
+
+            try
+            {
+                fechaCreacionDesde = Convert.ToDateTime(TXT_FechaCreacionDesde.Text).ToString();
+                fechaCreacionHasta = Convert.ToDateTime(TXT_FechaCreacionHasta.Text).ToString();
+                
+            }
+            catch (Exception e)
+            {
+                fechaCreacionDesde = "1900-01-01";
+                fechaCreacionHasta = "1900-01-01";
+            }
+
+            try
+            {
+                fechaPedidoDesde = Convert.ToDateTime(TXT_FechaPedidoDesde.Text).ToString();
+                fechaPedidoHasta = Convert.ToDateTime(TXT_FechaPedidoHasta.Text).ToString();                
+            }
+            catch (Exception e)
+            {
+                fechaPedidoDesde = "1900-01-01";
+                fechaPedidoHasta = "1900-01-01";
+            }
+
+            if (Convert.ToDateTime(fechaCreacionHasta).ToString() != Convert.ToDateTime("1900-01-01").ToString())
+                LBL_Filtro.Text += "Creación desde " + Convert.ToDateTime(fechaCreacionDesde).ToString("dd-MM-yyyy") + " hasta " + Convert.ToDateTime(fechaCreacionHasta).ToString("dd-MM-yyyy") + ";";
+
+            if (Convert.ToDateTime(fechaPedidoHasta).ToString() != Convert.ToDateTime("1900-01-01").ToString())
+                LBL_Filtro.Text += "Pedido desde " + Convert.ToDateTime(fechaPedidoDesde).ToString("dd-MM-yyyy") + " hasta " + Convert.ToDateTime(fechaPedidoHasta).ToString("dd-MM-yyyy") + ";";
+
+            DT.DT1.Rows.Add("@fechaCreacionDesde", fechaCreacionDesde, SqlDbType.Date);
+            DT.DT1.Rows.Add("@fechaCreacionHasta", fechaCreacionHasta, SqlDbType.Date);
+            DT.DT1.Rows.Add("@fechaPedidoDesde", fechaPedidoDesde, SqlDbType.Date);
+            DT.DT1.Rows.Add("@fechaPedidoHasta", fechaPedidoHasta, SqlDbType.Date);            
+            #endregion
+
             if (LBL_Filtro.Text == "Filtros: ")
             {
                 LBL_Filtro.Text += "Ninguno;";
             }
 
             UpdatePanel_FiltrosPedidos.Update();
-
+            
             DT.DT1.Rows.Add("@Buscar", TXT_Buscar.Text, SqlDbType.VarChar);
 
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
@@ -270,6 +311,45 @@ namespace MCWebHogar.ControlPedidos
 
         protected void TXT_FiltrarPedidos_OnTextChanged(object sender, EventArgs e)
         {
+            cargarPedido("");
+        }
+
+        protected void BTN_EliminarFiltro_Click(object sender, EventArgs e)
+        {
+            TXT_Buscar.Text = "";
+            TXT_FechaCreacionDesde.Text = "1900-01-01";
+            TXT_FechaCreacionHasta.Text = "1900-01-01";
+            TXT_FechaPedidoDesde.Text = "1900-01-01";
+            TXT_FechaPedidoHasta.Text = "1900-01-01";
+
+            #region Puntos Venta
+            foreach (ListItem l in LB_Sucursal.Items)
+            {
+                l.Selected = false;
+            }
+            #endregion
+
+            #region Plantas Produccion
+            foreach (ListItem l in LB_PlantaProduccion.Items)
+            {
+                l.Selected = false;
+            }
+            #endregion
+
+            #region Estado
+            foreach (ListItem l in LB_Estado.Items)
+            {
+                l.Selected = false;
+            }
+            #endregion
+
+            #region Usuarios
+            foreach (ListItem l in LB_Solicitante.Items)
+            {
+                l.Selected = false;
+            }
+            #endregion
+
             cargarPedido("");
         }
 

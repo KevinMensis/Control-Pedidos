@@ -334,11 +334,11 @@ namespace MCWebHogar.ControlPedidos
         protected void BTN_DescargarPedido_Click(object sender, EventArgs e)
         {
             DT.DT1.Clear();
-            DT.DT1.Rows.Add("@PedidoID", HDF_IDPedido.Value, SqlDbType.Int);
+            DT.DT1.Rows.Add("@IDPedido", HDF_IDPedido.Value, SqlDbType.Int);
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString().Trim(), SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@TipoSentencia", "CargarProductos", SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "ReportePedido", SqlDbType.VarChar);
 
-            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP05_0001");
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP04_0001");
 
             if (Result.Rows.Count <= 0)
             {
@@ -363,8 +363,6 @@ namespace MCWebHogar.ControlPedidos
                     Response.End();
                 }
             }
-            string script = "desactivarloading();estilosElementosBloqueados();";
-            cargarPedido(script);
         }
         #endregion
 

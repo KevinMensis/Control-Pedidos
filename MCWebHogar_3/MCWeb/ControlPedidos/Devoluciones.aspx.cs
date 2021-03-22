@@ -23,8 +23,8 @@ namespace MCWebHogar.ControlPedidos
                 }
                 else
                 {
-                    cargarDevoluciones();
-                    // cargarDDLs();
+                    cargarDDLs();
+                    cargarDevoluciones();                    
                     ViewState["Ordenamiento"] = "ASC";
                 }
             }
@@ -36,12 +36,41 @@ namespace MCWebHogar.ControlPedidos
             Session.RemoveAll();
             Response.Redirect("../Default.aspx");
         }
+        private void cargarDDLs()
+        {
+            TXT_FechaDevolucionDesde.Text = "1900-01-01";
+            TXT_FechaDevolucionHasta.Text = "1900-01-01";
+
+            UpdatePanel_FiltrosDevoluciones.Update();
+        }
         #endregion
 
         #region Devoluciones
         private DataTable cargarDevolucionesConsulta()
         {
             DT.DT1.Clear();
+
+            #region Fechas
+            string fechaDevolucionDesde = "1900-01-01";
+            string fechaDevolucionHasta = "1900-01-01";
+
+            try
+            {
+                fechaDevolucionDesde = Convert.ToDateTime(TXT_FechaDevolucionDesde.Text).ToString();
+                fechaDevolucionHasta = Convert.ToDateTime(TXT_FechaDevolucionHasta.Text).ToString();
+
+            }
+            catch (Exception e)
+            {
+                fechaDevolucionDesde = "1900-01-01";
+                fechaDevolucionHasta = "1900-01-01";
+            }
+
+            DT.DT1.Rows.Add("@fechaDevolucionDesde", fechaDevolucionDesde, SqlDbType.Date);
+            DT.DT1.Rows.Add("@fechaDevolucionHasta", fechaDevolucionHasta, SqlDbType.Date);
+            #endregion
+
+            UpdatePanel_FiltrosDevoluciones.Update();
 
             DT.DT1.Rows.Add("@Buscar", TXT_Buscar.Text, SqlDbType.VarChar);
 

@@ -23,8 +23,8 @@ namespace MCWebHogar.ControlPedidos
                 }
                 else
                 {
+                    cargarDDLs();
                     cargarDesechos();
-                    // cargarDDLs();
                     ViewState["Ordenamiento"] = "ASC";
                 }
             }
@@ -36,12 +36,41 @@ namespace MCWebHogar.ControlPedidos
             Session.RemoveAll();
             Response.Redirect("../Default.aspx");
         }
+        private void cargarDDLs()
+        {
+            TXT_FechaDesechoDesde.Text = "1900-01-01";
+            TXT_FechaDesechoHasta.Text = "1900-01-01";
+
+            UpdatePanel_FiltrosDesechos.Update();
+        }
         #endregion
 
         #region Desechos
         private DataTable cargarDesechosConsulta()
         {
             DT.DT1.Clear();
+
+            #region Fechas
+            string fechaDesechoDesde = "1900-01-01";
+            string fechaDesechoHasta = "1900-01-01";
+
+            try
+            {
+                fechaDesechoDesde = Convert.ToDateTime(TXT_FechaDesechoDesde.Text).ToString();
+                fechaDesechoHasta = Convert.ToDateTime(TXT_FechaDesechoHasta.Text).ToString();
+
+            }
+            catch (Exception e)
+            {
+                fechaDesechoDesde = "1900-01-01";
+                fechaDesechoHasta = "1900-01-01";
+            }
+
+            DT.DT1.Rows.Add("@fechaDesechoDesde", fechaDesechoDesde, SqlDbType.Date);
+            DT.DT1.Rows.Add("@fechaDesechoHasta", fechaDesechoHasta, SqlDbType.Date);
+            #endregion
+
+            UpdatePanel_FiltrosDesechos.Update();
 
             DT.DT1.Rows.Add("@Buscar", TXT_Buscar.Text, SqlDbType.VarChar);
 

@@ -234,19 +234,19 @@
                                         <div class="row">
                                             <div class="input-group no-border col-md-3">     
                                                 <label for="TXT_FechaCreacionDesde"> Fecha creación desde:</label>                                          
-                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaCreacionDesde" runat="server" TextMode="Date" onchange="return TXT_FechaCreacionDesdeChange();" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
+                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaCreacionDesde" runat="server" TextMode="Date" onchange="TXT_FechaCreacionDesdeChange();" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
                                             </div>
                                             <div class="input-group no-border col-md-3">
                                                 <label for="TXT_FechaCreacionHasta"> Fecha creación hasta:</label>
-                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaCreacionHasta" runat="server" TextMode="Date" onchange="return TXT_FechaCreacionHastaChange();" placeholder="" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
+                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaCreacionHasta" runat="server" TextMode="Date" onchange="TXT_FechaCreacionHastaChange();" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
                                             </div>
                                             <div class="input-group no-border col-md-3">     
                                                 <label for="TXT_FechaPedidoDesde"> Fecha pedido desde:</label>                                          
-                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaPedidoDesde" runat="server" TextMode="Date" onchange="return TXT_FechaPedidoDesdeChange();" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
+                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaPedidoDesde" runat="server" TextMode="Date" onchange="TXT_FechaPedidoDesdeChange();" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
                                             </div>
                                             <div class="input-group no-border col-md-3">
                                                 <label for="TXT_FechaPedidoHasta"> Fecha pedido hasta:</label>
-                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaPedidoHasta" runat="server" TextMode="Date" onchange="return TXT_FechaPedidoHastaChange();" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
+                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaPedidoHasta" runat="server" TextMode="Date" onchange="TXT_FechaPedidoHastaChange();" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
                                             </div>
                                         </div>
                                         <div class="row">
@@ -264,7 +264,7 @@
                                             </div>
                                         </div>
                                         <div class="row" style="float: right;">
-                                            <asp:Button id="BTN_EliminarFiltro" style="float: right;" runat="server" CssClass="btn btn-danger" Text="Eliminar Filtro" />
+                                            <asp:Button id="BTN_EliminarFiltro" style="float: right;" runat="server" CssClass="btn btn-danger" Text="Eliminar Filtro" OnClick="BTN_EliminarFiltro_Click" />
                                         </div>
                                         <div class="row" style="margin-left: 10px; margin-top: 10px;">
                                             <asp:Label id="LBL_Filtro" runat="server" Text="Filtros: Ninguno;"></asp:Label>                                                                                            

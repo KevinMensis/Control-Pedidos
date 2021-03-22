@@ -22,13 +22,31 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.LinkButton LNK_CerrarSession;
         
         /// <summary>
-        /// UpdatePanel_EmpaqueEvents control.
+        /// UpdatePanel_FiltrosEmpaques control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel_EmpaqueEvents;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_FiltrosEmpaques;
+        
+        /// <summary>
+        /// TXT_FechaEmpaqueDesde control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TXT_FechaEmpaqueDesde;
+        
+        /// <summary>
+        /// TXT_FechaEmpaqueHasta control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TXT_FechaEmpaqueHasta;
         
         /// <summary>
         /// BTN_CrearEmpaques control.
@@ -38,15 +56,6 @@ namespace MCWebHogar.ControlPedidos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BTN_CrearEmpaques;
-        
-        /// <summary>
-        /// UpdatePanel_FiltrosEmpaques control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel_FiltrosEmpaques;
         
         /// <summary>
         /// TXT_Buscar control.

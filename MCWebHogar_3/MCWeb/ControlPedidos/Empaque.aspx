@@ -35,6 +35,26 @@
             document.getElementById('fade2').style.display = 'none';
             document.getElementById('modalloading').style.display = 'none';
         }
+
+        function TXT_FechaEmpaqueDesdeChange() {
+            var fechaEmpaqueDesde = $(<%= TXT_FechaEmpaqueDesde.ClientID %>)[0].value
+            var fechaEmpaqueHasta = $(<%= TXT_FechaEmpaqueHasta.ClientID %>)[0].value
+
+            if (fechaEmpaqueHasta === '1900-01-01') {
+                $(<%= TXT_FechaEmpaqueHasta.ClientID %>)[0].value = fechaEmpaqueDesde
+            }
+            return true
+        }
+
+        function TXT_FechaEmpaqueHastaChange() {
+            var fechaEmpaqueDesde = $(<%= TXT_FechaEmpaqueDesde.ClientID %>)[0].value
+            var fechaEmpaqueHasta = $(<%= TXT_FechaEmpaqueHasta.ClientID %>)[0].value
+
+            if (fechaEmpaqueDesde === '1900-01-01') {
+                $(<%= TXT_FechaEmpaqueDesde.ClientID %>)[0].value = fechaEmpaqueHasta
+            }
+            return true
+        }
     </script>
 </asp:Content>
 
@@ -144,17 +164,27 @@
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Empaque</h1>
                     <div class="card shadow mb-4">
-                        <asp:UpdatePanel ID="UpdatePanel_EmpaqueEvents" runat="server" UpdateMode="Conditional">
-                            <ContentTemplate>
-                                <div class="card-header" style="text-align: right;">
-                                    <asp:Button ID="BTN_CrearEmpaques" runat="server" Text="Crear nuevo empaque" CssClass="btn btn-secondary" OnClick="BTN_CrearEmpaques_Click"></asp:Button>                                    
-                                </div>
-                            </ContentTemplate>
-                        </asp:UpdatePanel>
                         <div class="card-body" style="padding-top: 0px;">
                             <div class="card-body">
                                 <asp:UpdatePanel ID="UpdatePanel_FiltrosEmpaques" runat="server" UpdateMode="Conditional">
                                     <ContentTemplate> 
+                                        <div class="row">
+                                            <div class="col-md-6">                                            
+                                                <div class="input-group no-border col-md-6">     
+                                                    <label for="TXT_FechaEmpaqueDesde"> Fecha empaque desde:</label>                                          
+                                                    <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaEmpaqueDesde" runat="server" TextMode="Date" onchange="TXT_FechaEmpaqueDesdeChange();" OnTextChanged="TXT_FiltrarEmpaques_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
+                                                </div>
+                                                <div class="input-group no-border col-md-6">
+                                                    <label for="TXT_FechaEmpaqueHasta"> Fecha empaque hasta:</label>
+                                                    <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaEmpaqueHasta" runat="server" TextMode="Date" onchange="TXT_FechaEmpaqueHastaChange();" OnTextChanged="TXT_FiltrarEmpaques_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" style="text-align: right;"> 
+                                                <div class="card-header" style="text-align: right;">
+                                                    <asp:Button ID="BTN_CrearEmpaques" runat="server" Text="Crear nuevo empaque" CssClass="btn btn-secondary" OnClick="BTN_CrearEmpaques_Click"></asp:Button>                                    
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="row">                         
                                             <div class="input-group no-border col-md-12">
                                                 <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar número Empaque..." OnTextChanged="TXT_FiltrarEmpaques_OnTextChanged" AutoPostBack="true"></asp:TextBox>
