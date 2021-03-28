@@ -67,15 +67,6 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.TextBox TXT_TotalProductos;
         
         /// <summary>
-        /// TXT_EstadoEmpaque control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_EstadoEmpaque;
-        
-        /// <summary>
         /// TXT_FechaEmpaque control.
         /// </summary>
         /// <remarks>
@@ -128,6 +119,24 @@ namespace MCWebHogar.ControlPedidos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BTN_AgregarProducto;
+        
+        /// <summary>
+        /// BTN_ReporteEmpaque control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_ReporteEmpaque;
+        
+        /// <summary>
+        /// BTN_DescargarEmpaque control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_DescargarEmpaque;
         
         /// <summary>
         /// UpdatePanel_FiltrosProductos control.

@@ -48,8 +48,6 @@
             document.getElementById('<%= TXT_CodigoEmpaque.ClientID %>').classList.add('form-control')
             document.getElementById('<%= TXT_TotalProductos.ClientID %>').classList.remove('aspNetDisabled')
             document.getElementById('<%= TXT_TotalProductos.ClientID %>').classList.add('form-control')
-            document.getElementById('<%= TXT_EstadoEmpaque.ClientID %>').classList.remove('aspNetDisabled')
-            document.getElementById('<%= TXT_EstadoEmpaque.ClientID %>').classList.add('form-control')
             document.getElementById('<%= TXT_FechaEmpaque.ClientID %>').classList.remove('aspNetDisabled')
             document.getElementById('<%= TXT_FechaEmpaque.ClientID %>').classList.add('form-control')
             document.getElementById('<%= TXT_HoraEmpaque.ClientID %>').classList.remove('aspNetDisabled')
@@ -189,11 +187,7 @@
                                             <label for="TXT_TotalProductos">Total de productos</label>
                                             <asp:TextBox class="form-control" style="text-align: right;" ID="TXT_TotalProductos" runat="server" TextMode="Number" Enabled="false"></asp:TextBox>
                                         </div>
-                                        <div class="form-group col-md-2">
-                                            <label for="TXT_EstadoEmpaque">Estado Empaque</label>
-                                            <asp:TextBox class="form-control" style="text-align: right;" ID="TXT_EstadoEmpaque" runat="server" Enabled="false"></asp:TextBox>
-                                        </div>
-                                        <div class="form-group col-md-3">
+                                        <div class="form-group col-md-4">
                                             <label for="TXT_FechaEmpaque">Fecha Empaque</label>
                                             <div class="form-row">
                                                 <div class="col-md-7">
@@ -219,11 +213,20 @@
 							                <asp:Label ID="LBL_UltimaModificacion" runat="server"></asp:Label>
                                         </div>
                                     </div>
-                                    <div class="form-row">                                        
-                                        <asp:Button ID="BTN_AgregarProducto" runat="server" Text="Agregar producto" CssClass="btn btn-secondary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_CargarProductos_Click"></asp:Button>                                        
+                                    <div class="form-row"> 
+                                        <div class="col-md-6">                                       
+                                            <asp:Button ID="BTN_AgregarProducto" runat="server" Text="Agregar producto" CssClass="btn btn-secondary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_CargarProductos_Click"></asp:Button>                                        
+                                        </div>                                        
+                                        <div class="col-md-6" style="text-align: right;"> 
+                                            <asp:Button ID="BTN_ReporteEmpaque" runat="server" Text="Reporte empaque" CssClass="btn btn-secondary" OnClientClick="activarloading();estilosElementosBloqueados();" OnClick="BTN_ReporteEmpaque_Click"></asp:Button>                                                                                
+                                            <asp:Button ID="BTN_DescargarEmpaque" runat="server" Text="Descargar empaque" CssClass="btn btn-primary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_DescargarEmpaque_Click"></asp:Button>                                        
+                                        </div>
                                     </div>
                                 </div>
                             </ContentTemplate>
+                            <Triggers>
+                                <asp:PostBackTrigger ControlID="BTN_DescargarEmpaque" />
+                            </Triggers>
                         </asp:UpdatePanel>
                         <div class="card-body">
                             <div class="card-body">

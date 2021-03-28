@@ -220,8 +220,14 @@
 							                <asp:Label ID="LBL_UltimaModificacion" runat="server"></asp:Label>
                                         </div>
                                     </div>
-                                    <div class="form-row">                                        
-                                        <asp:Button ID="BTN_ConfirmarDespacho" runat="server" Text="Confirmar despacho" CssClass="btn btn-secondary" OnClick="BTN_ConfirmarDespacho_Click"></asp:Button>                                        
+                                    <div class="row">
+                                        <div class="col-md-6">                                       
+                                            <asp:Button ID="BTN_ConfirmarDespacho" runat="server" Text="Confirmar despacho" CssClass="btn btn-secondary" OnClick="BTN_ConfirmarDespacho_Click"></asp:Button>                                        
+                                        </div>                                        
+                                        <div class="col-md-6" style="text-align: right;"> 
+                                            <asp:Button ID="BTN_ReporteDespacho" runat="server" Text="Reporte despacho" CssClass="btn btn-secondary" OnClientClick="activarloading();estilosElementosBloqueados();"></asp:Button>                                                                                
+                                            <asp:Button ID="BTN_DescargarDespacho" runat="server" Text="Descargar despacho" CssClass="btn btn-primary" OnClientClick="estilosElementosBloqueados();"></asp:Button>                                        
+                                        </div>
                                     </div>
                                 </div>
                             </ContentTemplate>

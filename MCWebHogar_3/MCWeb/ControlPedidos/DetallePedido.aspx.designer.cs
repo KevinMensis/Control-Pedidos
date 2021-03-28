@@ -184,13 +184,13 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.Button BTN_ConfirmarPedido;
         
         /// <summary>
-        /// BTN_ImprimirPedido control.
+        /// BTN_ReportePedido control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BTN_ImprimirPedido;
+        protected global::System.Web.UI.WebControls.Button BTN_ReportePedido;
         
         /// <summary>
         /// BTN_DescargarPedido control.

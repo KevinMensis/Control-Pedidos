@@ -130,6 +130,24 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.Button BTN_AgregarProducto;
         
         /// <summary>
+        /// BTN_ReporteDevolucion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_ReporteDevolucion;
+        
+        /// <summary>
+        /// BTN_DescargarDevolucion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_DescargarDevolucion;
+        
+        /// <summary>
         /// UpdatePanel_FiltrosProductos control.
         /// </summary>
         /// <remarks>

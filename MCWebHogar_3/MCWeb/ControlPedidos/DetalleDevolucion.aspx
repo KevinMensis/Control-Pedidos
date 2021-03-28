@@ -219,11 +219,20 @@
 							                <asp:Label ID="LBL_UltimaModificacion" runat="server"></asp:Label>
                                         </div>
                                     </div>
-                                    <div class="form-row">                                        
-                                        <asp:Button ID="BTN_AgregarProducto" runat="server" Text="Agregar producto" CssClass="btn btn-secondary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_CargarProductos_Click"></asp:Button>                                        
+                                    <div class="form-row">                                                                                
+                                        <div class="col-md-6">                                       
+                                            <asp:Button ID="BTN_AgregarProducto" runat="server" Text="Agregar producto" CssClass="btn btn-secondary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_CargarProductos_Click"></asp:Button>       
+                                        </div>                                        
+                                        <div class="col-md-6" style="text-align: right;"> 
+                                            <asp:Button ID="BTN_ReporteDevolucion" runat="server" Text="Reporte devolución" CssClass="btn btn-secondary" OnClientClick="activarloading();estilosElementosBloqueados();" OnClick="BTN_ReporteDevolucion_Click"></asp:Button>                                                                                
+                                            <asp:Button ID="BTN_DescargarDevolucion" runat="server" Text="Descargar devolución" CssClass="btn btn-primary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_DescargarDevolucion_Click"></asp:Button>                                        
+                                        </div>
                                     </div>
                                 </div>
                             </ContentTemplate>
+                            <Triggers>
+                                <asp:PostBackTrigger ControlID="BTN_DescargarDevolucion" />
+                            </Triggers>
                         </asp:UpdatePanel>
                         <div class="card-body">
                             <div class="card-body">

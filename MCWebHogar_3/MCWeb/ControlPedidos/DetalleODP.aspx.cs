@@ -1,6 +1,8 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -32,14 +34,42 @@ namespace MCWebHogar.ControlPedidos
                         HDF_IDODP.Value = Session["IDODP"].ToString();                        
                         cargarDDLs();
                         cargarODP("");
+                        cargarCategoriasODP();
                         cargarProductosODP();
-                        cargarProductosODPImprimir();
                         ViewState["Ordenamiento"] = "ASC";
+                        ViewState["OrdenamientoCategorias"] = "ASC";                        
                     }                    
                 }
             }
             else
-            {                
+            {
+                string opcion = Page.Request.Params["__EVENTTARGET"];
+                string argument = Page.Request.Params["__EVENTARGUMENT"];
+                if (opcion.Contains("DDL_ImpresorasLoad"))
+                { 
+                    DataTable dt = new DataTable();
+                    dt.Clear();
+                    dt.Columns.Add("Text");
+                    dt.Columns.Add("Value");
+                    
+                    string printer = Environment.GetEnvironmentVariable("Printer").ToString().Trim();
+                    string[] nombresImpresoras = argument.Split(',');
+
+                    foreach(string impresora in nombresImpresoras) {
+                        dt.Rows.Add(impresora, impresora);
+                    }
+
+                    DDL_Impresoras.DataSource = dt;
+                    DDL_Impresoras.DataTextField = "Text";
+                    DDL_Impresoras.DataValueField = "Value";
+                    DDL_Impresoras.DataBind();
+                    UpdatePanel_SeleccionarImpresora.Update();
+
+                    DDL_Impresoras.SelectedValue = printer;
+
+                    string script = "estilosElementosBloqueados();abrirModalSeleccionarImpresora();";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDDL_Impresoras", script, true);
+                }
             }
         }
 
@@ -79,6 +109,14 @@ namespace MCWebHogar.ControlPedidos
                 DDL_PlantaProduccion.DataValueField = "IDPlantaProduccion";
                 DDL_PlantaProduccion.DataBind();
             }
+        }
+
+        protected void DDL_Impresoras_OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            string printer = DDL_Impresoras.SelectedValue;
+            Environment.SetEnvironmentVariable("Printer", printer);
+            string script = "estilosElementosBloqueados();cerrarModalSeleccionarImpresora();alertifysuccess('Se ha seleccionado la impresora: " + printer + "');";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDDL_Impresoras_OnSelectedIndexChanged", script, true);
         }
         #endregion
 
@@ -196,13 +234,183 @@ namespace MCWebHogar.ControlPedidos
                 cargarODP(script);
             }
         }
+
+        protected void BTN_ReporteOrdenProduccion_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                MCWebHogar.DataSets.DSSolicitud dsReporteODP = new MCWebHogar.DataSets.DSSolicitud();
+                DT.DT1.Clear();
+                DT.DT1.Rows.Add("@IDODP", HDF_IDODP.Value, SqlDbType.Int);
+                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString().Trim(), SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", "CargarODPs", SqlDbType.VarChar);
+
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP07_0001");
+                if (Result.Rows.Count == 0)
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerControlScript", "alertifywarning('No hay datos para mostrar');desactivarloading();estilosElementosBloqueados();", true);
+                    return;
+                }
+                dsReporteODP.Tables["DT_EncabezadoODP"].Merge(Result, true, MissingSchemaAction.Ignore);
+
+                DT.DT1.Clear();
+                DT.DT1.Rows.Add("@ODPID", HDF_IDODP.Value, SqlDbType.Int);
+                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString().Trim(), SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", "CargarProductos", SqlDbType.VarChar);
+
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP08_0001");
+                if (Result.Rows.Count == 0)
+                {
+                    DataTable dt = new DataTable();
+                    dt.Columns.Add("ODPID");
+                    dt.Columns.Add("DescripcionProducto");
+                    dt.Rows.Add("1", "No hay registros.");
+                    dsReporteODP.Tables["DT_DetalleODP"].Merge(dt, true, MissingSchemaAction.Ignore);
+                }
+                else
+                {
+                    dsReporteODP.Tables["DT_DetalleODP"].Merge(Result, true, MissingSchemaAction.Ignore);
+                }
+
+                DataTable DT_Encabezado = new DataTable();
+
+                DT_Encabezado.Columns.Add("Codigo");
+                DT_Encabezado.Columns.Add("Descripcion");
+                DT_Encabezado.Columns.Add("Procedure");
+                DT_Encabezado.Columns.Add("rpt");
+                DT_Encabezado.Columns.Add("DataSet");
+                DT_Encabezado.Columns.Add("DTName");
+
+                DT_Encabezado.TableName = "Encabezado";
+                DT_Encabezado.Rows.Add("01", "Datos Encabezado", "EE_Reports", "MCWebHogar.rptODP.rdlc", "DT_EncabezadoODP", "DT_EncabezadoODP");
+                DT_Encabezado.Rows.Add("01", "Datos Encabezado", "EE_Reports", "MCWebHogar.rptODP.rdlc", "DT_DetalleODP", "DT_DetalleODP");
+
+                Microsoft.Reporting.WebForms.ReportViewer ReportViewer1 = new Microsoft.Reporting.WebForms.ReportViewer();
+
+                ReportViewer1.LocalReport.EnableExternalImages = true;
+                ReportViewer1.LocalReport.DataSources.Clear();
+
+                string report = "";
+                foreach (DataRow dr in DT_Encabezado.Rows)
+                {
+                    FileStream fsReporte = null;
+                    string nombre = dr["rpt"].ToString().Trim().Replace(".rdlc", "").Replace("MCWebHogar.", "");
+                    ReportViewer1.ProcessingMode = Microsoft.Reporting.WebForms.ProcessingMode.Local;
+
+                    fsReporte = new FileStream(Server.MapPath(@"..\" + nombre + ".rdlc"), FileMode.Open, FileAccess.Read);
+
+                    ReportViewer1.LocalReport.LoadReportDefinition(fsReporte);
+
+                    ReportViewer1.LocalReport.ReportPath = Server.MapPath(String.Format("{0}.rdlc", @"..\" + nombre));
+
+                    report = dr["DTName"].ToString().Trim();
+                    foreach (DataTable dt in dsReporteODP.Tables)
+                    {
+                        if (dt.Rows.Count > 0 && dt.TableName.Trim() == report)
+                        {
+                            ReportViewer1.LocalReport.DataSources.Add(new Microsoft.Reporting.WebForms.ReportDataSource(dr["DataSet"].ToString().Trim(), (DataTable)dt));
+                        }
+                    }
+                }
+
+                ReportViewer1.LocalReport.EnableExternalImages = true;
+                ReportViewer1.LocalReport.EnableHyperlinks = true;
+
+                Microsoft.Reporting.WebForms.Warning[] warnings;
+                string[] streamIds;
+                string mimeType = String.Empty;
+                string encoding = String.Empty;
+                string extension = string.Empty;
+                byte[] bytes2 = ReportViewer1.LocalReport.Render("PDF", null, out mimeType, out encoding, out extension, out streamIds, out warnings);
+                //Generamos archivo en el servidor
+                string strCurrentDir2 = Server.MapPath(".") + "\\ReportesTemp\\";
+                string strFilePDF2 = "ReporteODP.pdf";
+                string strFilePathPDF2 = strCurrentDir2 + strFilePDF2;
+                using (FileStream fs = new FileStream(strFilePathPDF2, FileMode.Create))
+                {
+                    fs.Write(bytes2, 0, bytes2.Length);
+                }
+                string direccion = "/ControlPedidos/ReportesTemp/" + strFilePDF2;
+                string _open = "window.open('" + direccion + "'  , '_blank');desactivarloading();estilosElementosBloqueados();";
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerControlScript", _open, true);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        protected void BTN_DescargarOrdenProduccion_Click(object sender, EventArgs e)
+        {
+            DT.DT1.Clear();
+            DT.DT1.Rows.Add("@IDODP", HDF_IDODP.Value, SqlDbType.Int);
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString().Trim(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "ReporteODP", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP07_0001");
+
+            if (Result.Rows.Count <= 0)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerControlScriptBTN_DescargarODP_Click", "desactivarloading();estilosElementosBloqueados();alertifyerror('No hay registros para descargar.');", true);
+                return;
+            }
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(Result, "OrdenProduccion");
+
+                Response.Clear();
+                Response.Buffer = true;
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;filename=OrdenProduccion.xlsx");
+                using (MemoryStream MyMemoryStream = new MemoryStream())
+                {
+                    wb.SaveAs(MyMemoryStream);
+                    MyMemoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+            }
+        }
         #endregion
 
-        #region Cargar Productos        
+        #region Cargar Productos
         #region Productos Pedido
         protected void TXT_Buscar_OnTextChanged(object sender, EventArgs e)
         {
             cargarProductosODP();
+        }
+
+        public void cargarCategoriasODP()
+        {
+            DT.DT1.Clear();
+            DT.DT1.Rows.Add("@ODPID", HDF_IDODP.Value, SqlDbType.VarChar);
+
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "CargarCategorias", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP08_0001");
+
+            if (Result != null && Result.Rows.Count > 0)
+            {
+                if (Result.Rows[0][0].ToString().Trim() == "ERROR")
+                {
+                    return;
+                }
+                else
+                {
+                    DGV_ListaCategorias.DataSource = Result;
+                    DGV_ListaCategorias.DataBind();
+                    UpdatePanel_ListaProductos.Update();
+                }
+            }
+            else
+            {
+                DGV_ListaProductosODP.DataSource = Result;
+                DGV_ListaProductosODP.DataBind();
+                UpdatePanel_ListaProductos.Update();
+            }
         }
         
         public void cargarProductosODP()
@@ -237,16 +445,26 @@ namespace MCWebHogar.ControlPedidos
             }
         }
 
-        private void cargarProductosODPImprimir()
+        protected void DGV_ListaCategorias_Sorting(object sender, GridViewSortEventArgs e)
         {
             DT.DT1.Clear();
             DT.DT1.Rows.Add("@ODPID", HDF_IDODP.Value, SqlDbType.VarChar);
 
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@TipoSentencia", "CargarProductos", SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "CargarCategorias", SqlDbType.VarChar);
 
             Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP08_0001");
 
+            if (ViewState["OrdenamientoCategorias"].ToString().Trim() == "ASC")
+            {
+                ViewState["OrdenamientoCategorias"] = "DESC";
+            }
+            else
+            {
+                ViewState["OrdenamientoCategorias"] = "ASC";
+            }
+
+            Result.DefaultView.Sort = e.SortExpression + " " + ViewState["OrdenamientoCategorias"].ToString().Trim();
             if (Result != null && Result.Rows.Count > 0)
             {
                 if (Result.Rows[0][0].ToString().Trim() == "ERROR")
@@ -255,16 +473,92 @@ namespace MCWebHogar.ControlPedidos
                 }
                 else
                 {
-                    DGV_ListaProductos.DataSource = Result;
-                    DGV_ListaProductos.DataBind();
+                    DGV_ListaCategorias.DataSource = Result;
+                    DGV_ListaCategorias.DataBind();
                     UpdatePanel_ListaProductos.Update();
                 }
             }
             else
             {
+                DGV_ListaCategorias.DataSource = Result;
+                DGV_ListaCategorias.DataBind();
+                UpdatePanel_ListaProductos.Update();
+            }
+        }
+
+        protected void DGV_ListaCategorias_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                int idCategoria = Convert.ToInt32(DGV_ListaCategorias.DataKeys[e.Row.RowIndex].Value.ToString());
+                DT.DT1.Clear();
+                DT.DT1.Rows.Add("@ODPID", HDF_IDODP.Value, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@CategoriaID", idCategoria, SqlDbType.VarChar);
+
+                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", "CargarProductosCategoria", SqlDbType.VarChar);
+
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP08_0001");
+                GridView DGV_ListaProductos = e.Row.FindControl("DGV_ListaProductos") as GridView;
                 DGV_ListaProductos.DataSource = Result;
                 DGV_ListaProductos.DataBind();
-                UpdatePanel_ListaProductos.Update();
+            }
+        }
+
+        protected void DGV_ListaCategorias_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName != "Sort")
+            {
+                int index = Convert.ToInt32(e.CommandArgument);
+                if (e.CommandName == "imprimir")
+                {
+                    string categoria = DGV_ListaCategorias.DataKeys[index].Values[1].ToString().Trim();
+                    string printer = DDL_Impresoras.SelectedValue;
+                    string script = "estilosElementosBloqueados();imprimir('" + categoria + "', '" + TXT_CodigoODP.Text + "', " + index + ", '" + printer + "');";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDGV_ListaCategorias_RowCommand", script, true);
+                }
+            }
+        }
+
+        protected void DGV_ListaProductosODP_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            DT.DT1.Clear();
+            DT.DT1.Rows.Add("@ODPID", HDF_IDODP.Value, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@Buscar", TXT_Buscar.Text, SqlDbType.VarChar);
+
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "CargarProductos", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP08_0001");
+
+            if (ViewState["Ordenamiento"].ToString().Trim() == "ASC")
+            {
+                ViewState["Ordenamiento"] = "DESC";
+            }
+            else
+            {
+                ViewState["Ordenamiento"] = "ASC";
+            }
+
+            Result.DefaultView.Sort = e.SortExpression + " " + ViewState["Ordenamiento"].ToString().Trim();
+            if (Result != null && Result.Rows.Count > 0)
+            {
+                if (Result.Rows[0][0].ToString().Trim() == "ERROR")
+                {
+                    return;
+                }
+                else
+                {
+                    DGV_ListaProductosODP.DataSource = Result;
+                    DGV_ListaProductosODP.DataBind();
+                    UpdatePanel_ListaProductosODP.Update();
+                }
+            }
+            else
+            {
+                DGV_ListaProductosODP.DataSource = Result;
+                DGV_ListaProductosODP.DataBind();
+                UpdatePanel_ListaProductosODP.Update();
             }
         }
 
@@ -407,50 +701,11 @@ namespace MCWebHogar.ControlPedidos
             }
         }
         
-        protected void DGV_ListaProductosODP_Sorting(object sender, GridViewSortEventArgs e)
-        {
-            DT.DT1.Clear();
-            DT.DT1.Rows.Add("@ODPID", HDF_IDODP.Value, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@Buscar", TXT_Buscar.Text, SqlDbType.VarChar);
-
-            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@TipoSentencia", "CargarProductos", SqlDbType.VarChar);
-
-            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP08_0001");
-
-            if (ViewState["Ordenamiento"].ToString().Trim() == "ASC")
-            {
-                ViewState["Ordenamiento"] = "DESC";
-            }
-            else
-            {
-                ViewState["Ordenamiento"] = "ASC";
-            }
-
-            Result.DefaultView.Sort = e.SortExpression + " " + ViewState["Ordenamiento"].ToString().Trim();
-            if (Result != null && Result.Rows.Count > 0)
-            {
-                if (Result.Rows[0][0].ToString().Trim() == "ERROR")
-                {
-                    return;
-                }
-                else
-                {
-                    DGV_ListaProductosODP.DataSource = Result;
-                    DGV_ListaProductosODP.DataBind();
-                    UpdatePanel_ListaProductosODP.Update();
-                }
-            }
-            else
-            {
-                DGV_ListaProductosODP.DataSource = Result;
-                DGV_ListaProductosODP.DataBind();
-                UpdatePanel_ListaProductosODP.Update();
-            }
-        }
-
         protected void BTN_ImprimirOrdenProduccion_Click(object sender, EventArgs e)
         {
+            string printer = Environment.GetEnvironmentVariable("Printer").ToString().Trim();
+            TXT_NombreImpresora.Text = printer;
+            UpdatePanel_ListaProductos.Update();
             string script = "abrirModalOrdenProduccion();estilosElementosBloqueados();";
             ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_ImprimirOrdenProduccion_Click", script, true);
         }

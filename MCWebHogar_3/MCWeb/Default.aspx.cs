@@ -16,9 +16,6 @@ namespace MCWebHogar
 {
     public partial class Default : System.Web.UI.Page
     {
-        string TXTServerMail = "smtp.gmail.com";
-        string TXTMailUser = "minaecr@gmail.com";
-        string TXTContrasena = "pdefuyrwrqfihste";
         CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
         DataTable Result = new DataTable();
 
@@ -186,6 +183,7 @@ namespace MCWebHogar
                     {
                         if (Result.Rows[0][0].ToString().Trim() != "")
                         {
+                            Environment.SetEnvironmentVariable("Printer", "Microsoft Print to PDF");
                             Session["UserId"] = Result.Rows[0][0].ToString().Trim();
                             Session["Usuario"] = Result.Rows[0][4].ToString().Trim();
                             Response.Redirect("ControlPedidos/Pedido.aspx", true);

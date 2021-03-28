@@ -219,11 +219,20 @@
 							                <asp:Label ID="LBL_UltimaModificacion" runat="server"></asp:Label>
                                         </div>
                                     </div>
-                                    <div class="form-row">                                        
-                                        <asp:Button ID="BTN_AgregarProducto" runat="server" Text="Agregar producto" CssClass="btn btn-secondary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_CargarProductos_Click"></asp:Button>                                        
+                                    <div class="form-row">                                                                                
+                                        <div class="col-md-6">                                       
+                                            <asp:Button ID="BTN_AgregarProducto" runat="server" Text="Agregar producto" CssClass="btn btn-secondary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_CargarProductos_Click"></asp:Button>                                        
+                                        </div>                                        
+                                        <div class="col-md-6" style="text-align: right;"> 
+                                            <asp:Button ID="BTN_ReporteDesecho" runat="server" Text="Reporte desecho" CssClass="btn btn-secondary" OnClientClick="activarloading();estilosElementosBloqueados();" OnClick="BTN_ReporteDesecho_Click"></asp:Button>                                                                                
+                                            <asp:Button ID="BTN_DescargarDesecho" runat="server" Text="Descargar desecho" CssClass="btn btn-primary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_DescargarDesecho_Click"></asp:Button>                                        
+                                        </div>
                                     </div>
                                 </div>
                             </ContentTemplate>
+                            <Triggers>
+                                <asp:PostBackTrigger ControlID="BTN_DescargarDesecho" />
+                            </Triggers>
                         </asp:UpdatePanel>
                         <div class="card-body">
                             <div class="card-body">

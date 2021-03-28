@@ -249,7 +249,7 @@
                                             <asp:Button ID="BTN_ConfirmarPedido" runat="server" Text="Confirmar pedido" CssClass="btn btn-secondary" OnClick="BTN_ConfirmarPedido_Click"></asp:Button>
                                         </div>
                                         <div class="col-md-5" style="text-align: right;">
-                                            <asp:Button ID="BTN_ImprimirPedido" runat="server" Text="Imprimir pedido" CssClass="btn btn-secondary" OnClientClick="activarloading();estilosElementosBloqueados();" OnClick="BTN_ImprimirPedido_Click"></asp:Button>                                                                                
+                                            <asp:Button ID="BTN_ReportePedido" runat="server" Text="Reporte pedido" CssClass="btn btn-secondary" OnClientClick="activarloading();estilosElementosBloqueados();" OnClick="BTN_ReportePedido_Click"></asp:Button>                                                                                
                                             <asp:Button ID="BTN_DescargarPedido" runat="server" Text="Descargar pedido" CssClass="btn btn-primary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_DescargarPedido_Click"></asp:Button>                                        
                                         </div>
                                     </div>

@@ -227,7 +227,13 @@
                                         </div>
                                     </div>
                                     <div class="form-row">                                                                                
-                                        <asp:Button ID="BTN_ConfirmarRecibidoPedido" runat="server" Text="Confirmar pedido recibido" CssClass="btn btn-secondary"></asp:Button>
+                                        <div class="col-md-6">                                       
+                                            <asp:Button ID="BTN_ConfirmarRecibidoPedido" runat="server" Text="Confirmar pedido recibido" CssClass="btn btn-secondary"></asp:Button>
+                                        </div>                                        
+                                        <div class="col-md-6" style="text-align: right;"> 
+                                            <asp:Button ID="BTN_ReporteRecibidoPedido" runat="server" Text="Reporte pedido recibido" CssClass="btn btn-secondary" OnClientClick="activarloading();estilosElementosBloqueados();"></asp:Button>                                                                                
+                                            <asp:Button ID="BTN_DescargarRecibidoPedido" runat="server" Text="Descargar pedido recibido" CssClass="btn btn-primary" OnClientClick="estilosElementosBloqueados();"></asp:Button>                                        
+                                        </div>
                                     </div>
                                 </div>
                             </ContentTemplate>

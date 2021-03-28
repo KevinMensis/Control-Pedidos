@@ -1,6 +1,8 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -158,6 +160,145 @@ namespace MCWebHogar.ControlPedidos
             {
                 string script = "alertifywarning('No se ha confirmado el Devolucion.');";
                 cargarDevolucion(script);
+            }
+        }
+        
+        protected void BTN_ReporteDevolucion_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                MCWebHogar.DataSets.DSSolicitud dsReporteDevolucion = new MCWebHogar.DataSets.DSSolicitud();
+                DT.DT1.Clear();
+                DT.DT1.Rows.Add("@IDDevolucion", HDF_IDDevolucion.Value, SqlDbType.Int);
+                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString().Trim(), SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", "CargarDevoluciones", SqlDbType.VarChar);
+
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP18_0001");
+                if (Result.Rows.Count == 0)
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerControlScript", "alertifywarning('No hay datos para mostrar');desactivarloading();estilosElementosBloqueados();", true);
+                    return;
+                }
+                dsReporteDevolucion.Tables["DT_EncabezadoDevolucion"].Merge(Result, true, MissingSchemaAction.Ignore);
+
+                DT.DT1.Clear();
+                DT.DT1.Rows.Add("@DevolucionID", HDF_IDDevolucion.Value, SqlDbType.Int);
+                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString().Trim(), SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", "CargarReporteProductos", SqlDbType.VarChar);
+
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP19_0001");
+                if (Result.Rows.Count == 0)
+                {
+                    DataTable dt = new DataTable();
+                    dt.Columns.Add("DevolucionID");
+                    dt.Columns.Add("DescripcionProducto");
+                    dt.Rows.Add("1", "No hay registros.");
+                    dsReporteDevolucion.Tables["DT_DetalleDevolucion"].Merge(dt, true, MissingSchemaAction.Ignore);
+                }
+                else
+                {
+                    dsReporteDevolucion.Tables["DT_DetalleDevolucion"].Merge(Result, true, MissingSchemaAction.Ignore);
+                }
+
+                DataTable DT_Encabezado = new DataTable();
+
+                DT_Encabezado.Columns.Add("Codigo");
+                DT_Encabezado.Columns.Add("Descripcion");
+                DT_Encabezado.Columns.Add("Procedure");
+                DT_Encabezado.Columns.Add("rpt");
+                DT_Encabezado.Columns.Add("DataSet");
+                DT_Encabezado.Columns.Add("DTName");
+
+                DT_Encabezado.TableName = "Encabezado";
+                DT_Encabezado.Rows.Add("01", "Datos Encabezado", "EE_Reports", "MCWebHogar.rptDevolucion.rdlc", "DT_EncabezadoDevolucion", "DT_EncabezadoDevolucion");
+                DT_Encabezado.Rows.Add("01", "Datos Encabezado", "EE_Reports", "MCWebHogar.rptDevolucion.rdlc", "DT_DetalleDevolucion", "DT_DetalleDevolucion");
+
+                Microsoft.Reporting.WebForms.ReportViewer ReportViewer1 = new Microsoft.Reporting.WebForms.ReportViewer();
+
+                ReportViewer1.LocalReport.EnableExternalImages = true;
+                ReportViewer1.LocalReport.DataSources.Clear();
+
+                string report = "";
+                foreach (DataRow dr in DT_Encabezado.Rows)
+                {
+                    FileStream fsReporte = null;
+                    string nombre = dr["rpt"].ToString().Trim().Replace(".rdlc", "").Replace("MCWebHogar.", "");
+                    ReportViewer1.ProcessingMode = Microsoft.Reporting.WebForms.ProcessingMode.Local;
+
+                    fsReporte = new FileStream(Server.MapPath(@"..\" + nombre + ".rdlc"), FileMode.Open, FileAccess.Read);
+
+                    ReportViewer1.LocalReport.LoadReportDefinition(fsReporte);
+
+                    ReportViewer1.LocalReport.ReportPath = Server.MapPath(String.Format("{0}.rdlc", @"..\" + nombre));
+
+                    report = dr["DTName"].ToString().Trim();
+                    foreach (DataTable dt in dsReporteDevolucion.Tables)
+                    {
+                        if (dt.Rows.Count > 0 && dt.TableName.Trim() == report)
+                        {
+                            ReportViewer1.LocalReport.DataSources.Add(new Microsoft.Reporting.WebForms.ReportDataSource(dr["DataSet"].ToString().Trim(), (DataTable)dt));
+                        }
+                    }
+                }
+
+                ReportViewer1.LocalReport.EnableExternalImages = true;
+                ReportViewer1.LocalReport.EnableHyperlinks = true;
+
+                Microsoft.Reporting.WebForms.Warning[] warnings;
+                string[] streamIds;
+                string mimeType = String.Empty;
+                string encoding = String.Empty;
+                string extension = string.Empty;
+                byte[] bytes2 = ReportViewer1.LocalReport.Render("PDF", null, out mimeType, out encoding, out extension, out streamIds, out warnings);
+                //Generamos archivo en el servidor
+                string strCurrentDir2 = Server.MapPath(".") + "\\ReportesTemp\\";
+                string strFilePDF2 = "ReporteDevolucion.pdf";
+                string strFilePathPDF2 = strCurrentDir2 + strFilePDF2;
+                using (FileStream fs = new FileStream(strFilePathPDF2, FileMode.Create))
+                {
+                    fs.Write(bytes2, 0, bytes2.Length);
+                }
+                string direccion = "/ControlPedidos/ReportesTemp/" + strFilePDF2;
+                string _open = "window.open('" + direccion + "'  , '_blank');desactivarloading();estilosElementosBloqueados();";
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerControlScript", _open, true);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        protected void BTN_DescargarDevolucion_Click(object sender, EventArgs e)
+        {
+            DT.DT1.Clear();
+            DT.DT1.Rows.Add("@IDDevolucion", HDF_IDDevolucion.Value, SqlDbType.Int);
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString().Trim(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "ReporteDevolucion", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP18_0001");
+
+            if (Result.Rows.Count <= 0)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerControlScriptBTN_DescargarDevolucion_Click", "desactivarloading();estilosElementosBloqueados();alertifyerror('No hay registros para descargar.');", true);
+                return;
+            }
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(Result, "Devolucion");
+
+                Response.Clear();
+                Response.Buffer = true;
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;filename=Devolucion.xlsx");
+                using (MemoryStream MyMemoryStream = new MemoryStream())
+                {
+                    wb.SaveAs(MyMemoryStream);
+                    MyMemoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
             }
         }
         #endregion

@@ -8,7 +8,20 @@
     <title>Detalle orden producción</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <style>
+        .ir-arriba {
+            display:block;
+            background-repeat:no-repeat;
+            font-size:20px;
+            color:black;
+            cursor:pointer;
+            position:fixed;
+            bottom:10px;
+            right:10px;
+            z-index:2;
+        }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+    <script src="../Assets/js/qz-tray.js"></script>
     <script type="text/javascript">
         function alertifysuccess(msj) {
             alertify.notify(msj, 'success', 5, null);
@@ -43,13 +56,42 @@
             document.getElementById('BTN_ModalOrdenProduccion').click()
         }
 
-        //function abrirModalConfirmarPedido() {
-        //    document.getElementById('BTN_ModalConfirmacionPedido').click()
-        //}
+        function abrirModalSeleccionarImpresora() {
+            document.getElementById('BTN_ModalSeleccionarImpresora').click()
+        }
 
-        //function cerrarModalConfirmarPedido() {
-        //    document.getElementById('BTN_ModalConfirmacionPedido').click()
-        //}
+        function cerrarModalSeleccionarImpresora() {
+            document.getElementById('BTN_ModalSeleccionarImpresora').click()
+        }
+
+        function imprimir(categoria, codigoODP, index, printer) {
+            console.log(printer)
+            var listaProductos = 'Content_DGV_ListaCategorias_DGV_ListaProductos_' + index;
+            
+            qz.websocket.connect().then(function () {
+                return qz.printers.find(printer);
+            }).then(function (found) {
+                var config = qz.configs.create(found);
+                var data = [{
+                    type: 'pixel',
+                    format: 'html',
+                    flavor: 'plain',
+                    data: '<html>' +
+                            '<head><title>' + document.title + '</title></head>' +
+                            '<body>' +
+                                '</h2><strong>' + codigoODP + '</strong></h2><br /><br />' +
+                                '</h2><strong>Categoría:</strong> ' + categoria + '</h2><br /><br />' +
+                                '<table>' + document.getElementById(listaProductos).innerHTML + '</table>' +
+                            '</body>' +
+                           '</html>'
+                }];
+                return qz.print(config, data).catch(function (e) { console.error(e); });
+            }).catch(function (error) {
+                alert(error);
+            }).finally(function () {
+                return qz.websocket.disconnect();
+            });
+        }
 
         function estilosElementosBloqueados() {
             document.getElementById('<%= TXT_CodigoODP.ClientID %>').classList.remove('aspNetDisabled')
@@ -64,10 +106,35 @@
             document.getElementById('<%= TXT_FechaODP.ClientID %>').classList.add('form-control')
             document.getElementById('<%= TXT_HoraODP.ClientID %>').classList.remove('aspNetDisabled')
             document.getElementById('<%= TXT_HoraODP.ClientID %>').classList.add('form-control')
+            document.getElementById('<%= TXT_NombreImpresora.ClientID %>').classList.remove('aspNetDisabled')
+            document.getElementById('<%= TXT_NombreImpresora.ClientID %>').classList.add('form-control')
         }
 
+        $("[src*=plus]").live("click", function () {
+            $(this).closest("tr").after("<tr><td></td><td colspan = '999'>" + $(this).next().html() + "</td></tr>")
+            $(this).attr("src", "../images/minus.png");
+        });
+
+        $("[src*=minus]").live("click", function () {
+            $(this).attr("src", "../images/plus.png");
+            $(this).closest("tr").next().remove();
+        });
+
+        function configurarImpresora() {
+            qz.websocket.connect().then(function () {
+                return qz.printers.find();
+            }).then(function (found) {
+                console.dir(found)
+                __doPostBack('DDL_ImpresorasLoad', found)
+            }).catch(function (error) {
+                alert(error);
+            }).finally(function () {
+                return qz.websocket.disconnect();
+            });
+        }
+        
         $(document).ready(function () {
-            estilosElementosBloqueados()
+            estilosElementosBloqueados();
         });
     </script>
 </asp:Content>
@@ -77,6 +144,12 @@
         <img src="../images/cargando5.gif" width="100" height="100" />
     </div>
     <div id="fade2" class="overlayload"></div>
+    <a class="ir-arriba"  href="javascript:configurarImpresora();" title="Volver arriba">
+        <span class="fa-stack">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-print fa-stack-1x fa-inverse"></i>
+        </span>
+    </a>
     <div class="wrapper">
         <asp:HiddenField ID="HDF_IDODP" runat="server" Value="0" Visible="false" />
         <asp:HiddenField ID="HDF_EstadoODP" runat="server" Value="" Visible="false" />
@@ -232,13 +305,22 @@
 							                <asp:Label ID="LBL_UltimaModificacion" runat="server"></asp:Label>
                                         </div>
                                     </div>
-                                    <div class="form-row">                                        
-                                        <asp:Button ID="BTN_ImprimirOrdenProduccion" runat="server" Text="Imprimir orden producción" CssClass="btn btn-secondary" OnClick="BTN_ImprimirOrdenProduccion_Click"></asp:Button>
-                                        <asp:Button ID="BTN_ConfirmarODP" runat="server" Text="Confirmar orden producción" CssClass="btn btn-secondary" OnClick="BTN_ConfirmarODP_Click"></asp:Button>
-                                        <asp:Button ID="BTN_CompletarODP" runat="server" Text="Completar orden producción" CssClass="btn btn-secondary" OnClick="BTN_CompletarODP_Click"></asp:Button>
+                                    <div class="form-row">  
+                                        <div class="col-md-6">                                      
+                                            <asp:Button ID="BTN_ImprimirOrdenProduccion" runat="server" Text="Imprimir orden producción" CssClass="btn btn-secondary" OnClick="BTN_ImprimirOrdenProduccion_Click"></asp:Button>
+                                            <asp:Button ID="BTN_ConfirmarODP" runat="server" Text="Confirmar orden producción" CssClass="btn btn-secondary" OnClick="BTN_ConfirmarODP_Click"></asp:Button>
+                                            <asp:Button ID="BTN_CompletarODP" runat="server" Text="Completar orden producción" CssClass="btn btn-secondary" OnClick="BTN_CompletarODP_Click"></asp:Button>
+                                        </div>
+                                        <div class="col-md-6" style="text-align: right;"> 
+                                            <asp:Button ID="BTN_ReporteOrdenProduccion" runat="server" Text="Reporte orden producción" CssClass="btn btn-secondary" OnClientClick="activarloading();estilosElementosBloqueados();" OnClick="BTN_ReporteOrdenProduccion_Click"></asp:Button>                                                                                
+                                            <asp:Button ID="BTN_DescargarOrdenProduccion" runat="server" Text="Descargar orden producción" CssClass="btn btn-primary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_DescargarOrdenProduccion_Click"></asp:Button>                                        
+                                        </div>
                                     </div>
                                 </div>
                             </ContentTemplate>
+                            <Triggers>
+                                <asp:PostBackTrigger ControlID="BTN_DescargarOrdenProduccion" />
+                            </Triggers>
                         </asp:UpdatePanel>
                         <div class="card-body">
                             <div class="card-body">
@@ -357,26 +439,99 @@
                             <h5 class="modal-title" runat="server">Orden de producción</h5>
                         </div>
                         <div class="modal-body">                            
-                            <div class="table-responsive">
+                            <div class="table-responsive" id="tableCategorias">
                                 <asp:UpdatePanel ID="UpdatePanel_ListaProductos" runat="server" UpdateMode="Conditional">
                                     <ContentTemplate>
-                                        <asp:GridView ID="DGV_ListaProductos" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
-                                            AutoGenerateColumns="False" DataKeyNames="IDProducto,DescripcionProducto,Categoria" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
-                                            ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true">
-                                            <Columns>                                                
-                                                <asp:BoundField DataField="IDProducto" SortExpression="IDProducto" HeaderText="Código producto" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                <asp:BoundField DataField="DescripcionProducto" SortExpression="DescripcionProducto" HeaderText="Nombre producto" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                <asp:BoundField DataField="DescripcionCategoria" SortExpression="DescripcionCategoria" HeaderText="Categoria" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
-                                                <asp:BoundField DataField="CantidadSolicitada" SortExpression="CantidadSolicitada" HeaderText="Cantidad solicitada" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
+                                        <div class="col-md-6" style="margin-bottom: 2rem;">
+                                            <label for="TXT_NombreImpresora">Nombre impresora</label>
+                                            <asp:TextBox class="form-control" ID="TXT_NombreImpresora" runat="server" Enabled="false"></asp:TextBox>
+                                        </div>
+                                        <br />
+                                        <br />
+                                        <asp:GridView ID="DGV_ListaCategorias" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
+                                            AutoGenerateColumns="false" DataKeyNames="IDCategoria,DescripcionCategoria" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
+                                            ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true"
+                                            OnSorting="DGV_ListaCategorias_Sorting"
+                                            OnRowCommand="DGV_ListaCategorias_RowCommand"
+                                            OnRowDataBound="DGV_ListaCategorias_RowDataBound">
+                                            <Columns>   
+                                                <asp:TemplateField>
+                                                    <HeaderTemplate>
+                                                        <asp:Label ID="Lbl_VerDetalle" runat="server" Text="Ver detalle"></asp:Label>
+                                                    </HeaderTemplate>
+                                                    <ItemTemplate>
+                                                        <div class="table" id="tableProductos">
+                                                            <img alt="" style="cursor: pointer" src="../images/plus.png" />
+                                                            <asp:Panel ID="pnlListaProductos" runat="server" Style="display: none;">
+                                                                <asp:GridView ID="DGV_ListaProductos" runat="server" AutoGenerateColumns="false" DataKeyNames="IDProducto,DescripcionProducto,Categoria" CssClass="ChildGrid"
+                                                                    HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" 
+                                                                    GridLines="None" ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true">
+                                                                    <Columns>
+                                                                        <asp:BoundField DataField="IDProducto" HeaderText="Código producto" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                                        <asp:BoundField DataField="DescripcionProducto" HeaderText="Nombre producto" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                             
+                                                                        <asp:BoundField DataField="CantidadSolicitada" HeaderText="Cantidad solicitada" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                                    </Columns>
+                                                                </asp:GridView>
+                                                            </asp:Panel>
+                                                        </div>
+                                                    </ItemTemplate>
+                                                    <ItemStyle HorizontalAlign="Center" />
+                                                </asp:TemplateField>                                             
+                                                <asp:BoundField DataField="DescripcionCategoria" SortExpression="DescripcionCategoria" HeaderText="Categoría" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                <asp:TemplateField>
+                                                    <HeaderTemplate>
+                                                        <asp:Label ID="Lbl_VerDetalle" runat="server" Text="Acciones"></asp:Label>
+                                                    </HeaderTemplate>
+                                                    <ItemTemplate>
+                                                        <asp:LinkButton ID="lnk_Imprimir" runat="server" class="btn btn-success" CommandName="imprimir" CommandArgument="<%# ((GridViewRow)Container).RowIndex %>">
+                                                            <span>Imprimir</span>
+                                                        </asp:LinkButton>
+                                                    </ItemTemplate>
+                                                    <ItemStyle HorizontalAlign="Center" />
+                                                </asp:TemplateField>
                                             </Columns>
                                         </asp:GridView>
                                     </ContentTemplate>
                                 </asp:UpdatePanel>
                             </div>
                         </div>
+                        <div class="modal-footer">                            
+                            <div style="text-align: right;">
+                                <asp:Button ID="BTN_CerrarModalCrearPedido" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-secondary" />                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ContentTemplate>
+        </asp:UpdatePanel>
+    </div>
+
+    <button type="button" id="BTN_ModalSeleccionarImpresora" data-toggle="modal" data-target="#ModalSeleccionarImpresora" style="visibility: hidden;">open</button>
+
+    <div class="modal bd-example-modal-md" id="ModalSeleccionarImpresora" tabindex="-1" role="dialog" aria-labelledby="popSeleccionarImpresora" aria-hidden="true">
+        <asp:UpdatePanel ID="UpdatePanel_SeleccionarImpresora" runat="server" UpdateMode="Conditional">
+            <ContentTemplate>
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h5 class="modal-title" runat="server">Seleccionar impresora</h5>
+                        </div>
+                        <div class="modal-body">   
+                            <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                                <ContentTemplate>                         
+                                    <div style="text-align: left;">
+                                        <asp:DropDownList class="form-control" ID="DDL_Impresoras" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DDL_Impresoras_OnSelectedIndexChanged"></asp:DropDownList>
+                                    </div>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
+                        </div>
                         <div class="modal-footer">
-                            <asp:Button ID="BTN_CerrarModalCrearPedido" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-secondary" />
-                            <asp:Button ID="BTN_Imprimir" runat="server" Text="Imprimir" CssClass="btn btn-success" />
+                            <div style="text-align: right;">
+                                <asp:Button ID="BTN_CerrarModalSeleccionarImpresora" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-secondary" />                                
+                            </div>
                         </div>
                     </div>
                 </div>

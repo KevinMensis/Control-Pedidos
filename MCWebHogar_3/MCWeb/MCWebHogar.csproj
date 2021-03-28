@@ -203,6 +203,7 @@
     <Content Include="Assets\js\plugins\nouislider.min.js" />
     <Content Include="Assets\js\plugins\perfect-scrollbar.jquery.min.js" />
     <Content Include="Assets\js\plugins\sweetalert2.min.js" />
+    <Content Include="Assets\js\qz-tray.js" />
     <Content Include="Assets\plugins\chart\ori\chart.js" />
     <Content Include="Assets\plugins\ckeditor\build-config.js" />
     <Content Include="Assets\plugins\ckeditor\ckeditor.js" />
@@ -931,6 +932,8 @@
     <Content Include="images\barragrisclaro.png" />
     <Content Include="images\box_bg.gif" />
     <Content Include="images\menuSprite.png" />
+    <Content Include="images\minus.png" />
+    <Content Include="images\plus.png" />
     <Content Include="Scripts\alertify.min.js" />
     <Content Include="Scripts\Alertify\alertify.min.js" />
     <Content Include="Scripts\autocomplete.js" />
@@ -1279,8 +1282,8 @@
     <Folder Include="Assets\vendor\bootstrap\scss\vendor\" />
     <Folder Include="Assets\vendor\fontawesome-free\svgs\brands\" />
     <Folder Include="Assets\vendor\fontawesome-free\svgs\regular\" />
-    <Folder Include="ControlPedidos\ReportesTemp\" />
     <Folder Include="Data\" />
+    <Folder Include="Reportes\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="MenuPrincipal.Master" />
@@ -1545,6 +1548,11 @@
     <Content Include="DataSets\DS_ControlPedidos.xsc">
       <DependentUpon>DS_ControlPedidos.xsd</DependentUpon>
     </Content>
+    <Content Include="ControlPedidos\ReportesTemp\ReportePedido.pdf" />
+    <Content Include="ControlPedidos\ReportesTemp\ReporteODP.pdf" />
+    <Content Include="ControlPedidos\ReportesTemp\ReporteDesecho.pdf" />
+    <Content Include="ControlPedidos\ReportesTemp\ReporteDevolucion.pdf" />
+    <Content Include="ControlPedidos\ReportesTemp\ReporteEmpaque.pdf" />
     <None Include="DataSets\DS_ControlPedidos.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DS_ControlPedidos.Designer.cs</LastGenOutput>
@@ -1576,7 +1584,10 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Reportes\ReporteEdificio.rdlc" />
+    <EmbeddedResource Include="rptEmpaque.rdlc" />
+    <EmbeddedResource Include="rptDevolucion.rdlc" />
+    <EmbeddedResource Include="rptODP.rdlc" />
+    <EmbeddedResource Include="rptDesecho.rdlc" />
     <EmbeddedResource Include="rptPedido.rdlc" />
   </ItemGroup>
   <PropertyGroup>

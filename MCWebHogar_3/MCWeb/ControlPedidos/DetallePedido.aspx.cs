@@ -226,7 +226,7 @@ namespace MCWebHogar.ControlPedidos
             }
         }
 
-        protected void BTN_ImprimirPedido_Click(object sender, EventArgs e)
+        protected void BTN_ReportePedido_Click(object sender, EventArgs e)
         {
             try
             {

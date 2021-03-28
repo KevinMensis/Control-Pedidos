@@ -35,6 +35,26 @@
             document.getElementById('fade2').style.display = 'none';
             document.getElementById('modalloading').style.display = 'none';
         }
+
+        function abrirModalCrearUsuario() {
+            document.getElementById('BTN_ModalCrearUsuario').click()
+        }
+
+        function cerrarModalCrearUsuario() {
+            document.getElementById('BTN_ModalCrearUsuario').click()
+        }
+
+        function validarCrearUsuario() {
+
+        }
+
+        function cargarFiltros() {
+            $(<%= LB_Rol.ClientID %>).SumoSelect({ selectAll: true, placeholder: 'Rol' })
+        }
+
+        $(document).ready(function () {
+            cargarFiltros();
+        });
     </script>
 </asp:Content>
 
@@ -144,8 +164,129 @@
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Mantenimiento usuarios</h1>
                     <br />
+                    <div class="card shadow mb-4">
+                        <asp:UpdatePanel ID="UpdatePanel_CrearUsuario" runat="server" UpdateMode="Conditional">
+                            <ContentTemplate>
+                                <div class="card-header py-3" style="text-align: right;">
+                                    <asp:Button ID="BTN_CrearUsuario" runat="server" Text="Crear nuevo usuario" CssClass="btn btn-secondary" OnClick="BTN_CrearUsuario_OnClick"></asp:Button>
+                                </div>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
+                        <div class="card-body">
+                            <asp:UpdatePanel ID="UpdatePanel_FiltrosUsuarios" runat="server" UpdateMode="Conditional">
+                                <ContentTemplate>                           
+                                    <div class="input-group no-border">
+                                        <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar..." OnTextChanged="FiltrarUsuarios_OnClick" AutoPostBack="true"></asp:TextBox>
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <i class="nc-icon nc-zoom-split"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <asp:ListBox class="form-control" runat="server" ID="LB_Rol" SelectionMode="Multiple" OnTextChanged="FiltrarUsuarios_OnClick" AutoPostBack="true"></asp:ListBox>
+                                        </div>
+                                    </div>
+                                </ContentTemplate>
+                            </asp:UpdatePanel> 
+                            <div class="table-responsive">
+                                <asp:UpdatePanel ID="UpdatePanel_ListaUsuarios" runat="server" UpdateMode="Conditional">
+                                    <ContentTemplate>
+                                        <asp:GridView ID="DGV_ListaUsuarios" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
+                                            AutoGenerateColumns="False" DataKeyNames="IDUsuario,Activo,Usuario,RolID,Cargo" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
+                                            ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true"
+                                            OnSorting="DGV_ListaUsuarios_Sorting"
+                                            OnRowCommand="DGV_ListaUsuarios_RowCommand"
+                                            OnRowDataBound="DGV_ListaUsuarios_RowDataBound">
+                                            <Columns>
+                                                <asp:BoundField DataField="Nombre" SortExpression="Nombre" HeaderText="Nombre" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                <asp:BoundField DataField="Usuario" SortExpression="Usuario" HeaderText="Usuario" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                <asp:BoundField DataField="DescripcionRol" SortExpression="DescripcionRol" HeaderText="Rol" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                <asp:BoundField DataField="Cargo" SortExpression="Cargo" HeaderText="Cargo" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                <asp:TemplateField>
+                                                    <HeaderTemplate>
+                                                        <asp:Label ID="LBL_Acciones" runat="server" Text="ACCIONES"></asp:Label>
+                                                    </HeaderTemplate>
+                                                    <ItemTemplate>
+                                                        <asp:Button class="btn btn-outline-success btn-round" ID="BTN_Activar" runat="server"
+                                                            CommandName="activar"
+                                                            CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
+                                                            Text="Activar" AutoPostBack="true" />
+                                                        <asp:Button class="btn btn-outline-primary btn-round" ID="BTN_Editar" runat="server"
+                                                            CommandName="editar"
+                                                            CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
+                                                            Text="Editar" AutoPostBack="true" />
+                                                        <asp:Button class="btn btn-outline-danger btn-round" ID="BTN_Eliminar" runat="server"
+                                                            CommandName="desactivar"
+                                                            CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
+                                                            Text="Desactivar" AutoPostBack="true" />
+                                                    </ItemTemplate>
+                                                    <ItemStyle HorizontalAlign="Center" />
+                                                </asp:TemplateField>
+                                            </Columns>
+                                        </asp:GridView>
+                                    </ContentTemplate>
+                                </asp:UpdatePanel>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <button type="button" id="BTN_ModalCrearUsuario" data-toggle="modal" data-target="#ModalCrearUsuario" style="visibility: hidden;">open</button>
+
+    <div class="modal bd-example-modal-lg" id="ModalCrearUsuario" tabindex="-1" role="dialog" aria-labelledby="popCrearUsuario" aria-hidden="true">
+        <asp:UpdatePanel ID="UpdatePanel_ModalCrearUsuario" runat="server" UpdateMode="Conditional">
+            <ContentTemplate>
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h5 class="modal-title" runat="server" id="title_CrearPedido"></h5>
+                        </div>
+                        <div class="modal-body">
+                            <asp:HiddenField ID="HDF_IDUsuario" runat="server" Value="0" />
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="TXT_NombreUsuario">Nombre del usuario:</label>
+                                    <asp:TextBox ID="TXT_NombreUsuario" runat="server" CssClass="form-control"></asp:TextBox>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="TXT_Usuario">Usuario:</label>
+                                    <asp:TextBox ID="TXT_Usuario" runat="server" CssClass="form-control"></asp:TextBox>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="DDL_Rol">Rol</label>
+                                    <asp:DropDownList class="form-control" ID="DDL_Rol" runat="server"></asp:DropDownList>
+                                </div>
+                            </div>
+                            <div class="row">                                
+                                <div class="col-md-4">
+                                    <label for="TXT_Cargo">Cargo: </label>
+                                    <asp:TextBox ID="TXT_Cargo" runat="server" CssClass="form-control"></asp:TextBox>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="TXT_Contrasena">Contraseña:</label>
+                                    <asp:TextBox ID="TXT_Contrasena" runat="server" CssClass="form-control" TextMode="Password"></asp:TextBox>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="TXT_ConfirmarContrasena">Confirmar contraseña:</label>
+                                    <asp:TextBox ID="TXT_ConfirmarContrasena" runat="server" CssClass="form-control" TextMode="Password"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <asp:Button ID="BTN_CerrarModalCrearUsuario" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-secondary" />
+                            <asp:Button ID="BTN_GuardarUsuario" runat="server" Text="Guardar Usuario" CssClass="btn btn-success" OnClientClick="return validarCrearUsuario();" OnClick="BTN_GuardarUsuario_OnClick" />
+                        </div>
+                    </div>
+                </div>
+            </ContentTemplate>
+        </asp:UpdatePanel>
     </div>
 </asp:Content>

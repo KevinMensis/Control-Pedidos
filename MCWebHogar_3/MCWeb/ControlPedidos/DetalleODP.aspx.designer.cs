@@ -166,6 +166,24 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.Button BTN_CompletarODP;
         
         /// <summary>
+        /// BTN_ReporteOrdenProduccion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_ReporteOrdenProduccion;
+        
+        /// <summary>
+        /// BTN_DescargarOrdenProduccion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_DescargarOrdenProduccion;
+        
+        /// <summary>
         /// UpdatePanel_FiltrosProductos control.
         /// </summary>
         /// <remarks>
@@ -220,13 +238,22 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.UpdatePanel UpdatePanel_ListaProductos;
         
         /// <summary>
-        /// DGV_ListaProductos control.
+        /// TXT_NombreImpresora control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView DGV_ListaProductos;
+        protected global::System.Web.UI.WebControls.TextBox TXT_NombreImpresora;
+        
+        /// <summary>
+        /// DGV_ListaCategorias control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView DGV_ListaCategorias;
         
         /// <summary>
         /// BTN_CerrarModalCrearPedido control.
@@ -238,12 +265,39 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.Button BTN_CerrarModalCrearPedido;
         
         /// <summary>
-        /// BTN_Imprimir control.
+        /// UpdatePanel_SeleccionarImpresora control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BTN_Imprimir;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_SeleccionarImpresora;
+        
+        /// <summary>
+        /// UpdatePanel1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
+        
+        /// <summary>
+        /// DDL_Impresoras control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DDL_Impresoras;
+        
+        /// <summary>
+        /// BTN_CerrarModalSeleccionarImpresora control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_CerrarModalSeleccionarImpresora;
     }
 }
