@@ -57,12 +57,12 @@
         }
 
         function cargarFiltros() {
-
+            $(<%= LB_Categoria.ClientID %>).SumoSelect({ selectAll: true, placeholder: 'Categoria' })
         }
 
         $(document).ready(function () {
             estilosElementosBloqueados();
-            // cargarFiltros();
+            cargarFiltros();
         });
     </script>
 </asp:Content>
@@ -352,25 +352,41 @@
                             </button>
                             <h5 class="modal-title" runat="server">Agregar productos a devolver</h5>
                         </div>
-                        <div class="modal-body">                            
-                            <div class="table-responsive">
-                                <div class="form-group col-md-4">
-                                    <label for="DDL_PuntoVenta">Punto Venta</label>
-                                    <asp:DropDownList class="form-control" ID="DDL_PuntoVenta" runat="server"></asp:DropDownList>
-                                </div>
+                        <div class="modal-body">                                                       
+                            <div class="table-responsive"> 
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="input-group no-border">
+                                            <asp:TextBox class="form-control" ID="TXT_BuscarProductosSinAsignar" runat="server" placeholder="Buscar..." OnTextChanged="FiltrarProductos_OnClick" AutoPostBack="true"></asp:TextBox>
+                                            <div class="input-group-append">
+                                                <div class="input-group-text">
+                                                    <i class="nc-icon nc-zoom-split"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="DDL_PuntoVenta">Punto Venta</label>
+                                        <asp:DropDownList class="form-control" ID="DDL_PuntoVenta" runat="server" OnSelectedIndexChanged="FiltrarProductos_OnClick" AutoPostBack="true"></asp:DropDownList>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <asp:ListBox class="form-control" runat="server" ID="LB_Categoria" SelectionMode="Multiple" OnTextChanged="FiltrarProductos_OnClick" AutoPostBack="true"></asp:ListBox>
+                                    </div>
+                                </div>                                                                
                                 <asp:UpdatePanel ID="UpdatePanel_ListaProductosSinAgregar" runat="server" UpdateMode="Conditional">
                                     <ContentTemplate>
                                         <asp:GridView ID="DGV_ListaProductosSinAgregar" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
                                             AutoGenerateColumns="False" DataKeyNames="IDProducto,DescripcionProducto,Categoria" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
                                             ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true"
-                                            OnSorting="DGV_ListaProductosSinAsignar_Sorting">
+                                            OnSorting="DGV_ListaProductosSinAsignar_Sorting"
+                                            OnRowDataBound="DGV_ListaProductosSinAsignar_RowDataBound">
                                             <Columns>
                                                 <asp:TemplateField>
                                                     <HeaderTemplate>
                                                         <asp:Label ID="LBL_Acciones" runat="server" Text="Seleccionar"></asp:Label>
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
-                                                        <asp:CheckBox ID="CHK_Prodcuto" runat="server" />
+                                                        <asp:CheckBox ID="CHK_Producto" runat="server" AutoPostBack="true" OnCheckedChanged="CHK_Producto_OnCheckedChanged" />
                                                     </ItemTemplate>
                                                     <ItemStyle HorizontalAlign="Center" />
                                                 </asp:TemplateField>

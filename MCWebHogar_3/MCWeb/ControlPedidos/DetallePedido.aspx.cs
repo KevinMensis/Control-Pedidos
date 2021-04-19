@@ -1,5 +1,6 @@
 ﻿using ClosedXML.Excel;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -14,6 +15,7 @@ namespace MCWebHogar.ControlPedidos
     {
         CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
         DataTable Result = new DataTable();
+        static List<int> productosSeleccionados;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -31,10 +33,15 @@ namespace MCWebHogar.ControlPedidos
                     }
                     else
                     {
+                        Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                        Response.Cache.SetExpires(DateTime.Now);
+                        Response.Cache.SetNoServerCaching();
+                        Response.Cache.SetNoStore();
+                        productosSeleccionados = new List<int>();
                         HDF_IDPedido.Value = Session["IDPedido"].ToString();
                         cargarDDLs();
                         cargarPedido("");
-                        cargarProductosSinAsignar();
+                        cargarProductosSinAsignar("");
                         cargarProductosPedido();
                         ViewState["Ordenamiento"] = "ASC";
                     }
@@ -94,6 +101,17 @@ namespace MCWebHogar.ControlPedidos
                 DDL_PuntoVenta.DataValueField = "IDPuntoVenta";
                 DDL_PuntoVenta.DataBind();
             }
+
+            DT.DT1.Clear();
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "CargarCategorias", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP03_Categoria_001");
+
+            LB_Categoria.DataSource = Result;
+            LB_Categoria.DataTextField = "DescripcionCategoria";
+            LB_Categoria.DataValueField = "IDCategoria";
+            LB_Categoria.DataBind();
         }
         #endregion
 
@@ -230,6 +248,13 @@ namespace MCWebHogar.ControlPedidos
         {
             try
             {
+                IDictionaryEnumerator allCaches = HttpRuntime.Cache.GetEnumerator();
+
+                while (allCaches.MoveNext())
+                {
+                    Cache.Remove(allCaches.Key.ToString());
+                }
+
                 MCWebHogar.DataSets.DSSolicitud dsReportePedido = new MCWebHogar.DataSets.DSSolicitud();
                 DT.DT1.Clear();
                 DT.DT1.Rows.Add("@IDPedido", HDF_IDPedido.Value, SqlDbType.Int);
@@ -370,19 +395,55 @@ namespace MCWebHogar.ControlPedidos
         #region Asignar
         protected void BTN_CargarProductos_Click(object sender, EventArgs e)
         {
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptAgregarProductos", "abrirModalAgregarProductos();estilosElementosBloqueados();", true);
+            productosSeleccionados = new List<int>();
+            for (int i = 0; i < DGV_ListaProductosSinAgregar.Rows.Count; i++)
+            {
+                int index = i;
+                int idProducto = Convert.ToInt32(DGV_ListaProductosSinAgregar.DataKeys[index].Value.ToString().Trim());
+                CheckBox CHK_Producto = (CheckBox)DGV_ListaProductosSinAgregar.Rows[index].FindControl("CHK_Producto");
+                CHK_Producto.Checked = false;
+            }
+
+            UpdatePanel_ListaProductosSinAgregar.Update();
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptAgregarProductos", "abrirModalAgregarProductos();estilosElementosBloqueados();cargarFiltros();", true);
             return;
         }
 
-        public void cargarProductosSinAsignar()
+        private DataTable cargarProductosSinAsignarConsulta()
         {
             DT.DT1.Clear();
+            string categorias = "";
+
+            #region Categorias
+            foreach (ListItem l in LB_Categoria.Items)
+            {
+                if (l.Selected)
+                {
+                    categorias += "'" + l.Value + "',";
+                }
+            }
+            categorias = categorias.TrimEnd(',');
+            if (categorias != "")
+            {
+                DT.DT1.Rows.Add("@FiltrarCategoria", 1, SqlDbType.Int);
+            }
+            #endregion
+
             DT.DT1.Rows.Add("@PedidoID", HDF_IDPedido.Value, SqlDbType.VarChar);
+
+            DT.DT1.Rows.Add("@CategoriasFiltro", categorias, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@DescripcionProducto", TXT_BuscarProductosSinAsignar.Text, SqlDbType.VarChar);
 
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
             DT.DT1.Rows.Add("@TipoSentencia", "CargarProductos", SqlDbType.VarChar);
 
-            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP03_0001");
+            return CapaLogica.GestorDatos.Consultar(DT.DT1, "CP03_0001");
+        }
+
+        private void cargarProductosSinAsignar(string ejecutar)
+        {
+            Result = cargarProductosSinAsignarConsulta();
 
             if (Result != null && Result.Rows.Count > 0)
             {
@@ -395,6 +456,8 @@ namespace MCWebHogar.ControlPedidos
                     DGV_ListaProductosSinAgregar.DataSource = Result;
                     DGV_ListaProductosSinAgregar.DataBind();
                     UpdatePanel_ListaProductosSinAgregar.Update();
+                    string script = "cargarFiltros();" + ejecutar;
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductos", script, true);
                 }
             }
             else
@@ -402,18 +465,19 @@ namespace MCWebHogar.ControlPedidos
                 DGV_ListaProductosSinAgregar.DataSource = Result;
                 DGV_ListaProductosSinAgregar.DataBind();
                 UpdatePanel_ListaProductosSinAgregar.Update();
+                string script = "cargarFiltros();" + ejecutar;
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductos", script, true);
             }
+        }
+
+        protected void FiltrarProductos_OnClick(object sender, EventArgs e)
+        {
+            cargarProductosSinAsignar("");
         }
 
         protected void DGV_ListaProductosSinAsignar_Sorting(object sender, GridViewSortEventArgs e)
         {
-            DT.DT1.Clear();
-            DT.DT1.Rows.Add("@PedidoID", HDF_IDPedido.Value, SqlDbType.VarChar);
-
-            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@TipoSentencia", "CargarProductos", SqlDbType.VarChar);
-
-            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP03_0001");
+            Result = cargarProductosSinAsignarConsulta();
             if (ViewState["Ordenamiento"].ToString().Trim() == "ASC")
             {
                 ViewState["Ordenamiento"] = "DESC";
@@ -434,6 +498,8 @@ namespace MCWebHogar.ControlPedidos
                     DGV_ListaProductosSinAgregar.DataSource = Result;
                     DGV_ListaProductosSinAgregar.DataBind();
                     UpdatePanel_ListaProductosSinAgregar.Update();
+                    string script = "cargarFiltros();";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductos", script, true);
                 }
             }
             else
@@ -441,35 +507,52 @@ namespace MCWebHogar.ControlPedidos
                 DGV_ListaProductosSinAgregar.DataSource = Result;
                 DGV_ListaProductosSinAgregar.DataBind();
                 UpdatePanel_ListaProductosSinAgregar.Update();
+                string script = "cargarFiltros();";
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductos", script, true);
             }
+        }
+
+        protected void DGV_ListaProductosSinAsignar_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                int index = e.Row.RowIndex;
+                int idProducto = Convert.ToInt32(DGV_ListaProductosSinAgregar.DataKeys[index].Value.ToString().Trim());
+                CheckBox CHK_Producto = (CheckBox) e.Row.FindControl("CHK_Producto");
+                CHK_Producto.Checked = productosSeleccionados.Contains(idProducto);
+            }
+        }
+
+        protected void CHK_Producto_OnCheckedChanged(object sender, EventArgs e) {
+            GridViewRow row = ((GridViewRow)((CheckBox)sender).NamingContainer);
+            int index = row.RowIndex;
+            int idProducto = Convert.ToInt32(DGV_ListaProductosSinAgregar.DataKeys[index].Value.ToString().Trim());
+            CheckBox CHK_Producto = (CheckBox)DGV_ListaProductosSinAgregar.Rows[index].FindControl("CHK_Producto");
+            if (CHK_Producto.Checked)
+            {
+                if (!productosSeleccionados.Contains(idProducto))
+                {
+                    productosSeleccionados.Add(idProducto);
+                }
+            }
+            else
+            {
+                productosSeleccionados.Remove(idProducto);
+            }
+            string script = "cargarFiltros();";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductos", script, true);
         }
 
         protected void BTN_Agregar_Click(object sender, EventArgs e)
         {
-            int contador = 0;
-            string fila = "";
-            foreach (GridViewRow row in DGV_ListaProductosSinAgregar.Rows)
+            string script = "cargarFiltros();";
+            if (productosSeleccionados.Count > 0)
             {
-                CheckBox chk = (CheckBox)row.FindControl("CHK_Prodcuto");
-                if (chk != null)
-                {
-                    if (chk.Checked)
-                    {
-                        fila += row.RowIndex + ",";
-                        contador++;
-                    }
-                }
-            }
-            if (fila != "" && contador > 0)
-            {
-                fila = fila.TrimEnd(',');
-                string[] listaFilas = fila.Split(',');
-
                 string productos = "";
 
-                foreach (string f in listaFilas)
+                foreach (int f in productosSeleccionados)
                 {
-                    productos += DGV_ListaProductosSinAgregar.DataKeys[Convert.ToInt32(f)].Value.ToString().Trim() + ",";
+                    productos += f.ToString().Trim() + ",";
                 }
                 productos = productos.TrimEnd(',');
 
@@ -495,8 +578,8 @@ namespace MCWebHogar.ControlPedidos
                         DGV_ListaProductos.DataSource = Result;
                         DGV_ListaProductos.DataBind();
                         UpdatePanel_ListaProductos.Update();
-                        string script = "cerrarModalAgregarProductos();alertifysuccess('Productos agregados con éxito.');";
-                        cargarProductosSinAsignar();
+                        script = "cerrarModalAgregarProductos();alertifysuccess('Productos agregados con éxito.');";
+                        cargarProductosSinAsignar("");
                         cargarPedido(script);
                     }
                 }
@@ -505,9 +588,10 @@ namespace MCWebHogar.ControlPedidos
                     DGV_ListaProductos.DataSource = Result;
                     DGV_ListaProductos.DataBind();
                     UpdatePanel_ListaProductos.Update();
-                    cargarProductosSinAsignar();
+                    cargarProductosSinAsignar("");
                 }
             }
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductos", script, true);
         }
         #endregion
 
@@ -611,7 +695,7 @@ namespace MCWebHogar.ControlPedidos
                         else
                         {
                             cargarPedido("");
-                            cargarProductosSinAsignar();
+                            cargarProductosSinAsignar("");
                             cargarProductosPedido();
                         }
                     }

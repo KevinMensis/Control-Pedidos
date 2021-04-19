@@ -193,6 +193,15 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.UpdatePanel UpdatePanel_ModalAgregarProductos;
         
         /// <summary>
+        /// TXT_BuscarProductosSinAsignar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TXT_BuscarProductosSinAsignar;
+        
+        /// <summary>
         /// DDL_PuntoVenta control.
         /// </summary>
         /// <remarks>
@@ -200,6 +209,15 @@ namespace MCWebHogar.ControlPedidos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList DDL_PuntoVenta;
+        
+        /// <summary>
+        /// LB_Categoria control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListBox LB_Categoria;
         
         /// <summary>
         /// UpdatePanel_ListaProductosSinAgregar control.

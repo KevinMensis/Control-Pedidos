@@ -22,6 +22,33 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.LinkButton LNK_CerrarSession;
         
         /// <summary>
+        /// UpdatePanel_Header control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_Header;
+        
+        /// <summary>
+        /// BTN_ShowMenu control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_ShowMenu;
+        
+        /// <summary>
+        /// BTN_CloseMenu control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_CloseMenu;
+        
+        /// <summary>
         /// UpdatePanel_PedidosEvents control.
         /// </summary>
         /// <remarks>

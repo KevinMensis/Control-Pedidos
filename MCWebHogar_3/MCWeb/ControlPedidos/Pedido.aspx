@@ -8,7 +8,15 @@
     <title>Pedido</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <style>
-        
+        @media (max-width: 991px) {
+            .btn-show {
+                display: inline-block !important;
+            }
+        }
+
+        .btn-show, .btn-close {
+            display: none;
+        }
     </style>
     <script type="text/javascript">
         function alertifysuccess(msj) {
@@ -88,6 +96,18 @@
             return true
         }
 
+        function showMenu() {
+            $('#div_Menu')[0].style.webkitTransform = 'none';
+            $(<%= BTN_CloseMenu.ClientID %>).removeClass('btn-close');
+            $(<%= BTN_CloseMenu.ClientID %>).addClass('btn-show');
+        }
+
+        function closeMenu() {
+            $('#div_Menu')[0].style.webkitTransform = 'translate3d(-260px, 0, 0)';
+            $(<%= BTN_CloseMenu.ClientID %>).removeClass('btn-show');
+            $(<%= BTN_CloseMenu.ClientID %>).addClass('btn-close');
+        }
+
         function cargarFiltros() {
             $(<%= LB_Sucursal.ClientID %>).SumoSelect({ selectAll: true, placeholder: 'Sucursal' })
             $(<%= LB_PlantaProduccion.ClientID %>).SumoSelect({ selectAll: true, placeholder: 'Planta de Producción' })
@@ -107,7 +127,7 @@
     </div>
     <div id="fade2" class="overlayload"></div>
     <div class="wrapper ">
-        <div class="sidebar" data-color="white" data-active-color="danger">
+        <div class="sidebar" id="div_Menu" data-color="white" data-active-color="danger">
             <div class="sidebar-wrapper scroll" style="overflow-y: auto;">
                 <img style="width: 60%; display: block; margin-left: 30%; margin-top: 3%;" src="../Assets/img/logo.png" />
                 <ul class="nav">
@@ -205,7 +225,21 @@
             <div class="content">
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Pedidos</h1>
+                    <asp:UpdatePanel ID="UpdatePanel_Header" runat="server" UpdateMode="Conditional">
+                        <ContentTemplate>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <asp:Button ID="BTN_ShowMenu" runat="server" Text="Menú" CssClass="btn btn-info btn-show" style="line-height: 0.35rem;" OnClientClick="showMenu();"></asp:Button>                                    
+                                </div>
+                                <div class="col-md-4" style="float: right; right: -10%;">
+                                    <asp:Button ID="BTN_CloseMenu" runat="server" Text="Cerrar menú" CssClass="btn btn-info btn-show" style="line-height: 0.35rem;" OnClientClick="closeMenu();"></asp:Button>
+                                </div>
+                                <div class="col-md-12">
+                                    <h1 class="h3 mb-2 text-gray-800" style="display: inline-block;">Pedidos</h1>
+                                </div>
+                            </div>                   
+                        </ContentTemplate>
+                    </asp:UpdatePanel> 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <asp:UpdatePanel ID="UpdatePanel_PedidosEvents" runat="server" UpdateMode="Conditional">

@@ -256,6 +256,24 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.UpdatePanel UpdatePanel_ListaProductosSinAgregar;
         
         /// <summary>
+        /// TXT_BuscarProductosSinAsignar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TXT_BuscarProductosSinAsignar;
+        
+        /// <summary>
+        /// LB_Categoria control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListBox LB_Categoria;
+        
+        /// <summary>
         /// DGV_ListaProductosSinAgregar control.
         /// </summary>
         /// <remarks>

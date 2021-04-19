@@ -97,6 +97,8 @@ namespace MCWebHogar.ControlPedidos
                         TXT_HoraEmpaque.Text = dr["HEmpaque"].ToString().Trim();
                         DDL_Propietario.SelectedValue = dr["UsuarioID"].ToString().Trim();
 
+                        BTN_AgregarProducto.Visible = TXT_FechaEmpaque.Text == DateTime.Now.ToString("yyyy-MM-dd");
+
                         // HDF_EstadoEmpaque.Value = dr["Estado"].ToString().Trim();
 
                         // BTN_ConfirmarEmpaque.Visible = HDF_EstadoEmpaque.Value != "Confirmado";
@@ -485,6 +487,23 @@ namespace MCWebHogar.ControlPedidos
                 int decs = Convert.ToInt32(cantidadProducto) / 10;
                 ddlUnds.SelectedValue = unds.ToString();
                 ddlDecs.SelectedValue = decs.ToString();
+
+                if (TXT_FechaEmpaque.Text != DateTime.Now.ToString("yyyy-MM-dd"))
+                {
+                    Button minus = (Button)e.Row.FindControl("BTN_Minus");
+                    Button plus = (Button)e.Row.FindControl("BTN_Plus");
+
+                    cantidad.Enabled = false;
+                    cantidad.CssClass = "form-control";
+                    ddlUnds.Enabled = false;
+                    ddlUnds.CssClass = "form-control";
+                    ddlDecs.Enabled = false;
+                    ddlDecs.CssClass = "form-control";
+                    minus.Enabled = false;
+                    minus.CssClass = "btn btn-outline-primary btn-round";
+                    plus.Enabled = false;
+                    plus.CssClass = "btn btn-outline-primary btn-round";
+                }
             }
         }
         
