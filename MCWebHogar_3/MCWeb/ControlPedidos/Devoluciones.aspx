@@ -197,7 +197,7 @@
                                         </div>
                                     </ContentTemplate>
                                 </asp:UpdatePanel>
-                                <div class="table-responsive">
+                                <div class="table">
                                     <asp:UpdatePanel ID="UpdatePanel_ListaDevoluciones" runat="server" UpdateMode="Conditional">
                                         <ContentTemplate>
                                             <asp:GridView ID="DGV_ListaDevoluciones" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"

@@ -221,8 +221,9 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-6">                                       
+                                        <div class="col-md-6">                                                                               
                                             <asp:Button ID="BTN_ConfirmarDespacho" runat="server" Text="Confirmar despacho" CssClass="btn btn-secondary" OnClick="BTN_ConfirmarDespacho_Click"></asp:Button>                                        
+                                            <asp:Button ID="BTN_CompletarDespacho" runat="server" Text="Completar despacho" CssClass="btn btn-success" OnClick="BTN_CompletarDespacho_Click"></asp:Button>
                                         </div>                                        
                                         <div class="col-md-6" style="text-align: right;"> 
                                             <asp:Button ID="BTN_ReporteDespacho" runat="server" Text="Reporte despacho" CssClass="btn btn-secondary" OnClientClick="activarloading();estilosElementosBloqueados();"></asp:Button>                                                                                
@@ -259,7 +260,7 @@
                                 <asp:UpdatePanel ID="UpdatePanel_ListaProductosDespacho" runat="server" UpdateMode="Conditional">
                                     <ContentTemplate>
                                         <asp:GridView ID="DGV_ListaProductosDespacho" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
-                                            AutoGenerateColumns="False" DataKeyNames="IDDespachoDetalle,DespachoID,ProductoID,PedidoID,PuntoVentaID" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
+                                            AutoGenerateColumns="False" DataKeyNames="IDDespachoDetalle,DespachoID,ProductoID,PedidoID,PuntoVentaID,CantidadDespachada" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
                                             ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true"
                                             OnSorting="DGV_ListaProductosDespacho_Sorting"
                                             OnRowCommand="DGV_ListaProductosDespacho_RowCommand"
@@ -270,6 +271,7 @@
                                                 <asp:BoundField DataField="ProductoID" SortExpression="ProductoID" HeaderText="Código producto" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="DescripcionProducto" SortExpression="DescripcionProducto" HeaderText="Nombre producto" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="CantidadSolicitada" SortExpression="CantidadSolicitada" HeaderText="Cantidad solicitada" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
+                                                <asp:BoundField DataField="CantidadDespachada" SortExpression="CantidadDespachada" HeaderText="Cantidad despachada" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                
                                                 <asp:TemplateField>
                                                     <HeaderTemplate>
                                                         <asp:Label ID="LBL_Cantidad" runat="server" Text="Cantidad despachada"></asp:Label>
@@ -277,7 +279,7 @@
                                                     <ItemTemplate>
                                                         <div class="row">
                                                             <asp:TextBox class="form-control" TextMode="Number" MaxLength="2" min="0" max="99" style="width: 40%" runat="server" ID="TXT_Cantidad" 
-                                                                OnTextChanged="TXT_Cantidad_OnTextChanged" AutoPostBack="true" Text='<%#Eval("CantidadDespachada") %>' />                                                            
+                                                                OnTextChanged="TXT_Cantidad_OnTextChanged" AutoPostBack="true" Text='0' />                                                            
                                                             <asp:DropDownList class="form-control" style="width: 30%" runat="server" ID="DDL_Decenas" 
                                                                 OnSelectedIndexChanged="DDL_DecenasUnidades_OnSelectedIndexChanged" AutoPostBack="true">
                                                                 <asp:ListItem Value="0">0</asp:ListItem>

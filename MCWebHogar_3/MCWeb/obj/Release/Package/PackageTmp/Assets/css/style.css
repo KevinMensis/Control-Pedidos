@@ -9297,11 +9297,7 @@ footer#site-footer article p {
 }
 .site-logo {
     /*************Euromobilia************/
-    background: url(/images/logoeuro.png) no-repeat center center;
     background-size: 320px 102px;
-    /*************Altea************/
-    /*background: url('/images/AlteaDeslogo.png') no-repeat center;
-    background-size: 120px 75px;*/
     display: block;
     height: 206px;
     position: relative;
@@ -9309,24 +9305,3 @@ footer#site-footer article p {
     left: 0px;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  #header .logo-area a.logo {
-      /*************Altea************/
-    /*background: url(/images/AlteaDeslogo.png) no-repeat center center;
-    background-size: 120px 30px;*/
-
-    /*************Euromobilia************/
-      background: url(/images/logoeuro.png) no-repeat center center;
-    background-size: 120px 30px;
-
-  }
-
-    .site-logo {
- 
-        /*background: url(/images/sec_logoeuromobilia.gif) no-repeat center center;
-        background-size: 100px 75px;*/
-        /*************Altea************/
-        /*background: url(/images/AlteaDeslogo.png) no-repeat center center;*/
-        /*background-size: 75px 75px;*/
-    }
-}

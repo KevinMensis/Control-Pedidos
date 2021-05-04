@@ -2002,6 +2002,10 @@ namespace MCWebHogar.DataSets {
             
             private global::System.Data.DataColumn columnCantidadProducida;
             
+            private global::System.Data.DataColumn columnIDPuntoVenta;
+            
+            private global::System.Data.DataColumn columnDescripcionPuntoVenta;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public DT_DetalleODPDataTable() {
@@ -2101,6 +2105,22 @@ namespace MCWebHogar.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn IDPuntoVentaColumn {
+                get {
+                    return this.columnIDPuntoVenta;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DescripcionPuntoVentaColumn {
+                get {
+                    return this.columnDescripcionPuntoVenta;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -2136,7 +2156,7 @@ namespace MCWebHogar.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DT_DetalleODPRow AddDT_DetalleODPRow(int ODPID, int ProductoID, decimal CostoProducto, decimal PrecioProducto, int CantidadSolicitada, string UnidadMedida, string DescripcionProducto, int CantidadProducida) {
+            public DT_DetalleODPRow AddDT_DetalleODPRow(int ODPID, int ProductoID, decimal CostoProducto, decimal PrecioProducto, int CantidadSolicitada, string UnidadMedida, string DescripcionProducto, int CantidadProducida, int IDPuntoVenta, string DescripcionPuntoVenta) {
                 DT_DetalleODPRow rowDT_DetalleODPRow = ((DT_DetalleODPRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         ODPID,
@@ -2146,7 +2166,9 @@ namespace MCWebHogar.DataSets {
                         CantidadSolicitada,
                         UnidadMedida,
                         DescripcionProducto,
-                        CantidadProducida};
+                        CantidadProducida,
+                        IDPuntoVenta,
+                        DescripcionPuntoVenta};
                 rowDT_DetalleODPRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDT_DetalleODPRow);
                 return rowDT_DetalleODPRow;
@@ -2177,6 +2199,8 @@ namespace MCWebHogar.DataSets {
                 this.columnUnidadMedida = base.Columns["UnidadMedida"];
                 this.columnDescripcionProducto = base.Columns["DescripcionProducto"];
                 this.columnCantidadProducida = base.Columns["CantidadProducida"];
+                this.columnIDPuntoVenta = base.Columns["IDPuntoVenta"];
+                this.columnDescripcionPuntoVenta = base.Columns["DescripcionPuntoVenta"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2198,6 +2222,10 @@ namespace MCWebHogar.DataSets {
                 base.Columns.Add(this.columnDescripcionProducto);
                 this.columnCantidadProducida = new global::System.Data.DataColumn("CantidadProducida", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCantidadProducida);
+                this.columnIDPuntoVenta = new global::System.Data.DataColumn("IDPuntoVenta", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIDPuntoVenta);
+                this.columnDescripcionPuntoVenta = new global::System.Data.DataColumn("DescripcionPuntoVenta", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDescripcionPuntoVenta);
                 this.columnODPID.Caption = "PedidoID";
                 this.columnCantidadSolicitada.Caption = "CantidadProduccion";
             }
@@ -7546,6 +7574,38 @@ namespace MCWebHogar.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int IDPuntoVenta {
+                get {
+                    try {
+                        return ((int)(this[this.tableDT_DetalleODP.IDPuntoVentaColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'IDPuntoVenta\' in table \'DT_DetalleODP\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDT_DetalleODP.IDPuntoVentaColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string DescripcionPuntoVenta {
+                get {
+                    try {
+                        return ((string)(this[this.tableDT_DetalleODP.DescripcionPuntoVentaColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DescripcionPuntoVenta\' in table \'DT_DetalleODP\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDT_DetalleODP.DescripcionPuntoVentaColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsODPIDNull() {
                 return this.IsNull(this.tableDT_DetalleODP.ODPIDColumn);
             }
@@ -7638,6 +7698,30 @@ namespace MCWebHogar.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetCantidadProducidaNull() {
                 this[this.tableDT_DetalleODP.CantidadProducidaColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsIDPuntoVentaNull() {
+                return this.IsNull(this.tableDT_DetalleODP.IDPuntoVentaColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetIDPuntoVentaNull() {
+                this[this.tableDT_DetalleODP.IDPuntoVentaColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDescripcionPuntoVentaNull() {
+                return this.IsNull(this.tableDT_DetalleODP.DescripcionPuntoVentaColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDescripcionPuntoVentaNull() {
+                this[this.tableDT_DetalleODP.DescripcionPuntoVentaColumn] = global::System.Convert.DBNull;
             }
         }
         

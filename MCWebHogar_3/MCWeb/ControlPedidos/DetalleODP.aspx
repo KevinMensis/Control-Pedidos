@@ -65,8 +65,23 @@
         }
 
         function imprimir(categoria, codigoODP, index, printer) {
-            console.log(printer)
             var listaProductos = 'Content_DGV_ListaCategorias_DGV_ListaProductos_' + index;
+            var d = new Date(),
+            year = d.getFullYear(),
+            month = d.getMonth() + 1,
+            day = d.getDate(),
+            hours = d.getHours(),
+			minute = d.getMinutes(),
+			second = d.getSeconds(),
+			ap = 'AM';
+            if (hours > 11) { ap = 'PM'; }
+            if (hours > 12) { hours = hours - 12; }
+            if (hours == 0) { hours = 12; }
+            if (month < 10) { month = "0" + month; }
+            if (day < 10) { day = "0" + day; }
+            if (minute < 10) { minute = "0" + minute; }
+
+            var fecha = day + '/' + month + '/' + year + ' ' + hours + ':' + minute + ' ' + ap
             
             qz.websocket.connect().then(function () {
                 return qz.printers.find(printer);
@@ -79,9 +94,11 @@
                     data: '<html>' +
                             '<head><title>' + document.title + '</title></head>' +
                             '<body>' +
-                                '</h2><strong>' + codigoODP + '</strong></h2><br /><br />' +
-                                '</h2><strong>Categoría:</strong> ' + categoria + '</h2><br /><br />' +
-                                '<table>' + document.getElementById(listaProductos).innerHTML + '</table>' +
+                                '<h2><strong>' + codigoODP + '</strong></h2><br /><br />' +
+                                '<h2><strong>Categoría:</strong> ' + categoria + '</h2><br /><br />' +
+                                '<table>' + document.getElementById(listaProductos).innerHTML + '</table><br />' +
+                                '<h3 style="text-align: center;"><strong> *** FIN *** </strong></h3>' +
+                                '<h4 style="text-align: left;"><strong> Tiquete generado el: ' + fecha + '</strong></h4><br />' +
                             '</body>' +
                            '</html>'
                 }];
@@ -124,7 +141,6 @@
             qz.websocket.connect().then(function () {
                 return qz.printers.find();
             }).then(function (found) {
-                console.dir(found)
                 __doPostBack('DDL_ImpresorasLoad', found)
             }).catch(function (error) {
                 alert(error);
@@ -144,7 +160,7 @@
         <img src="../images/cargando5.gif" width="100" height="100" />
     </div>
     <div id="fade2" class="overlayload"></div>
-    <a class="ir-arriba"  href="javascript:configurarImpresora();" title="Volver arriba">
+    <a class="ir-arriba"  href="javascript:configurarImpresora();" title="Impresora">
         <span class="fa-stack">
             <i class="fa fa-circle fa-stack-2x"></i>
             <i class="fa fa-print fa-stack-1x fa-inverse"></i>
@@ -152,7 +168,8 @@
     </a>
     <div class="wrapper">
         <asp:HiddenField ID="HDF_IDODP" runat="server" Value="0" Visible="false" />
-        <asp:HiddenField ID="HDF_EstadoODP" runat="server" Value="" Visible="false" />
+        <asp:HiddenField ID="HDF_EstadoODP" runat="server" Value="" Visible="false" />     
+        <asp:HiddenField ID="HDF_IDsPedidos" runat="server" Value="" Visible="false" />
         <div class="sidebar" data-color="white" data-active-color="danger">
             <div class="sidebar-wrapper scroll" style="overflow-y: auto;">
                 <img style="width: 60%; display: block; margin-left: 30%; margin-top: 3%;" src="../Assets/img/logo.png" />
@@ -309,7 +326,7 @@
                                         <div class="col-md-6">                                      
                                             <asp:Button ID="BTN_ImprimirOrdenProduccion" runat="server" Text="Imprimir orden producción" CssClass="btn btn-secondary" OnClick="BTN_ImprimirOrdenProduccion_Click"></asp:Button>
                                             <asp:Button ID="BTN_ConfirmarODP" runat="server" Text="Confirmar orden producción" CssClass="btn btn-secondary" OnClick="BTN_ConfirmarODP_Click"></asp:Button>
-                                            <asp:Button ID="BTN_CompletarODP" runat="server" Text="Completar orden producción" CssClass="btn btn-secondary" OnClick="BTN_CompletarODP_Click"></asp:Button>
+                                            <asp:Button ID="BTN_CompletarODP" runat="server" Text="Completar orden producción" CssClass="btn btn-success" OnClick="BTN_CompletarODP_Click"></asp:Button>
                                         </div>
                                         <div class="col-md-6" style="text-align: right;"> 
                                             <asp:Button ID="BTN_ReporteOrdenProduccion" runat="server" Text="Reporte orden producción" CssClass="btn btn-secondary" OnClientClick="activarloading();estilosElementosBloqueados();" OnClick="BTN_ReporteOrdenProduccion_Click"></asp:Button>                                                                                
@@ -337,7 +354,7 @@
                                     </ContentTemplate>
                                 </asp:UpdatePanel>
                             </div>
-                            <div class="table-responsive">
+                            <div class="table">
                                 <asp:UpdatePanel ID="UpdatePanel_ListaProductosODP" runat="server" UpdateMode="Conditional">
                                     <ContentTemplate>
                                         <asp:GridView ID="DGV_ListaProductosODP" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"

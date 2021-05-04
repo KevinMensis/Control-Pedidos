@@ -113,7 +113,10 @@ namespace MCWebHogar.ControlPedidos
                         HDF_EstadoRecibidoPedido.Value = dr["Estado"].ToString().Trim();
 
                         BTN_ConfirmarRecibidoPedido.Visible = HDF_EstadoRecibidoPedido.Value == "Revisión";
-                        
+                        BTN_ConfirmarRecibidoPedido.Text = "Confirmar  pedido recibido # " + dr["ConsecutivoRecibidio"].ToString().Trim();
+
+                        BTN_CompletarRecibidoPedido.Visible = HDF_EstadoRecibidoPedido.Value == "Revisión";
+
                         LBL_CreadoPor.Text = "Ingresado por: " + dr["QuienIngreso"].ToString().Trim() + ", " + dr["FIngreso"];
                         if (dr["QuienModifico"].ToString().Trim() == "" || dr["FModifico"].ToString().Trim() == "01/01/1900")
                             LBL_UltimaModificacion.Text = "";
@@ -129,13 +132,64 @@ namespace MCWebHogar.ControlPedidos
 
         protected void BTN_ConfirmarRecibidoPedido_Click(object sender, EventArgs e)
         {
+            for (int index = 0; index < DGV_ListaProductosRecibidoPedido.Rows.Count; index++)
+            {
+                TextBox cantidad = DGV_ListaProductosRecibidoPedido.Rows[index].FindControl("TXT_Cantidad") as TextBox;
+                int cantidadRecibida = Convert.ToInt32(cantidad.Text.Trim());
+                if (cantidadRecibida > 0)
+                {
+                    int IDRecibidoPedidoDetalle = Convert.ToInt32(DGV_ListaProductosRecibidoPedido.DataKeys[index].Value.ToString().Trim());
+                    DT.DT1.Clear();
+
+                    DT.DT1.Rows.Add("@IDRecibidoPedidoDetalle", IDRecibidoPedidoDetalle, SqlDbType.Int);
+                    DT.DT1.Rows.Add("@CantidadRecibida", cantidadRecibida, SqlDbType.Int);
+
+                    DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+                    DT.DT1.Rows.Add("@TipoSentencia", "UpdateProducto", SqlDbType.VarChar);
+
+                    Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP13_0001");                    
+                }
+            }
+
+            DT.DT1.Clear();
+
+            DT.DT1.Rows.Add("@IDRecibidoPedido", HDF_IDRecibidoPedido.Value, SqlDbType.Int);
+
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "AumentarConsecutivoRecibido", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP12_0001");
+
+            if (Result != null && Result.Rows.Count > 0)
+            {
+                if (Result.Rows[0][0].ToString().Trim() == "ERROR")
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_ConfirmarDespacho_Click", "alertifywarning('No se ha confirmado el despacho. Error: " + Result.Rows[0][1].ToString().Trim() + "');", true);
+                    return;
+                }
+                else
+                {
+                    string script = "";
+                    cargarRecibidoPedido(script);
+                    cargarProductosRecibidoPedido();
+                }
+            }
+            else
+            {
+                string script = "";
+                cargarRecibidoPedido(script);
+            }
+        }
+
+        protected void BTN_CompletarRecibidoPedido_Click(object sender, EventArgs e)
+        {
             DT.DT1.Clear();
 
             DT.DT1.Rows.Add("@IDRecibidoPedido", HDF_IDRecibidoPedido.Value, SqlDbType.Int);
             DT.DT1.Rows.Add("@Estado", "Confirmada", SqlDbType.VarChar);
 
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@TipoSentencia", "ActualizarEstadoRecibidoPedido", SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "ConfirmarRecibidoPedido", SqlDbType.VarChar);
 
             Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP12_0001");
 
@@ -242,12 +296,11 @@ namespace MCWebHogar.ControlPedidos
                 decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
                 DropDownList ddlUnds = DGV_ListaProductosRecibidoPedido.Rows[index].FindControl("DDL_Unidades") as DropDownList;
                 DropDownList ddlDecs = DGV_ListaProductosRecibidoPedido.Rows[index].FindControl("DDL_Decenas") as DropDownList;
-                bool modifico = false;
+
                 if (e.CommandName == "minus")
                 {
                     if (cantidadProducto > 0)
                     {
-                        modifico = true;
                         cantidadProducto--;
                     }
                 }
@@ -255,7 +308,6 @@ namespace MCWebHogar.ControlPedidos
                 {
                     if (cantidadProducto < 99)
                     {
-                        modifico = true;
                         cantidadProducto++;
                     }
                 }
@@ -264,8 +316,6 @@ namespace MCWebHogar.ControlPedidos
                 ddlUnds.SelectedValue = unds.ToString();
                 ddlDecs.SelectedValue = decs.ToString();
                 cantidad.Text = cantidadProducto.ToString();
-                if (modifico)
-                    guardarProductoRecibidoPedido(index);
                 
             }
         }
@@ -285,7 +335,6 @@ namespace MCWebHogar.ControlPedidos
                 ddlUnds.SelectedValue = unds.ToString();
                 ddlDecs.SelectedValue = decs.ToString();
                 cantidad.Text = cantidadProducto.ToString();
-                guardarProductoRecibidoPedido(index);
             }
             else
             {
@@ -307,38 +356,8 @@ namespace MCWebHogar.ControlPedidos
             int decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
             decimal cantidadProducto = decs + unds;
             cantidad.Text = cantidadProducto.ToString();
-            guardarProductoRecibidoPedido(index);
         }
 
-        private void guardarProductoRecibidoPedido(int index)
-        {
-            TextBox cantidad = DGV_ListaProductosRecibidoPedido.Rows[index].FindControl("TXT_Cantidad") as TextBox;
-            decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
-            string IDRecibidoPedidoDetalle = DGV_ListaProductosRecibidoPedido.DataKeys[index].Value.ToString().Trim();
-
-            DT.DT1.Clear();
-            DT.DT1.Rows.Add("@IDRecibidoPedidoDetalle", IDRecibidoPedidoDetalle, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@CantidadDespachada", cantidadProducto, SqlDbType.VarChar);
-
-            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@TipoSentencia", "UpdateProducto", SqlDbType.VarChar);
-
-            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP13_001");
-
-            if (Result != null && Result.Rows.Count > 0)
-            {
-                if (Result.Rows[0][0].ToString().Trim() == "ERROR")
-                {
-                    cargarProductosRecibidoPedido();
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptguardarProductoPedido", "alertifywarning('" + Result.Rows[0][1].ToString().Trim() + "');", true);
-                }
-                else
-                {
-                    cargarRecibidoPedido("");
-                }
-            }
-        }
-        
         protected void DGV_ListaProductosRecibidoPedido_Sorting(object sender, GridViewSortEventArgs e)
         {
             DT.DT1.Clear();
@@ -348,7 +367,7 @@ namespace MCWebHogar.ControlPedidos
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
             DT.DT1.Rows.Add("@TipoSentencia", "CargarProductos", SqlDbType.VarChar);
 
-            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP13_001");
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP13_0001");
 
             if (ViewState["Ordenamiento"].ToString().Trim() == "ASC")
             {

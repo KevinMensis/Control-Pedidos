@@ -52,8 +52,10 @@ namespace MCWebHogar.ControlPedidos
                     dt.Columns.Add("Text");
                     dt.Columns.Add("Value");
                     
-                    string printer = Environment.GetEnvironmentVariable("Printer").ToString().Trim();
+                    string printer = Session["Printer"].ToString().Trim();
                     string[] nombresImpresoras = argument.Split(',');
+
+                    dt.Rows.Add("Seleccione", "Seleccione");
 
                     foreach(string impresora in nombresImpresoras) {
                         dt.Rows.Add(impresora, impresora);
@@ -114,14 +116,14 @@ namespace MCWebHogar.ControlPedidos
         protected void DDL_Impresoras_OnSelectedIndexChanged(object sender, EventArgs e)
         {
             string printer = DDL_Impresoras.SelectedValue;
-            Environment.SetEnvironmentVariable("Printer", printer);
+            Session["Printer"] = printer;
             string script = "estilosElementosBloqueados();cerrarModalSeleccionarImpresora();alertifysuccess('Se ha seleccionado la impresora: " + printer + "');";
             ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDDL_Impresoras_OnSelectedIndexChanged", script, true);
         }
         #endregion
 
         #region Orden de Producción
-        public void cargarODP(string ejecutar)
+        private void cargarODP(string ejecutar)
         {
             DT.DT1.Clear();
             DT.DT1.Rows.Add("@IDODP", HDF_IDODP.Value, SqlDbType.VarChar);
@@ -151,9 +153,10 @@ namespace MCWebHogar.ControlPedidos
                         DDL_PlantaProduccion.SelectedValue = dr["PlantaProduccionID"].ToString().Trim();
 
                         HDF_EstadoODP.Value = dr["Estado"].ToString().Trim();
+                        HDF_IDsPedidos.Value = dr["IdsPedidos"].ToString().Trim();
 
                         BTN_ConfirmarODP.Visible = HDF_EstadoODP.Value == "Solicitada";
-                        BTN_ImprimirOrdenProduccion.Visible = HDF_EstadoODP.Value == "Solicitada";
+                        // BTN_ImprimirOrdenProduccion.Visible = HDF_EstadoODP.Value == "Solicitada";
                         BTN_CompletarODP.Visible = HDF_EstadoODP.Value == "Confirmada";
 
                         LBL_CreadoPor.Text = "Ingresado por: " + dr["QuienIngreso"].ToString().Trim() + ", " + dr["FIngreso"];
@@ -167,6 +170,50 @@ namespace MCWebHogar.ControlPedidos
                     }
                 }
             }
+        }
+
+        private void generarDespacho()
+        {
+            DT.DT1.Clear();
+
+            DT.DT1.Rows.Add("@IDsPedidos", HDF_IDsPedidos.Value, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@UsuarioID", Session["UserId"].ToString(), SqlDbType.Int);
+
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "CrearDespacho", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP10_0001");
+
+            if (Result != null && Result.Rows.Count > 0)
+            {
+                if (Result.Rows[0][0].ToString().Trim() == "ERROR")
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_CrearDespacho_Click", "alertifywarning('" + Result.Rows[0][1].ToString().Trim() + "');", true);
+                    return;
+                }
+                else
+                {
+                    string IDDespacho = Result.Rows[0][1].ToString().Trim();
+                    generarRecibidoPedido(IDDespacho);
+                }
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_CrearDespacho_Click", "alertifywarning('No se ha podido crear la orden de producción, por favor intente de nuevo.');", true);
+                return;
+            }
+        }
+
+        private void generarRecibidoPedido(string idDespacho)
+        {
+            DT.DT1.Clear();
+            DT.DT1.Rows.Add("@IDDespacho", idDespacho, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@UsuarioID", Session["UserID"].ToString(), SqlDbType.VarChar);
+
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "CrearRecibidoPedido", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP12_0001");
         }
 
         protected void BTN_ConfirmarODP_Click(object sender, EventArgs e)
@@ -191,8 +238,9 @@ namespace MCWebHogar.ControlPedidos
                 else
                 {
                     string script = "alertifysuccess('Se ha confirmado la orden de producción.');";
+                    generarDespacho();
                     cargarODP(script);
-                    cargarProductosODP();
+                    cargarProductosODP();                    
                 }
             }
             else
@@ -256,7 +304,7 @@ namespace MCWebHogar.ControlPedidos
                 DT.DT1.Clear();
                 DT.DT1.Rows.Add("@ODPID", HDF_IDODP.Value, SqlDbType.Int);
                 DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString().Trim(), SqlDbType.VarChar);
-                DT.DT1.Rows.Add("@TipoSentencia", "CargarProductos", SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", "CargarProductosReporte", SqlDbType.VarChar);
 
                 Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP08_0001");
                 if (Result.Rows.Count == 0)
@@ -703,7 +751,7 @@ namespace MCWebHogar.ControlPedidos
         
         protected void BTN_ImprimirOrdenProduccion_Click(object sender, EventArgs e)
         {
-            string printer = Environment.GetEnvironmentVariable("Printer").ToString().Trim();
+            string printer = Session["Printer"].ToString().Trim();
             TXT_NombreImpresora.Text = printer;
             UpdatePanel_ListaProductos.Update();
             string script = "abrirModalOrdenProduccion();estilosElementosBloqueados();";

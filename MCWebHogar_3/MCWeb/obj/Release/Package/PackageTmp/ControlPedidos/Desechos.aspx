@@ -35,6 +35,26 @@
             document.getElementById('fade2').style.display = 'none';
             document.getElementById('modalloading').style.display = 'none';
         }
+
+        function TXT_FechaDesechoDesdeChange() {
+            var fechaDesechoDesde = $(<%= TXT_FechaDesechoDesde.ClientID %>)[0].value
+            var fechaDesechoHasta = $(<%= TXT_FechaDesechoHasta.ClientID %>)[0].value
+
+            if (fechaDesechoHasta === '1900-01-01') {
+                $(<%= TXT_FechaDesechoHasta.ClientID %>)[0].value = fechaDesechoDesde
+            }
+            return true
+        }
+
+        function TXT_FechaDesechoHastaChange() {
+            var fechaDesechoDesde = $(<%= TXT_FechaDesechoDesde.ClientID %>)[0].value
+            var fechaDesechoHasta = $(<%= TXT_FechaDesechoHasta.ClientID %>)[0].value
+
+            if (fechaDesechoDesde === '1900-01-01') {
+                $(<%= TXT_FechaDesechoDesde.ClientID %>)[0].value = fechaDesechoHasta
+            }
+            return true
+        }
     </script>
 </asp:Content>
 
@@ -67,15 +87,15 @@
                         </a>
                     </li>
                     <li>
-                        <a href="Empaque.aspx">
+                        <a href="Desecho.aspx">
                             <i class="fas fa-box-open"></i>
-                            <p>Empaque</p>
+                            <p>Desecho</p>
                         </a>
                     </li>
                     <li>
-                        <a href="Despacho.aspx">
+                        <a href="Empaque.aspx">
                             <i class="fas fa-truck"></i>
-                            <p>Despacho</p>
+                            <p>Empaque</p>
                         </a>
                     </li>
                     <li>
@@ -143,7 +163,73 @@
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Desechos</h1>
-                    <br />
+                    <div class="card shadow mb-4">
+                        <div class="card-body" style="padding-top: 0px;">
+                            <div class="card-body">
+                                <asp:UpdatePanel ID="UpdatePanel_FiltrosDesechos" runat="server" UpdateMode="Conditional">
+                                    <ContentTemplate>
+                                        <div class="row">
+                                            <div class="col-md-6">                                            
+                                                <div class="input-group no-border col-md-6">     
+                                                    <label for="TXT_FechaDesechoDesde"> Fecha desecho desde:</label>                                          
+                                                    <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaDesechoDesde" runat="server" TextMode="Date" onchange="TXT_FechaDesechoDesdeChange();" OnTextChanged="TXT_FiltrarDesechos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
+                                                </div>
+                                                <div class="input-group no-border col-md-6">
+                                                    <label for="TXT_FechaDesechoHasta"> Fecha desecho hasta:</label>
+                                                    <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaDesechoHasta" runat="server" TextMode="Date" onchange="TXT_FechaDesechoHastaChange();" OnTextChanged="TXT_FiltrarDesechos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" style="text-align: right;">
+                                                <div class="card-header" style="text-align: right;">
+                                                    <asp:Button ID="BTN_CrearDesechos" runat="server" Text="Crear nuevo desecho" CssClass="btn btn-secondary" OnClick="BTN_CrearDesechos_Click"></asp:Button>                                    
+                                                </div>
+                                            </div>
+                                        </div> 
+                                        <div class="row">                         
+                                            <div class="input-group no-border col-md-12">
+                                                <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar número desecho..." OnTextChanged="TXT_FiltrarDesechos_OnTextChanged" AutoPostBack="true"></asp:TextBox>
+                                                <div class="input-group-append">
+                                                    <div class="input-group-text">
+                                                        <i class="nc-icon nc-zoom-split"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ContentTemplate>
+                                </asp:UpdatePanel>
+                                <div class="table-responsive">
+                                    <asp:UpdatePanel ID="UpdatePanel_ListaDesechos" runat="server" UpdateMode="Conditional">
+                                        <ContentTemplate>
+                                            <asp:GridView ID="DGV_ListaDesechos" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
+                                                AutoGenerateColumns="False" DataKeyNames="IDDesecho,UsuarioID" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
+                                                ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true"
+                                                OnSorting="DGV_ListaDesechos_Sorting"
+                                                OnRowCommand="DGV_ListaDesechos_RowCommand"
+                                                OnRowDataBound="DGV_ListaDesechos_OnRowDataBound">
+                                                <Columns>
+                                                    <asp:BoundField DataField="NumeroDesecho" SortExpression="IDDesecho" HeaderText="Número Desecho" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                    <asp:BoundField DataField="Nombre" SortExpression="Nombre" HeaderText="Solicitante" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                
+                                                    <asp:BoundField DataField="FDesecho" SortExpression="FDesecho" HeaderText="Fecha" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                
+                                                    <asp:TemplateField>
+                                                        <HeaderTemplate>
+                                                            <asp:Label ID="LBL_Acciones" runat="server" Text="ACCIONES"></asp:Label>
+                                                        </HeaderTemplate>
+                                                        <ItemTemplate>
+                                                            <asp:Button class="btn btn-outline-primary btn-round" ID="BTN_VerDetalle" runat="server"
+                                                                CommandName="VerDetalle"
+                                                                CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
+                                                                Text="Ver detalles" AutoPostBack="true" />
+                                                        </ItemTemplate>
+                                                        <ItemStyle HorizontalAlign="Center" />
+                                                    </asp:TemplateField>
+                                                </Columns>
+                                            </asp:GridView>
+                                        </ContentTemplate>
+                                    </asp:UpdatePanel>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

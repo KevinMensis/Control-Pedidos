@@ -108,6 +108,14 @@
             $(<%= BTN_CloseMenu.ClientID %>).addClass('btn-close');
         }
 
+        function cargarFiltro(e) {
+            console.log(e.keyCode)
+            if (e.keyCode == 13) {
+                __doPostBack('TXT_Buscar')
+            }
+            // cargarFiltros()
+        }
+
         function cargarFiltros() {
             $(<%= LB_Sucursal.ClientID %>).SumoSelect({ selectAll: true, placeholder: 'Sucursal' })
             $(<%= LB_PlantaProduccion.ClientID %>).SumoSelect({ selectAll: true, placeholder: 'Planta de Producción' })
@@ -257,7 +265,7 @@
                                     <ContentTemplate> 
                                         <div class="row">                         
                                             <div class="input-group no-border col-md-12">
-                                                <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar número pedido..." OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>
+                                                <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar número pedido..." onkeypress="cargarFiltro(event);"></asp:TextBox>
                                                 <div class="input-group-append">
                                                     <div class="input-group-text">
                                                         <i class="nc-icon nc-zoom-split"></i>
@@ -317,6 +325,7 @@
                                             OnRowDataBound="DGV_ListaPedidos_OnRowDataBound">
                                             <Columns>
                                                 <asp:BoundField DataField="NumeroPedido" SortExpression="IDPedido" HeaderText="Número Pedido" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                <asp:BoundField DataField="FPedido" SortExpression="FechaIngreso" HeaderText="Fecha pedido" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
                                                 <asp:BoundField DataField="DescripcionPuntoVenta" SortExpression="DescripcionPuntoVenta" HeaderText="Sucursal" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="DescripcionPlantaProduccion" SortExpression="DescripcionPlantaProduccion" HeaderText="Planta Producción" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="Estado" SortExpression="Estado" HeaderText="Estado" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>

@@ -146,7 +146,7 @@
                     <div class="card shadow mb-4">
                         <div class="card-body" style="padding-top: 0px;">
                             <div class="card-body">
-                                <asp:UpdatePanel ID="UpdatePanel_FiltrosODPs" runat="server" UpdateMode="Conditional">
+                                <asp:UpdatePanel ID="UpdatePanel_FiltrosDespachos" runat="server" UpdateMode="Conditional">
                                     <ContentTemplate> 
                                         <div class="row">                         
                                             <div class="input-group no-border col-md-12">
@@ -164,14 +164,14 @@
                                     <asp:UpdatePanel ID="UpdatePanel_ListaDespachos" runat="server" UpdateMode="Conditional">
                                         <ContentTemplate>
                                             <asp:GridView ID="DGV_ListaDespachos" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
-                                                AutoGenerateColumns="False" DataKeyNames="IDDespacho,Estado,UsuarioID,PuntoVentaID" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
+                                                AutoGenerateColumns="False" DataKeyNames="IDDespacho,Estado,UsuarioID" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
                                                 ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true"
                                                 OnSorting="DGV_ListaDespachos_Sorting"
                                                 OnRowCommand="DGV_ListaDespachos_RowCommand"
                                                 OnRowDataBound="DGV_ListaDespachos_OnRowDataBound">
                                                 <Columns>
                                                     <asp:BoundField DataField="NumeroDespacho" SortExpression="IDDespacho" HeaderText="Número Despacho" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                    <asp:BoundField DataField="DescripcionPuntoVenta" SortExpression="DescripcionPuntoVenta" HeaderText="Punto Venta Destino" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                    <asp:BoundField DataField="FDespacho" SortExpression="FechaIngreso" HeaderText="Fecha Despacho" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                     <asp:BoundField DataField="Estado" SortExpression="Estado" HeaderText="Estado" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                     <asp:BoundField DataField="Nombre" SortExpression="Nombre" HeaderText="Solicitante" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                
                                                     <asp:TemplateField>

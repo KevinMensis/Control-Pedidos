@@ -160,7 +160,7 @@
                                         </div>
                                     </ContentTemplate>
                                 </asp:UpdatePanel>
-                                <div class="table-responsive">
+                                <div class="table">
                                     <asp:UpdatePanel ID="UpdatePanel_ListaPedidosRecibidos" runat="server" UpdateMode="Conditional">
                                         <ContentTemplate>
                                             <asp:GridView ID="DGV_ListaPedidosRecibidos" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
@@ -172,6 +172,7 @@
                                                 <Columns>
                                                     <asp:BoundField DataField="NumeroPedidoRecibido" SortExpression="IDRecibidoPedido" HeaderText="Número PedidoRecibido" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                     <asp:BoundField DataField="NumeroPedido" SortExpression="PedidoID" HeaderText="Número Pedido" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                    <asp:BoundField DataField="FPedidoRecibido" SortExpression="FechaIngreso" HeaderText="Fecha Pedido Recibido" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                     <asp:BoundField DataField="DescripcionPuntoVenta" SortExpression="DescripcionPuntoVenta" HeaderText="Punto venta destino" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                     <asp:BoundField DataField="Estado" SortExpression="Estado" HeaderText="Estado" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                     <asp:BoundField DataField="Nombre" SortExpression="Nombre" HeaderText="Solicitante" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                

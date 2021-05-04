@@ -8,7 +8,15 @@
     <title>Pedido</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <style>
-        
+        @media (max-width: 991px) {
+            .btn-show {
+                display: inline-block !important;
+            }
+        }
+
+        .btn-show, .btn-close {
+            display: none;
+        }
     </style>
     <script type="text/javascript">
         function alertifysuccess(msj) {
@@ -88,6 +96,26 @@
             return true
         }
 
+        function showMenu() {
+            $('#div_Menu')[0].style.webkitTransform = 'none';
+            $(<%= BTN_CloseMenu.ClientID %>).removeClass('btn-close');
+            $(<%= BTN_CloseMenu.ClientID %>).addClass('btn-show');
+        }
+
+        function closeMenu() {
+            $('#div_Menu')[0].style.webkitTransform = 'translate3d(-260px, 0, 0)';
+            $(<%= BTN_CloseMenu.ClientID %>).removeClass('btn-show');
+            $(<%= BTN_CloseMenu.ClientID %>).addClass('btn-close');
+        }
+
+        function cargarFiltro(e) {
+            console.log(e.keyCode)
+            if (e.keyCode == 13) {
+                __doPostBack('TXT_Buscar')
+            }
+            // cargarFiltros()
+        }
+
         function cargarFiltros() {
             $(<%= LB_Sucursal.ClientID %>).SumoSelect({ selectAll: true, placeholder: 'Sucursal' })
             $(<%= LB_PlantaProduccion.ClientID %>).SumoSelect({ selectAll: true, placeholder: 'Planta de Producción' })
@@ -107,7 +135,7 @@
     </div>
     <div id="fade2" class="overlayload"></div>
     <div class="wrapper ">
-        <div class="sidebar" data-color="white" data-active-color="danger">
+        <div class="sidebar" id="div_Menu" data-color="white" data-active-color="danger">
             <div class="sidebar-wrapper scroll" style="overflow-y: auto;">
                 <img style="width: 60%; display: block; margin-left: 30%; margin-top: 3%;" src="../Assets/img/logo.png" />
                 <ul class="nav">
@@ -205,7 +233,21 @@
             <div class="content">
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Pedidos</h1>
+                    <asp:UpdatePanel ID="UpdatePanel_Header" runat="server" UpdateMode="Conditional">
+                        <ContentTemplate>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <asp:Button ID="BTN_ShowMenu" runat="server" Text="Menú" CssClass="btn btn-info btn-show" style="line-height: 0.35rem;" OnClientClick="showMenu();"></asp:Button>                                    
+                                </div>
+                                <div class="col-md-4" style="float: right; right: -10%;">
+                                    <asp:Button ID="BTN_CloseMenu" runat="server" Text="Cerrar menú" CssClass="btn btn-info btn-show" style="line-height: 0.35rem;" OnClientClick="closeMenu();"></asp:Button>
+                                </div>
+                                <div class="col-md-12">
+                                    <h1 class="h3 mb-2 text-gray-800" style="display: inline-block;">Pedidos</h1>
+                                </div>
+                            </div>                   
+                        </ContentTemplate>
+                    </asp:UpdatePanel> 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <asp:UpdatePanel ID="UpdatePanel_PedidosEvents" runat="server" UpdateMode="Conditional">
@@ -223,7 +265,7 @@
                                     <ContentTemplate> 
                                         <div class="row">                         
                                             <div class="input-group no-border col-md-12">
-                                                <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar número pedido..." OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>
+                                                <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar número pedido..." onkeypress="cargarFiltro(event);"></asp:TextBox>
                                                 <div class="input-group-append">
                                                     <div class="input-group-text">
                                                         <i class="nc-icon nc-zoom-split"></i>
@@ -234,19 +276,19 @@
                                         <div class="row">
                                             <div class="input-group no-border col-md-3">     
                                                 <label for="TXT_FechaCreacionDesde"> Fecha creación desde:</label>                                          
-                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaCreacionDesde" runat="server" TextMode="Date" onchange="return TXT_FechaCreacionDesdeChange();" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
+                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaCreacionDesde" runat="server" TextMode="Date" onchange="TXT_FechaCreacionDesdeChange();" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
                                             </div>
                                             <div class="input-group no-border col-md-3">
                                                 <label for="TXT_FechaCreacionHasta"> Fecha creación hasta:</label>
-                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaCreacionHasta" runat="server" TextMode="Date" onchange="return TXT_FechaCreacionHastaChange();" placeholder="" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
+                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaCreacionHasta" runat="server" TextMode="Date" onchange="TXT_FechaCreacionHastaChange();" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
                                             </div>
                                             <div class="input-group no-border col-md-3">     
                                                 <label for="TXT_FechaPedidoDesde"> Fecha pedido desde:</label>                                          
-                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaPedidoDesde" runat="server" TextMode="Date" onchange="return TXT_FechaPedidoDesdeChange();" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
+                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaPedidoDesde" runat="server" TextMode="Date" onchange="TXT_FechaPedidoDesdeChange();" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
                                             </div>
                                             <div class="input-group no-border col-md-3">
                                                 <label for="TXT_FechaPedidoHasta"> Fecha pedido hasta:</label>
-                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaPedidoHasta" runat="server" TextMode="Date" onchange="return TXT_FechaPedidoHastaChange();" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
+                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaPedidoHasta" runat="server" TextMode="Date" onchange="TXT_FechaPedidoHastaChange();" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
                                             </div>
                                         </div>
                                         <div class="row">
@@ -264,7 +306,7 @@
                                             </div>
                                         </div>
                                         <div class="row" style="float: right;">
-                                            <asp:Button id="BTN_EliminarFiltro" style="float: right;" runat="server" CssClass="btn btn-danger" Text="Eliminar Filtro" />
+                                            <asp:Button id="BTN_EliminarFiltro" style="float: right;" runat="server" CssClass="btn btn-danger" Text="Eliminar Filtro" OnClick="BTN_EliminarFiltro_Click" />
                                         </div>
                                         <div class="row" style="margin-left: 10px; margin-top: 10px;">
                                             <asp:Label id="LBL_Filtro" runat="server" Text="Filtros: Ninguno;"></asp:Label>                                                                                            
@@ -272,7 +314,7 @@
                                     </ContentTemplate>
                                 </asp:UpdatePanel>
                             </div>
-                            <div class="table-responsive">
+                            <div class="table">
                                 <asp:UpdatePanel ID="UpdatePanel_ListaPedidos" runat="server" UpdateMode="Conditional">
                                     <ContentTemplate>
                                         <asp:GridView ID="DGV_ListaPedidos" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
@@ -283,6 +325,7 @@
                                             OnRowDataBound="DGV_ListaPedidos_OnRowDataBound">
                                             <Columns>
                                                 <asp:BoundField DataField="NumeroPedido" SortExpression="IDPedido" HeaderText="Número Pedido" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                <asp:BoundField DataField="FPedido" SortExpression="FechaIngreso" HeaderText="Fecha pedido" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
                                                 <asp:BoundField DataField="DescripcionPuntoVenta" SortExpression="DescripcionPuntoVenta" HeaderText="Sucursal" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="DescripcionPlantaProduccion" SortExpression="DescripcionPlantaProduccion" HeaderText="Planta Producción" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="Estado" SortExpression="Estado" HeaderText="Estado" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>

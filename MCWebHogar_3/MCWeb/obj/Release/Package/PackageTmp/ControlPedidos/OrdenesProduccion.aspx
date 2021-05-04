@@ -144,13 +144,6 @@
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Ordenes de producción</h1>
                     <div class="card shadow mb-4">
-                        <asp:UpdatePanel ID="UpdatePanel_PedidosEvents" runat="server" UpdateMode="Conditional">
-                            <ContentTemplate>
-                                <div class="card-header" style="text-align: right;">
-                                    <asp:Button ID="BTN_CrearDespacho" runat="server" Text="Despachar pedido" CssClass="btn btn-secondary"></asp:Button>
-                                </div>
-                            </ContentTemplate>
-                        </asp:UpdatePanel>
                         <div class="card-body" style="padding-top: 0px;">
                             <div class="card-body">
                                 <asp:UpdatePanel ID="UpdatePanel_FiltrosODPs" runat="server" UpdateMode="Conditional">
@@ -167,29 +160,21 @@
                                         </div>
                                     </ContentTemplate>
                                 </asp:UpdatePanel>
-                                <div class="table-responsive">
+                                <div class="table">
                                     <asp:UpdatePanel ID="UpdatePanel_ListaOrdenesProduccion" runat="server" UpdateMode="Conditional">
                                         <ContentTemplate>
                                             <asp:GridView ID="DGV_ListaOrdenesProduccion" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
-                                                AutoGenerateColumns="False" DataKeyNames="IDODP,Estado,UsuarioID,PlantaProduccionID" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
+                                                AutoGenerateColumns="False" DataKeyNames="IDODP,Estado,UsuarioID,PlantaProduccionID,IdsPedidos" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
                                                 ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true"
                                                 OnRowCommand="DGV_ListaOrdenesProduccion_RowCommand"
                                                 OnSorting="DGV_ListaOrdenesProduccion_Sorting"
                                                 OnRowDataBound="DGV_ListaOrdenesProduccion_OnRowDataBound">
                                                 <Columns>
                                                     <asp:BoundField DataField="NumeroODP" SortExpression="IDODP" HeaderText="Número ODP" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                    <asp:BoundField DataField="FODP" SortExpression="FechaIngreso" HeaderText="Fecha Orden Producción" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                     <asp:BoundField DataField="DescripcionPlantaProduccion" SortExpression="DescripcionPlantaProduccion" HeaderText="Planta Producción" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                     <asp:BoundField DataField="Estado" SortExpression="Estado" HeaderText="Estado" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                    <asp:BoundField DataField="Nombre" SortExpression="Nombre" HeaderText="Solicitante" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                            
-                                                    <asp:TemplateField>
-                                                        <HeaderTemplate>
-                                                            <asp:Label ID="LBL_Acciones" runat="server" Text="Seleccionar"></asp:Label>
-                                                        </HeaderTemplate>
-                                                        <ItemTemplate>
-                                                            <asp:CheckBox ID="seleccionarCheckBox" runat="server" />
-                                                        </ItemTemplate>
-                                                        <ItemStyle HorizontalAlign="Center" />
-                                                    </asp:TemplateField>
+                                                    <asp:BoundField DataField="Nombre" SortExpression="Nombre" HeaderText="Solicitante" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                
                                                     <asp:TemplateField>
                                                         <HeaderTemplate>
                                                             <asp:Label ID="LBL_Acciones" runat="server" Text="ACCIONES"></asp:Label>

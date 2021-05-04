@@ -9,7 +9,7 @@
     <Shape ID="DesignTable:DT_EncabezadoPedido" ZOrder="14" X="24" Y="53" Height="425" Width="244" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="421" />
     <Shape ID="DesignTable:DT_DetallePedido" ZOrder="13" X="288" Y="56" Height="194" Width="195" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="190" />
     <Shape ID="DesignTable:DT_EncabezadoODP" ZOrder="12" X="500" Y="57" Height="355" Width="239" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="351" />
-    <Shape ID="DesignTable:DT_DetalleODP" ZOrder="11" X="764" Y="59" Height="217" Width="189" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="213" />
+    <Shape ID="DesignTable:DT_DetalleODP" ZOrder="11" X="764" Y="59" Height="263" Width="189" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="259" />
     <Shape ID="DesignTable:DT_EncabezadoEmpaque" ZOrder="10" X="971" Y="60" Height="263" Width="247" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="259" />
     <Shape ID="DesignTable:DT_DetalleEmpaque" ZOrder="1" X="1227" Y="62" Height="263" Width="212" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="259" />
     <Shape ID="DesignTable:DT_EncabezadoDesecho" ZOrder="9" X="971" Y="339" Height="263" Width="256" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="259" />

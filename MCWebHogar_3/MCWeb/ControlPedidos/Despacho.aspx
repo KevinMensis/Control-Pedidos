@@ -160,7 +160,7 @@
                                         </div>
                                     </ContentTemplate>
                                 </asp:UpdatePanel>
-                                <div class="table-responsive">
+                                <div class="table">
                                     <asp:UpdatePanel ID="UpdatePanel_ListaDespachos" runat="server" UpdateMode="Conditional">
                                         <ContentTemplate>
                                             <asp:GridView ID="DGV_ListaDespachos" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
@@ -171,6 +171,7 @@
                                                 OnRowDataBound="DGV_ListaDespachos_OnRowDataBound">
                                                 <Columns>
                                                     <asp:BoundField DataField="NumeroDespacho" SortExpression="IDDespacho" HeaderText="Número Despacho" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                    <asp:BoundField DataField="FDespacho" SortExpression="FechaIngreso" HeaderText="Fecha Despacho" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                     <asp:BoundField DataField="Estado" SortExpression="Estado" HeaderText="Estado" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                     <asp:BoundField DataField="Nombre" SortExpression="Nombre" HeaderText="Solicitante" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                
                                                     <asp:TemplateField>

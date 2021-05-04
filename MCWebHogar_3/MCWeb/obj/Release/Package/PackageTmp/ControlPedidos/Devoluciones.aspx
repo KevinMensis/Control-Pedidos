@@ -35,6 +35,26 @@
             document.getElementById('fade2').style.display = 'none';
             document.getElementById('modalloading').style.display = 'none';
         }
+
+        function TXT_FechaDevolucionDesdeChange() {
+            var fechaDevolucionDesde = $(<%= TXT_FechaDevolucionDesde.ClientID %>)[0].value
+            var fechaDevolucionHasta = $(<%= TXT_FechaDevolucionHasta.ClientID %>)[0].value
+
+            if (fechaDevolucionHasta === '1900-01-01') {
+                $(<%= TXT_FechaDevolucionHasta.ClientID %>)[0].value = fechaDevolucionDesde
+            }
+            return true
+        }
+
+        function TXT_FechaDevolucionHastaChange() {
+            var fechaDevolucionDesde = $(<%= TXT_FechaDevolucionDesde.ClientID %>)[0].value
+            var fechaDevolucionHasta = $(<%= TXT_FechaDevolucionHasta.ClientID %>)[0].value
+
+            if (fechaDevolucionDesde === '1900-01-01') {
+                $(<%= TXT_FechaDevolucionDesde.ClientID %>)[0].value = fechaDevolucionHasta
+            }
+            return true
+        }
     </script>
 </asp:Content>
 
@@ -143,7 +163,73 @@
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Devoluciones</h1>
-                    <br />
+                    <div class="card shadow mb-4">
+                        <div class="card-body" style="padding-top: 0px;">
+                            <div class="card-body">
+                                <asp:UpdatePanel ID="UpdatePanel_FiltrosDevoluciones" runat="server" UpdateMode="Conditional">
+                                    <ContentTemplate> 
+                                        <div class="row">
+                                            <div class="col-md-6">                                            
+                                                <div class="input-group no-border col-md-6">     
+                                                    <label for="TXT_FechaDevolucionDesde"> Fecha devolución desde:</label>                                          
+                                                    <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaDevolucionDesde" runat="server" TextMode="Date" onchange="TXT_FechaDevolucionDesdeChange();" OnTextChanged="TXT_FiltrarDevoluciones_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
+                                                </div>
+                                                <div class="input-group no-border col-md-6">
+                                                    <label for="TXT_FechaDevolucionHasta"> Fecha devolución hasta:</label>
+                                                    <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaDevolucionHasta" runat="server" TextMode="Date" onchange="TXT_FechaDevolucionHastaChange();" OnTextChanged="TXT_FiltrarDevoluciones_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" style="text-align: right;">
+                                                <div class="card-header" style="text-align: right;">
+                                                    <asp:Button ID="BTN_CrearDevoluciones" runat="server" Text="Crear nueva devolucion" CssClass="btn btn-secondary" OnClick="BTN_CrearDevoluciones_Click"></asp:Button>                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">                         
+                                            <div class="input-group no-border col-md-12">
+                                                <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar número devolución..." OnTextChanged="TXT_FiltrarDevoluciones_OnTextChanged" AutoPostBack="true"></asp:TextBox>
+                                                <div class="input-group-append">
+                                                    <div class="input-group-text">
+                                                        <i class="nc-icon nc-zoom-split"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ContentTemplate>
+                                </asp:UpdatePanel>
+                                <div class="table-responsive">
+                                    <asp:UpdatePanel ID="UpdatePanel_ListaDevoluciones" runat="server" UpdateMode="Conditional">
+                                        <ContentTemplate>
+                                            <asp:GridView ID="DGV_ListaDevoluciones" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
+                                                AutoGenerateColumns="False" DataKeyNames="IDDevolucion,UsuarioID" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
+                                                ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true"
+                                                OnSorting="DGV_ListaDevoluciones_Sorting"
+                                                OnRowCommand="DGV_ListaDevoluciones_RowCommand"
+                                                OnRowDataBound="DGV_ListaDevoluciones_OnRowDataBound">
+                                                <Columns>
+                                                    <asp:BoundField DataField="NumeroDevolucion" SortExpression="IDDevolucion" HeaderText="Número Devolucion" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                    <asp:BoundField DataField="Nombre" SortExpression="Nombre" HeaderText="Solicitante" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                
+                                                    <asp:BoundField DataField="FDevolucion" SortExpression="FDevolucion" HeaderText="Fecha" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                
+                                                    <asp:TemplateField>
+                                                        <HeaderTemplate>
+                                                            <asp:Label ID="LBL_Acciones" runat="server" Text="ACCIONES"></asp:Label>
+                                                        </HeaderTemplate>
+                                                        <ItemTemplate>
+                                                            <asp:Button class="btn btn-outline-primary btn-round" ID="BTN_VerDetalle" runat="server"
+                                                                CommandName="VerDetalle"
+                                                                CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
+                                                                Text="Ver detalles" AutoPostBack="true" />
+                                                        </ItemTemplate>
+                                                        <ItemStyle HorizontalAlign="Center" />
+                                                    </asp:TemplateField>
+                                                </Columns>
+                                            </asp:GridView>
+                                        </ContentTemplate>
+                                    </asp:UpdatePanel>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

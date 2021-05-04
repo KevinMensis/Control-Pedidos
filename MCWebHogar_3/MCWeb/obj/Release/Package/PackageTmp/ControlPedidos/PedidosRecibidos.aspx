@@ -143,7 +143,59 @@
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Pedidos recibidos</h1>
-                    <br />
+                    <div class="card shadow mb-4">
+                        <div class="card-body" style="padding-top: 0px;">
+                            <div class="card-body">
+                                <asp:UpdatePanel ID="UpdatePanel_FiltrosPedidosRecibidos" runat="server" UpdateMode="Conditional">
+                                    <ContentTemplate> 
+                                        <div class="row">                         
+                                            <div class="input-group no-border col-md-12">
+                                                <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar número pedido recibido..." OnTextChanged="TXT_FiltrarPedidosRecibidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>
+                                                <div class="input-group-append">
+                                                    <div class="input-group-text">
+                                                        <i class="nc-icon nc-zoom-split"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ContentTemplate>
+                                </asp:UpdatePanel>
+                                <div class="table">
+                                    <asp:UpdatePanel ID="UpdatePanel_ListaPedidosRecibidos" runat="server" UpdateMode="Conditional">
+                                        <ContentTemplate>
+                                            <asp:GridView ID="DGV_ListaPedidosRecibidos" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
+                                                AutoGenerateColumns="False" DataKeyNames="IDRecibidoPedido,Estado,UsuarioID,PuntoVentaID,PedidoID" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
+                                                ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true"
+                                                OnSorting="DGV_ListaPedidosRecibidos_Sorting"
+                                                OnRowCommand="DGV_ListaPedidosRecibidos_RowCommand"
+                                                OnRowDataBound="DGV_ListaPedidosRecibidos_OnRowDataBound">
+                                                <Columns>
+                                                    <asp:BoundField DataField="NumeroPedidoRecibido" SortExpression="IDRecibidoPedido" HeaderText="Número PedidoRecibido" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                    <asp:BoundField DataField="NumeroPedido" SortExpression="PedidoID" HeaderText="Número Pedido" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                    <asp:BoundField DataField="FPedidoRecibido" SortExpression="FechaIngreso" HeaderText="Fecha Pedido Recibido" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                    <asp:BoundField DataField="DescripcionPuntoVenta" SortExpression="DescripcionPuntoVenta" HeaderText="Punto venta destino" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                    <asp:BoundField DataField="Estado" SortExpression="Estado" HeaderText="Estado" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                    <asp:BoundField DataField="Nombre" SortExpression="Nombre" HeaderText="Solicitante" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                
+                                                    <asp:TemplateField>
+                                                        <HeaderTemplate>
+                                                            <asp:Label ID="LBL_Acciones" runat="server" Text="ACCIONES"></asp:Label>
+                                                        </HeaderTemplate>
+                                                        <ItemTemplate>
+                                                            <asp:Button class="btn btn-outline-primary btn-round" ID="BTN_VerDetalle" runat="server"
+                                                                CommandName="VerDetalle"
+                                                                CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
+                                                                Text="Ver detalles" AutoPostBack="true" />
+                                                        </ItemTemplate>
+                                                        <ItemStyle HorizontalAlign="Center" />
+                                                    </asp:TemplateField>
+                                                </Columns>
+                                            </asp:GridView>
+                                        </ContentTemplate>
+                                    </asp:UpdatePanel>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

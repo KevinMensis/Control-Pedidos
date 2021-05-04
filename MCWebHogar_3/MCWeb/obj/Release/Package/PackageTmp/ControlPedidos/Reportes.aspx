@@ -35,6 +35,116 @@
             document.getElementById('fade2').style.display = 'none';
             document.getElementById('modalloading').style.display = 'none';
         }
+
+        function graficoPedidosSucursal(dias, datos) {
+            Highcharts.chart('containerPedidosSucursal', {
+                chart: {
+                    type: 'line'
+                },
+                title: {
+                    text: 'Pedidos por día'
+                },
+                yAxis: {
+                    title: {
+                        text: ''
+                    }
+                },
+                xAxis: {
+                    categories: dias
+                },
+                series: [{
+                    name: '',
+                    data: datos
+                }]
+            });
+        }
+
+        function graficoDevoluciones(datos) {
+            lista = []
+            Highcharts.chart('containerDevolucionesSucursal', {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Devoluciones por punto venta'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                accessibility: {
+                    point: {
+                        valueSuffix: '%'
+                    }
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: false
+                        },
+                        showInLegend: true
+                    }
+                },
+                series: [{
+                    name: 'Sucursal',
+                    colorByPoint: true,
+                    data: datos
+                }]
+            });
+        }
+
+        function cargarGraficos(idUsuario) {
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "Reportes.aspx/cargarGraficoPedidos",
+                data: JSON.stringify({
+                    "idUsuario": idUsuario
+                }),
+                dataType: "json",
+                success: function (Result) {
+                    listaDias = []
+                    listaCantidadPedidos = []
+                    for (var i in Result.d) {
+                        listaDias.unshift(Result.d[i].dia)
+                        listaCantidadPedidos.unshift(Result.d[i].cantidadPedidos)
+                    }
+                    graficoPedidosSucursal(listaDias, listaCantidadPedidos)
+                },
+                error: function (Result) {
+                    alert("ERROR " + Result.status + ' ' + Result.statusText);
+                }
+            })
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "Reportes.aspx/cargarGraficoDevoluciones",
+                data: JSON.stringify({
+                    "idUsuario": idUsuario
+                }),
+                dataType: "json",
+                success: function (Result) {
+                    listaDevoluciones = []
+                    for (var i in Result.d) {
+                        listaDevoluciones.unshift(
+                            {
+                                'name': Result.d[i].puntoVenta,
+                                'y': Result.d[i].cantidadDevolucion
+                            }
+                        )
+                    }
+                    graficoDevoluciones(listaDevoluciones)
+                },
+                error: function (Result) {
+                    alert("ERROR " + Result.status + ' ' + Result.statusText);
+                }
+            })
+        }
     </script>
 </asp:Content>
 
@@ -104,25 +214,25 @@
                         <a href="Productos.aspx">
                             <i class="fas fa-coffee"></i>
                             <p>Productos</p>
-                        </asp:LinkButton>
+                        </a>
                     </li>
                     <li>
                         <a href="PuntosVenta.aspx">
                             <i class="fas fa-building"></i>
                             <p>Puntos de Venta</p>
-                        </asp:LinkButton>
+                        </a>
                     </li>
                     <li>
                         <a href="PlantasProduccion.aspx">
                             <i class="fas fa-industry"></i>
                             <p>Plantas de Producción</p>
-                        </asp:LinkButton>
+                        </a>
                     </li>
                     <li>
                         <a href="GestionUsuarios.aspx">
                             <i class="fas fa-user"></i>
                             <p>GESTIÓN DE USUARIOS</p>
-                        </asp:LinkButton>
+                        </a>
                     </li>
                     <hr style="width: 230px; color: #2c2c2c;" />
                     <li>
@@ -143,7 +253,98 @@
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Reportes</h1>
-                    <br />
+                    <div class="card shadow mb-4">
+                        <asp:UpdatePanel ID="UpdatePanel_divEncabezados" runat="server" UpdateMode="Conditional">
+                            <ContentTemplate>
+                                <div class="row">
+                                    <div class="col-xl-3 col-md-6 mb-4">
+                                        <div class="card border-left-primary shadow h-100 py-2">
+                                            <div class="card-body">
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col mr-2">
+                                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                            Pedidos de hoy
+                                                        </div>
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800" style="text-align: center;" runat="server" id="div_CantidadPedidos"></div>
+                                                    </div>
+                                                    <%--<div class="col-auto">
+                                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                                    </div>--%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-md-6 mb-4">
+                                        <div class="card border-left-success shadow h-100 py-2">
+                                            <div class="card-body">
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col mr-2">
+                                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                            Despachos hoy
+                                                        </div>
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800" style="text-align: center;" runat="server" id="div_CantidadDespachos"></div>
+                                                    </div>
+                                                    <%--<div class="col-auto">
+                                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                                    </div>--%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-md-6 mb-4">
+                                        <div class="card border-left-success shadow h-100 py-2">
+                                            <div class="card-body">
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col mr-2">
+                                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                            Devoluciones hoy
+                                                        </div>
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800" style="text-align: center;" runat="server" id="div_CantidadDevoluciones"></div>
+                                                    </div>
+                                                    <%--<div class="col-auto">
+                                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                                    </div>--%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-md-6 mb-4">
+                                        <div class="card border-left-warning shadow h-100 py-2">
+                                            <div class="card-body">
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col mr-2">
+                                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                            Entregas pendientes
+                                                        </div>
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800" style="text-align: center;" runat="server" id="div_CantidadPendientes"></div>
+                                                    </div>
+                                                    <%--<div class="col-auto">
+                                                        <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                    </div>--%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
+                        <div class="row" id="CardPedidos">
+                            <div class="col-md-8">
+                                <div class="card card-chart">
+                                    <figure class="highcharts-figure">
+                                        <div id="containerPedidosSucursal"></div>
+                                    </figure>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card card-chart">
+                                    <figure class="highcharts-figure">
+                                        <div id="containerDevolucionesSucursal"></div>
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

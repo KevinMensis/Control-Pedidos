@@ -134,85 +134,9 @@ namespace MCWebHogar.ControlPedidos
         protected void DGV_ListaOrdenesProduccion_OnRowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
-            {
-                DataRowView rowView = (DataRowView)e.Row.DataItem;
-                string estado = rowView["Estado"].ToString().Trim();
-
-                if (estado != "Completado")
-                {
-                    CheckBox chkSeleccionar = (CheckBox)e.Row.FindControl("seleccionarCheckBox");
-                    chkSeleccionar.Visible = false;
-                }
+            {                
             }
         }
-        #endregion
-
-        #region Despacho
-        protected void BTN_CrearDespacho_Click(object sender, EventArgs e)
-        {
-            int contador = 0;
-            string fila = "";
-
-            foreach (GridViewRow row in DGV_ListaOrdenesProduccion.Rows)
-            {
-                CheckBox chk = (CheckBox)row.FindControl("seleccionarCheckBox");
-                if (chk != null)
-                {
-                    if (chk.Checked)
-                    {
-                        fila += row.RowIndex + ",";
-                        contador++;
-                    }
-                }
-            }
-            if (fila != "" && contador == 1)
-            {
-                fila = fila.TrimEnd(',');
-                string[] listaFilas = fila.Split(',');
-
-                string pedidos = "";
-
-                foreach (string f in listaFilas)
-                {
-                    pedidos += DGV_ListaOrdenesProduccion.DataKeys[Convert.ToInt32(f)].Values[4].ToString().Trim() + ",";
-                }
-                pedidos = pedidos.TrimEnd(',');
-
-                DT.DT1.Clear();
-
-                DT.DT1.Rows.Add("@IDsPedidos", pedidos, SqlDbType.VarChar);
-                DT.DT1.Rows.Add("@UsuarioID", Session["UserId"].ToString(), SqlDbType.Int);
-
-                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
-                DT.DT1.Rows.Add("@TipoSentencia", "CrearDespacho", SqlDbType.VarChar);
-
-                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP10_0001");
-
-                if (Result != null && Result.Rows.Count > 0)
-                {
-                    if (Result.Rows[0][0].ToString().Trim() == "ERROR")
-                    {
-                        ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_CrearDespacho_Click", "alertifywarning('" + Result.Rows[0][1].ToString().Trim() + "');", true);
-                        return;
-                    }
-                    else
-                    {
-                        Session["IDDespacho"] = Result.Rows[0][1].ToString().Trim();
-                        Response.Redirect("DetalleDespacho.aspx");
-                    }
-                }
-                else
-                {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_CrearDespacho_Click", "alertifywarning('No se ha podido crear la orden de producción, por favor intente de nuevo.');", true);
-                    return;
-                }
-            }
-            else if (contador > 1)
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_CrearDespacho_Click", "alertifywarning('Por favor, seleccione solo una orden de pedido para crear el Despacho.');", true);
-                return;
-            }
-        }
-        #endregion
+        #endregion        
     }
 }
