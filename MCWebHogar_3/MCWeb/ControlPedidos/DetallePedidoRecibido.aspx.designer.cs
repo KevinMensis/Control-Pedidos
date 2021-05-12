@@ -13,6 +13,15 @@ namespace MCWebHogar.ControlPedidos {
     public partial class DetallePedidoRecibido {
         
         /// <summary>
+        /// LBL_GenerandoInforme control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LBL_GenerandoInforme;
+        
+        /// <summary>
         /// HDF_IDRecibidoPedido control.
         /// </summary>
         /// <remarks>
@@ -112,6 +121,15 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.DropDownList DDL_PuntoVenta;
         
         /// <summary>
+        /// DDL_Reportes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DDL_Reportes;
+        
+        /// <summary>
         /// LBL_CreadoPor control.
         /// </summary>
         /// <remarks>
@@ -146,24 +164,6 @@ namespace MCWebHogar.ControlPedidos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BTN_CompletarRecibidoPedido;
-        
-        /// <summary>
-        /// BTN_ReporteRecibidoPedido control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BTN_ReporteRecibidoPedido;
-        
-        /// <summary>
-        /// BTN_DescargarRecibidoPedido control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BTN_DescargarRecibidoPedido;
         
         /// <summary>
         /// UpdatePanel_FiltrosProductos control.

@@ -180,7 +180,24 @@ namespace MCWebHogar.ControlPedidos
 
             Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP16_0001");
 
-            cargarDesechos();
+            if (Result != null && Result.Rows.Count > 0)
+            {
+                if (Result.Rows[0][0].ToString().Trim() == "ERROR")
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_CrearDesechos_Click", "alertifywarning('" + Result.Rows[0][1].ToString().Trim() + "');", true);
+                    return;
+                }
+                else
+                {
+                    Session["IDDesecho"] = Result.Rows[0][1].ToString().Trim();
+                    Response.Redirect("DetalleDesecho.aspx", true);
+                }
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_CrearDesechos_Click", "alertifywarning('No se ha podido crear la orden de desecho, por favor intente de nuevo.');", true);
+                return;
+            }
         }
         #endregion
     }

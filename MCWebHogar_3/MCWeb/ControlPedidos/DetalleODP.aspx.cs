@@ -45,6 +45,11 @@ namespace MCWebHogar.ControlPedidos
             {
                 string opcion = Page.Request.Params["__EVENTTARGET"];
                 string argument = Page.Request.Params["__EVENTARGUMENT"];
+                if (opcion.Contains("TXT_Cantidad"))
+                {
+                    int index = Convert.ToInt32(opcion.Split('$')[3].Replace("ctl", "")) - 2;
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", "enterCantidad(" + index + ");", true);
+                }
                 if (opcion.Contains("DDL_ImpresorasLoad"))
                 { 
                     DataTable dt = new DataTable();
@@ -145,7 +150,7 @@ namespace MCWebHogar.ControlPedidos
                     {
                         TXT_CodigoODP.Text = dr["NumeroODP"].ToString().Trim(); ;
                         TXT_TotalProductos.Text = dr["CantidadProductos"].ToString().Trim();
-                        TXT_CostoODP.Text = dr["CostoODP"].ToString().Trim();
+                        TXT_CostoODP.Text = String.Format("{0:n}", dr["CostoODP"]);;
                         TXT_EstadoODP.Text = dr["Estado"].ToString().Trim();
                         TXT_FechaODP.Text = dr["FODP"].ToString().Trim();
                         TXT_HoraODP.Text = dr["HODP"].ToString().Trim();
@@ -283,7 +288,25 @@ namespace MCWebHogar.ControlPedidos
             }
         }
 
-        protected void BTN_ReporteOrdenProduccion_Click(object sender, EventArgs e)
+        protected void DDL_Reportes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (Convert.ToInt32(DDL_Reportes.SelectedValue))
+            {
+                case 1:
+                    ReporteOrdenProduccion();
+                    break;
+                case 2:
+                    DescargarOrdenProduccion();
+                    break;
+                default:
+                    break;
+            }
+            DDL_Reportes.SelectedValue = "0";
+            UpdatePanel_Header.Update();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDDL_Reportes_SelectedIndexChanged", "desactivarloading();estilosElementosBloqueados();cargarFiltros();", true);
+        }
+
+        private void ReporteOrdenProduccion()
         {
             try
             {
@@ -388,7 +411,7 @@ namespace MCWebHogar.ControlPedidos
             }
         }
 
-        protected void BTN_DescargarOrdenProduccion_Click(object sender, EventArgs e)
+        private void DescargarOrdenProduccion()
         {
             DT.DT1.Clear();
             DT.DT1.Rows.Add("@IDODP", HDF_IDODP.Value, SqlDbType.Int);
@@ -625,19 +648,12 @@ namespace MCWebHogar.ControlPedidos
 
                 if (HDF_EstadoODP.Value != "Confirmada")
                 {
-                    Button minus = (Button)e.Row.FindControl("BTN_Minus");
-                    Button plus = (Button)e.Row.FindControl("BTN_Plus");
-
                     cantidad.Enabled = false;
                     cantidad.CssClass = "form-control";
                     ddlUnds.Enabled = false;
                     ddlUnds.CssClass = "form-control";
                     ddlDecs.Enabled = false;
                     ddlDecs.CssClass = "form-control";
-                    minus.Enabled = false;
-                    minus.CssClass = "btn btn-outline-primary btn-round";
-                    plus.Enabled = false;
-                    plus.CssClass = "btn btn-outline-primary btn-round";
                 }
             }
         }
@@ -690,7 +706,7 @@ namespace MCWebHogar.ControlPedidos
             DropDownList ddlDecs = DGV_ListaProductosODP.Rows[index].FindControl("DDL_Decenas") as DropDownList;
             int unds = Convert.ToInt32(cantidadProducto) % 10;
             int decs = Convert.ToInt32(cantidadProducto) / 10;
-            if (cantidadProducto > 0 && cantidadProducto < 99)
+            if (cantidadProducto >= 0 && cantidadProducto < 100)
             {                                 
                 ddlUnds.SelectedValue = unds.ToString();
                 ddlDecs.SelectedValue = decs.ToString();
@@ -704,6 +720,9 @@ namespace MCWebHogar.ControlPedidos
                 cantidadProducto = decs + unds;
                 cantidad.Text = cantidadProducto.ToString();
             }
+            UpdatePanel_ListaProductosODP.Update();
+            string script = "enterCantidad(" + index + ");";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", script, true);
         }
 
         protected void DDL_DecenasUnidades_OnSelectedIndexChanged(object sender, EventArgs e)

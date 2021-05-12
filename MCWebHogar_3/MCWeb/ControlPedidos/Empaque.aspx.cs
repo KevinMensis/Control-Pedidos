@@ -178,8 +178,25 @@ namespace MCWebHogar.ControlPedidos
             DT.DT1.Rows.Add("@TipoSentencia", "CrearEmpaque", SqlDbType.VarChar);
 
             Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP14_0001");
-            
-            cargarEmpaques();
+
+            if (Result != null && Result.Rows.Count > 0)
+            {
+                if (Result.Rows[0][0].ToString().Trim() == "ERROR")
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_CrearEmpaques_Click", "alertifywarning('" + Result.Rows[0][1].ToString().Trim() + "');", true);
+                    return;
+                }
+                else
+                {
+                    Session["IDEmpaque"] = Result.Rows[0][1].ToString().Trim();
+                    Response.Redirect("DetalleEmpaque.aspx", true);
+                }
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_CrearEmpaques_Click", "alertifywarning('No se ha podido crear la orden de empaque, por favor intente de nuevo.');", true);
+                return;
+            }
         }
         #endregion
     }

@@ -26,8 +26,11 @@
         }
 
         function activarloading() {
-            document.getElementById('fade2').style.display = 'block';
-            document.getElementById('modalloading').style.display = 'block';
+            var value = $(<%= DDL_Reportes.ClientID %>)[0].value
+            if (value !== 2 && value !== '2') {
+                document.getElementById('fade2').style.display = 'block';
+                document.getElementById('modalloading').style.display = 'block';
+            }
         }
 
         function desactivarloading() {
@@ -35,13 +38,37 @@
             document.getElementById('modalloading').style.display = 'none';
         }
 
-        //function abrirModalConfirmarPedido() {
-        //    document.getElementById('BTN_ModalConfirmacionPedido').click()
-        //}
+        function enterClickAgregar(txtCantidad) {
+            var values = txtCantidad.id.split('_')
+            var index = values.pop() * 1 + 1
+            var rows = $(<%= DGV_ListaProductosDespacho.ClientID %>)[0].rows.length - 1
+            var id = ''
+            if (index === rows) {
+                id = 'Content_DGV_ListaProductosDespacho_TXT_Cantidad_' + 0
+            } else {
+                id = 'Content_DGV_ListaProductosDespacho_TXT_Cantidad_' + index
+            }
+            document.getElementById(id).autofocus = true;
+            document.getElementById(id).focus();
+            document.getElementById(id).select();
+            console.dir(document.getElementById(id))
+            return false;
+        }
 
-        //function cerrarModalConfirmarPedido() {
-        //    document.getElementById('BTN_ModalConfirmacionPedido').click()
-        //}
+        function enterCantidad(index) {
+            // var values = txtCantidad.id.split('_')
+            var index = index + 1
+            var rows = $(<%= DGV_ListaProductosDespacho.ClientID %>)[0].rows.length - 1
+            var id = ''
+            if (index === rows) {
+                id = 'Content_DGV_ListaProductosDespacho_TXT_Cantidad_' + 0
+            } else {
+                id = 'Content_DGV_ListaProductosDespacho_TXT_Cantidad_' + index
+            }
+            document.getElementById(id).autofocus = true;
+            document.getElementById(id).focus();
+            document.getElementById(id).select();
+        }
 
         function estilosElementosBloqueados() {
             document.getElementById('<%= TXT_CodigoDespacho.ClientID %>').classList.remove('aspNetDisabled')
@@ -54,6 +81,8 @@
             document.getElementById('<%= TXT_FechaDespacho.ClientID %>').classList.add('form-control')
             document.getElementById('<%= TXT_HoraDespacho.ClientID %>').classList.remove('aspNetDisabled')
             document.getElementById('<%= TXT_HoraDespacho.ClientID %>').classList.add('form-control')
+            document.getElementById('<%= DDL_Propietario.ClientID %>').classList.remove('aspNetDisabled')
+            document.getElementById('<%= DDL_Propietario.ClientID %>').classList.add('form-control')
         }
 
         function cargarFiltros() {
@@ -70,7 +99,8 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
     <div id="modalloading" class="loading">
-        <img src="../images/cargando5.gif" width="100" height="100" />
+        <img src="../Assets/img/cargando.gif" width="100" height="100" /><br />
+        <asp:Label runat="server" ID="LBL_GenerandoInforme" style="color: white;" Text="Generando informe espere por favor..."></asp:Label>
     </div>
     <div id="fade2" class="overlayload"></div>
     <div class="wrapper">
@@ -95,7 +125,7 @@
                     <li>
                         <a href="OrdenesProduccion.aspx">
                             <i class="fas fa-sort"></i>
-                            <p>Ordenes de Producción</p>
+                           <p>Ordenes de producción</p>
                         </a>
                     </li>
                     <li>
@@ -141,19 +171,19 @@
                     <li>
                         <a href="PuntosVenta.aspx">
                             <i class="fas fa-building"></i>
-                            <p>Puntos de Venta</p>
+                            <p>Puntos de venta</p>
                         </a>
                     </li>
                     <li>
                         <a href="PlantasProduccion.aspx">
                             <i class="fas fa-industry"></i>
-                            <p>Plantas de Producción</p>
+                            <p>Plantas de producción</p>
                         </a>
                     </li>
                     <li>
                         <a href="GestionUsuarios.aspx">
                             <i class="fas fa-user"></i>
-                            <p>GESTIÓN DE USUARIOS</p>
+                            <p>Gestión de usuarios</p>
                         </a>
                     </li>
                     <hr style="width: 230px; color: #2c2c2c;" />
@@ -162,9 +192,9 @@
                             <i class="fas fa-sign-out-alt"></i>
                             <p>Cerrar sessión</p>
                         </asp:LinkButton>
-                        <a href="http://mensis.cr/" target="_blank">
-                            <p style="margin-left: 25%; font-size: 7px;">Desarrollado por</p>
-                            <img style="width: 25%; display: block; margin-left: 30%; margin-top: 3%;" src="../Assets/img/logoMensis.png" />
+                        <a href="https://mensis.cr/" target="_blank" style="margin-top: 0px !important;">
+                            <p style="margin-left: 29%; font-size: 7px;">Desarrollado por</p>
+                            <img style="width: 25%; display: block; margin-left: 30%;" src="../Assets/img/logoMensis.png" />
                         </a>
                     </li>
                 </ul>
@@ -184,23 +214,24 @@
                                     <div class="form-row">
                                         <div class="form-group col-md-3">
                                             <label for="TXT_CodigoDespacho">Número despacho</label>
-                                            <asp:TextBox class="form-control" style="text-align: right;" ID="TXT_CodigoDespacho" runat="server" Enabled="false"></asp:TextBox>
+                                            <asp:TextBox class="form-control" ID="TXT_CodigoDespacho" runat="server" Enabled="false"></asp:TextBox>
                                         </div>
                                         <div class="form-group col-md-2">
                                             <label for="TXT_TotalProductos">Total de productos</label>
-                                            <asp:TextBox class="form-control" style="text-align: right;" ID="TXT_TotalProductos" runat="server" TextMode="Number" Enabled="false"></asp:TextBox>
+                                            <asp:TextBox class="form-control" ID="TXT_TotalProductos" runat="server" TextMode="Number" Enabled="false"></asp:TextBox>
                                         </div>
                                         <div class="form-group col-md-2">
                                             <label for="TXT_EstadoDespacho">Estado despacho</label>
-                                            <asp:TextBox class="form-control" style="text-align: right;" ID="TXT_EstadoDespacho" runat="server" Enabled="false"></asp:TextBox>
+                                            <asp:TextBox class="form-control" ID="TXT_EstadoDespacho" runat="server" Enabled="false"></asp:TextBox>
                                         </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="TXT_FechaDespacho">Fecha despacho</label>
+                                        <div class="form-group col-md-4">                                            
                                             <div class="form-row">
                                                 <div class="col-md-7">
+                                                    <label for="TXT_FechaDespacho">Fecha despacho</label>
                                                     <asp:TextBox ID="TXT_FechaDespacho" runat="server" CssClass="form-control" TextMode="Date" format="dd/MM/yyyy" Enabled="false"></asp:TextBox>
                                                 </div>
                                                 <div class="col-md-5">
+                                                    <label for="TXT_HoraDespacho">Hora despacho</label>
                                                     <asp:TextBox ID="TXT_HoraDespacho" runat="server" CssClass="form-control" TextMode="Time" format="HH:mm" Enabled="false"></asp:TextBox>
                                                 </div>
                                             </div>
@@ -209,7 +240,17 @@
                                     <div class="form-row">
                                         <div class="form-group col-md-4">
                                             <label for="DDL_Propietario">Solicitante</label>
-                                            <asp:DropDownList class="form-control" ID="DDL_Propietario" runat="server"></asp:DropDownList>
+                                            <asp:DropDownList class="form-control" ID="DDL_Propietario" runat="server" Enabled="false"></asp:DropDownList>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="DDL_Reportes">Reportes</label>
+                                            <asp:DropDownList class="form-control" ID="DDL_Reportes" runat="server" AutoPostBack="true" onchange="activarloading();estilosElementosBloqueados();" OnSelectedIndexChanged="DDL_Reportes_SelectedIndexChanged">
+                                                <asp:ListItem Value="0">Seleccione</asp:ListItem>
+                                                <asp:ListItem Value="1">Reporte despacho</asp:ListItem>
+                                                <asp:ListItem Value="2">Descargar despacho</asp:ListItem>
+                                            </asp:DropDownList>
                                         </div>
                                     </div>
                                     <div class="form-row">
@@ -222,30 +263,31 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">                                                                               
-                                            <asp:Button ID="BTN_ConfirmarDespacho" runat="server" Text="Confirmar despacho" CssClass="btn btn-secondary" OnClick="BTN_ConfirmarDespacho_Click"></asp:Button>                                        
-                                            <asp:Button ID="BTN_CompletarDespacho" runat="server" Text="Completar despacho" CssClass="btn btn-success" OnClick="BTN_CompletarDespacho_Click"></asp:Button>
+                                            <asp:Button UseSubmitBehavior="false" ID="BTN_ConfirmarDespacho" runat="server" Text="Confirmar despacho" CssClass="btn btn-secondary" OnClick="BTN_ConfirmarDespacho_Click"></asp:Button>                                                                                    
                                         </div>                                        
                                         <div class="col-md-6" style="text-align: right;"> 
-                                            <asp:Button ID="BTN_ReporteDespacho" runat="server" Text="Reporte despacho" CssClass="btn btn-secondary" OnClientClick="activarloading();estilosElementosBloqueados();"></asp:Button>                                                                                
-                                            <asp:Button ID="BTN_DescargarDespacho" runat="server" Text="Descargar despacho" CssClass="btn btn-primary" OnClientClick="estilosElementosBloqueados();"></asp:Button>                                        
+                                            <asp:Button UseSubmitBehavior="false" ID="BTN_CompletarDespacho" runat="server" Text="Completar despacho" CssClass="btn btn-success" OnClick="BTN_CompletarDespacho_Click"></asp:Button>                                            
                                         </div>
                                     </div>
                                 </div>
                             </ContentTemplate>
+                            <Triggers>
+                                <asp:PostBackTrigger ControlID="DDL_Reportes" />
+                            </Triggers>
                         </asp:UpdatePanel>
                         <div class="card-body">
                             <div class="card-body">
                                 <asp:UpdatePanel ID="UpdatePanel_FiltrosProductos" runat="server" UpdateMode="Conditional">
-                                    <ContentTemplate>                           
-                                        <div class="input-group no-border">
-                                            <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar..." OnTextChanged="TXT_Buscar_OnTextChanged" AutoPostBack="true"></asp:TextBox>
-                                            <div class="input-group-append">
-                                                <div class="input-group-text">
-                                                    <i class="nc-icon nc-zoom-split"></i>
+                                    <ContentTemplate> 
+                                         <div class="row">                          
+                                            <div class="input-group no-border col-md-6">
+                                                <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar producto..." OnTextChanged="TXT_Buscar_OnTextChanged" AutoPostBack="true"></asp:TextBox>
+                                                <div class="input-group-append">
+                                                    <div class="input-group-text">
+                                                        <i class="nc-icon nc-zoom-split"></i>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
+                                            </div>                                       
                                             <div class="input-group no-border col-md-3">     
                                                 <asp:ListBox class="form-control" runat="server" ID="LB_Pedido" SelectionMode="Multiple" OnTextChanged="TXT_Buscar_OnTextChanged" AutoPostBack="true"></asp:ListBox>
                                             </div>
@@ -266,20 +308,19 @@
                                             OnRowCommand="DGV_ListaProductosDespacho_RowCommand"
                                             OnRowDataBound="DGV_ListaProductosDespacho_RowDataBound">
                                             <Columns>
-                                                <asp:BoundField DataField="NumeroPedido" SortExpression="PedidoID" HeaderText="Número pedido" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                <asp:BoundField DataField="NumeroPedido" SortExpression="PedidoID" HeaderText="Número pedido" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="DescripcionPuntoVenta" SortExpression="DescripcionPuntoVenta" HeaderText="Punto venta" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
-                                                <asp:BoundField DataField="ProductoID" SortExpression="ProductoID" HeaderText="Código producto" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="DescripcionProducto" SortExpression="DescripcionProducto" HeaderText="Nombre producto" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="CantidadSolicitada" SortExpression="CantidadSolicitada" HeaderText="Cantidad solicitada" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
                                                 <asp:BoundField DataField="CantidadDespachada" SortExpression="CantidadDespachada" HeaderText="Cantidad despachada" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                
                                                 <asp:TemplateField>
                                                     <HeaderTemplate>
-                                                        <asp:Label ID="LBL_Cantidad" runat="server" Text="Cantidad despachada"></asp:Label>
+                                                        <asp:Label ID="LBL_Cantidad" runat="server" Text="Cantidad a despachar"></asp:Label>
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
                                                         <div class="row">
                                                             <asp:TextBox class="form-control" TextMode="Number" MaxLength="2" min="0" max="99" style="width: 40%" runat="server" ID="TXT_Cantidad" 
-                                                                OnTextChanged="TXT_Cantidad_OnTextChanged" AutoPostBack="true" Text='0' />                                                            
+                                                                OnTextChanged="TXT_Cantidad_OnTextChanged" AutoPostBack="true" onchange="enterClickAgregar(this);" Text='0' />                                                            
                                                             <asp:DropDownList class="form-control" style="width: 30%" runat="server" ID="DDL_Decenas" 
                                                                 OnSelectedIndexChanged="DDL_DecenasUnidades_OnSelectedIndexChanged" AutoPostBack="true">
                                                                 <asp:ListItem Value="0">0</asp:ListItem>
@@ -307,30 +348,6 @@
                                                                 <asp:ListItem Value="9">9</asp:ListItem>
                                                             </asp:DropDownList>                                                            
                                                         </div>
-                                                    </ItemTemplate>
-                                                    <ItemStyle HorizontalAlign="Center" />
-                                                </asp:TemplateField>
-                                                <asp:TemplateField>
-                                                    <HeaderTemplate>
-                                                        <asp:Label ID="LBL_Disminuir" runat="server" Text="Disminuir"></asp:Label>
-                                                    </HeaderTemplate>
-                                                    <ItemTemplate>
-                                                        <asp:Button class="btn btn-outline-primary btn-round" ID="BTN_Minus" runat="server"
-                                                                CommandName="minus"
-                                                                CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
-                                                                Text="-" AutoPostBack="true" />
-                                                    </ItemTemplate>
-                                                    <ItemStyle HorizontalAlign="Center" />
-                                                </asp:TemplateField>
-                                                <asp:TemplateField>
-                                                    <HeaderTemplate>
-                                                        <asp:Label ID="LBL_Aumentar" runat="server" Text="Aumentar"></asp:Label>
-                                                    </HeaderTemplate>
-                                                    <ItemTemplate>
-                                                        <asp:Button class="btn btn-outline-primary btn-round" style="font-size: 10px;" ID="BTN_Plus" runat="server"
-                                                                CommandName="plus"
-                                                                CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
-                                                                Text="+" AutoPostBack="true" />
                                                     </ItemTemplate>
                                                     <ItemStyle HorizontalAlign="Center" />
                                                 </asp:TemplateField>

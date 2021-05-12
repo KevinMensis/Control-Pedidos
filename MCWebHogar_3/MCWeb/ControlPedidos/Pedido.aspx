@@ -34,16 +34,6 @@
             return false
         }
 
-        function activarloading() {
-            document.getElementById('fade2').style.display = 'block';
-            document.getElementById('modalloading').style.display = 'block';
-        }
-
-        function desactivarloading() {
-            document.getElementById('fade2').style.display = 'none';
-            document.getElementById('modalloading').style.display = 'none';
-        }
-
         function abrirModalCrearPedido() {
             document.getElementById('BTN_ModalCrearPedido').click()
         }
@@ -53,10 +43,33 @@
         }
 
         function validarCreacionPedido() {
+            var solicitante = $(<%= DDL_Propietario.ClientID %>)[0].value
+            var sucursal = $(<%= DDL_PuntoVenta.ClientID %>)[0].value
+            var plantaProduccion = $(<%= DDL_PlantaProduccion.ClientID %>)[0].value
 
+            var correct = true
+            if (solicitante === 0 || solicitante === "0") {
+                alertifywarning('Debe seleccionar su usuario como solicitante del pedido.')
+                $(<%= DDL_Propietario.ClientID %>).autofocus = true
+                $(<%= DDL_Propietario.ClientID %>).focus()
+                correct = false
+            }
+            if (sucursal === 0 || sucursal === "0") {
+                alertifywarning('Debe seleccionar el punto de venta.')
+                $(<%= DDL_PuntoVenta.ClientID %>).autofocus = true
+                $(<%= DDL_PuntoVenta.ClientID %>).focus()
+                correct = false
+            }
+            if (plantaProduccion === 0 || plantaProduccion === "0") {
+                alertifywarning('Debe seleccionar la planta de producción.')
+                $(<%= DDL_PlantaProduccion.ClientID %>).autofocus = true
+                $(<%= DDL_PlantaProduccion.ClientID %>).focus()
+                correct = false
+            }
+            return correct
         }
 
-        function TXT_FechaCreacionDesdeChange() {
+        <%--function TXT_FechaCreacionDesdeChange() {
             var fechaCreacionDesde = $(<%= TXT_FechaCreacionDesde.ClientID %>)[0].value
             var fechaCreacionHasta = $(<%= TXT_FechaCreacionHasta.ClientID %>)[0].value
             
@@ -94,7 +107,7 @@
                 $(<%= TXT_FechaPedidoDesde.ClientID %>)[0].value = fechaPedidoHasta
             }
             return true
-        }
+        }--%>
 
         function showMenu() {
             $('#div_Menu')[0].style.webkitTransform = 'none';
@@ -109,11 +122,9 @@
         }
 
         function cargarFiltro(e) {
-            console.log(e.keyCode)
             if (e.keyCode == 13) {
                 __doPostBack('TXT_Buscar')
             }
-            // cargarFiltros()
         }
 
         function cargarFiltros() {
@@ -130,10 +141,6 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
-    <div id="modalloading" class="loading">
-        <img src="../images/cargando5.gif" width="100" height="100" />
-    </div>
-    <div id="fade2" class="overlayload"></div>
     <div class="wrapper ">
         <div class="sidebar" id="div_Menu" data-color="white" data-active-color="danger">
             <div class="sidebar-wrapper scroll" style="overflow-y: auto;">
@@ -154,7 +161,7 @@
                     <li>
                         <a href="OrdenesProduccion.aspx">
                             <i class="fas fa-sort"></i>
-                            <p>Ordenes de Producción</p>
+                           <p>Ordenes de producción</p>
                         </a>
                     </li>
                     <li>
@@ -200,19 +207,19 @@
                     <li>
                         <a href="PuntosVenta.aspx">
                             <i class="fas fa-building"></i>
-                            <p>Puntos de Venta</p>
+                            <p>Puntos de venta</p>
                         </a>
                     </li>
                     <li>
                         <a href="PlantasProduccion.aspx">
                             <i class="fas fa-industry"></i>
-                            <p>Plantas de Producción</p>
+                            <p>Plantas de producción</p>
                         </a>
                     </li>
                     <li>
                         <a href="GestionUsuarios.aspx">
                             <i class="fas fa-user"></i>
-                            <p>GESTIÓN DE USUARIOS</p>
+                            <p>Gestión de usuarios</p>
                         </a>
                     </li>
                     <hr style="width: 230px; color: #2c2c2c;" />
@@ -221,9 +228,9 @@
                             <i class="fas fa-sign-out-alt"></i>
                             <p>Cerrar sessión</p>
                         </asp:LinkButton>
-                        <a href="http://mensis.cr/" target="_blank">
-                            <p style="margin-left: 25%; font-size: 7px;">Desarrollado por</p>
-                            <img style="width: 25%; display: block; margin-left: 30%; margin-top: 3%;" src="../Assets/img/logoMensis.png" />
+                        <a href="https://mensis.cr/" target="_blank" style="margin-top: 0px !important;">
+                            <p style="margin-left: 29%; font-size: 7px;">Desarrollado por</p>
+                            <img style="width: 25%; display: block; margin-left: 30%;" src="../Assets/img/logoMensis.png" />
                         </a>
                     </li>
                 </ul>
@@ -237,10 +244,10 @@
                         <ContentTemplate>
                             <div class="row">
                                 <div class="col-md-8">
-                                    <asp:Button ID="BTN_ShowMenu" runat="server" Text="Menú" CssClass="btn btn-info btn-show" style="line-height: 0.35rem;" OnClientClick="showMenu();"></asp:Button>                                    
+                                    <asp:Button ID="BTN_ShowMenu" UseSubmitBehavior="false" runat="server" Text="Menú" CssClass="btn btn-info btn-show" style="line-height: 0.35rem;" OnClientClick="showMenu();"></asp:Button>                                    
                                 </div>
                                 <div class="col-md-4" style="float: right; right: -10%;">
-                                    <asp:Button ID="BTN_CloseMenu" runat="server" Text="Cerrar menú" CssClass="btn btn-info btn-show" style="line-height: 0.35rem;" OnClientClick="closeMenu();"></asp:Button>
+                                    <asp:Button ID="BTN_CloseMenu" UseSubmitBehavior="false" runat="server" Text="Cerrar menú" CssClass="btn btn-info btn-show" style="line-height: 0.35rem;" OnClientClick="closeMenu();"></asp:Button>
                                 </div>
                                 <div class="col-md-12">
                                     <h1 class="h3 mb-2 text-gray-800" style="display: inline-block;">Pedidos</h1>
@@ -253,9 +260,9 @@
                         <asp:UpdatePanel ID="UpdatePanel_PedidosEvents" runat="server" UpdateMode="Conditional">
                             <ContentTemplate>
                                 <div class="card-header" style="text-align: right;">
-                                    <asp:Button ID="BTN_CrearPedidos" runat="server" Text="Crear nuevo pedido" CssClass="btn btn-secondary" OnClick="BTN_CrearPedidos_Click"></asp:Button>
-                                    <asp:Button ID="BTN_CrearOrdenes" runat="server" Text="Crear nueva orden" CssClass="btn btn-secondary" OnClick="BTN_CrearOrdenes_Click"></asp:Button>
-                                    <asp:Button ID="BTN_CrearDespacho" runat="server" Text="Despachar pedido" CssClass="btn btn-secondary" OnClick="BTN_CrearDespacho_Click"></asp:Button>
+                                    <asp:Button ID="BTN_CrearPedidos" UseSubmitBehavior="false" runat="server" Text="Crear nuevo pedido" CssClass="btn btn-secondary" OnClick="BTN_CrearPedidos_Click"></asp:Button>
+                                    <asp:Button ID="BTN_CrearOrdenes" UseSubmitBehavior="false" runat="server" Text="Crear nueva orden" CssClass="btn btn-secondary" OnClick="BTN_CrearOrdenes_Click"></asp:Button>
+                                    <asp:Button ID="BTN_CrearDespacho" UseSubmitBehavior="false" runat="server" Text="Despachar pedido" CssClass="btn btn-secondary" OnClick="BTN_CrearDespacho_Click"></asp:Button>
                                 </div>
                             </ContentTemplate>
                         </asp:UpdatePanel>
@@ -264,8 +271,8 @@
                                 <asp:UpdatePanel ID="UpdatePanel_FiltrosPedidos" runat="server" UpdateMode="Conditional">
                                     <ContentTemplate> 
                                         <div class="row">                         
-                                            <div class="input-group no-border col-md-12">
-                                                <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar número pedido..." onkeypress="cargarFiltro(event);"></asp:TextBox>
+                                            <div class="input-group no-border col-md-3">
+                                                <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar número pedido..." OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>
                                                 <div class="input-group-append">
                                                     <div class="input-group-text">
                                                         <i class="nc-icon nc-zoom-split"></i>
@@ -273,7 +280,7 @@
                                                 </div>
                                             </div>
                                         </div> 
-                                        <div class="row">
+                                        <%--<div class="row">
                                             <div class="input-group no-border col-md-3">     
                                                 <label for="TXT_FechaCreacionDesde"> Fecha creación desde:</label>                                          
                                                 <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaCreacionDesde" runat="server" TextMode="Date" onchange="TXT_FechaCreacionDesdeChange();" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
@@ -290,7 +297,7 @@
                                                 <label for="TXT_FechaPedidoHasta"> Fecha pedido hasta:</label>
                                                 <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaPedidoHasta" runat="server" TextMode="Date" onchange="TXT_FechaPedidoHastaChange();" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
                                             </div>
-                                        </div>
+                                        </div>--%>
                                         <div class="row">
                                             <div class="col-md-3">
                                                 <asp:ListBox class="form-control" runat="server" ID="LB_Sucursal" SelectionMode="Multiple" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:ListBox>
@@ -306,7 +313,7 @@
                                             </div>
                                         </div>
                                         <div class="row" style="float: right;">
-                                            <asp:Button id="BTN_EliminarFiltro" style="float: right;" runat="server" CssClass="btn btn-danger" Text="Eliminar Filtro" OnClick="BTN_EliminarFiltro_Click" />
+                                            <asp:Button id="BTN_EliminarFiltro" UseSubmitBehavior="false" style="float: right;" runat="server" CssClass="btn btn-danger" Text="Eliminar filtro" OnClick="BTN_EliminarFiltro_Click" />
                                         </div>
                                         <div class="row" style="margin-left: 10px; margin-top: 10px;">
                                             <asp:Label id="LBL_Filtro" runat="server" Text="Filtros: Ninguno;"></asp:Label>                                                                                            
@@ -324,15 +331,15 @@
                                             OnSorting="DGV_ListaPedidos_Sorting"
                                             OnRowDataBound="DGV_ListaPedidos_OnRowDataBound">
                                             <Columns>
-                                                <asp:BoundField DataField="NumeroPedido" SortExpression="IDPedido" HeaderText="Número Pedido" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                <asp:BoundField DataField="NumeroPedido" SortExpression="IDPedido" HeaderText="Número pedido" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="FPedido" SortExpression="FechaIngreso" HeaderText="Fecha pedido" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
                                                 <asp:BoundField DataField="DescripcionPuntoVenta" SortExpression="DescripcionPuntoVenta" HeaderText="Sucursal" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                <asp:BoundField DataField="DescripcionPlantaProduccion" SortExpression="DescripcionPlantaProduccion" HeaderText="Planta Producción" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                <asp:BoundField DataField="DescripcionPlantaProduccion" SortExpression="DescripcionPlantaProduccion" HeaderText="Planta producción" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="Estado" SortExpression="Estado" HeaderText="Estado" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="Nombre" SortExpression="Nombre" HeaderText="Solicitante" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:TemplateField>
                                                     <HeaderTemplate>
-                                                        <asp:Label ID="LBL_Acciones" runat="server" Text="Seleccionar"></asp:Label>
+                                                        <asp:Label ID="LBL_CheckBox" runat="server" Text="Seleccionar"></asp:Label>
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
                                                         <asp:CheckBox ID="seleccionarCheckBox" runat="server" />
@@ -341,10 +348,10 @@
                                                 </asp:TemplateField>
                                                 <asp:TemplateField>
                                                     <HeaderTemplate>
-                                                        <asp:Label ID="LBL_Acciones" runat="server" Text="ACCIONES"></asp:Label>
+                                                        <asp:Label ID="LBL_Acciones" runat="server" Text="Acciones"></asp:Label>
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
-                                                        <asp:Button class="btn btn-outline-primary btn-round" ID="BTN_VerDetalle" runat="server"
+                                                        <asp:Button UseSubmitBehavior="false" class="btn btn-outline-primary btn-round" ID="BTN_VerDetalle" runat="server"
                                                             CommandName="VerDetalle"
                                                             CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
                                                             Text="Ver detalles" AutoPostBack="true" />
@@ -391,15 +398,15 @@
                                     <asp:DropDownList class="form-control" ID="DDL_PuntoVenta" runat="server"></asp:DropDownList>
                                 </div>
                             </div>
-                            <div class="form-row">
+                            <%--<div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label for="TXT_DescripcionPedido">Descripcion del pedido:</label>
                                     <asp:TextBox ID="TXT_DescripcionPedido" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="3"></asp:TextBox>
                                 </div>
-                            </div>
+                            </div>--%>
                         </div>
                         <div class="modal-footer">
-                            <asp:Button ID="BTN_CerrarModalCrearPedido" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-secondary" />
+                            <asp:Button ID="BTN_CerrarModalCrearPedido" UseSubmitBehavior="false" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-secondary" />
                             <asp:Button ID="BTN_CrearPedido" runat="server" Text="Guardar pedido" CssClass="btn btn-success" OnClientClick="return validarCreacionPedido();" OnClick="BTN_CrearPedido_Click" />
                         </div>
                     </div>

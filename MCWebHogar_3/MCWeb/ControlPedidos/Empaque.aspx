@@ -60,7 +60,8 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
     <div id="modalloading" class="loading">
-        <img src="../images/cargando5.gif" width="100" height="100" />
+        <img src="../Assets/img/cargando.gif" width="100" height="100" /><br />
+        <asp:Label runat="server" ID="LBL_GenerandoInforme" style="color: white;" Text="Generando informe espere por favor..."></asp:Label>
     </div>
     <div id="fade2" class="overlayload"></div>
     <div class="wrapper ">
@@ -83,7 +84,7 @@
                     <li>
                         <a href="OrdenesProduccion.aspx">
                             <i class="fas fa-sort"></i>
-                            <p>Ordenes de Producción</p>
+                           <p>Ordenes de producción</p>
                         </a>
                     </li>
                     <li class="active">
@@ -129,19 +130,19 @@
                     <li>
                         <a href="PuntosVenta.aspx">
                             <i class="fas fa-building"></i>
-                            <p>Puntos de Venta</p>
+                            <p>Puntos de venta</p>
                         </a>
                     </li>
                     <li>
                         <a href="PlantasProduccion.aspx">
                             <i class="fas fa-industry"></i>
-                            <p>Plantas de Producción</p>
+                            <p>Plantas de producción</p>
                         </a>
                     </li>
                     <li>
                         <a href="GestionUsuarios.aspx">
                             <i class="fas fa-user"></i>
-                            <p>GESTIÓN DE USUARIOS</p>
+                            <p>Gestión de usuarios</p>
                         </a>
                     </li>
                     <hr style="width: 230px; color: #2c2c2c;" />
@@ -150,9 +151,9 @@
                             <i class="fas fa-sign-out-alt"></i>
                             <p>Cerrar sessión</p>
                         </asp:LinkButton>
-                        <a href="http://mensis.cr/" target="_blank">
-                            <p style="margin-left: 25%; font-size: 7px;">Desarrollado por</p>
-                            <img style="width: 25%; display: block; margin-left: 30%; margin-top: 3%;" src="../Assets/img/logoMensis.png" />
+                        <a href="https://mensis.cr/" target="_blank" style="margin-top: 0px !important;">
+                            <p style="margin-left: 29%; font-size: 7px;">Desarrollado por</p>
+                            <img style="width: 25%; display: block; margin-left: 30%;" src="../Assets/img/logoMensis.png" />
                         </a>
                     </li>
                 </ul>
@@ -168,31 +169,29 @@
                             <div class="card-body">
                                 <asp:UpdatePanel ID="UpdatePanel_FiltrosEmpaques" runat="server" UpdateMode="Conditional">
                                     <ContentTemplate> 
-                                        <div class="row">
-                                            <div class="col-md-6">                                            
-                                                <div class="input-group no-border col-md-6">     
-                                                    <label for="TXT_FechaEmpaqueDesde"> Fecha empaque desde:</label>                                          
-                                                    <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaEmpaqueDesde" runat="server" TextMode="Date" onchange="TXT_FechaEmpaqueDesdeChange();" OnTextChanged="TXT_FiltrarEmpaques_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
-                                                </div>
-                                                <div class="input-group no-border col-md-6">
-                                                    <label for="TXT_FechaEmpaqueHasta"> Fecha empaque hasta:</label>
-                                                    <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaEmpaqueHasta" runat="server" TextMode="Date" onchange="TXT_FechaEmpaqueHastaChange();" OnTextChanged="TXT_FiltrarEmpaques_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6" style="text-align: right;"> 
+                                        <div class="row">                                            
+                                            <div class="col-md-12" style="text-align: right;"> 
                                                 <div class="card-header" style="text-align: right;">
                                                     <asp:Button ID="BTN_CrearEmpaques" runat="server" Text="Crear nuevo empaque" CssClass="btn btn-secondary" OnClick="BTN_CrearEmpaques_Click"></asp:Button>                                    
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">                         
-                                            <div class="input-group no-border col-md-12">
-                                                <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar número Empaque..." OnTextChanged="TXT_FiltrarEmpaques_OnTextChanged" AutoPostBack="true"></asp:TextBox>
+                                            <div class="input-group no-border col-md-4">
+                                                <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar número empaque..." OnTextChanged="TXT_FiltrarEmpaques_OnTextChanged" AutoPostBack="true"></asp:TextBox>
                                                 <div class="input-group-append">
                                                     <div class="input-group-text">
                                                         <i class="nc-icon nc-zoom-split"></i>
                                                     </div>
                                                 </div>
+                                            </div>                                            
+                                            <div class="input-group no-border col-md-3">     
+                                                <label for="TXT_FechaEmpaqueDesde"> Fecha empaque desde:</label>                                          
+                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaEmpaqueDesde" runat="server" TextMode="Date" onchange="TXT_FechaEmpaqueDesdeChange();" OnTextChanged="TXT_FiltrarEmpaques_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
+                                            </div>
+                                            <div class="input-group no-border col-md-3">
+                                                <label for="TXT_FechaEmpaqueHasta"> Fecha empaque hasta:</label>
+                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaEmpaqueHasta" runat="server" TextMode="Date" onchange="TXT_FechaEmpaqueHastaChange();" OnTextChanged="TXT_FiltrarEmpaques_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
                                             </div>
                                         </div>
                                     </ContentTemplate>
@@ -207,12 +206,12 @@
                                                 OnRowCommand="DGV_ListaEmpaques_RowCommand"
                                                 OnRowDataBound="DGV_ListaEmpaques_OnRowDataBound">
                                                 <Columns>
-                                                    <asp:BoundField DataField="NumeroEmpaque" SortExpression="IDEmpaque" HeaderText="Número Empaque" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                    <asp:BoundField DataField="NumeroEmpaque" SortExpression="IDEmpaque" ItemStyle-ForeColor="black" HeaderText="Número empaque" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                     <asp:BoundField DataField="Nombre" SortExpression="Nombre" HeaderText="Solicitante" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                
                                                     <asp:BoundField DataField="FEmpaque" SortExpression="FEmpaque" HeaderText="Fecha" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                
                                                     <asp:TemplateField>
                                                         <HeaderTemplate>
-                                                            <asp:Label ID="LBL_Acciones" runat="server" Text="ACCIONES"></asp:Label>
+                                                            <asp:Label ID="LBL_Acciones" runat="server" Text="Acciones"></asp:Label>
                                                         </HeaderTemplate>
                                                         <ItemTemplate>
                                                             <asp:Button class="btn btn-outline-primary btn-round" ID="BTN_VerDetalle" runat="server"

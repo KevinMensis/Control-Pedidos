@@ -13,6 +13,15 @@ namespace MCWebHogar.ControlPedidos {
     public partial class DetalleDespacho {
         
         /// <summary>
+        /// LBL_GenerandoInforme control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LBL_GenerandoInforme;
+        
+        /// <summary>
         /// HDF_IDDespacho control.
         /// </summary>
         /// <remarks>
@@ -103,6 +112,15 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.DropDownList DDL_Propietario;
         
         /// <summary>
+        /// DDL_Reportes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DDL_Reportes;
+        
+        /// <summary>
         /// LBL_CreadoPor control.
         /// </summary>
         /// <remarks>
@@ -137,24 +155,6 @@ namespace MCWebHogar.ControlPedidos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BTN_CompletarDespacho;
-        
-        /// <summary>
-        /// BTN_ReporteDespacho control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BTN_ReporteDespacho;
-        
-        /// <summary>
-        /// BTN_DescargarDespacho control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BTN_DescargarDespacho;
         
         /// <summary>
         /// UpdatePanel_FiltrosProductos control.

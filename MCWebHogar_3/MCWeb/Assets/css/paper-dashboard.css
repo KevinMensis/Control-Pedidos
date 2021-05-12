@@ -7547,13 +7547,12 @@ License - nucleoapp.com/license/
   font-weight: 600;
   font-size: 0.8571em;
   line-height: 1.35em;
-  text-transform: uppercase;
   border: none;
   margin: 10px 1px;
   border-radius: 3px;
   padding: 11px 22px;
   cursor: pointer;
-  background-color: #66615B;
+  background-color: #00BB2D;
   color: #FFFFFF;
   -webkit-transition: all 150ms linear;
   -moz-transition: all 150ms linear;
@@ -13114,7 +13113,7 @@ img {
 }
 
 .modal-dialog {
-  padding-top: 60px;
+  padding-top: 30px;
 }
 
 .modal-body {
@@ -13340,9 +13339,8 @@ img {
   display: block;
   text-decoration: none;
   position: relative;
-  text-transform: uppercase;
   cursor: pointer;
-  font-size: 10px;
+  font-size: 14px;
   padding: 10px 8px;
   line-height: 30px;
   opacity: .7;
@@ -14261,9 +14259,9 @@ img {
 }
 
 .card label {
-  font-size: 0.8571em;
+  font-size: 1em;
   margin-bottom: 5px;
-  color: #9A9A9A;
+  color: black;
 }
 
 .card .card-footer {

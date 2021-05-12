@@ -13,6 +13,15 @@ namespace MCWebHogar.ControlPedidos {
     public partial class Empaque {
         
         /// <summary>
+        /// LBL_GenerandoInforme control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LBL_GenerandoInforme;
+        
+        /// <summary>
         /// LNK_CerrarSession control.
         /// </summary>
         /// <remarks>
@@ -31,24 +40,6 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.UpdatePanel UpdatePanel_FiltrosEmpaques;
         
         /// <summary>
-        /// TXT_FechaEmpaqueDesde control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_FechaEmpaqueDesde;
-        
-        /// <summary>
-        /// TXT_FechaEmpaqueHasta control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_FechaEmpaqueHasta;
-        
-        /// <summary>
         /// BTN_CrearEmpaques control.
         /// </summary>
         /// <remarks>
@@ -65,6 +56,24 @@ namespace MCWebHogar.ControlPedidos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TXT_Buscar;
+        
+        /// <summary>
+        /// TXT_FechaEmpaqueDesde control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TXT_FechaEmpaqueDesde;
+        
+        /// <summary>
+        /// TXT_FechaEmpaqueHasta control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TXT_FechaEmpaqueHasta;
         
         /// <summary>
         /// UpdatePanel_ListaEmpaques control.

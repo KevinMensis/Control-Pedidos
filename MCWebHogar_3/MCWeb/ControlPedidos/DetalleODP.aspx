@@ -39,8 +39,11 @@
         }
 
         function activarloading() {
-            document.getElementById('fade2').style.display = 'block';
-            document.getElementById('modalloading').style.display = 'block';
+            var value = $(<%= DDL_Reportes.ClientID %>)[0].value
+            if (value !== 2 && value !== '2') {
+                document.getElementById('fade2').style.display = 'block';
+                document.getElementById('modalloading').style.display = 'block';
+            }
         }
 
         function desactivarloading() {
@@ -66,6 +69,34 @@
 
         function imprimir(categoria, codigoODP, index, printer) {
             var listaProductos = 'Content_DGV_ListaCategorias_DGV_ListaProductos_' + index;
+
+            var table, tbody, i, rowLen, row, j, colLen, cell, resultHTML;
+
+            resultHTML = '<tbody><tr class="table" align="center" style="border-color:#51CBCE;">'
+
+            table = document.getElementById(listaProductos);
+            tbody = table.tBodies[0];
+
+            for (i = 0, rowLen = tbody.rows.length; i < rowLen; i++) {
+                row = tbody.rows[i];
+                for (j = 0, colLen = row.cells.length; j < colLen; j++) {
+                    cell = row.cells[j];
+                    if (i == 0) {
+                        if (j == 1 || j == 2) {
+                            resultHTML += '<th scope="col" style="font-size: 25px;">' + cell.innerHTML + '</th>'
+                        }
+                    } else {
+                        if (j == 1) {
+                            resultHTML += '</tr><tr>'
+                            resultHTML += '<td align="center" style="color:Black;font-size: 25px;">' + cell.innerHTML + '</td>'
+                        } else if (j == 2) {
+                            resultHTML += '<td align="center" style="color:Black;font-size: 25px;">' + cell.innerHTML + '</td>'
+                            resultHTML += '</tr>'
+                        }
+                    }
+                }
+            }
+            resultHTML += '</tbody>'
             var d = new Date(),
             year = d.getFullYear(),
             month = d.getMonth() + 1,
@@ -96,7 +127,7 @@
                             '<body>' +
                                 '<h2><strong>' + codigoODP + '</strong></h2><br /><br />' +
                                 '<h2><strong>Categoría:</strong> ' + categoria + '</h2><br /><br />' +
-                                '<table>' + document.getElementById(listaProductos).innerHTML + '</table><br />' +
+                                '<table>' + resultHTML + '</table><br />' +
                                 '<h3 style="text-align: center;"><strong> *** FIN *** </strong></h3>' +
                                 '<h4 style="text-align: left;"><strong> Tiquete generado el: ' + fecha + '</strong></h4><br />' +
                             '</body>' +
@@ -108,6 +139,38 @@
             }).finally(function () {
                 return qz.websocket.disconnect();
             });
+        }
+
+        function enterClickAgregar(txtCantidad) {
+            var values = txtCantidad.id.split('_')
+            var index = values.pop() * 1 + 1
+            var rows = $(<%= DGV_ListaProductosODP.ClientID %>)[0].rows.length - 1
+            var id = ''
+            if (index === rows) {
+                id = 'Content_DGV_ListaProductosODP_TXT_Cantidad_' + 0
+            } else {
+                id = 'Content_DGV_ListaProductosODP_TXT_Cantidad_' + index
+            }
+            document.getElementById(id).autofocus = true;
+            document.getElementById(id).focus();
+            document.getElementById(id).select();
+            console.dir(document.getElementById(id))
+            return false;
+        }
+
+        function enterCantidad(index) {
+            // var values = txtCantidad.id.split('_')
+            var index = index + 1
+            var rows = $(<%= DGV_ListaProductosODP.ClientID %>)[0].rows.length - 1
+            var id = ''
+            if (index === rows) {
+                id = 'Content_DGV_ListaProductosODP_TXT_Cantidad_' + 0
+            } else {
+                id = 'Content_DGV_ListaProductosODP_TXT_Cantidad_' + index
+            }
+            document.getElementById(id).autofocus = true;
+            document.getElementById(id).focus();
+            document.getElementById(id).select();
         }
 
         function estilosElementosBloqueados() {
@@ -125,15 +188,19 @@
             document.getElementById('<%= TXT_HoraODP.ClientID %>').classList.add('form-control')
             document.getElementById('<%= TXT_NombreImpresora.ClientID %>').classList.remove('aspNetDisabled')
             document.getElementById('<%= TXT_NombreImpresora.ClientID %>').classList.add('form-control')
+            document.getElementById('<%= DDL_PlantaProduccion.ClientID %>').classList.remove('aspNetDisabled')
+            document.getElementById('<%= DDL_PlantaProduccion.ClientID %>').classList.add('form-control')
+            document.getElementById('<%= DDL_Propietario.ClientID %>').classList.remove('aspNetDisabled')
+            document.getElementById('<%= DDL_Propietario.ClientID %>').classList.add('form-control')
         }
 
         $("[src*=plus]").live("click", function () {
             $(this).closest("tr").after("<tr><td></td><td colspan = '999'>" + $(this).next().html() + "</td></tr>")
-            $(this).attr("src", "../images/minus.png");
+            $(this).attr("src", "./Assets/img/minus.png");
         });
 
         $("[src*=minus]").live("click", function () {
-            $(this).attr("src", "../images/plus.png");
+            $(this).attr("src", "./Assets/img/plus.png");
             $(this).closest("tr").next().remove();
         });
 
@@ -157,7 +224,8 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
     <div id="modalloading" class="loading">
-        <img src="../images/cargando5.gif" width="100" height="100" />
+        <img src="../Assets/img/cargando.gif" width="100" height="100" /><br />
+        <asp:Label runat="server" ID="LBL_GenerandoInforme" style="color: white;" Text="Generando informe espere por favor..."></asp:Label>
     </div>
     <div id="fade2" class="overlayload"></div>
     <a class="ir-arriba"  href="javascript:configurarImpresora();" title="Impresora">
@@ -189,7 +257,7 @@
                     <li class="active">
                         <a href="OrdenesProduccion.aspx">
                             <i class="fas fa-sort"></i>
-                            <p>Ordenes de Producción</p>
+                           <p>Ordenes de producción</p>
                         </a>
                     </li>
                     <li>
@@ -235,19 +303,19 @@
                     <li>
                         <a href="PuntosVenta.aspx">
                             <i class="fas fa-building"></i>
-                            <p>Puntos de Venta</p>
+                            <p>Puntos de venta</p>
                         </a>
                     </li>
                     <li>
                         <a href="PlantasProduccion.aspx">
                             <i class="fas fa-industry"></i>
-                            <p>Plantas de Producción</p>
+                            <p>Plantas de producción</p>
                         </a>
                     </li>
                     <li>
                         <a href="GestionUsuarios.aspx">
                             <i class="fas fa-user"></i>
-                            <p>GESTIÓN DE USUARIOS</p>
+                            <p>Gestión de usuarios</p>
                         </a>
                     </li>
                     <hr style="width: 230px; color: #2c2c2c;" />
@@ -256,9 +324,9 @@
                             <i class="fas fa-sign-out-alt"></i>
                             <p>Cerrar sessión</p>
                         </asp:LinkButton>
-                        <a href="http://mensis.cr/" target="_blank">
-                            <p style="margin-left: 25%; font-size: 7px;">Desarrollado por</p>
-                            <img style="width: 25%; display: block; margin-left: 30%; margin-top: 3%;" src="../Assets/img/logoMensis.png" />
+                        <a href="https://mensis.cr/" target="_blank" style="margin-top: 0px !important;">
+                            <p style="margin-left: 29%; font-size: 7px;">Desarrollado por</p>
+                            <img style="width: 25%; display: block; margin-left: 30%;" src="../Assets/img/logoMensis.png" />
                         </a>
                     </li>
                 </ul>
@@ -276,24 +344,24 @@
                             <ContentTemplate>
                                 <div class="card-header py-3">
                                     <div class="form-row">
-                                        <div class="form-group col-md-3">
+                                        <div class="form-group col-md-2.5">
                                             <label for="TXT_CodigoODP">Número orden producción</label>
-                                            <asp:TextBox class="form-control" style="text-align: right;" ID="TXT_CodigoODP" runat="server" Enabled="false"></asp:TextBox>
+                                            <asp:TextBox class="form-control" ID="TXT_CodigoODP" runat="server" Enabled="false"></asp:TextBox>
                                         </div>
                                         <div class="form-group col-md-2">
                                             <label for="TXT_TotalProductos">Total de productos</label>
-                                            <asp:TextBox class="form-control" style="text-align: right;" ID="TXT_TotalProductos" runat="server" TextMode="Number" Enabled="false"></asp:TextBox>
+                                            <asp:TextBox class="form-control" ID="TXT_TotalProductos" runat="server" TextMode="Number" Enabled="false"></asp:TextBox>
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label for="TXT_CostoODP">Costo orden producción</label>
-                                            <asp:TextBox class="form-control" style="text-align: right;" ID="TXT_CostoODP" runat="server" TextMode="Number" Enabled="false"></asp:TextBox>
+                                            <label for="TXT_CostoODP">Costo</label>
+                                            <asp:TextBox class="form-control" ID="TXT_CostoODP" runat="server" Enabled="false"></asp:TextBox>
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label for="TXT_EstadoODP">Estado orden producción</label>
-                                            <asp:TextBox class="form-control" style="text-align: right;" ID="TXT_EstadoODP" runat="server" Enabled="false"></asp:TextBox>
+                                            <label for="TXT_EstadoODP">Estado</label>
+                                            <asp:TextBox class="form-control" ID="TXT_EstadoODP" runat="server" Enabled="false"></asp:TextBox>
                                         </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="TXT_FechaODP">Fecha orden producción</label>
+                                        <div class="form-group col-md-3.5">
+                                            <label for="TXT_FechaODP">Fecha y hora orden producción</label>
                                             <div class="form-row">
                                                 <div class="col-md-7">
                                                     <asp:TextBox ID="TXT_FechaODP" runat="server" CssClass="form-control" TextMode="Date" format="dd/MM/yyyy" Enabled="false"></asp:TextBox>
@@ -307,11 +375,19 @@
                                     <div class="form-row">
                                         <div class="form-group col-md-4">
                                             <label for="DDL_Propietario">Solicitante</label>
-                                            <asp:DropDownList class="form-control" ID="DDL_Propietario" runat="server"></asp:DropDownList>
+                                            <asp:DropDownList class="form-control" ID="DDL_Propietario" runat="server" Enabled="false"></asp:DropDownList>
                                         </div>
                                         <div class="form-group col-md-4">
                                             <label for="DDL_PlantaProduccion">Planta Producción</label>
-                                            <asp:DropDownList class="form-control" ID="DDL_PlantaProduccion" runat="server"></asp:DropDownList>
+                                            <asp:DropDownList class="form-control" ID="DDL_PlantaProduccion" runat="server" Enabled="false"></asp:DropDownList>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="DDL_Reportes">Reportes</label>
+                                            <asp:DropDownList class="form-control" ID="DDL_Reportes" runat="server" AutoPostBack="true" onchange="activarloading();estilosElementosBloqueados();" OnSelectedIndexChanged="DDL_Reportes_SelectedIndexChanged">
+                                                <asp:ListItem Value="0">Seleccione</asp:ListItem>
+                                                <asp:ListItem Value="1">Reporte orden producción</asp:ListItem>
+                                                <asp:ListItem Value="2">Descargar orden producción</asp:ListItem>
+                                            </asp:DropDownList>
                                         </div>
                                     </div>
                                     <div class="form-row">
@@ -323,28 +399,26 @@
                                         </div>
                                     </div>
                                     <div class="form-row">  
-                                        <div class="col-md-6">                                      
-                                            <asp:Button ID="BTN_ImprimirOrdenProduccion" runat="server" Text="Imprimir orden producción" CssClass="btn btn-secondary" OnClick="BTN_ImprimirOrdenProduccion_Click"></asp:Button>
-                                            <asp:Button ID="BTN_ConfirmarODP" runat="server" Text="Confirmar orden producción" CssClass="btn btn-secondary" OnClick="BTN_ConfirmarODP_Click"></asp:Button>
-                                            <asp:Button ID="BTN_CompletarODP" runat="server" Text="Completar orden producción" CssClass="btn btn-success" OnClick="BTN_CompletarODP_Click"></asp:Button>
+                                        <div class="col-md-6">                                                                                  
+                                            <asp:Button UseSubmitBehavior="false" ID="BTN_ConfirmarODP" runat="server" Text="Confirmar orden producción" CssClass="btn btn-success" OnClick="BTN_ConfirmarODP_Click"></asp:Button>
+                                            <asp:Button UseSubmitBehavior="false" ID="BTN_CompletarODP" runat="server" Text="Completar orden producción" CssClass="btn btn-success" OnClick="BTN_CompletarODP_Click"></asp:Button>
                                         </div>
                                         <div class="col-md-6" style="text-align: right;"> 
-                                            <asp:Button ID="BTN_ReporteOrdenProduccion" runat="server" Text="Reporte orden producción" CssClass="btn btn-secondary" OnClientClick="activarloading();estilosElementosBloqueados();" OnClick="BTN_ReporteOrdenProduccion_Click"></asp:Button>                                                                                
-                                            <asp:Button ID="BTN_DescargarOrdenProduccion" runat="server" Text="Descargar orden producción" CssClass="btn btn-primary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_DescargarOrdenProduccion_Click"></asp:Button>                                        
+                                            <asp:Button UseSubmitBehavior="false" ID="BTN_ImprimirOrdenProduccion" runat="server" Text="Imprimir orden producción" CssClass="btn btn-info" OnClick="BTN_ImprimirOrdenProduccion_Click"></asp:Button>
                                         </div>
                                     </div>
                                 </div>
                             </ContentTemplate>
                             <Triggers>
-                                <asp:PostBackTrigger ControlID="BTN_DescargarOrdenProduccion" />
+                                <asp:PostBackTrigger ControlID="DDL_Reportes" />
                             </Triggers>
                         </asp:UpdatePanel>
                         <div class="card-body">
                             <div class="card-body">
                                 <asp:UpdatePanel ID="UpdatePanel_FiltrosProductos" runat="server" UpdateMode="Conditional">
                                     <ContentTemplate>                           
-                                        <div class="input-group no-border">
-                                            <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar..." OnTextChanged="TXT_Buscar_OnTextChanged" AutoPostBack="true"></asp:TextBox>
+                                        <div class="input-group no-border col-md-6">
+                                            <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar producto..." OnTextChanged="TXT_Buscar_OnTextChanged" AutoPostBack="true"></asp:TextBox>
                                             <div class="input-group-append">
                                                 <div class="input-group-text">
                                                     <i class="nc-icon nc-zoom-split"></i>
@@ -364,10 +438,9 @@
                                             OnRowCommand="DGV_ListaProductosODP_RowCommand"
                                             OnRowDataBound="DGV_ListaProductosODP_RowDataBound">
                                             <Columns>
-                                                <asp:BoundField DataField="ProductoID" SortExpression="ProductoID" HeaderText="Código producto" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="DescripcionProducto" SortExpression="DescripcionProducto" HeaderText="Nombre producto" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                <asp:BoundField DataField="CostoProducto" SortExpression="CostoProducto" HeaderText="Costo unitario" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                <asp:BoundField DataField="CantidadSolicitada" SortExpression="CantidadSolicitada" HeaderText="Cantidad solicitada" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
+                                                <asp:BoundField DataField="CostoProducto" SortExpression="CostoProducto" HeaderText="Costo unitario" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center" DataFormatString="{0:n2}"></asp:BoundField>
+                                                <asp:BoundField DataField="CantidadSolicitada" SortExpression="CantidadSolicitada" HeaderText="Cantidad solicitada" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center" DataFormatString="{0:n0}"></asp:BoundField>                                                
                                                 <asp:TemplateField>
                                                     <HeaderTemplate>
                                                         <asp:Label ID="LBL_Cantidad" runat="server" Text="Cantidad producida"></asp:Label>
@@ -375,7 +448,7 @@
                                                     <ItemTemplate>
                                                         <div class="row">
                                                             <asp:TextBox class="form-control" TextMode="Number" MaxLength="2" min="0" max="99" style="width: 40%" runat="server" ID="TXT_Cantidad" 
-                                                                OnTextChanged="TXT_Cantidad_OnTextChanged" AutoPostBack="true" Text='<%#Eval("CantidadProducida") %>' />                                                            
+                                                                OnTextChanged="TXT_Cantidad_OnTextChanged" AutoPostBack="true" onchange="enterClickAgregar(this);" Text='<%#Eval("CantidadProducida") %>' />                                                            
                                                             <asp:DropDownList class="form-control" style="width: 30%" runat="server" ID="DDL_Decenas" 
                                                                 OnSelectedIndexChanged="DDL_DecenasUnidades_OnSelectedIndexChanged" AutoPostBack="true">
                                                                 <asp:ListItem Value="0">0</asp:ListItem>
@@ -405,31 +478,7 @@
                                                         </div>
                                                     </ItemTemplate>
                                                     <ItemStyle HorizontalAlign="Center" />
-                                                </asp:TemplateField>
-                                                <asp:TemplateField>
-                                                    <HeaderTemplate>
-                                                        <asp:Label ID="LBL_Disminuir" runat="server" Text="Disminuir"></asp:Label>
-                                                    </HeaderTemplate>
-                                                    <ItemTemplate>
-                                                        <asp:Button class="btn btn-outline-primary btn-round" ID="BTN_Minus" runat="server"
-                                                                CommandName="minus"
-                                                                CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
-                                                                Text="-" AutoPostBack="true" />
-                                                    </ItemTemplate>
-                                                    <ItemStyle HorizontalAlign="Center" />
-                                                </asp:TemplateField>
-                                                <asp:TemplateField>
-                                                    <HeaderTemplate>
-                                                        <asp:Label ID="LBL_Aumentar" runat="server" Text="Aumentar"></asp:Label>
-                                                    </HeaderTemplate>
-                                                    <ItemTemplate>
-                                                        <asp:Button class="btn btn-outline-primary btn-round" style="font-size: 10px;" ID="BTN_Plus" runat="server"
-                                                                CommandName="plus"
-                                                                CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
-                                                                Text="+" AutoPostBack="true" />
-                                                    </ItemTemplate>
-                                                    <ItemStyle HorizontalAlign="Center" />
-                                                </asp:TemplateField>
+                                                </asp:TemplateField>                                                
                                             </Columns>
                                         </asp:GridView>
                                     </ContentTemplate>
@@ -478,13 +527,12 @@
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
                                                         <div class="table" id="tableProductos">
-                                                            <img alt="" style="cursor: pointer" src="../images/plus.png" />
+                                                            <img alt="" style="cursor: pointer" src="../Assets/img/plus.png" />
                                                             <asp:Panel ID="pnlListaProductos" runat="server" Style="display: none;">
                                                                 <asp:GridView ID="DGV_ListaProductos" runat="server" AutoGenerateColumns="false" DataKeyNames="IDProducto,DescripcionProducto,Categoria" CssClass="ChildGrid"
                                                                     HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" 
                                                                     GridLines="None" ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true">
                                                                     <Columns>
-                                                                        <asp:BoundField DataField="IDProducto" HeaderText="Código producto" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                                         <asp:BoundField DataField="DescripcionProducto" HeaderText="Nombre producto" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                             
                                                                         <asp:BoundField DataField="CantidadSolicitada" HeaderText="Cantidad solicitada" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                                     </Columns>
@@ -514,7 +562,7 @@
                         </div>
                         <div class="modal-footer">                            
                             <div style="text-align: right;">
-                                <asp:Button ID="BTN_CerrarModalCrearPedido" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-secondary" />                                
+                                <asp:Button UseSubmitBehavior="false" ID="BTN_CerrarModalCrearPedido" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-secondary" />                                
                             </div>
                         </div>
                     </div>
@@ -547,7 +595,7 @@
                         </div>
                         <div class="modal-footer">
                             <div style="text-align: right;">
-                                <asp:Button ID="BTN_CerrarModalSeleccionarImpresora" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-secondary" />                                
+                                <asp:Button UseSubmitBehavior="false" ID="BTN_CerrarModalSeleccionarImpresora" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-secondary" />                                
                             </div>
                         </div>
                     </div>

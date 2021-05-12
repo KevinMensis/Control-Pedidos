@@ -13,6 +13,15 @@ namespace MCWebHogar.ControlPedidos {
     public partial class Desechos {
         
         /// <summary>
+        /// LBL_GenerandoInforme control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LBL_GenerandoInforme;
+        
+        /// <summary>
         /// LNK_CerrarSession control.
         /// </summary>
         /// <remarks>
@@ -31,24 +40,6 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.UpdatePanel UpdatePanel_FiltrosDesechos;
         
         /// <summary>
-        /// TXT_FechaDesechoDesde control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_FechaDesechoDesde;
-        
-        /// <summary>
-        /// TXT_FechaDesechoHasta control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_FechaDesechoHasta;
-        
-        /// <summary>
         /// BTN_CrearDesechos control.
         /// </summary>
         /// <remarks>
@@ -65,6 +56,24 @@ namespace MCWebHogar.ControlPedidos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TXT_Buscar;
+        
+        /// <summary>
+        /// TXT_FechaDesechoDesde control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TXT_FechaDesechoDesde;
+        
+        /// <summary>
+        /// TXT_FechaDesechoHasta control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TXT_FechaDesechoHasta;
         
         /// <summary>
         /// UpdatePanel_ListaDesechos control.

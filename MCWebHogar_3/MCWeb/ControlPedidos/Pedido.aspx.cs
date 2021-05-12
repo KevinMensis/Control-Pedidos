@@ -48,6 +48,8 @@ namespace MCWebHogar.ControlPedidos
 
         protected void BTN_CrearPedidos_Click(object sender, EventArgs e)
         {
+            DDL_Propietario.SelectedValue = Session["UserId"].ToString().Trim();
+            UpdatePanel_ModalCrearPedido.Update();
             ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptAbrirModalCrearPedido", "abrirModalCrearPedido();", true);
             return;
         }
@@ -131,10 +133,10 @@ namespace MCWebHogar.ControlPedidos
                 LB_Estado.DataBind();
             }
 
-            TXT_FechaCreacionDesde.Text = "1900-01-01";
-            TXT_FechaCreacionHasta.Text = "1900-01-01";
-            TXT_FechaPedidoDesde.Text = "1900-01-01";
-            TXT_FechaPedidoHasta.Text = "1900-01-01";
+            //TXT_FechaCreacionDesde.Text = "1900-01-01";
+            //TXT_FechaCreacionHasta.Text = "1900-01-01";
+            //TXT_FechaPedidoDesde.Text = "1900-01-01";
+            //TXT_FechaPedidoHasta.Text = "1900-01-01";
 
             UpdatePanel_FiltrosPedidos.Update();
         }
@@ -237,28 +239,28 @@ namespace MCWebHogar.ControlPedidos
             string fechaPedidoDesde = "1900-01-01";
             string fechaPedidoHasta = "1900-01-01";
 
-            try
-            {
-                fechaCreacionDesde = Convert.ToDateTime(TXT_FechaCreacionDesde.Text).ToString();
-                fechaCreacionHasta = Convert.ToDateTime(TXT_FechaCreacionHasta.Text).ToString();
+            //try
+            //{
+            //    fechaCreacionDesde = Convert.ToDateTime(TXT_FechaCreacionDesde.Text).ToString();
+            //    fechaCreacionHasta = Convert.ToDateTime(TXT_FechaCreacionHasta.Text).ToString();
                 
-            }
-            catch (Exception e)
-            {
-                fechaCreacionDesde = "1900-01-01";
-                fechaCreacionHasta = "1900-01-01";
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    fechaCreacionDesde = "1900-01-01";
+            //    fechaCreacionHasta = "1900-01-01";
+            //}
 
-            try
-            {
-                fechaPedidoDesde = Convert.ToDateTime(TXT_FechaPedidoDesde.Text).ToString();
-                fechaPedidoHasta = Convert.ToDateTime(TXT_FechaPedidoHasta.Text).ToString();                
-            }
-            catch (Exception e)
-            {
-                fechaPedidoDesde = "1900-01-01";
-                fechaPedidoHasta = "1900-01-01";
-            }
+            //try
+            //{
+            //    fechaPedidoDesde = Convert.ToDateTime(TXT_FechaPedidoDesde.Text).ToString();
+            //    fechaPedidoHasta = Convert.ToDateTime(TXT_FechaPedidoHasta.Text).ToString();                
+            //}
+            //catch (Exception e)
+            //{
+            //    fechaPedidoDesde = "1900-01-01";
+            //    fechaPedidoHasta = "1900-01-01";
+            //}
 
             if (Convert.ToDateTime(fechaCreacionHasta).ToString() != Convert.ToDateTime("1900-01-01").ToString())
                 LBL_Filtro.Text += "Creación desde " + Convert.ToDateTime(fechaCreacionDesde).ToString("dd-MM-yyyy") + " hasta " + Convert.ToDateTime(fechaCreacionHasta).ToString("dd-MM-yyyy") + ";";
@@ -325,10 +327,10 @@ namespace MCWebHogar.ControlPedidos
         protected void BTN_EliminarFiltro_Click(object sender, EventArgs e)
         {
             TXT_Buscar.Text = "";
-            TXT_FechaCreacionDesde.Text = "1900-01-01";
-            TXT_FechaCreacionHasta.Text = "1900-01-01";
-            TXT_FechaPedidoDesde.Text = "1900-01-01";
-            TXT_FechaPedidoHasta.Text = "1900-01-01";
+            //TXT_FechaCreacionDesde.Text = "1900-01-01";
+            //TXT_FechaCreacionHasta.Text = "1900-01-01";
+            //TXT_FechaPedidoDesde.Text = "1900-01-01";
+            //TXT_FechaPedidoHasta.Text = "1900-01-01";
 
             #region Puntos Venta
             foreach (ListItem l in LB_Sucursal.Items)
@@ -372,7 +374,7 @@ namespace MCWebHogar.ControlPedidos
             DT.DT1.Rows.Add("@UsuarioID", solicitante, SqlDbType.Int);
             DT.DT1.Rows.Add("@PlantaProduccionID", plantaProduccion, SqlDbType.Int);
             DT.DT1.Rows.Add("@PuntoVentaID", puntoVenta, SqlDbType.Int);
-            DT.DT1.Rows.Add("@DescripcionPedido", TXT_DescripcionPedido.Text, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@DescripcionPedido", "", SqlDbType.VarChar);
 
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
             DT.DT1.Rows.Add("@TipoSentencia", "CrearPedido", SqlDbType.VarChar);
@@ -489,7 +491,7 @@ namespace MCWebHogar.ControlPedidos
                         }
                         else if (plantaProduccionID != DGV_ListaPedidos.DataKeys[row.RowIndex].Values[3].ToString().Trim()) 
                         {
-                            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptSeleccionarBTN_CrearOrdenes_Click", "alertifywarning('Debe seleccionar solo pedios para la misma Planta de Producción.');", true);
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptSeleccionarBTN_CrearOrdenes_Click", "alertifywarning('Debe seleccionar solo pedios para la misma planta de producción.');", true);
                             return;
                         }
                         contador++;
@@ -529,7 +531,8 @@ namespace MCWebHogar.ControlPedidos
                     }
                     else
                     {
-                        Response.Redirect("OrdenesProduccion.aspx");
+                        Session["IDODP"] = Result.Rows[0][1].ToString().Trim();
+                        Response.Redirect("DetalleODP.aspx");
                     }
                 }
                 else
@@ -537,6 +540,11 @@ namespace MCWebHogar.ControlPedidos
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_CrearOrdenes_Click", "alertifywarning('No se ha podido crear la orden de producción, por favor intente de nuevo.');", true);
                     return;
                 }
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_CrearOrdenes_Click", "alertifywarning('No se ha seleccionado ningún pedido para crear la orden de producción.');", true);
+                return;
             }
         }
         #endregion
@@ -592,6 +600,7 @@ namespace MCWebHogar.ControlPedidos
                     else
                     {
                         Session["IDDespacho"] = Result.Rows[0][1].ToString().Trim();
+                        generarRecibidoPedido(Session["IDDespacho"].ToString().Trim());
                         Response.Redirect("DetalleDespacho.aspx");
                     }
                 }
@@ -601,6 +610,23 @@ namespace MCWebHogar.ControlPedidos
                     return;
                 }
             }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_CrearDespacho_Click", "alertifywarning('No se ha seleccionado ningún pedido para crear el despacho.');", true);
+                return;
+            }
+        }
+
+        private void generarRecibidoPedido(string idDespacho)
+        {
+            DT.DT1.Clear();
+            DT.DT1.Rows.Add("@IDDespacho", idDespacho, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@UsuarioID", Session["UserID"].ToString(), SqlDbType.VarChar);
+
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "CrearRecibidoPedido", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP12_0001");
         }
         #endregion
     }

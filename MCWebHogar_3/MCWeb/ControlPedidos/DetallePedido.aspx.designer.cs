@@ -13,6 +13,15 @@ namespace MCWebHogar.ControlPedidos {
     public partial class DetallePedido {
         
         /// <summary>
+        /// LBL_GenerandoInforme control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LBL_GenerandoInforme;
+        
+        /// <summary>
         /// HDF_IDPedido control.
         /// </summary>
         /// <remarks>
@@ -103,15 +112,6 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.TextBox TXT_HoraPedido;
         
         /// <summary>
-        /// TXT_DescripcionPedido control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_DescripcionPedido;
-        
-        /// <summary>
         /// DDL_Propietario control.
         /// </summary>
         /// <remarks>
@@ -137,6 +137,15 @@ namespace MCWebHogar.ControlPedidos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList DDL_PuntoVenta;
+        
+        /// <summary>
+        /// DDL_Reportes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DDL_Reportes;
         
         /// <summary>
         /// LBL_CreadoPor control.
@@ -184,24 +193,6 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.Button BTN_AbrirModalDetallePedido;
         
         /// <summary>
-        /// BTN_ReportePedido control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BTN_ReportePedido;
-        
-        /// <summary>
-        /// BTN_DescargarPedido control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BTN_DescargarPedido;
-        
-        /// <summary>
         /// UpdatePanel_FiltrosProductos control.
         /// </summary>
         /// <remarks>
@@ -218,6 +209,24 @@ namespace MCWebHogar.ControlPedidos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TXT_Buscar;
+        
+        /// <summary>
+        /// BTN_VerTodosProductos control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_VerTodosProductos;
+        
+        /// <summary>
+        /// UpdatePanel_ListaProductos control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_ListaProductos;
         
         /// <summary>
         /// DGV_ListaProductos control.

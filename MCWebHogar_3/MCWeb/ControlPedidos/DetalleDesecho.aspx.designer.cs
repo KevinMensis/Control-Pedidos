@@ -13,6 +13,15 @@ namespace MCWebHogar.ControlPedidos {
     public partial class DetalleDesecho {
         
         /// <summary>
+        /// LBL_GenerandoInforme control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LBL_GenerandoInforme;
+        
+        /// <summary>
         /// HDF_IDDesecho control.
         /// </summary>
         /// <remarks>
@@ -65,15 +74,6 @@ namespace MCWebHogar.ControlPedidos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TXT_TotalProductos;
-        
-        /// <summary>
-        /// TXT_EstadoDesecho control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_EstadoDesecho;
         
         /// <summary>
         /// TXT_FechaDesecho control.

@@ -191,6 +191,7 @@ namespace MCWebHogar.ControlPedidos
                             HDF_IDPuntoVenta.Value = dr["IDPuntoVenta"].ToString().Trim();
                             TXT_DescripcionPuntoVenta.Text = dr["DescripcionPuntoVenta"].ToString().Trim();
                             TXT_UbicacionPuntoVenta.Text = dr["UbicacionPuntoVenta"].ToString().Trim();
+                            TXT_PorcentajeDescuento.Text = dr["PorcentajeDescuento"].ToString().Trim();
                         }
                     }
 
@@ -223,6 +224,7 @@ namespace MCWebHogar.ControlPedidos
             HDF_IDPuntoVenta.Value = "0";
             TXT_DescripcionPuntoVenta.Text = "";
             TXT_UbicacionPuntoVenta.Text = "";
+            TXT_PorcentajeDescuento.Text = "";
 
             title_CrearPuntoVenta.InnerHtml = "Crear punto venta";
             UpdatePanel_ModalCrearPuntoVenta.Update();
@@ -231,13 +233,14 @@ namespace MCWebHogar.ControlPedidos
             ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_CrearPuntoVenta_OnClick", script, true);
         }
 
-        protected void BTN_GuardarProducto_OnClick(object sender, EventArgs e)
+        protected void BTN_GuardarPuntoVenta_OnClick(object sender, EventArgs e)
         {
             DT.DT1.Clear();
 
             DT.DT1.Rows.Add("@IDPuntoVenta", HDF_IDPuntoVenta.Value, SqlDbType.Int);
             DT.DT1.Rows.Add("@DescripcionPuntoVenta", TXT_DescripcionPuntoVenta.Text, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@UbicacionPuntoVenta", TXT_UbicacionPuntoVenta.Text, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@PorcentajeDescuento", TXT_PorcentajeDescuento.Text, SqlDbType.Decimal);
 
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
             if (HDF_IDPuntoVenta.Value == "0")

@@ -6994,7 +6994,7 @@ td.visible-print {
         margin: 5px 0 10px 0;
         border: solid 1px #525252;
         border-collapse: collapse;
-          background-image: url(../images/box_bg.gif) ;
+          background-image: url(../Assets/img/box_bg.gif) ;
     }
 
         .mGrid td {
@@ -7009,7 +7009,7 @@ td.visible-print {
             padding: 4px 2px;
             color: #fff;
             
-            background: #424242 url(../images/box_bg.gif) repeat-x top;
+            background: #424242 url(../Assets/img/box_bg.gif) repeat-x top;
             border-left: solid 1px #525252;
             font-size: 0.9em;
         }
@@ -7019,7 +7019,7 @@ td.visible-print {
         }
 
         .mGrid .pgr {
-            background: #424242 url(../images/box_bg.gif) repeat-x top;
+            background: #424242 url(../Assets/img/box_bg.gif) repeat-x top;
           
         }
 

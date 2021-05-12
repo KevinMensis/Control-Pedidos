@@ -13,6 +13,15 @@ namespace MCWebHogar.ControlPedidos {
     public partial class DetalleODP {
         
         /// <summary>
+        /// LBL_GenerandoInforme control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LBL_GenerandoInforme;
+        
+        /// <summary>
         /// HDF_IDODP control.
         /// </summary>
         /// <remarks>
@@ -130,6 +139,15 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.DropDownList DDL_PlantaProduccion;
         
         /// <summary>
+        /// DDL_Reportes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DDL_Reportes;
+        
+        /// <summary>
         /// LBL_CreadoPor control.
         /// </summary>
         /// <remarks>
@@ -146,15 +164,6 @@ namespace MCWebHogar.ControlPedidos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label LBL_UltimaModificacion;
-        
-        /// <summary>
-        /// BTN_ImprimirOrdenProduccion control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BTN_ImprimirOrdenProduccion;
         
         /// <summary>
         /// BTN_ConfirmarODP control.
@@ -175,22 +184,13 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.Button BTN_CompletarODP;
         
         /// <summary>
-        /// BTN_ReporteOrdenProduccion control.
+        /// BTN_ImprimirOrdenProduccion control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BTN_ReporteOrdenProduccion;
-        
-        /// <summary>
-        /// BTN_DescargarOrdenProduccion control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BTN_DescargarOrdenProduccion;
+        protected global::System.Web.UI.WebControls.Button BTN_ImprimirOrdenProduccion;
         
         /// <summary>
         /// UpdatePanel_FiltrosProductos control.

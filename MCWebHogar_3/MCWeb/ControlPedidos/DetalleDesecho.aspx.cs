@@ -14,7 +14,7 @@ namespace MCWebHogar.ControlPedidos
     {
         CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
         DataTable Result = new DataTable();
-        static List<int> productosSeleccionados;
+        static Dictionary<int, int> productosAgregar;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -32,7 +32,7 @@ namespace MCWebHogar.ControlPedidos
                     }
                     else
                     {
-                        productosSeleccionados = new List<int>();
+                        productosAgregar = new Dictionary<int, int>();
                         HDF_IDDesecho.Value = Session["IDDesecho"].ToString();                        
                         cargarDDLs();
                         cargarDesecho("");
@@ -43,7 +43,23 @@ namespace MCWebHogar.ControlPedidos
                 }
             }
             else
-            {                
+            {
+                string opcion = Page.Request.Params["__EVENTTARGET"];
+                string argument = Page.Request.Params["__EVENTARGUMENT"];
+                if (opcion.Contains("TXT_BuscarProductosSinAsignar"))
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Buscar_OnTextChanged", "cargarFiltros();estilosElementosBloqueados();", true);
+                }
+                if (opcion.Contains("TXT_CantidadAgregar"))
+                {
+                    int index = Convert.ToInt32(opcion.Split('$')[3].Replace("ctl", "")) - 2;
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", "cargarFiltros();enterCantidad2(" + index + ");", true);
+                }
+                if (opcion.Contains("TXT_Cantidad"))
+                {
+                    int index = Convert.ToInt32(opcion.Split('$')[3].Replace("ctl", "")) - 2;
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", "enterCantidad(" + index + ");", true);
+                }
             }
         }
 
@@ -322,13 +338,15 @@ namespace MCWebHogar.ControlPedidos
         #region Asignar
         protected void BTN_CargarProductos_Click(object sender, EventArgs e)
         {
-            productosSeleccionados = new List<int>();
+            productosAgregar = new Dictionary<int, int>();
             for (int i = 0; i < DGV_ListaProductosSinAgregar.Rows.Count; i++)
             {
                 int index = i;
                 int idProducto = Convert.ToInt32(DGV_ListaProductosSinAgregar.DataKeys[index].Value.ToString().Trim());
+                TextBox TXT_CantidadAgregar = (TextBox)DGV_ListaProductosSinAgregar.Rows[index].FindControl("TXT_CantidadAgregar");
                 CheckBox CHK_Producto = (CheckBox)DGV_ListaProductosSinAgregar.Rows[index].FindControl("CHK_Producto");
                 CHK_Producto.Checked = false;
+                TXT_CantidadAgregar.Text = "0";
             }
 
             UpdatePanel_ListaProductosSinAgregar.Update();
@@ -443,9 +461,55 @@ namespace MCWebHogar.ControlPedidos
             {
                 int index = e.Row.RowIndex;
                 int idProducto = Convert.ToInt32(DGV_ListaProductosSinAgregar.DataKeys[index].Value.ToString().Trim());
+                TextBox TXT_CantidadAgregar = (TextBox)e.Row.FindControl("TXT_CantidadAgregar");
                 CheckBox CHK_Producto = (CheckBox)e.Row.FindControl("CHK_Producto");
-                CHK_Producto.Checked = productosSeleccionados.Contains(idProducto);
+                CHK_Producto.Checked = productosAgregar.ContainsKey(idProducto);
+                if (productosAgregar.ContainsKey(idProducto))
+                {
+                    TXT_CantidadAgregar.Text = productosAgregar[idProducto].ToString();
+                }
+                else
+                {
+                    TXT_CantidadAgregar.Text = "0";
+                }
             }
+        }
+
+        protected void TXT_CantidadAgregar_OnTextChanged(object sender, EventArgs e)
+        {
+            GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
+            int index = gvRow.RowIndex;
+            TextBox cantidad = sender as TextBox;
+            int cantidadProducto = 0;
+            if (cantidad.Text != "")
+            {
+                cantidadProducto = (Convert.ToInt32(cantidad.Text));
+            }
+            else
+            {
+                cantidad.Text = "0";
+            }
+
+            if (cantidadProducto >= 0 && cantidadProducto < 100)
+            {
+                int idProducto = Convert.ToInt32(DGV_ListaProductosSinAgregar.DataKeys[index].Value.ToString().Trim());
+                CheckBox CHK_Producto = (CheckBox)DGV_ListaProductosSinAgregar.Rows[index].FindControl("CHK_Producto");
+                if (CHK_Producto.Checked)
+                {
+                    productosAgregar[idProducto] = cantidadProducto;
+                }
+                else
+                {
+                    if (!productosAgregar.ContainsKey(idProducto))
+                    {
+                        productosAgregar.Add(idProducto, cantidadProducto);
+                    }
+                    CHK_Producto.Checked = true;
+                }
+            }
+            UpdatePanel_ListaProductosSinAgregar.Update();
+            string script = "cargarFiltros();enterCantidad2(" + index + ");";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductos", script, true);
         }
 
         protected void CHK_Producto_OnCheckedChanged(object sender, EventArgs e)
@@ -454,17 +518,20 @@ namespace MCWebHogar.ControlPedidos
             int index = row.RowIndex;
             int idProducto = Convert.ToInt32(DGV_ListaProductosSinAgregar.DataKeys[index].Value.ToString().Trim());
             CheckBox CHK_Producto = (CheckBox)DGV_ListaProductosSinAgregar.Rows[index].FindControl("CHK_Producto");
+            TextBox TXT_CantidadAgregar = (TextBox)DGV_ListaProductosSinAgregar.Rows[index].FindControl("TXT_CantidadAgregar");
             if (CHK_Producto.Checked)
             {
-                if (!productosSeleccionados.Contains(idProducto))
+                if (!productosAgregar.ContainsKey(idProducto))
                 {
-                    productosSeleccionados.Add(idProducto);
+                    productosAgregar.Add(idProducto, Convert.ToInt32(TXT_CantidadAgregar.Text));
                 }
             }
             else
             {
-                productosSeleccionados.Remove(idProducto);
+                TXT_CantidadAgregar.Text = "0";
+                productosAgregar.Remove(idProducto);
             }
+            UpdatePanel_ListaProductosSinAgregar.Update();
             string script = "cargarFiltros();";
             ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductos", script, true);
         }
@@ -472,51 +539,30 @@ namespace MCWebHogar.ControlPedidos
         protected void BTN_Agregar_Click(object sender, EventArgs e)
         {
             string script = "cargarFiltros();";
-            if (productosSeleccionados.Count > 0)
+            
+            if (productosAgregar.Count > 0)
             {
-                string productos = "";
-
-                foreach (int f in productosSeleccionados)
+                foreach (KeyValuePair<int, int> producto in productosAgregar)
                 {
-                    productos += f.ToString().Trim() + ",";
-                }
-                productos = productos.TrimEnd(',');
+                    DT.DT1.Clear();
 
-                DT.DT1.Clear();
+                    DT.DT1.Rows.Add("@DesechoID", HDF_IDDesecho.Value, SqlDbType.Int);
+                    DT.DT1.Rows.Add("@UsuarioID", Session["UserID"].ToString().Trim(), SqlDbType.Int);
+                    DT.DT1.Rows.Add("@PuntoVentaID", DDL_PuntoVenta.SelectedValue, SqlDbType.Int);
+                    DT.DT1.Rows.Add("@ProductoID", producto.Key, SqlDbType.Int);
+                    DT.DT1.Rows.Add("@CantidadDesecho", producto.Value, SqlDbType.Int);
 
-                DT.DT1.Rows.Add("@DesechoID", HDF_IDDesecho.Value, SqlDbType.Int);
-                DT.DT1.Rows.Add("@UsuarioID", Session["UserID"].ToString().Trim(), SqlDbType.Int);
-                DT.DT1.Rows.Add("@PuntoVentaID", DDL_PuntoVenta.SelectedValue, SqlDbType.Int);
-                DT.DT1.Rows.Add("@ListaProductos", productos, SqlDbType.VarChar);
+                    DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+                    DT.DT1.Rows.Add("@TipoSentencia", "AgregarProducto", SqlDbType.VarChar);
 
-                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
-                DT.DT1.Rows.Add("@TipoSentencia", "AgregarProductos", SqlDbType.VarChar);
-
-                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP17_0001");
-
-                if (Result != null && Result.Rows.Count > 0)
-                {
-                    if (Result.Rows[0][0].ToString().Trim() == "ERROR")
-                    {
-                        ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_Agregar_Click", "alertifywarning('" + Result.Rows[0][1].ToString().Trim() + "');", true);
-                        return;
-                    }
-                    else
-                    {
-                        script = "cerrarModalAgregarProductos();alertifysuccess('Productos agregados con éxito.');";
-                        cargarProductosDesecho();
-                        cargarProductosSinAsignar();
-                        cargarDesecho(script);
-                    }
-                }
-                else
-                {
-                    cargarProductosDesecho();
-                    cargarProductosSinAsignar();
-                    cargarDesecho("");
+                    Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP17_0001");
                 }
             }
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductos", script, true);
+
+            script += "cerrarModalAgregarProductos();alertifysuccess('Productos agregados con éxito.');";
+            cargarProductosDesecho();
+            cargarProductosSinAsignar();
+            cargarDesecho(script);
         }
         #endregion
 
@@ -577,8 +623,8 @@ namespace MCWebHogar.ControlPedidos
 
                 if (TXT_FechaDesecho.Text != DateTime.Now.ToString("yyyy-MM-dd"))
                 {
-                    Button minus = (Button)e.Row.FindControl("BTN_Minus");
-                    Button plus = (Button)e.Row.FindControl("BTN_Plus");
+                    // Button minus = (Button)e.Row.FindControl("BTN_Minus");
+                    // Button plus = (Button)e.Row.FindControl("BTN_Plus");
 
                     cantidad.Enabled = false;
                     cantidad.CssClass = "form-control";
@@ -586,10 +632,10 @@ namespace MCWebHogar.ControlPedidos
                     ddlUnds.CssClass = "form-control";
                     ddlDecs.Enabled = false;
                     ddlDecs.CssClass = "form-control";
-                    minus.Enabled = false;
-                    minus.CssClass = "btn btn-outline-primary btn-round";
-                    plus.Enabled = false;
-                    plus.CssClass = "btn btn-outline-primary btn-round";
+                    // minus.Enabled = false;
+                    // minus.CssClass = "btn btn-outline-primary btn-round";
+                    // plus.Enabled = false;
+                    // plus.CssClass = "btn btn-outline-primary btn-round";
                 }
             }
         }
@@ -656,6 +702,8 @@ namespace MCWebHogar.ControlPedidos
                 cantidadProducto = decs + unds;
                 cantidad.Text = cantidadProducto.ToString();
             }
+            UpdatePanel_ListaProductosDesecho.Update();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", "enterCantidad(" + index + ");", true);
         }
 
         protected void DDL_DecenasUnidades_OnSelectedIndexChanged(object sender, EventArgs e)

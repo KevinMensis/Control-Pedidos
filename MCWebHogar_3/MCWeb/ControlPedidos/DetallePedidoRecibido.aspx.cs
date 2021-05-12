@@ -38,7 +38,14 @@ namespace MCWebHogar.ControlPedidos
                 }
             }
             else
-            {                
+            {
+                string opcion = Page.Request.Params["__EVENTTARGET"];
+                string argument = Page.Request.Params["__EVENTARGUMENT"];
+                if (opcion.Contains("TXT_Cantidad"))
+                {
+                    int index = Convert.ToInt32(opcion.Split('$')[3].Replace("ctl", "")) - 2;
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", "enterCantidad(" + index + ");", true);
+                }
             }
         }
 
@@ -213,6 +220,24 @@ namespace MCWebHogar.ControlPedidos
                 cargarRecibidoPedido(script);
             }
         }
+
+        protected void DDL_Reportes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //    switch (Convert.ToInt32(DDL_Reportes.SelectedValue))
+            //    {
+            //        case 1:
+            //            ReporteOrdenProduccion();
+            //            break;
+            //        case 2:
+            //            DescargarOrdenProduccion();
+            //            break;
+            //        default:
+            //            break;
+            //    }
+            //    DDL_Reportes.SelectedValue = "0";
+            //    UpdatePanel_Header.Update();
+            //    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDDL_Reportes_SelectedIndexChanged", "desactivarloading();estilosElementosBloqueados();cargarFiltros();", true);
+        }
         #endregion
 
         #region Cargar Productos        
@@ -268,20 +293,13 @@ namespace MCWebHogar.ControlPedidos
                 ddlDecs.SelectedValue = decs.ToString();
 
                 if (HDF_EstadoRecibidoPedido.Value != "Revisión")
-                {
-                    Button minus = (Button)e.Row.FindControl("BTN_Minus");
-                    Button plus = (Button)e.Row.FindControl("BTN_Plus");
-
+                {                    
                     cantidad.Enabled = false;
                     cantidad.CssClass = "form-control";
                     ddlUnds.Enabled = false;
                     ddlUnds.CssClass = "form-control";
                     ddlDecs.Enabled = false;
                     ddlDecs.CssClass = "form-control";
-                    minus.Enabled = false;
-                    minus.CssClass = "btn btn-outline-primary btn-round";
-                    plus.Enabled = false;
-                    plus.CssClass = "btn btn-outline-primary btn-round";
                 }
             }
         }
@@ -343,6 +361,9 @@ namespace MCWebHogar.ControlPedidos
                 cantidadProducto = decs + unds;
                 cantidad.Text = cantidadProducto.ToString();
             }
+            UpdatePanel_ListaProductosRecibidoPedido.Update();
+            string script = "estilosElementosBloqueados();enterCantidad(" + index + ");";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", script, true);
         }
 
         protected void DDL_DecenasUnidades_OnSelectedIndexChanged(object sender, EventArgs e)

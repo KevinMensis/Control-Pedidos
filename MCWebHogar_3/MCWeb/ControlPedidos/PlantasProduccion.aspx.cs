@@ -230,7 +230,7 @@ namespace MCWebHogar.ControlPedidos
             ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_CrearPlantaProduccion_OnClick", script, true);
         }
 
-        protected void BTN_GuardarProducto_OnClick(object sender, EventArgs e)
+        protected void BTN_GuardarPlantaProduccion_OnClick(object sender, EventArgs e)
         {
             DT.DT1.Clear();
 

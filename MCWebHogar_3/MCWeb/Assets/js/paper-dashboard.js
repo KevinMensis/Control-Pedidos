@@ -51,13 +51,8 @@ function debounce(func, wait, immediate) {
 
   if (isWindows) {
     // if we are on windows OS we activate the perfectScrollbar function
-    var ps = new PerfectScrollbar('.sidebar');
-    var ps = new PerfectScrollbar('.sidebar-wrapper');
-    // var ps2 = new PerfectScrollbar('.main-panel');
-    $('html').addClass('perfect-scrollbar-on');
-
   } else {
-    $('html').addClass('perfect-scrollbar-off');
+
   }
 })();
 

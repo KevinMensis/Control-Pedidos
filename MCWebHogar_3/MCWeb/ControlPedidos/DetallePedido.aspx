@@ -38,8 +38,11 @@
         }
 
         function activarloading() {
-            document.getElementById('fade2').style.display = 'block';
-            document.getElementById('modalloading').style.display = 'block';
+            var value = $(<%= DDL_Reportes.ClientID %>)[0].value
+            if (value !== 2 && value !== '2') {
+                document.getElementById('fade2').style.display = 'block';
+                document.getElementById('modalloading').style.display = 'block';
+            }
         }
 
         function desactivarloading() {
@@ -61,6 +64,13 @@
 
         function cerrarModalConfirmarPedido() {
             document.getElementById('BTN_ModalConfirmacionPedido').click()
+        }
+
+        function marcarProductosCantidadCero(index) {
+            id = 'Content_DGV_ListaProductos_TXT_Cantidad_' + 0
+            document.getElementById(id).autofocus = true;
+            document.getElementById(id).focus();
+            document.getElementById(id).select();
         }
 
         function estilosElementosBloqueados() {
@@ -97,9 +107,22 @@
         }
 
         function enterClickAgregar(txtCantidad) {
-            //e.preventDefault();
-            //e.stopPropagation();
-            //console.log(e)
+            var values = txtCantidad.id.split('_')
+            var index = values.pop() * 1 + 1
+            var rows = $(<%= DGV_ListaProductos.ClientID %>)[0].rows.length - 1
+            var id = ''
+            if (index === rows) {
+                id = 'Content_DGV_ListaProductos_TXT_Cantidad_' + 0
+            } else {
+                id = 'Content_DGV_ListaProductos_TXT_Cantidad_' + index
+            }
+            document.getElementById(id).autofocus = true;
+            document.getElementById(id).focus();
+            document.getElementById(id).select();
+            return false;
+        }
+
+        function enterClickAgregar2(txtCantidad) {
             var values = txtCantidad.id.split('_')
             var index = values.pop() * 1 + 1
             var rows = $(<%= DGV_ListaProductosSinAgregar.ClientID %>)[0].rows.length - 1
@@ -109,16 +132,13 @@
             } else {
                 id = 'Content_DGV_ListaProductosSinAgregar_TXT_CantidadAgregar_' + index
             }
+            document.getElementById(id).autofocus = true;
             document.getElementById(id).focus();
-            
-            //e.preventDefault();
-            //e.stopPropagation();
+            document.getElementById(id).select();
             return false;
         }
 
         function enterCantidad(index) {
-            console.log(index)
-            // var values = txtCantidad.id.split('_')
             var index = index + 1
             var rows = $(<%= DGV_ListaProductos.ClientID %>)[0].rows.length - 1
             var id = ''
@@ -132,51 +152,122 @@
             document.getElementById(id).select();
         }
 
+        function enterCantidad2(index) {
+            var index = index + 1
+            var rows = $(<%= DGV_ListaProductosSinAgregar.ClientID %>)[0].rows.length - 1
+            var id = ''
+            if (index === rows) {
+                id = 'Content_DGV_ListaProductosSinAgregar_TXT_CantidadAgregar_' + 0
+            } else {
+                id = 'Content_DGV_ListaProductosSinAgregar_TXT_CantidadAgregar_' + index
+            }
+            document.getElementById(id).autofocus = true;
+            document.getElementById(id).focus();
+            document.getElementById(id).select();
+        }
+
         function imprimir(estado, codigoPedido, sucursal, plantaProduccion, printer) {
             var listaProductos = 'Content_DGV_DetallePedido';
-            var d = new Date(),
-            year = d.getFullYear(),
-            month = d.getMonth() + 1,
-            day = d.getDate(),
-            hours = d.getHours(),
-			minute = d.getMinutes(),
-			second = d.getSeconds(),
-			ap = 'AM';
-            if (hours > 11) { ap = 'PM'; }
-            if (hours > 12) { hours = hours - 12; }
-            if (hours == 0) { hours = 12; }
-            if (month < 10) { month = "0" + month; }
-            if (day < 10) { day = "0" + day; }
-            if (minute < 10) { minute = "0" + minute; }
+            var categorias = []
+            table = document.getElementById(listaProductos);
+            tbody = table.tBodies[0];
 
-            var fecha = day + '/' + month + '/' + year + ' ' + hours + ':' + minute + ' ' + ap
+            for (i = 0, rowLen = tbody.rows.length; i < rowLen; i++) {
+                row = tbody.rows[i];
+                for (j = 0, colLen = row.cells.length; j < colLen; j++) {
+                    cell = row.cells[j];
+                    if (j == 0) {
+                        if (!categorias.includes(cell.innerHTML) && (cell.innerHTML !== 'Categoría' && cell.innerHTML !== 'Categoria')) {
+                            categorias.push(cell.innerHTML)
+                        }
+                    }
+                }
+            }
+            imprimir2(estado, codigoPedido, sucursal, plantaProduccion, printer, categorias, 0);
+        }
 
-            qz.websocket.connect().then(function () {
-                return qz.printers.find(printer);
-            }).then(function (found) {
-                var config = qz.configs.create(found);
-                var data = [{
-                    type: 'pixel',
-                    format: 'html',
-                    flavor: 'plain',
-                    data: '<html>' +
-                            '<head><title>' + document.title + '</title></head>' +
-                            '<body>' +
-                                '<h2><strong>' + codigoPedido + ' - ' + 'Estado pedido: ' + estado + '</strong></h2>' +
-                                '<h2><strong>Sucursal:</strong> ' + sucursal + '</h2>' +
-                                '<h2><strong>Planta produccion:</strong> ' + plantaProduccion + '</h2><br /><br />' +
-                                '<table>' + document.getElementById(listaProductos).innerHTML + '</table><br />' +
-                                '<h3 style="text-align: center;"><strong> *** FIN *** </strong></h3>' +
-                                '<h4 style="text-align: left;"><strong> Tiquete generado el: ' + fecha + '</strong></h4><br />' +
-                            '</body>' +
-                           '</html>'
-                }];
-                return qz.print(config, data).catch(function (e) { console.error(e); });
-            }).catch(function (error) {
-                alert(error);
-            }).finally(function () {
-                return qz.websocket.disconnect();
-            });
+        function imprimir2(estado, codigoPedido, sucursal, plantaProduccion, printer, categorias, index) {
+            if (index < categorias.length) {
+                var listaProductos = 'Content_DGV_DetallePedido';
+                var table, tbody, i, rowLen, row, j, colLen, cell, resultHTML;
+
+                resultHTML = '<tbody><tr class="table" align="center" style="border-color:#51CBCE;">'
+
+                table = document.getElementById(listaProductos);
+                tbody = table.tBodies[0];
+
+                for (i = 0, rowLen = tbody.rows.length; i < rowLen; i++) {
+                    row = tbody.rows[i];
+                    for (j = 0, colLen = row.cells.length; j < colLen; j++) {
+                        cell = row.cells[j];
+                        if (categorias[index] === row.cells[0].innerHTML || i === 0){
+                            if (i == 0) {
+                                if (j == 2 || j == 3) {
+                                    resultHTML += '<th scope="col">' + cell.innerHTML + '</th>'
+                                }
+                            } else {
+                                if (j == 2) {
+                                    resultHTML += '</tr><tr>'
+                                    resultHTML += '<td align="center" style="color:Black;"><strong>' + cell.innerHTML + '</strong></td>'
+                                } else if (j == 3) {
+                                    resultHTML += '<td align="center" style="color:Black;"><strong>' + cell.innerHTML + '</strong></td>'
+                                    resultHTML += '</tr>'
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+                resultHTML += '</tbody>'
+
+                var d = new Date(),
+                year = d.getFullYear(),
+                month = d.getMonth() + 1,
+                day = d.getDate(),
+                hours = d.getHours(),
+                minute = d.getMinutes(),
+                second = d.getSeconds(),
+                ap = 'AM';
+                if (hours > 11) { ap = 'PM'; }
+                if (hours > 12) { hours = hours - 12; }
+                if (hours == 0) { hours = 12; }
+                if (month < 10) { month = "0" + month; }
+                if (day < 10) { day = "0" + day; }
+                if (minute < 10) { minute = "0" + minute; }
+
+                var fecha = day + '/' + month + '/' + year + ' ' + hours + ':' + minute + ' ' + ap
+
+                qz.websocket.connect().then(function () {
+                    return qz.printers.find(printer);
+                }).then(function (found) {
+                    var config = qz.configs.create(found);
+                    var data = [{
+                        type: 'pixel',
+                        format: 'html',
+                        flavor: 'plain',
+                        data: '<html>' +
+                                '<head><title>' + document.title + '</title></head>' +
+                                '<body>' +
+                                    '<h2><strong>' + codigoPedido + ' - ' + 'Estado pedido: ' + estado + '</strong></h2>' +
+                                    '<h2><strong>Sucursal:</strong> ' + sucursal + '</h2>' +
+                                    '<h2><strong>Planta produccion:</strong> ' + plantaProduccion + '</h2><br /><br />' +
+                                    '<table>' + resultHTML + '</table><br />' +
+                                    '<h3 style="text-align: center;"><strong> *** FIN *** </strong></h3>' +
+                                    '<h4 style="text-align: left;"><strong> Tiquete generado el: ' + fecha + '</strong></h4><br />' +
+                                '</body>' +
+                               '</html>'
+                    }];
+                    return qz.print(config, data).catch(function (e) { console.error(e); });
+                }).catch(function (error) {
+                    alert(error);
+                }).finally(function () {
+                    return qz.websocket.disconnect().then(function () { imprimir2(estado, codigoPedido, sucursal, plantaProduccion, printer, categorias, index + 1) });
+                });
+            } else {
+                cerrarModalDetallePedido();
+                alertifysuccess('Impresión finalizada.');
+            }
         }
 
         function configurarImpresora() {
@@ -187,7 +278,7 @@
             }).catch(function (error) {
                 alert(error);
             }).finally(function () {
-                return qz.websocket.disconnect();
+                return qz.websocket.disconnect()
             });
         }
 
@@ -204,7 +295,8 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
     <div id="modalloading" class="loading">
-        <img src="../images/cargando5.gif" width="100" height="100" />
+        <img src="../Assets/img/cargando.gif" width="100" height="100" /><br />
+        <asp:Label runat="server" ID="LBL_GenerandoInforme" style="color: white;" Text="Generando informe espere por favor..."></asp:Label>
     </div>
     <div id="fade2" class="overlayload"></div>
     <a class="ir-arriba"  href="javascript:configurarImpresora();" title="Impresora">
@@ -235,7 +327,7 @@
                     <li>
                         <a href="OrdenesProduccion.aspx">
                             <i class="fas fa-sort"></i>
-                            <p>Ordenes de Producción</p>
+                           <p>Ordenes de producción</p>
                         </a>
                     </li>
                     <li>
@@ -281,19 +373,19 @@
                     <li>
                         <a href="PuntosVenta.aspx">
                             <i class="fas fa-building"></i>
-                            <p>Puntos de Venta</p>
+                            <p>Puntos de venta</p>
                         </a>
                     </li>
                     <li>
                         <a href="PlantasProduccion.aspx">
                             <i class="fas fa-industry"></i>
-                            <p>Plantas de Producción</p>
+                            <p>Plantas de producción</p>
                         </a>
                     </li>
                     <li>
                         <a href="GestionUsuarios.aspx">
                             <i class="fas fa-user"></i>
-                            <p>GESTIÓN DE USUARIOS</p>
+                            <p>Gestión de usuarios</p>
                         </a>
                     </li>
                     <hr style="width: 230px; color: #2c2c2c;" />
@@ -302,9 +394,9 @@
                             <i class="fas fa-sign-out-alt"></i>
                             <p>Cerrar sessión</p>
                         </asp:LinkButton>
-                        <a href="http://mensis.cr/" target="_blank">
-                            <p style="margin-left: 25%; font-size: 7px;">Desarrollado por</p>
-                            <img style="width: 25%; display: block; margin-left: 30%; margin-top: 3%;" src="../Assets/img/logoMensis.png" />
+                        <a href="https://mensis.cr/" target="_blank" style="margin-top: 0px !important;">
+                            <p style="margin-left: 29%; font-size: 7px;">Desarrollado por</p>
+                            <img style="width: 25%; display: block; margin-left: 30%;" src="../Assets/img/logoMensis.png" />
                         </a>
                     </li>
                 </ul>
@@ -322,52 +414,55 @@
                             <ContentTemplate>
                                 <div class="card-header py-3">
                                     <div class="form-row">
-                                        <div class="form-group col-md-3">
+                                        <div class="form-group col-md-2">
                                             <label for="TXT_CodigoPedido">Número pedido</label>
-                                            <asp:TextBox class="form-control" style="text-align: right;" ID="TXT_CodigoPedido" runat="server" Enabled="false"></asp:TextBox>
+                                            <asp:TextBox class="form-control" ID="TXT_CodigoPedido" runat="server" Enabled="false"></asp:TextBox>
                                         </div>
                                         <div class="form-group col-md-2">
                                             <label for="TXT_TotalProductos">Total de productos</label>
-                                            <asp:TextBox class="form-control" style="text-align: right;" ID="TXT_TotalProductos" runat="server" TextMode="Number" Enabled="false"></asp:TextBox>
+                                            <asp:TextBox class="form-control" ID="TXT_TotalProductos" runat="server" TextMode="Number" Enabled="false"></asp:TextBox>
                                         </div>
                                         <div class="form-group col-md-2">
                                             <label for="TXT_MontoPedido">Monto del pedido</label>
-                                            <asp:TextBox class="form-control" style="text-align: right;" ID="TXT_MontoPedido" runat="server" TextMode="Number" Enabled="false"></asp:TextBox>
+                                            <asp:TextBox class="form-control" ID="TXT_MontoPedido" runat="server" Enabled="false"></asp:TextBox>
                                         </div>
                                         <div class="form-group col-md-2">
                                             <label for="TXT_EstadoPedido">Estado del pedido</label>
-                                            <asp:TextBox class="form-control" style="text-align: right;" ID="TXT_EstadoPedido" runat="server" Enabled="false"></asp:TextBox>
+                                            <asp:TextBox class="form-control" ID="TXT_EstadoPedido" runat="server" Enabled="false"></asp:TextBox>
                                         </div>
-                                        <div class="form-group col-md-3">
-                                            <label for="TXT_FechaPedido">Fecha pedido</label>
-                                            <div class="form-row">
+                                        <div class="form-group col-md-4">                                            
+                                            <div class="form-row">                                                
                                                 <div class="col-md-7">
+                                                    <label for="TXT_FechaPedido">Fecha pedido</label>
                                                     <asp:TextBox ID="TXT_FechaPedido" runat="server" CssClass="form-control" TextMode="Date" format="dd/MM/yyyy" Enabled="false"></asp:TextBox>
-                                                </div>
+                                                </div>                                                
                                                 <div class="col-md-5">
+                                                    <label for="TXT_HoraPedido">Hora pedido</label>
                                                     <asp:TextBox ID="TXT_HoraPedido" runat="server" CssClass="form-control" TextMode="Time" format="HH:mm" Enabled="false"></asp:TextBox>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-row">
-                                        <div class="form-group col-md-12">
-                                            <label for="TXT_DescripcionPedido">Descripcion del pedido:</label>
-                                            <asp:TextBox ID="TXT_DescripcionPedido" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="3"  AutoPostBack="true" OnTextChanged="BTN_GuardarPedido_Click"></asp:TextBox>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-3">
                                             <label for="DDL_Propietario">Solicitante</label>
                                             <asp:DropDownList class="form-control" ID="DDL_Propietario" runat="server" AutoPostBack="true" OnSelectedIndexChanged="BTN_GuardarPedido_Click"></asp:DropDownList>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-3">
                                             <label for="DDL_PlantaProduccion">Planta Producción</label>
                                             <asp:DropDownList class="form-control" ID="DDL_PlantaProduccion" runat="server" AutoPostBack="true" OnSelectedIndexChanged="BTN_GuardarPedido_Click"></asp:DropDownList>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-3">
                                             <label for="DDL_PuntoVenta">Punto Venta</label>
                                             <asp:DropDownList class="form-control" ID="DDL_PuntoVenta" runat="server" AutoPostBack="true" OnSelectedIndexChanged="BTN_GuardarPedido_Click"></asp:DropDownList>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label for="DDL_Reportes">Reportes</label>
+                                            <asp:DropDownList class="form-control" ID="DDL_Reportes" runat="server" AutoPostBack="true" onchange="activarloading();estilosElementosBloqueados();" OnSelectedIndexChanged="DDL_Reportes_SelectedIndexChanged">
+                                                <asp:ListItem Value="0">Seleccione</asp:ListItem>
+                                                <asp:ListItem Value="1">Reporte pedido</asp:ListItem>
+                                                <asp:ListItem Value="2">Descargar pedido</asp:ListItem>
+                                            </asp:DropDownList>
                                         </div>
                                     </div>
                                     <div class="form-row">
@@ -380,39 +475,40 @@
                                     </div>
                                     <div class="form-row">
                                         <div class="col-md-7">
-                                            <asp:Button ID="BTN_AgregarProductos" runat="server" Text="Agregar productos" CssClass="btn btn-secondary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_CargarProductos_Click"></asp:Button>                                        
-                                            <asp:Button ID="BTN_ConfirmarPedido" runat="server" Text="Confirmar pedido" CssClass="btn btn-success" OnClick="BTN_ConfirmarPedido_Click"></asp:Button>
+                                            <asp:Button ID="BTN_AgregarProductos" runat="server" UseSubmitBehavior="false" Text="Agregar productos" CssClass="btn btn-secondary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_CargarProductos_Click"></asp:Button>                                        
+                                            <asp:Button ID="BTN_ConfirmarPedido" runat="server" UseSubmitBehavior="false" Text="Confirmar pedido" CssClass="btn btn-success" OnClick="BTN_ConfirmarPedido_Click"></asp:Button>
                                         </div>
                                         <div class="col-md-5" style="text-align: right;">
-                                            <asp:Button ID="BTN_AbrirModalDetallePedido" runat="server" Text="Imprimir pedido" CssClass="btn btn-secondary" OnClick="BTN_AbrirModalDetallePedido_Click"></asp:Button>
-                                            <asp:Button ID="BTN_ReportePedido" runat="server" Text="Reporte pedido" CssClass="btn btn-secondary" OnClientClick="activarloading();estilosElementosBloqueados();" OnClick="BTN_ReportePedido_Click"></asp:Button>                                                                                
-                                            <asp:Button ID="BTN_DescargarPedido" runat="server" Text="Descargar pedido" CssClass="btn btn-primary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_DescargarPedido_Click"></asp:Button>                                        
+                                            <asp:Button ID="BTN_AbrirModalDetallePedido" runat="server" UseSubmitBehavior="false" Text="Imprimir pedido" CssClass="btn btn-info" OnClick="BTN_AbrirModalDetallePedido_Click"></asp:Button>                                            
                                         </div>
                                     </div>
                                 </div>
                             </ContentTemplate>
                             <Triggers>
-                                <asp:PostBackTrigger ControlID="BTN_DescargarPedido" />
+                                <asp:PostBackTrigger ControlID="DDL_Reportes" />
                             </Triggers>
                         </asp:UpdatePanel>
                         <div class="card-body">
                             <div class="card-body">
                                 <asp:UpdatePanel ID="UpdatePanel_FiltrosProductos" runat="server" UpdateMode="Conditional">
                                     <ContentTemplate>                           
-                                        <div class="input-group no-border">
-                                            <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar..." OnTextChanged="TXT_Buscar_OnTextChanged" AutoPostBack="true"></asp:TextBox>
+                                        <div class="input-group no-border col-md-6">
+                                            <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar producto..." OnTextChanged="TXT_Buscar_OnTextChanged" AutoPostBack="true"></asp:TextBox>
                                             <div class="input-group-append">
                                                 <div class="input-group-text">
                                                     <i class="nc-icon nc-zoom-split"></i>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="input-group no-border col-md-3">
+                                            <asp:Button ID="BTN_VerTodosProductos" Visible="false" runat="server" UseSubmitBehavior="false" Text="Ver todos los productos" CssClass="btn btn-secondary" style="margin: 0px;" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_VerTodosProductos_Click"></asp:Button>
+                                        </div>
                                     </ContentTemplate>
                                 </asp:UpdatePanel>
                             </div>
                             <div class="table">
-                                <%--<asp:UpdatePanel ID="UpdatePanel_ListaProductos" runat="server" UpdateMode="Conditional">
-                                    <ContentTemplate>--%>
+                                <asp:UpdatePanel ID="UpdatePanel_ListaProductos" runat="server" UpdateMode="Conditional">
+                                    <ContentTemplate>
                                         <asp:GridView ID="DGV_ListaProductos" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
                                             AutoGenerateColumns="False" DataKeyNames="IDPedidoDetalle,PedidoID,ProductoID,Categoria" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
                                             ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true"
@@ -420,9 +516,8 @@
                                             OnRowCommand="DGV_ListaProductos_RowCommand"
                                             OnRowDataBound="DGV_ListaProductos_RowDataBound">
                                             <Columns>
-                                                <asp:BoundField DataField="ProductoID" SortExpression="ProductoID" HeaderText="Código producto" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="DescripcionProducto" SortExpression="DescripcionProducto" HeaderText="Nombre producto" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                <asp:BoundField DataField="PrecioProducto" SortExpression="PrecioProducto" HeaderText="Precio unitario" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                <asp:BoundField DataField="PrecioProducto" SortExpression="PrecioProducto" HeaderText="Precio unitario" DataFormatString="{0:n2}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:TemplateField>
                                                     <HeaderTemplate>
                                                         <asp:Label ID="LBL_Cantidad" runat="server" Text="Cantidad"></asp:Label>
@@ -430,7 +525,7 @@
                                                     <ItemTemplate>
                                                         <div class="row">
                                                             <asp:TextBox class="form-control" TextMode="Number" MaxLength="2" min="0" max="99" style="width: 40%" runat="server" ID="TXT_Cantidad" 
-                                                                OnTextChanged="TXT_Cantidad_OnTextChanged" AutoPostBack="true" Text='<%#Eval("CantidadProduccion") %>' />                                                            
+                                                               OnTextChanged="TXT_Cantidad_OnTextChanged" AutoPostBack="true" onchange="enterClickAgregar(this);" Text='<%#Eval("CantidadProduccion") %>' />                                                            
                                                             <asp:DropDownList class="form-control" style="width: 30%" runat="server" ID="DDL_Decenas" 
                                                                 OnSelectedIndexChanged="DDL_DecenasUnidades_OnSelectedIndexChanged" AutoPostBack="true">
                                                                 <asp:ListItem Value="0">0</asp:ListItem>
@@ -461,36 +556,12 @@
                                                     </ItemTemplate>
                                                     <ItemStyle HorizontalAlign="Center" />
                                                 </asp:TemplateField>
-                                                <%--<asp:TemplateField>
-                                                    <HeaderTemplate>
-                                                        <asp:Label ID="LBL_Disminuir" runat="server" Text="Disminuir"></asp:Label>
-                                                    </HeaderTemplate>
-                                                    <ItemTemplate>
-                                                        <asp:Button class="btn btn-outline-primary btn-round" ID="BTN_Minus" runat="server"
-                                                                CommandName="minus"
-                                                                CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
-                                                                Text="-" AutoPostBack="true" />
-                                                    </ItemTemplate>
-                                                    <ItemStyle HorizontalAlign="Center" />
-                                                </asp:TemplateField>
                                                 <asp:TemplateField>
                                                     <HeaderTemplate>
-                                                        <asp:Label ID="LBL_Aumentar" runat="server" Text="Aumentar"></asp:Label>
+                                                        <asp:Label ID="LBL_Acciones" runat="server" Text="Acciones"></asp:Label>
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
-                                                        <asp:Button class="btn btn-outline-primary btn-round" style="font-size: 10px;" ID="BTN_Plus" runat="server"
-                                                                CommandName="plus"
-                                                                CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
-                                                                Text="+" AutoPostBack="true" />
-                                                    </ItemTemplate>
-                                                    <ItemStyle HorizontalAlign="Center" />
-                                                </asp:TemplateField>--%>
-                                                <asp:TemplateField>
-                                                    <HeaderTemplate>
-                                                        <asp:Label ID="LBL_Acciones" runat="server" Text="ACCIONES"></asp:Label>
-                                                    </HeaderTemplate>
-                                                    <ItemTemplate>
-                                                        <asp:Button class="btn btn-outline-danger btn-round" ID="BTN_EliminarProducto" runat="server"
+                                                        <asp:Button UseSubmitBehavior="false" class="btn btn-outline-danger btn-round" ID="BTN_EliminarProducto" runat="server"
                                                             CommandName="Eliminar"
                                                             CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
                                                             Text="Eliminar" AutoPostBack="true" />
@@ -499,8 +570,8 @@
                                                 </asp:TemplateField>
                                             </Columns>
                                         </asp:GridView>
-                                    <%--</ContentTemplate>
-                                </asp:UpdatePanel>--%>
+                                    </ContentTemplate>
+                                </asp:UpdatePanel>
                             </div>
                         </div>
                     </div>
@@ -529,7 +600,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="input-group no-border">
-                                                    <asp:TextBox class="form-control" ID="TXT_BuscarProductosSinAsignar" runat="server" placeholder="Buscar..." OnTextChanged="FiltrarProductos_OnClick" AutoPostBack="true"></asp:TextBox>
+                                                    <asp:TextBox class="form-control" ID="TXT_BuscarProductosSinAsignar" runat="server" placeholder="Buscar..." OnTextChanged="FiltrarProductos_OnClick" AutoPostBack="true" onchange="cargarFiltros();"></asp:TextBox>
                                                     <div class="input-group-append">
                                                         <div class="input-group-text">
                                                             <i class="nc-icon nc-zoom-split"></i>
@@ -557,17 +628,16 @@
                                                     <ItemStyle HorizontalAlign="Center" />
                                                     <ItemStyle Width="50px" />
                                                 </asp:TemplateField>
-                                                <asp:BoundField DataField="DescripcionProducto" SortExpression="DescripcionProducto" HeaderText="Nombre producto" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="200px"></asp:BoundField>
-                                                <asp:BoundField DataField="PrecioVentaFinal" SortExpression="PrecioVentaFinal" HeaderText="Precio unitario" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="150px"></asp:BoundField>
+                                                <asp:BoundField DataField="DescripcionProducto" SortExpression="DescripcionProducto" HeaderText="Nombre producto" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="200px"></asp:BoundField>
+                                                <asp:BoundField DataField="PrecioVentaFinal" SortExpression="PrecioVentaFinal" HeaderText="Precio unitario" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="150px" DataFormatString="{0:n2}"></asp:BoundField>
                                                 <asp:BoundField DataField="DescripcionCategoria" SortExpression="DescripcionCategoria" HeaderText="Categoria" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="100px"></asp:BoundField>
-                                                <%--<asp:BoundField DataField="UnidadMedida" SortExpression="UnidadMedida" HeaderText="Unidad Medida" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>--%>
                                                 <asp:TemplateField>
                                                     <HeaderTemplate>
                                                         <asp:Label ID="LBL_Cantidad" runat="server" Text="Cantidad"></asp:Label>
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
                                                         <asp:TextBox class="form-control" TextMode="Number" MaxLength="0" min="0" max="99" style="width: 100%" runat="server" ID="TXT_CantidadAgregar" 
-                                                            OnTextChanged="TXT_CantidadAgregar_OnTextChanged" Text='0' AutoPostBack="true" />
+                                                            OnTextChanged="TXT_CantidadAgregar_OnTextChanged" onchange="enterClickAgregar2(this);" Text='0' AutoPostBack="true" />
                                                     </ItemTemplate>
                                                     <ItemStyle HorizontalAlign="Center" />                                                    
                                                 </asp:TemplateField>
@@ -578,8 +648,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <asp:Button ID="BTN_CerrarModalCrearPedido" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-secondary" />
-                            <asp:Button ID="BTN_Agregar" runat="server" Text="Agregar" CssClass="btn btn-success" OnClick="BTN_Agregar_Click" />
+                            <asp:Button ID="BTN_CerrarModalCrearPedido" UseSubmitBehavior="false" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-secondary" />
+                            <asp:Button ID="BTN_Agregar" runat="server" UseSubmitBehavior="false" Text="Agregar" CssClass="btn btn-success" OnClick="BTN_Agregar_Click" />
                         </div>
                     </div>
                 </div>
@@ -604,8 +674,8 @@
                             <p>La confirmación del pedido no permitirá agregar nuevos productos o editar la información del pedido. ¿Desea confirmar el pedido?</p>
                         </div>
                         <div class="modal-footer">
-                            <asp:Button ID="BTN_CerrarModalConfirmacionPedido" runat="server" Text="Cancelar" data-dismiss="modal" CssClass="btn btn-secondary" />
-                            <asp:Button ID="BTN_ConfirmacionPedido" runat="server" Text="Confirmar" CssClass="btn btn-success" OnClick="BTN_ConfirmacionPedido_Click" />
+                            <asp:Button ID="BTN_CerrarModalConfirmacionPedido" UseSubmitBehavior="false" runat="server" Text="Cancelar" data-dismiss="modal" CssClass="btn btn-secondary" />
+                            <asp:Button ID="BTN_ConfirmacionPedido" runat="server" UseSubmitBehavior="false" Text="Confirmar" CssClass="btn btn-success" OnClick="BTN_ConfirmacionPedido_Click" />
                         </div>
                     </div>
                 </div>
@@ -652,8 +722,8 @@
                         </div>
                         <div class="modal-footer">                            
                             <div style="text-align: right;">
-                                <asp:Button ID="BTN_CerrarModalDetallePedido" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-secondary" />  
-                                <asp:Button ID="BTN_ImprimirDetallePedido" runat="server" Text="Imprimir" CssClass="btn btn-success" OnClick="BTN_ImprimirDetallePedido_Click" />                              
+                                <asp:Button ID="BTN_CerrarModalDetallePedido" UseSubmitBehavior="false" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-secondary" />  
+                                <asp:Button ID="BTN_ImprimirDetallePedido" UseSubmitBehavior="false" runat="server" Text="Imprimir" CssClass="btn btn-success" OnClick="BTN_ImprimirDetallePedido_Click" />                              
                             </div>
                         </div>
                     </div>
@@ -686,7 +756,7 @@
                         </div>
                         <div class="modal-footer">
                             <div style="text-align: right;">
-                                <asp:Button ID="BTN_CerrarModalSeleccionarImpresora" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-secondary" />                                
+                                <asp:Button ID="BTN_CerrarModalSeleccionarImpresora" UseSubmitBehavior="false" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-secondary" />                                
                             </div>
                         </div>
                     </div>

@@ -11,8 +11,6 @@
     <!-- CSS Files -->
     <link href="Assets/css/bootstrap.min.css" rel="stylesheet" />
     <link href="Assets/css/paper-dashboard.css?v=2.1.1" rel="stylesheet" />
-    <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link href="Assets/demo/demo.css" rel="stylesheet" />
     <!-- Custom fonts for this template-->
     <link href="Assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
@@ -55,7 +53,6 @@
     <script src="Assets/js/core/jquery.min.js"></script>
     <script src="Assets/js/core/popper.min.js"></script>
     <script src="Assets/js/core/bootstrap.min.js"></script>
-    <script src="Assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
     <script src="Assets/js/plugins/moment.min.js"></script>
     <!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
     <script src="Assets/js/plugins/bootstrap-switch.js"></script>
@@ -75,11 +72,6 @@
     <script src="Assets/js/plugins/bootstrap-tagsinput.js"></script>
     <!-- Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
     <script src="Assets/js/plugins/jasny-bootstrap.min.js"></script>
-    <!--  Full Calendar Plugin, full documentation here: https://github.com/fullcalendar/fullcalendar    -->
-    <script src="Assets/js/plugins/fullcalendar/fullcalendar.min.js"></script>
-    <script src="Assets/js/plugins/fullcalendar/daygrid.min.js"></script>
-    <script src="Assets/js/plugins/fullcalendar/timegrid.min.js"></script>
-    <script src="Assets/js/plugins/fullcalendar/interaction.min.js"></script>
     <!-- Vector Map plugin, full documentation here: http://jvectormap.com/documentation/ -->
     <script src="Assets/js/plugins/jquery-jvectormap.js"></script>
     <!--  Plugin for the Bootstrap Table -->
@@ -92,8 +84,6 @@
     <script src="Assets/js/plugins/bootstrap-notify.js"></script>
     <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="Assets/js/paper-dashboard.min.js?v=2.1.1" type="text/javascript"></script>
-    <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
-    <script src="Assets/demo/demo.js"></script>
     <script>
         //$(document).ready(function () {
         //    demo.checkFullPageBackgroundImage();

@@ -48,7 +48,7 @@
 
         .grid caption 
         {
-	        background:#f9f9f9 url(../images/box_bg.gif) repeat-x;
+	        background:#f9f9f9 url(../Assets/img/box_bg.gif) repeat-x;
 	        color:white;
 	        text-align:left;
 	        line-height:22px;
@@ -70,7 +70,7 @@
 	        
         .grid th
         {
-	        background:transparent url(../images/barragrisclaro.png)  repeat-x;
+	        background:transparent url(../Assets/img/barragrisclaro.png)  repeat-x;
             height:19px;
            border:solid 1px transparent;
            

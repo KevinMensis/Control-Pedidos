@@ -103,42 +103,6 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.TextBox TXT_Buscar;
         
         /// <summary>
-        /// TXT_FechaCreacionDesde control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_FechaCreacionDesde;
-        
-        /// <summary>
-        /// TXT_FechaCreacionHasta control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_FechaCreacionHasta;
-        
-        /// <summary>
-        /// TXT_FechaPedidoDesde control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_FechaPedidoDesde;
-        
-        /// <summary>
-        /// TXT_FechaPedidoHasta control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_FechaPedidoHasta;
-        
-        /// <summary>
         /// LB_Sucursal control.
         /// </summary>
         /// <remarks>
@@ -245,15 +209,6 @@ namespace MCWebHogar.ControlPedidos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList DDL_PuntoVenta;
-        
-        /// <summary>
-        /// TXT_DescripcionPedido control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_DescripcionPedido;
         
         /// <summary>
         /// BTN_CerrarModalCrearPedido control.

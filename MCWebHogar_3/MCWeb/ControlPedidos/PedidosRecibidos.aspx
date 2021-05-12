@@ -40,7 +40,8 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
     <div id="modalloading" class="loading">
-        <img src="../images/cargando5.gif" width="100" height="100" />
+        <img src="../Assets/img/cargando.gif" width="100" height="100" /><br />
+        <asp:Label runat="server" ID="LBL_GenerandoInforme" style="color: white;" Text="Generando informe espere por favor..."></asp:Label>
     </div>
     <div id="fade2" class="overlayload"></div>
     <div class="wrapper ">
@@ -63,7 +64,7 @@
                     <li>
                         <a href="OrdenesProduccion.aspx">
                             <i class="fas fa-sort"></i>
-                            <p>Ordenes de Producción</p>
+                           <p>Ordenes de producción</p>
                         </a>
                     </li>
                     <li>
@@ -109,19 +110,19 @@
                     <li>
                         <a href="PuntosVenta.aspx">
                             <i class="fas fa-building"></i>
-                            <p>Puntos de Venta</p>
+                            <p>Puntos de venta</p>
                         </a>
                     </li>
                     <li>
                         <a href="PlantasProduccion.aspx">
                             <i class="fas fa-industry"></i>
-                            <p>Plantas de Producción</p>
+                            <p>Plantas de producción</p>
                         </a>
                     </li>
                     <li>
                         <a href="GestionUsuarios.aspx">
                             <i class="fas fa-user"></i>
-                            <p>GESTIÓN DE USUARIOS</p>
+                            <p>Gestión de usuarios</p>
                         </a>
                     </li>
                     <hr style="width: 230px; color: #2c2c2c;" />
@@ -130,9 +131,9 @@
                             <i class="fas fa-sign-out-alt"></i>
                             <p>Cerrar sessión</p>
                         </asp:LinkButton>
-                        <a href="http://mensis.cr/" target="_blank">
-                            <p style="margin-left: 25%; font-size: 7px;">Desarrollado por</p>
-                            <img style="width: 25%; display: block; margin-left: 30%; margin-top: 3%;" src="../Assets/img/logoMensis.png" />
+                        <a href="https://mensis.cr/" target="_blank" style="margin-top: 0px !important;">
+                            <p style="margin-left: 29%; font-size: 7px;">Desarrollado por</p>
+                            <img style="width: 25%; display: block; margin-left: 30%;" src="../Assets/img/logoMensis.png" />
                         </a>
                     </li>
                 </ul>
@@ -149,7 +150,7 @@
                                 <asp:UpdatePanel ID="UpdatePanel_FiltrosPedidosRecibidos" runat="server" UpdateMode="Conditional">
                                     <ContentTemplate> 
                                         <div class="row">                         
-                                            <div class="input-group no-border col-md-12">
+                                            <div class="input-group no-border col-md-4">
                                                 <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar número pedido recibido..." OnTextChanged="TXT_FiltrarPedidosRecibidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>
                                                 <div class="input-group-append">
                                                     <div class="input-group-text">
@@ -170,15 +171,15 @@
                                                 OnRowCommand="DGV_ListaPedidosRecibidos_RowCommand"
                                                 OnRowDataBound="DGV_ListaPedidosRecibidos_OnRowDataBound">
                                                 <Columns>
-                                                    <asp:BoundField DataField="NumeroPedidoRecibido" SortExpression="IDRecibidoPedido" HeaderText="Número PedidoRecibido" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                    <asp:BoundField DataField="NumeroPedido" SortExpression="PedidoID" HeaderText="Número Pedido" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                    <asp:BoundField DataField="FPedidoRecibido" SortExpression="FechaIngreso" HeaderText="Fecha Pedido Recibido" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                    <asp:BoundField DataField="NumeroPedidoRecibido" SortExpression="IDRecibidoPedido" ItemStyle-ForeColor="black" HeaderText="Número pedido recibido" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                    <asp:BoundField DataField="NumeroPedido" SortExpression="PedidoID" HeaderText="Número pedido" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                    <asp:BoundField DataField="FPedidoRecibido" SortExpression="FechaIngreso" HeaderText="Fecha pedido recibido" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                     <asp:BoundField DataField="DescripcionPuntoVenta" SortExpression="DescripcionPuntoVenta" HeaderText="Punto venta destino" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                     <asp:BoundField DataField="Estado" SortExpression="Estado" HeaderText="Estado" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                     <asp:BoundField DataField="Nombre" SortExpression="Nombre" HeaderText="Solicitante" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                
                                                     <asp:TemplateField>
                                                         <HeaderTemplate>
-                                                            <asp:Label ID="LBL_Acciones" runat="server" Text="ACCIONES"></asp:Label>
+                                                            <asp:Label ID="LBL_Acciones" runat="server" Text="Acciones"></asp:Label>
                                                         </HeaderTemplate>
                                                         <ItemTemplate>
                                                             <asp:Button class="btn btn-outline-primary btn-round" ID="BTN_VerDetalle" runat="server"

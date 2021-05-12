@@ -279,7 +279,6 @@ namespace MCWebHogar.ControlPedidos
                             TXT_CodigoBarra.Text = dr["CodigoBarra"].ToString().Trim();
                             TXT_Costo.Text = dr["Costo"].ToString().Trim();
                             TXT_PrecioVenta.Text = dr["PrecioVenta"].ToString().Trim();
-                            TXT_PrecioVentaFinal.Text = dr["PrecioVentaFinal"].ToString().Trim();
                             TXT_MedidaVenta.Text = dr["MedidaVenta"].ToString().Trim();
                             TXT_MedidaProduccion.Text = dr["MedidaProduccion"].ToString().Trim();
                             TXT_UnidadMedida.Text = dr["UnidadMedida"].ToString().Trim();
@@ -319,7 +318,6 @@ namespace MCWebHogar.ControlPedidos
             TXT_CodigoBarra.Text = "";
             TXT_Costo.Text = "0";
             TXT_PrecioVenta.Text = "0";
-            TXT_PrecioVentaFinal.Text = "0";
             TXT_MedidaVenta.Text = "0";
             TXT_MedidaProduccion.Text = "0";
             TXT_UnidadMedida.Text = "";
@@ -341,7 +339,6 @@ namespace MCWebHogar.ControlPedidos
             DT.DT1.Rows.Add("@Categoria", DDL_Categoria.SelectedValue, SqlDbType.Int);
             DT.DT1.Rows.Add("@Costo", TXT_Costo.Text, SqlDbType.Decimal);
             DT.DT1.Rows.Add("@PrecioVenta", TXT_PrecioVenta.Text, SqlDbType.Decimal);
-            DT.DT1.Rows.Add("@PrecioVentaFinal", TXT_PrecioVentaFinal.Text, SqlDbType.Decimal);
             DT.DT1.Rows.Add("@CodigoBarra", TXT_CodigoBarra.Text, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@MedidaVenta", TXT_MedidaVenta.Text, SqlDbType.Decimal);
             DT.DT1.Rows.Add("@MedidaProduccion", TXT_MedidaProduccion.Text, SqlDbType.Decimal);

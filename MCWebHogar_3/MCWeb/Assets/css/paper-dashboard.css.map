@@ -33,7 +33,6 @@
 		"../scss/dashboard/pro/plugins/_plugin-tagsinput.scss",
 		"../scss/dashboard/pro/plugins/_plugin-datatables.net.scss",
 		"../scss/dashboard/pro/plugins/_plugin-jquery.jvectormap.scss",
-		"../scss/dashboard/pro/plugins/_plugin-fullcalendar.scss",
 		"../scss/core/_nucleo-outline.scss",
 		"../scss/dashboard/core/_buttons.scss",
 		"../scss/dashboard/pro/_social-buttons.scss",

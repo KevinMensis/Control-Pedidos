@@ -13,6 +13,15 @@ namespace MCWebHogar.ControlPedidos {
     public partial class Productos {
         
         /// <summary>
+        /// LBL_GenerandoInforme control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LBL_GenerandoInforme;
+        
+        /// <summary>
         /// LNK_CerrarSession control.
         /// </summary>
         /// <remarks>
@@ -164,15 +173,6 @@ namespace MCWebHogar.ControlPedidos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TXT_PrecioVenta;
-        
-        /// <summary>
-        /// TXT_PrecioVentaFinal control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_PrecioVentaFinal;
         
         /// <summary>
         /// TXT_MedidaVenta control.

@@ -45,15 +45,7 @@
         }
 
         function validarCrearProducto() {
-
-        }
-
-        function irArriba() {
-            $('.ir-arriba').click(function () { $('body,html').animate({ scrollTop: '0px' }, 1000); });
-            $(window).scroll(function () {
-                if ($(this).scrollTop() > 0) { $('.ir-arriba').slideDown(600); } else { $('.ir-arriba').slideUp(600); }
-            });
-            $('.ir-abajo').click(function () { $('body,html').animate({ scrollTop: '1000px' }, 1000); });
+            return true
         }
 
         function cargarFiltros() {
@@ -61,8 +53,7 @@
         }
 
         $(document).ready(function () {
-            cargarFiltros();
-            irArriba();            
+            cargarFiltros();          
         });
 
     </script>
@@ -70,15 +61,11 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
     <div id="modalloading" class="loading">
-        <img src="../images/cargando5.gif" width="100" height="100" />
+        <img src="../Assets/img/cargando.gif" width="100" height="100" /><br />
+        <asp:Label runat="server" ID="LBL_GenerandoInforme" style="color: white;" Text="Generando informe espere por favor..."></asp:Label>
     </div>
     <div id="fade2" class="overlayload"></div>
-    <a class="ir-arriba"  javascript:void(0) title="Volver arriba">
-        <span class="fa-stack">
-            <i class="fa fa-circle fa-stack-2x"></i>
-            <i class="fa fa-arrow-up fa-stack-1x fa-inverse"></i>
-        </span>
-    </a>
+
     <div class="wrapper ">
         <div class="sidebar" data-color="white" data-active-color="danger">
             <div class="sidebar-wrapper scroll" style="overflow-y: auto;">
@@ -99,7 +86,7 @@
                     <li>
                         <a href="OrdenesProduccion.aspx">
                             <i class="fas fa-sort"></i>
-                            <p>Ordenes de Producción</p>
+                           <p>Ordenes de producción</p>
                         </a>
                     </li>
                     <li>
@@ -145,19 +132,19 @@
                     <li>
                         <a href="PuntosVenta.aspx">
                             <i class="fas fa-building"></i>
-                            <p>Puntos de Venta</p>
+                            <p>Puntos de venta</p>
                         </a>
                     </li>
                     <li>
                         <a href="PlantasProduccion.aspx">
                             <i class="fas fa-industry"></i>
-                            <p>Plantas de Producción</p>
+                            <p>Plantas de producción</p>
                         </a>
                     </li>
                     <li>
                         <a href="GestionUsuarios.aspx">
                             <i class="fas fa-user"></i>
-                            <p>GESTIÓN DE USUARIOS</p>
+                            <p>Gestión de usuarios</p>
                         </a>
                     </li>
                     <hr style="width: 230px; color: #2c2c2c;" />
@@ -166,9 +153,9 @@
                             <i class="fas fa-sign-out-alt"></i>
                             <p>Cerrar sessión</p>
                         </asp:LinkButton>
-                        <a href="http://mensis.cr/" target="_blank">
-                            <p style="margin-left: 25%; font-size: 7px;">Desarrollado por</p>
-                            <img style="width: 25%; display: block; margin-left: 30%; margin-top: 3%;" src="../Assets/img/logoMensis.png" />
+                        <a href="https://mensis.cr/" target="_blank" style="margin-top: 0px !important;">
+                            <p style="margin-left: 29%; font-size: 7px;">Desarrollado por</p>
+                            <img style="width: 25%; display: block; margin-left: 30%;" src="../Assets/img/logoMensis.png" />
                         </a>
                     </li>
                 </ul>
@@ -222,12 +209,11 @@
                                                 <asp:BoundField DataField="DescripcionProducto" SortExpression="DescripcionProducto" HeaderText="Descripción" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="DescripcionCategoria" SortExpression="DescripcionCategoria" HeaderText="Categoría" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="Costo" SortExpression="Costo" HeaderText="Costo" ItemStyle-HorizontalAlign="Center" DataFormatString="{0:n}"></asp:BoundField>
-                                                <asp:BoundField DataField="PrecioVenta" SortExpression="PrecioVenta" HeaderText="PrecioVenta" ItemStyle-HorizontalAlign="Center" DataFormatString="{0:n}"></asp:BoundField>
-                                                <asp:BoundField DataField="PrecioVentaFinal" SortExpression="PrecioVentaFinal" HeaderText="PrecioVenta" ItemStyle-HorizontalAlign="Center" DataFormatString="{0:n}"></asp:BoundField>
+                                                <asp:BoundField DataField="PrecioVenta" SortExpression="PrecioVenta" HeaderText="Precio al público" ItemStyle-HorizontalAlign="Center" DataFormatString="{0:n}"></asp:BoundField>
                                                 <asp:BoundField DataField="Estado" SortExpression="Estado" HeaderText="Estado" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:TemplateField>
                                                     <HeaderTemplate>
-                                                        <asp:Label ID="LBL_Acciones" runat="server" Text="ACCIONES"></asp:Label>
+                                                        <asp:Label ID="LBL_Acciones" runat="server" Text="Acciones"></asp:Label>
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
                                                         <asp:Button class="btn btn-outline-success btn-round" ID="BTN_Activar" runat="server"
@@ -292,12 +278,8 @@
                                     <asp:TextBox ID="TXT_Costo" runat="server" CssClass="form-control" TextMode="Number"></asp:TextBox>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="TXT_PrecioVenta">Precio de venta:</label>
+                                    <label for="TXT_PrecioVenta">Precio al público:</label>
                                     <asp:TextBox ID="TXT_PrecioVenta" runat="server" CssClass="form-control" TextMode="Number"></asp:TextBox>
-                                </div>
-                                <div class="col-md-4">                                    
-                                    <label for="TXT_PrecioVentaFinal">Precio de venta final:</label>
-                                    <asp:TextBox ID="TXT_PrecioVentaFinal" runat="server" CssClass="form-control" TextMode="Number"></asp:TextBox>
                                 </div>
                             </div>
                             <div class="row">
