@@ -486,6 +486,11 @@ namespace MCWebHogar.ControlPedidos
             if (cantidad.Text != "")
             {
                 cantidadProducto = (Convert.ToInt32(cantidad.Text));
+                if (cantidadProducto < 0 || cantidadProducto > 99)
+                {
+                    cantidadProducto = 0;
+                    cantidad.Text = "0";
+                }
             }
             else
             {
@@ -684,24 +689,34 @@ namespace MCWebHogar.ControlPedidos
             GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
             int index = gvRow.RowIndex;
             TextBox cantidad = sender as TextBox;            
-            decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
             DropDownList ddlUnds = DGV_ListaProductosDevolucion.Rows[index].FindControl("DDL_Unidades") as DropDownList;
             DropDownList ddlDecs = DGV_ListaProductosDevolucion.Rows[index].FindControl("DDL_Decenas") as DropDownList;
-            int unds = Convert.ToInt32(cantidadProducto) % 10;
-            int decs = Convert.ToInt32(cantidadProducto) / 10;
-            if (cantidadProducto > 0 && cantidadProducto < 99)
-            {                                 
-                ddlUnds.SelectedValue = unds.ToString();
-                ddlDecs.SelectedValue = decs.ToString();
-                cantidad.Text = cantidadProducto.ToString();
-                guardarProductoDevolucion(index);
+            if (cantidad.Text != "")
+            {
+                decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
+                int unds = Convert.ToInt32(cantidadProducto) % 10;
+                int decs = Convert.ToInt32(cantidadProducto) / 10;
+                if (cantidadProducto > 0 && cantidadProducto < 99)
+                {
+                    ddlUnds.SelectedValue = unds.ToString();
+                    ddlDecs.SelectedValue = decs.ToString();
+                    cantidad.Text = cantidadProducto.ToString();
+                    guardarProductoDevolucion(index);
+                }
+                else
+                {
+                    unds = Convert.ToInt32(ddlUnds.SelectedValue);
+                    decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
+                    cantidadProducto = decs + unds;
+                    cantidad.Text = cantidadProducto.ToString();
+                }
             }
             else
             {
-                unds = Convert.ToInt32(ddlUnds.SelectedValue);
-                decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
-                cantidadProducto = decs + unds;
-                cantidad.Text = cantidadProducto.ToString();
+                cantidad.Text = "0";
+                ddlUnds.SelectedValue = "0";
+                ddlDecs.SelectedValue = "0";
+                guardarProductoDevolucion(index);
             }
             UpdatePanel_ListaProductosDevolucion.Update();
             ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", "enterCantidad(" + index + ");", true);

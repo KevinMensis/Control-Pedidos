@@ -208,7 +208,7 @@
                                                 OnRowCommand="DGV_ListaDevoluciones_RowCommand"
                                                 OnRowDataBound="DGV_ListaDevoluciones_OnRowDataBound">
                                                 <Columns>
-                                                    <asp:BoundField DataField="NumeroDevolucion" SortExpression="IDDevolucion" HeaderText="Número devolución" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                    <asp:BoundField DataField="NumeroDevolucion" SortExpression="IDDevolucion" HeaderText="Número devolución" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                     <asp:BoundField DataField="Nombre" SortExpression="Nombre" HeaderText="Solicitante" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                
                                                     <asp:BoundField DataField="FDevolucion" SortExpression="FDevolucion" HeaderText="Fecha" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                
                                                     <asp:TemplateField>

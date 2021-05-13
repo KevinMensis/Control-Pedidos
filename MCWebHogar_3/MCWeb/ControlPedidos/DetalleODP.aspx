@@ -401,10 +401,10 @@
                                     <div class="form-row">  
                                         <div class="col-md-6">                                                                                  
                                             <asp:Button UseSubmitBehavior="false" ID="BTN_ConfirmarODP" runat="server" Text="Confirmar orden producción" CssClass="btn btn-success" OnClick="BTN_ConfirmarODP_Click"></asp:Button>
-                                            <asp:Button UseSubmitBehavior="false" ID="BTN_CompletarODP" runat="server" Text="Completar orden producción" CssClass="btn btn-success" OnClick="BTN_CompletarODP_Click"></asp:Button>
-                                        </div>
-                                        <div class="col-md-6" style="text-align: right;"> 
                                             <asp:Button UseSubmitBehavior="false" ID="BTN_ImprimirOrdenProduccion" runat="server" Text="Imprimir orden producción" CssClass="btn btn-info" OnClick="BTN_ImprimirOrdenProduccion_Click"></asp:Button>
+                                        </div>
+                                        <div class="col-md-6" style="text-align: right;">                                             
+                                            <asp:Button UseSubmitBehavior="false" ID="BTN_CompletarODP" runat="server" Text="Completar orden producción" CssClass="btn btn-success" OnClick="BTN_CompletarODP_Click"></asp:Button>
                                         </div>
                                     </div>
                                 </div>

@@ -443,8 +443,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <asp:Button UseSubmitBehavior="false" ID="BTN_CerrarModalCrearPedido" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-secondary" />
-                            <asp:Button UseSubmitBehavior="false" ID="BTN_Agregar" runat="server" Text="Agregar" CssClass="btn btn-success" OnClick="BTN_Agregar_Click" />
+                            <asp:Button UseSubmitBehavior="false" ID="BTN_CerrarModalCrearPedido" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-primary" />
+                            <asp:Button UseSubmitBehavior="false" ID="BTN_Agregar" runat="server" Text="Agregar" CssClass="btn btn-secondary" OnClick="BTN_Agregar_Click" />
                         </div>
                     </div>
                 </div>

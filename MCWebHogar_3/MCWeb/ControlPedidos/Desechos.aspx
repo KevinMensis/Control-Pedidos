@@ -209,7 +209,7 @@
                                                 OnRowCommand="DGV_ListaDesechos_RowCommand"
                                                 OnRowDataBound="DGV_ListaDesechos_OnRowDataBound">
                                                 <Columns>
-                                                    <asp:BoundField DataField="NumeroDesecho" SortExpression="IDDesecho" HeaderText="Número desecho" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                    <asp:BoundField DataField="NumeroDesecho" SortExpression="IDDesecho" HeaderText="Número desecho" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                     <asp:BoundField DataField="Nombre" SortExpression="Nombre" HeaderText="Solicitante" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                
                                                     <asp:BoundField DataField="FDesecho" SortExpression="FDesecho" HeaderText="Fecha" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                
                                                     <asp:TemplateField>

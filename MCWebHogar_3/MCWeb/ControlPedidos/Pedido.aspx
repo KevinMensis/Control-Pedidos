@@ -406,8 +406,8 @@
                             </div>--%>
                         </div>
                         <div class="modal-footer">
-                            <asp:Button ID="BTN_CerrarModalCrearPedido" UseSubmitBehavior="false" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-secondary" />
-                            <asp:Button ID="BTN_CrearPedido" runat="server" Text="Guardar pedido" CssClass="btn btn-success" OnClientClick="return validarCreacionPedido();" OnClick="BTN_CrearPedido_Click" />
+                            <asp:Button ID="BTN_CerrarModalCrearPedido" UseSubmitBehavior="false" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-primary" />
+                            <asp:Button ID="BTN_CrearPedido" runat="server" Text="Crear pedido" CssClass="btn btn-secondary" OnClientClick="return validarCreacionPedido();" OnClick="BTN_CrearPedido_Click" />
                         </div>
                     </div>
                 </div>

@@ -175,15 +175,6 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.Button BTN_ConfirmarODP;
         
         /// <summary>
-        /// BTN_CompletarODP control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BTN_CompletarODP;
-        
-        /// <summary>
         /// BTN_ImprimirOrdenProduccion control.
         /// </summary>
         /// <remarks>
@@ -191,6 +182,15 @@ namespace MCWebHogar.ControlPedidos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BTN_ImprimirOrdenProduccion;
+        
+        /// <summary>
+        /// BTN_CompletarODP control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_CompletarODP;
         
         /// <summary>
         /// UpdatePanel_FiltrosProductos control.

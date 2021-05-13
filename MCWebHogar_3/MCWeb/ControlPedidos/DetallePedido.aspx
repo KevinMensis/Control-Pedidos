@@ -106,7 +106,8 @@
             document.getElementById('BTN_ModalSeleccionarImpresora').click()
         }
 
-        function enterClickAgregar(txtCantidad) {
+        function enterClickAgregar(txtCantidad, e) {
+            console.dir(e)
             var values = txtCantidad.id.split('_')
             var index = values.pop() * 1 + 1
             var rows = $(<%= DGV_ListaProductos.ClientID %>)[0].rows.length - 1
@@ -139,6 +140,7 @@
         }
 
         function enterCantidad(index) {
+            console.log(123)
             var index = index + 1
             var rows = $(<%= DGV_ListaProductos.ClientID %>)[0].rows.length - 1
             var id = ''
@@ -475,8 +477,8 @@
                                     </div>
                                     <div class="form-row">
                                         <div class="col-md-7">
-                                            <asp:Button ID="BTN_AgregarProductos" runat="server" UseSubmitBehavior="false" Text="Agregar productos" CssClass="btn btn-secondary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_CargarProductos_Click"></asp:Button>                                        
-                                            <asp:Button ID="BTN_ConfirmarPedido" runat="server" UseSubmitBehavior="false" Text="Confirmar pedido" CssClass="btn btn-success" OnClick="BTN_ConfirmarPedido_Click"></asp:Button>
+                                            <asp:Button ID="BTN_AgregarProductos" runat="server" UseSubmitBehavior="false" Text="Agregar productos" CssClass="btn btn-primary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_CargarProductos_Click"></asp:Button>                                        
+                                            <asp:Button ID="BTN_ConfirmarPedido" runat="server" UseSubmitBehavior="false" Text="Confirmar pedido" CssClass="btn btn-secondary" OnClick="BTN_ConfirmarPedido_Click"></asp:Button>
                                         </div>
                                         <div class="col-md-5" style="text-align: right;">
                                             <asp:Button ID="BTN_AbrirModalDetallePedido" runat="server" UseSubmitBehavior="false" Text="Imprimir pedido" CssClass="btn btn-info" OnClick="BTN_AbrirModalDetallePedido_Click"></asp:Button>                                            
@@ -525,7 +527,7 @@
                                                     <ItemTemplate>
                                                         <div class="row">
                                                             <asp:TextBox class="form-control" TextMode="Number" MaxLength="2" min="0" max="99" style="width: 40%" runat="server" ID="TXT_Cantidad" 
-                                                               OnTextChanged="TXT_Cantidad_OnTextChanged" AutoPostBack="true" onchange="enterClickAgregar(this);" Text='<%#Eval("CantidadProduccion") %>' />                                                            
+                                                               OnTextChanged="TXT_Cantidad_OnTextChanged" AutoPostBack="true" onchange="enterClickAgregar(this,event);" Text='<%#Eval("CantidadProduccion") %>' />                                                            
                                                             <asp:DropDownList class="form-control" style="width: 30%" runat="server" ID="DDL_Decenas" 
                                                                 OnSelectedIndexChanged="DDL_DecenasUnidades_OnSelectedIndexChanged" AutoPostBack="true">
                                                                 <asp:ListItem Value="0">0</asp:ListItem>
@@ -648,8 +650,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <asp:Button ID="BTN_CerrarModalCrearPedido" UseSubmitBehavior="false" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-secondary" />
-                            <asp:Button ID="BTN_Agregar" runat="server" UseSubmitBehavior="false" Text="Agregar" CssClass="btn btn-success" OnClick="BTN_Agregar_Click" />
+                            <asp:Button ID="BTN_CerrarModalCrearPedido" UseSubmitBehavior="false" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-primary" />
+                            <asp:Button ID="BTN_Agregar" runat="server" UseSubmitBehavior="false" Text="Agregar" CssClass="btn btn-secondary" OnClick="BTN_Agregar_Click" />
                         </div>
                     </div>
                 </div>

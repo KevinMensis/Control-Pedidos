@@ -643,6 +643,11 @@ namespace MCWebHogar.ControlPedidos
             if (cantidad.Text != "")
             {
                 cantidadProducto = (Convert.ToInt32(cantidad.Text));
+                if (cantidadProducto < 0 || cantidadProducto > 99)
+                {
+                    cantidadProducto = 0;
+                    cantidad.Text = "0";
+                }                
             }
             else
             {
@@ -933,7 +938,7 @@ namespace MCWebHogar.ControlPedidos
                 guardarProductoPedido(index);
             }
             UpdatePanel_ListaProductos.Update();
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", "enterCantidad(" + index + ");", true);
+            // ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", "enterCantidad(" + index + ");", true);
         }
 
         protected void DDL_DecenasUnidades_OnSelectedIndexChanged(object sender, EventArgs e)
@@ -974,7 +979,7 @@ namespace MCWebHogar.ControlPedidos
                 }
                 else
                 {
-                    cargarPedido("");
+                    // cargarPedido("");
                 }
             }
         }
