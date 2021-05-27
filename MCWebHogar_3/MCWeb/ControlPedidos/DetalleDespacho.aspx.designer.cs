@@ -76,6 +76,15 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.TextBox TXT_TotalProductos;
         
         /// <summary>
+        /// TXT_MontoDespacho control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TXT_MontoDespacho;
+        
+        /// <summary>
         /// TXT_EstadoDespacho control.
         /// </summary>
         /// <remarks>
@@ -193,21 +202,21 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.ListBox LB_PuntoVenta;
         
         /// <summary>
-        /// UpdatePanel_ListaProductosDespacho control.
+        /// UpdatePanel_ListaPedidosDespacho control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel_ListaProductosDespacho;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_ListaPedidosDespacho;
         
         /// <summary>
-        /// DGV_ListaProductosDespacho control.
+        /// DGV_ListaPedidosDespacho control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView DGV_ListaProductosDespacho;
+        protected global::System.Web.UI.WebControls.GridView DGV_ListaPedidosDespacho;
     }
 }

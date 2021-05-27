@@ -29,7 +29,12 @@ namespace MCWebHogar.ControlPedidos
                 }
             }
             else
-            {                
+            {
+                string opcion = Page.Request.Params["__EVENTTARGET"];
+                if (opcion.Contains("TXT_Buscar"))
+                {
+                    cargarProductos("");
+                }             
             }
         }
 
@@ -73,7 +78,7 @@ namespace MCWebHogar.ControlPedidos
 
             string categorias = "";
             string categoriasText = "";
-            LBL_Filtro.Text = "Filtros: ";
+            // LBL_Filtro.Text = "Filtros: ";
 
             #region Categorias
             foreach (ListItem l in LB_Categoria.Items)
@@ -88,7 +93,7 @@ namespace MCWebHogar.ControlPedidos
             categoriasText = categoriasText.TrimEnd(',');
             if (categoriasText != "")
             {
-                LBL_Filtro.Text += " Categoría=" + categoriasText + "; ";
+                // LBL_Filtro.Text += " Categoría=" + categoriasText + "; ";
                 DT.DT1.Rows.Add("@FiltrarCategoria", 1, SqlDbType.Int);
             }
             #endregion
@@ -96,7 +101,7 @@ namespace MCWebHogar.ControlPedidos
             #region Descripcion
             if (TXT_Buscar.Text != "")
             {
-                LBL_Filtro.Text += " Descripción=" + TXT_Buscar.Text + "; ";
+                // LBL_Filtro.Text += " Descripción=" + TXT_Buscar.Text + "; ";
             }
             #endregion
 
@@ -106,10 +111,10 @@ namespace MCWebHogar.ControlPedidos
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
             DT.DT1.Rows.Add("@TipoSentencia", "CargarProductosAll", SqlDbType.VarChar);
             
-            if (LBL_Filtro.Text == "Filtros: ")
-            {
-                LBL_Filtro.Text += "Ninguno;";
-            }
+            //  if (LBL_Filtro.Text == "Filtros: ")
+            //  {
+            //      LBL_Filtro.Text += "Ninguno;";
+            //  }
 
             UpdatePanel_FiltrosProductos.Update();
 

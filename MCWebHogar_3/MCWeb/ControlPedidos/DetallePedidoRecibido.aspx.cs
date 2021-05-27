@@ -39,13 +39,7 @@ namespace MCWebHogar.ControlPedidos
             }
             else
             {
-                string opcion = Page.Request.Params["__EVENTTARGET"];
-                string argument = Page.Request.Params["__EVENTARGUMENT"];
-                if (opcion.Contains("TXT_Cantidad"))
-                {
-                    int index = Convert.ToInt32(opcion.Split('$')[3].Replace("ctl", "")) - 2;
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", "enterCantidad(" + index + ");", true);
-                }
+                
             }
         }
 
@@ -111,6 +105,7 @@ namespace MCWebHogar.ControlPedidos
                     {
                         TXT_CodigoRecibidoPedido.Text = dr["NumeroRecibidoPedido"].ToString().Trim(); ;
                         TXT_TotalProductos.Text = dr["CantidadProductos"].ToString().Trim();
+                        TXT_MontoPedido.Text = String.Format("{0:n}", dr["MontoPedidoRecibido"]);
                         TXT_EstadoRecibidoPedido.Text = dr["Estado"].ToString().Trim();
                         TXT_FechaRecibidoPedido.Text = dr["FRecibidoPedido"].ToString().Trim();
                         TXT_HoraRecibidoPedido.Text = dr["HRecibidoPedido"].ToString().Trim();
@@ -146,9 +141,13 @@ namespace MCWebHogar.ControlPedidos
                 if (cantidadRecibida > 0)
                 {
                     int IDRecibidoPedidoDetalle = Convert.ToInt32(DGV_ListaProductosRecibidoPedido.DataKeys[index].Value.ToString().Trim());
+                    int IDRecibidoPedido = Convert.ToInt32(DGV_ListaProductosRecibidoPedido.DataKeys[index].Values[1].ToString().Trim());
+                    int IDProducto = Convert.ToInt32(DGV_ListaProductosRecibidoPedido.DataKeys[index].Values[2].ToString().Trim());
                     DT.DT1.Clear();
 
                     DT.DT1.Rows.Add("@IDRecibidoPedidoDetalle", IDRecibidoPedidoDetalle, SqlDbType.Int);
+                    DT.DT1.Rows.Add("@RecibidoPedidoID", IDRecibidoPedido, SqlDbType.Int);
+                    DT.DT1.Rows.Add("@ProductoID", IDProducto, SqlDbType.Int);
                     DT.DT1.Rows.Add("@CantidadRecibida", cantidadRecibida, SqlDbType.Int);
 
                     DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
@@ -338,56 +337,56 @@ namespace MCWebHogar.ControlPedidos
             }
         }
         
-        protected void TXT_Cantidad_OnTextChanged(object sender, EventArgs e)
-        {
-            GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
-            int index = gvRow.RowIndex;
-            TextBox cantidad = sender as TextBox;            
-            DropDownList ddlUnds = DGV_ListaProductosRecibidoPedido.Rows[index].FindControl("DDL_Unidades") as DropDownList;
-            DropDownList ddlDecs = DGV_ListaProductosRecibidoPedido.Rows[index].FindControl("DDL_Decenas") as DropDownList;
+        //protected void TXT_Cantidad_OnTextChanged(object sender, EventArgs e)
+        //{
+        //    GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
+        //    int index = gvRow.RowIndex;
+        //    TextBox cantidad = sender as TextBox;            
+        //    DropDownList ddlUnds = DGV_ListaProductosRecibidoPedido.Rows[index].FindControl("DDL_Unidades") as DropDownList;
+        //    DropDownList ddlDecs = DGV_ListaProductosRecibidoPedido.Rows[index].FindControl("DDL_Decenas") as DropDownList;
 
-            if (cantidad.Text != "")
-            {
-                decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
-                int unds = Convert.ToInt32(cantidadProducto) % 10;
-                int decs = Convert.ToInt32(cantidadProducto) / 10;
-                if (cantidadProducto > 0 && cantidadProducto < 99)
-                {
-                    ddlUnds.SelectedValue = unds.ToString();
-                    ddlDecs.SelectedValue = decs.ToString();
-                    cantidad.Text = cantidadProducto.ToString();
-                }
-                else
-                {
-                    unds = Convert.ToInt32(ddlUnds.SelectedValue);
-                    decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
-                    cantidadProducto = decs + unds;
-                    cantidad.Text = cantidadProducto.ToString();
-                }
-            }
-            else
-            {
-                cantidad.Text = "0";
-                ddlUnds.SelectedValue = "0";
-                ddlDecs.SelectedValue = "0";
-            }
-            UpdatePanel_ListaProductosRecibidoPedido.Update();
-            string script = "estilosElementosBloqueados();enterCantidad(" + index + ");";
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", script, true);
-        }
+        //    if (cantidad.Text != "")
+        //    {
+        //        decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
+        //        int unds = Convert.ToInt32(cantidadProducto) % 10;
+        //        int decs = Convert.ToInt32(cantidadProducto) / 10;
+        //        if (cantidadProducto > 0 && cantidadProducto < 99)
+        //        {
+        //            ddlUnds.SelectedValue = unds.ToString();
+        //            ddlDecs.SelectedValue = decs.ToString();
+        //            cantidad.Text = cantidadProducto.ToString();
+        //        }
+        //        else
+        //        {
+        //            unds = Convert.ToInt32(ddlUnds.SelectedValue);
+        //            decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
+        //            cantidadProducto = decs + unds;
+        //            cantidad.Text = cantidadProducto.ToString();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        cantidad.Text = "0";
+        //        ddlUnds.SelectedValue = "0";
+        //        ddlDecs.SelectedValue = "0";
+        //    }
+        //    UpdatePanel_ListaProductosRecibidoPedido.Update();
+        //    string script = "estilosElementosBloqueados();enterCantidad(" + index + ");";
+        //    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", script, true);
+        //}
 
-        protected void DDL_DecenasUnidades_OnSelectedIndexChanged(object sender, EventArgs e)
-        {
-            GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
-            int index = gvRow.RowIndex;
-            DropDownList ddlUnds = DGV_ListaProductosRecibidoPedido.Rows[index].FindControl("DDL_Unidades") as DropDownList;
-            DropDownList ddlDecs = DGV_ListaProductosRecibidoPedido.Rows[index].FindControl("DDL_Decenas") as DropDownList;
-            TextBox cantidad = DGV_ListaProductosRecibidoPedido.Rows[index].FindControl("TXT_Cantidad") as TextBox;
-            int unds = Convert.ToInt32(ddlUnds.SelectedValue);
-            int decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
-            decimal cantidadProducto = decs + unds;
-            cantidad.Text = cantidadProducto.ToString();
-        }
+        //protected void DDL_DecenasUnidades_OnSelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
+        //    int index = gvRow.RowIndex;
+        //    DropDownList ddlUnds = DGV_ListaProductosRecibidoPedido.Rows[index].FindControl("DDL_Unidades") as DropDownList;
+        //    DropDownList ddlDecs = DGV_ListaProductosRecibidoPedido.Rows[index].FindControl("DDL_Decenas") as DropDownList;
+        //    TextBox cantidad = DGV_ListaProductosRecibidoPedido.Rows[index].FindControl("TXT_Cantidad") as TextBox;
+        //    int unds = Convert.ToInt32(ddlUnds.SelectedValue);
+        //    int decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
+        //    decimal cantidadProducto = decs + unds;
+        //    cantidad.Text = cantidadProducto.ToString();
+        //}
 
         protected void DGV_ListaProductosRecibidoPedido_Sorting(object sender, GridViewSortEventArgs e)
         {

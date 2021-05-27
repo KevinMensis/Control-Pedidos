@@ -67,12 +67,6 @@
                            <p>Ordenes de producción</p>
                         </a>
                     </li>
-                    <li>
-                        <a href="Empaque.aspx">
-                            <i class="fas fa-box-open"></i>
-                            <p>Empaque</p>
-                        </a>
-                    </li>
                     <li class="active">
                         <a href="Despacho.aspx">
                             <i class="fas fa-truck"></i>
@@ -83,6 +77,12 @@
                         <a href="PedidosRecibidos.aspx">
                             <i class="fas fa-check-double"></i>
                             <p>Pedidos recibidos</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Empaque.aspx">
+                            <i class="fas fa-box-open"></i>
+                            <p>Empaque</p>
                         </a>
                     </li>
                     <li>
@@ -158,9 +158,14 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <label style="margin-top: 1%;">Fecha desde:</label> 
+                                            <div class="input-group no-border col-md-2">                                               
+                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaCreacionDesde" runat="server" TextMode="Date" OnTextChanged="TXT_FiltrarDespachos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
+                                            </div>
                                         </div>
                                     </ContentTemplate>
                                 </asp:UpdatePanel>
+                                <br />
                                 <div class="table">
                                     <asp:UpdatePanel ID="UpdatePanel_ListaDespachos" runat="server" UpdateMode="Conditional">
                                         <ContentTemplate>

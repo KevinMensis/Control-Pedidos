@@ -29,7 +29,7 @@ namespace MCWebHogar.ControlPedidos
                     }
                     else
                     {
-                        HDF_IDDespacho.Value = Session["IDDespacho"].ToString();                        
+                        HDF_IDDespacho.Value = Session["IDDespacho"].ToString();
                         cargarDDLs();
                         cargarDespacho("");
                         cargarProductosDespacho();
@@ -40,12 +40,7 @@ namespace MCWebHogar.ControlPedidos
             else
             {
                 string opcion = Page.Request.Params["__EVENTTARGET"];
-                string argument = Page.Request.Params["__EVENTARGUMENT"];
-                if (opcion.Contains("TXT_Cantidad"))
-                {
-                    int index = Convert.ToInt32(opcion.Split('$')[3].Replace("ctl", "")) - 2;
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", "enterCantidad(" + index + ");", true);
-                }
+                string argument = Page.Request.Params["__EVENTARGUMENT"];                
                 if (opcion.Contains("TXT_Buscar"))
                 {
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Buscar_OnTextChanged", "cargarFiltros();estilosElementosBloqueados();", true);
@@ -134,6 +129,7 @@ namespace MCWebHogar.ControlPedidos
                     {
                         TXT_CodigoDespacho.Text = dr["NumeroDespacho"].ToString().Trim(); ;
                         TXT_TotalProductos.Text = dr["CantidadProductos"].ToString().Trim();
+                        TXT_MontoDespacho.Text = String.Format("{0:n}", dr["MontoDespacho"]);
                         TXT_EstadoDespacho.Text = dr["Estado"].ToString().Trim();
                         TXT_FechaDespacho.Text = dr["FDespacho"].ToString().Trim();
                         TXT_HoraDespacho.Text = dr["HDespacho"].ToString().Trim();
@@ -162,36 +158,45 @@ namespace MCWebHogar.ControlPedidos
 
         protected void BTN_ConfirmarDespacho_Click(object sender, EventArgs e)
         {
-            for (int index = 0; index < DGV_ListaProductosDespacho.Rows.Count; index++)
-            {               
-                TextBox cantidad = DGV_ListaProductosDespacho.Rows[index].FindControl("TXT_Cantidad") as TextBox;
-                int cantidadADespachar = Convert.ToInt32(cantidad.Text.Trim());
-                if (cantidadADespachar > 0)
+            for (int index = 0; index < DGV_ListaPedidosDespacho.Rows.Count; index++)
+            {
+                GridView gridListaProductos = DGV_ListaPedidosDespacho.Rows[index].FindControl("DGV_ListaProductos") as GridView;
+
+                for (int i = 0; i < gridListaProductos.Rows.Count; i++)
                 {
-                    int idDetalleDespacho = Convert.ToInt32(DGV_ListaProductosDespacho.DataKeys[index].Value.ToString().Trim());
-                    int idProducto = Convert.ToInt32(DGV_ListaProductosDespacho.DataKeys[index].Values[2].ToString().Trim());
-                    int idPedido = Convert.ToInt32(DGV_ListaProductosDespacho.DataKeys[index].Values[3].ToString().Trim());
-                    DT.DT1.Clear();
+                    TextBox cantidad = gridListaProductos.Rows[i].FindControl("TXT_Cantidad") as TextBox;
+                    int cantidadADespachar = Convert.ToInt32(cantidad.Text.Trim().Replace(",", ""));
+                    if (cantidadADespachar > 0)
+                    {
+                        int idDetalleDespacho = Convert.ToInt32(gridListaProductos.DataKeys[i].Value.ToString().Trim());
+                        int idProducto = Convert.ToInt32(gridListaProductos.DataKeys[i].Values[1].ToString().Trim());
+                        int idPedido = Convert.ToInt32(gridListaProductos.DataKeys[i].Values[2].ToString().Trim());
+                        int idDespacho = Convert.ToInt32(gridListaProductos.DataKeys[i].Values[3].ToString().Trim());
+                        DT.DT1.Clear();
 
-                    DT.DT1.Rows.Add("@IDDespachoDetalle", idDetalleDespacho, SqlDbType.Int);
-                    DT.DT1.Rows.Add("@CantidadDespachada", cantidadADespachar, SqlDbType.Int);
+                        DT.DT1.Rows.Add("@IDDespachoDetalle", idDetalleDespacho, SqlDbType.Int);
+                        DT.DT1.Rows.Add("@DespachoID", idDespacho, SqlDbType.Int);
+                        DT.DT1.Rows.Add("@PedidoID", idPedido, SqlDbType.Int);
+                        DT.DT1.Rows.Add("@ProductoID", idProducto, SqlDbType.Int);
+                        DT.DT1.Rows.Add("@CantidadDespachada", cantidadADespachar, SqlDbType.Int);
 
-                    DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
-                    DT.DT1.Rows.Add("@TipoSentencia", "UpdateProducto", SqlDbType.VarChar);
+                        DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+                        DT.DT1.Rows.Add("@TipoSentencia", "UpdateProducto", SqlDbType.VarChar);
 
-                    Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP11_0001");
+                        Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP11_0001");
 
-                    DT.DT1.Clear();
+                        DT.DT1.Clear();
 
-                    DT.DT1.Rows.Add("@ProductoID", idProducto, SqlDbType.Int);
-                    DT.DT1.Rows.Add("@PedidoID", idPedido, SqlDbType.Int);
-                    DT.DT1.Rows.Add("@CantidadDespachada", cantidadADespachar, SqlDbType.Int);
+                        DT.DT1.Rows.Add("@ProductoID", idProducto, SqlDbType.Int);
+                        DT.DT1.Rows.Add("@PedidoID", idPedido, SqlDbType.Int);
+                        DT.DT1.Rows.Add("@CantidadDespachada", cantidadADespachar, SqlDbType.Int);
 
-                    DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
-                    DT.DT1.Rows.Add("@TipoSentencia", "UpdateDespacho", SqlDbType.VarChar);
+                        DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+                        DT.DT1.Rows.Add("@TipoSentencia", "UpdateDespacho", SqlDbType.VarChar);
 
-                    Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP13_0001");
-                }
+                        Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP13_0001");
+                    }
+                }                
             }
 
             DT.DT1.Clear();
@@ -211,15 +216,15 @@ namespace MCWebHogar.ControlPedidos
                     return;
                 }
                 else
-                {                    
-                    string script = "";
+                {
+                    string script = "desactivarloading();";
                     cargarDespacho(script);
                     cargarProductosDespacho();
                 }
             }
             else
             {
-                string script = "";
+                string script = "desactivarloading();";
                 cargarDespacho(script);
             }
         }
@@ -276,7 +281,7 @@ namespace MCWebHogar.ControlPedidos
         }
         #endregion
 
-        #region Cargar Productos        
+        #region Cargar Productos
         #region Productos Despacho
         protected void TXT_Buscar_OnTextChanged(object sender, EventArgs e)
         {
@@ -322,13 +327,13 @@ namespace MCWebHogar.ControlPedidos
             }
             #endregion
 
-            DT.DT1.Rows.Add("@DespachoID", HDF_IDDespacho.Value, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@IDDespacho", HDF_IDDespacho.Value, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@Buscar", TXT_Buscar.Text, SqlDbType.VarChar);
 
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@TipoSentencia", "CargarProductos", SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "CargarPedidos", SqlDbType.VarChar);
 
-            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP11_0001");
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP10_0001");
 
             if (Result != null && Result.Rows.Count > 0)
             {
@@ -338,9 +343,9 @@ namespace MCWebHogar.ControlPedidos
                 }
                 else
                 {
-                    DGV_ListaProductosDespacho.DataSource = Result;
-                    DGV_ListaProductosDespacho.DataBind();
-                    UpdatePanel_ListaProductosDespacho.Update();                    
+                    DGV_ListaPedidosDespacho.DataSource = Result;
+                    DGV_ListaPedidosDespacho.DataBind();
+                    UpdatePanel_ListaPedidosDespacho.Update();                    
                     string script = "estilosElementosBloqueados();cargarFiltros();";
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductosDespacho", script, true);
                     UpdatePanel_FiltrosProductos.Update();
@@ -348,133 +353,76 @@ namespace MCWebHogar.ControlPedidos
             }
             else
             {
-                DGV_ListaProductosDespacho.DataSource = Result;
-                DGV_ListaProductosDespacho.DataBind();
-                UpdatePanel_ListaProductosDespacho.Update();
+                DGV_ListaPedidosDespacho.DataSource = Result;
+                DGV_ListaPedidosDespacho.DataBind();
+                UpdatePanel_ListaPedidosDespacho.Update(); 
                 string script = "estilosElementosBloqueados();cargarFiltros();";
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductosDespacho", script, true);
                 UpdatePanel_FiltrosProductos.Update();
             }
         }
 
-        protected void DGV_ListaProductosDespacho_RowDataBound(object sender, GridViewRowEventArgs e)
+        protected void DGV_ListaPedidosDespacho_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                TextBox cantidad = (TextBox)e.Row.FindControl("TXT_Cantidad");
-                DropDownList ddlUnds = (DropDownList)e.Row.FindControl("DDL_Unidades");
-                DropDownList ddlDecs = (DropDownList)e.Row.FindControl("DDL_Decenas");
-                decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
-                int unds = Convert.ToInt32(cantidadProducto) % 10;
-                int decs = Convert.ToInt32(cantidadProducto) / 10;
-                ddlUnds.SelectedValue = unds.ToString();
-                ddlDecs.SelectedValue = decs.ToString();
+                int idPedido = Convert.ToInt32(DGV_ListaPedidosDespacho.DataKeys[e.Row.RowIndex].Values[1].ToString());
+                DT.DT1.Clear();
+                DT.DT1.Rows.Add("@DespachoID", HDF_IDDespacho.Value, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@PedidoID", idPedido, SqlDbType.VarChar);
 
-                if (HDF_EstadoDespacho.Value != "Preparación")
-                {
-                    cantidad.Enabled = false;
-                    cantidad.CssClass = "form-control";
-                    ddlUnds.Enabled = false;
-                    ddlUnds.CssClass = "form-control";
-                    ddlDecs.Enabled = false;
-                    ddlDecs.CssClass = "form-control";                   
-                }
+                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", "CargarProductosPedido", SqlDbType.VarChar);
+
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP11_0001");
+                GridView DGV_ListaProductos = e.Row.FindControl("DGV_ListaProductos") as GridView;
+                DGV_ListaProductos.DataSource = Result;
+                DGV_ListaProductos.DataBind();
             }
         }
         
-        protected void DGV_ListaProductosDespacho_RowCommand(object sender, GridViewCommandEventArgs e)
+        protected void DGV_ListaPedidosDespacho_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            if (e.CommandName != "Sort")
-            {
-                int index = Convert.ToInt32(e.CommandArgument);
+            //if (e.CommandName != "Sort")
+            //{
+            //    int index = Convert.ToInt32(e.CommandArgument);
                 
-                TextBox cantidad = DGV_ListaProductosDespacho.Rows[index].FindControl("TXT_Cantidad") as TextBox;
-                decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
-                DropDownList ddlUnds = DGV_ListaProductosDespacho.Rows[index].FindControl("DDL_Unidades") as DropDownList;
-                DropDownList ddlDecs = DGV_ListaProductosDespacho.Rows[index].FindControl("DDL_Decenas") as DropDownList;
-                if (e.CommandName == "minus")
-                {
-                    if (cantidadProducto > 0)
-                    {
-                        cantidadProducto--;
-                    }
-                }
-                if (e.CommandName == "plus")
-                {
-                    if (cantidadProducto < 99)
-                    {
-                        cantidadProducto++;
-                    }
-                }
-                int unds = Convert.ToInt32(cantidadProducto) % 10;
-                int decs = Convert.ToInt32(cantidadProducto) / 10;
-                ddlUnds.SelectedValue = unds.ToString();
-                ddlDecs.SelectedValue = decs.ToString();
-                cantidad.Text = cantidadProducto.ToString();                
-            }
+            //    TextBox cantidad = DGV_ListaProductosDespacho.Rows[index].FindControl("TXT_Cantidad") as TextBox;
+            //    decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
+            //    DropDownList ddlUnds = DGV_ListaProductosDespacho.Rows[index].FindControl("DDL_Unidades") as DropDownList;
+            //    DropDownList ddlDecs = DGV_ListaProductosDespacho.Rows[index].FindControl("DDL_Decenas") as DropDownList;
+            //    if (e.CommandName == "minus")
+            //    {
+            //        if (cantidadProducto > 0)
+            //        {
+            //            cantidadProducto--;
+            //        }
+            //    }
+            //    if (e.CommandName == "plus")
+            //    {
+            //        if (cantidadProducto < 99)
+            //        {
+            //            cantidadProducto++;
+            //        }
+            //    }
+            //    int unds = Convert.ToInt32(cantidadProducto) % 10;
+            //    int decs = Convert.ToInt32(cantidadProducto) / 10;
+            //    ddlUnds.SelectedValue = unds.ToString();
+            //    ddlDecs.SelectedValue = decs.ToString();
+            //    cantidad.Text = cantidadProducto.ToString();                
+            //}
         }
-        
-        protected void TXT_Cantidad_OnTextChanged(object sender, EventArgs e)
-        {
-            GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
-            int index = gvRow.RowIndex;
-            TextBox cantidad = sender as TextBox;            
-            
-            DropDownList ddlUnds = DGV_ListaProductosDespacho.Rows[index].FindControl("DDL_Unidades") as DropDownList;
-            DropDownList ddlDecs = DGV_ListaProductosDespacho.Rows[index].FindControl("DDL_Decenas") as DropDownList;
-            if (cantidad.Text != "")
-            {
-                decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
-                int unds = Convert.ToInt32(cantidadProducto) % 10;
-                int decs = Convert.ToInt32(cantidadProducto) / 10;
-                if (cantidadProducto > 0 && cantidadProducto < 99)
-                {
-                    ddlUnds.SelectedValue = unds.ToString();
-                    ddlDecs.SelectedValue = decs.ToString();
-                    cantidad.Text = cantidadProducto.ToString();
-                }
-                else
-                {
-                    unds = Convert.ToInt32(ddlUnds.SelectedValue);
-                    decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
-                    cantidadProducto = decs + unds;
-                    cantidad.Text = cantidadProducto.ToString();
-                }
-            }
-            else
-            {
-                cantidad.Text = "0";
-                ddlUnds.SelectedValue = "0";
-                ddlDecs.SelectedValue = "0";
-            }
-            UpdatePanel_ListaProductosDespacho.Update();
-            string script = "estilosElementosBloqueados();cargarFiltros();enterCantidad(" + index + ");";
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", script, true);
-        }
-
-        protected void DDL_DecenasUnidades_OnSelectedIndexChanged(object sender, EventArgs e)
-        {
-            GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
-            int index = gvRow.RowIndex;
-            DropDownList ddlUnds = DGV_ListaProductosDespacho.Rows[index].FindControl("DDL_Unidades") as DropDownList;
-            DropDownList ddlDecs = DGV_ListaProductosDespacho.Rows[index].FindControl("DDL_Decenas") as DropDownList;
-            TextBox cantidad = DGV_ListaProductosDespacho.Rows[index].FindControl("TXT_Cantidad") as TextBox;
-            int unds = Convert.ToInt32(ddlUnds.SelectedValue);
-            int decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
-            decimal cantidadProducto = decs + unds;
-            cantidad.Text = cantidadProducto.ToString();
-        }
-
-        protected void DGV_ListaProductosDespacho_Sorting(object sender, GridViewSortEventArgs e)
+       
+        protected void DGV_ListaPedidosDespacho_Sorting(object sender, GridViewSortEventArgs e)
         {
             DT.DT1.Clear();
-            DT.DT1.Rows.Add("@DespachoID", HDF_IDDespacho.Value, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@IDDespacho", HDF_IDDespacho.Value, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@Buscar", TXT_Buscar.Text, SqlDbType.VarChar);
 
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@TipoSentencia", "CargarProductos", SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "CargarPedidos", SqlDbType.VarChar);
 
-            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP11_0001");
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP10_0001");
 
             if (ViewState["Ordenamiento"].ToString().Trim() == "ASC")
             {
@@ -494,18 +442,69 @@ namespace MCWebHogar.ControlPedidos
                 }
                 else
                 {
-                    DGV_ListaProductosDespacho.DataSource = Result;
-                    DGV_ListaProductosDespacho.DataBind();
-                    UpdatePanel_ListaProductosDespacho.Update();
+                    DGV_ListaPedidosDespacho.DataSource = Result;
+                    DGV_ListaPedidosDespacho.DataBind();
+                    UpdatePanel_ListaPedidosDespacho.Update();
                 }
             }
             else
             {
-                DGV_ListaProductosDespacho.DataSource = Result;
-                DGV_ListaProductosDespacho.DataBind();
-                UpdatePanel_ListaProductosDespacho.Update();
+                DGV_ListaPedidosDespacho.DataSource = Result;
+                DGV_ListaPedidosDespacho.DataBind();
+                UpdatePanel_ListaPedidosDespacho.Update();
             }
-        }        
+        }
+        
+        //protected void TXT_Cantidad_OnTextChanged(object sender, EventArgs e)
+        //{
+        //    GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
+        //    int index = gvRow.RowIndex;
+        //    TextBox cantidad = sender as TextBox;            
+            
+        //    DropDownList ddlUnds = DGV_ListaProductosDespacho.Rows[index].FindControl("DDL_Unidades") as DropDownList;
+        //    DropDownList ddlDecs = DGV_ListaProductosDespacho.Rows[index].FindControl("DDL_Decenas") as DropDownList;
+        //    if (cantidad.Text != "")
+        //    {
+        //        decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
+        //        int unds = Convert.ToInt32(cantidadProducto) % 10;
+        //        int decs = Convert.ToInt32(cantidadProducto) / 10;
+        //        if (cantidadProducto > 0 && cantidadProducto < 99)
+        //        {
+        //            ddlUnds.SelectedValue = unds.ToString();
+        //            ddlDecs.SelectedValue = decs.ToString();
+        //            cantidad.Text = cantidadProducto.ToString();
+        //        }
+        //        else
+        //        {
+        //            unds = Convert.ToInt32(ddlUnds.SelectedValue);
+        //            decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
+        //            cantidadProducto = decs + unds;
+        //            cantidad.Text = cantidadProducto.ToString();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        cantidad.Text = "0";
+        //        ddlUnds.SelectedValue = "0";
+        //        ddlDecs.SelectedValue = "0";
+        //    }
+        //    UpdatePanel_ListaProductosDespacho.Update();
+        //    string script = "estilosElementosBloqueados();cargarFiltros();enterCantidad(" + index + ");";
+        //    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", script, true);
+        //}
+
+        //protected void DDL_DecenasUnidades_OnSelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
+        //    int index = gvRow.RowIndex;
+        //    DropDownList ddlUnds = DGV_ListaProductosDespacho.Rows[index].FindControl("DDL_Unidades") as DropDownList;
+        //    DropDownList ddlDecs = DGV_ListaProductosDespacho.Rows[index].FindControl("DDL_Decenas") as DropDownList;
+        //    TextBox cantidad = DGV_ListaProductosDespacho.Rows[index].FindControl("TXT_Cantidad") as TextBox;
+        //    int unds = Convert.ToInt32(ddlUnds.SelectedValue);
+        //    int decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
+        //    decimal cantidadProducto = decs + unds;
+        //    cantidad.Text = cantidadProducto.ToString();
+        //}                
         #endregion
         #endregion
     }

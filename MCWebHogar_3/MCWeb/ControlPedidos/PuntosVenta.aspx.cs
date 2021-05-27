@@ -29,7 +29,11 @@ namespace MCWebHogar.ControlPedidos
             }
             else
             {
-                
+                string opcion = Page.Request.Params["__EVENTTARGET"];
+                if (opcion.Contains("TXT_Buscar"))
+                {
+                    cargarPuntosVenta("");
+                }
             }
         }
 

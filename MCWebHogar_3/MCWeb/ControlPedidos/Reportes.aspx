@@ -178,12 +178,6 @@
                         </a>
                     </li>
                     <li>
-                        <a href="Empaque.aspx">
-                            <i class="fas fa-box-open"></i>
-                            <p>Empaque</p>
-                        </a>
-                    </li>
-                    <li>
                         <a href="Despacho.aspx">
                             <i class="fas fa-truck"></i>
                             <p>Despacho</p>
@@ -193,6 +187,12 @@
                         <a href="PedidosRecibidos.aspx">
                             <i class="fas fa-check-double"></i>
                             <p>Pedidos recibidos</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Empaque.aspx">
+                            <i class="fas fa-box-open"></i>
+                            <p>Empaque</p>
                         </a>
                     </li>
                     <li>

@@ -5,6 +5,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -14,8 +15,6 @@ namespace MCWebHogar.ControlPedidos
     {
         CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
         DataTable Result = new DataTable();
-        static List<int> productosSeleccionados;
-        static Dictionary<int, int> productosAgregar;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -33,8 +32,9 @@ namespace MCWebHogar.ControlPedidos
                     }
                     else
                     {
-                        productosAgregar = new Dictionary<int, int>();
-                        HDF_IDDevolucion.Value = Session["IDDevolucion"].ToString();                        
+                        HDF_IDDevolucion.Value = Session["IDDevolucion"].ToString();
+                        HDF_IDUsuario.Value = Session["Usuario"].ToString();
+                        HDF_UsuarioID.Value = Session["UserId"].ToString();
                         cargarDDLs();
                         cargarDevolucion("");
                         cargarProductosDevolucion();
@@ -47,19 +47,15 @@ namespace MCWebHogar.ControlPedidos
             {
                 string opcion = Page.Request.Params["__EVENTTARGET"];
                 string argument = Page.Request.Params["__EVENTARGUMENT"];
-                if (opcion.Contains("TXT_BuscarProductosSinAsignar"))
+                if (opcion.Contains("CargarDevolucion"))
+                {
+                    cargarDevolucion("");
+                    cargarProductosDevolucion();
+                    cargarProductosSinAsignar();
+                }
+                if (opcion.Contains("TXT_BuscarProductosSinAsignar") || opcion.Contains("BTN_Agregar"))
                 {
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Buscar_OnTextChanged", "cargarFiltros();estilosElementosBloqueados();", true);
-                }
-                if (opcion.Contains("TXT_CantidadAgregar"))
-                {
-                    int index = Convert.ToInt32(opcion.Split('$')[3].Replace("ctl", "")) - 2;
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", "cargarFiltros();enterCantidad2(" + index + ");", true);
-                }
-                if (opcion.Contains("TXT_Cantidad"))
-                {
-                    int index = Convert.ToInt32(opcion.Split('$')[3].Replace("ctl", "")) - 2;
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", "enterCantidad(" + index + ");", true);
                 }
             }
         }
@@ -89,7 +85,7 @@ namespace MCWebHogar.ControlPedidos
 
             DT.DT1.Clear();
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@TipoSentencia", "CargarPuntosVentaAll", SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "CargarPuntosVentaSelect", SqlDbType.VarChar);
 
             Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP02_0001");
 
@@ -137,6 +133,7 @@ namespace MCWebHogar.ControlPedidos
                     {
                         TXT_CodigoDevolucion.Text = dr["NumeroDevolucion"].ToString().Trim(); ;
                         TXT_TotalProductos.Text = dr["CantidadProductos"].ToString().Trim();
+                        TXT_MontoDevolucion.Text = String.Format("{0:n}", dr["MontoDevolucion"]);
                         // TXT_EstadoDevolucion.Text = dr["Estado"].ToString().Trim();
                         TXT_FechaDevolucion.Text = dr["FDevolucion"].ToString().Trim();
                         TXT_HoraDevolucion.Text = dr["HDevolucion"].ToString().Trim();
@@ -147,7 +144,13 @@ namespace MCWebHogar.ControlPedidos
                         // HDF_EstadoDevolucion.Value = dr["Estado"].ToString().Trim();
 
                         // BTN_ConfirmarDevolucion.Visible = HDF_EstadoDevolucion.Value != "Confirmado";
-                        
+
+                        if (Session["NuevaDevolucion"] != null)
+                        {
+                            ejecutar += "abrirModalAgregarProductos();";
+                            Session.Remove("NuevaDevolucion");
+                        }
+
                         LBL_CreadoPor.Text = "Ingresado por: " + dr["QuienIngreso"].ToString().Trim() + ", " + dr["FIngreso"];
                         if (dr["QuienModifico"].ToString().Trim() == "" || dr["FModifico"].ToString().Trim() == "01/01/1900")
                             LBL_UltimaModificacion.Text = "";
@@ -339,8 +342,6 @@ namespace MCWebHogar.ControlPedidos
         #region Asignar
         protected void BTN_CargarProductos_Click(object sender, EventArgs e)
         {
-            productosAgregar = new Dictionary<int, int>();
-
             for (int i = 0; i < DGV_ListaProductosSinAgregar.Rows.Count; i++)
             {
                 int index = i;
@@ -460,115 +461,29 @@ namespace MCWebHogar.ControlPedidos
         protected void DGV_ListaProductosSinAsignar_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
-            {
-                int index = e.Row.RowIndex;
-                int idProducto = Convert.ToInt32(DGV_ListaProductosSinAgregar.DataKeys[index].Value.ToString().Trim());
-                TextBox TXT_CantidadAgregar = (TextBox)e.Row.FindControl("TXT_CantidadAgregar");
-                CheckBox CHK_Producto = (CheckBox)e.Row.FindControl("CHK_Producto");
-                CHK_Producto.Checked = productosAgregar.ContainsKey(idProducto);
-                if (productosAgregar.ContainsKey(idProducto))
-                {
-                    TXT_CantidadAgregar.Text = productosAgregar[idProducto].ToString();
-                }
-                else
-                {
-                    TXT_CantidadAgregar.Text = "0";
-                }
+            {                
             }
         }
 
-        protected void TXT_CantidadAgregar_OnTextChanged(object sender, EventArgs e)
+        [WebMethod()]
+        public static string BTN_Agregar_Click(string idDevolucion, int idProducto, int idUsuario, int cantidadProducto, string usuario)
         {
-            GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
-            int index = gvRow.RowIndex;
-            TextBox cantidad = sender as TextBox;
-            int cantidadProducto = 0;
-            if (cantidad.Text != "")
-            {
-                cantidadProducto = (Convert.ToInt32(cantidad.Text));
-                if (cantidadProducto < 0 || cantidadProducto > 99)
-                {
-                    cantidadProducto = 0;
-                    cantidad.Text = "0";
-                }
-            }
-            else
-            {
-                cantidad.Text = "0";
-            }
+            CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
+            DataTable Result = new DataTable();
 
-            if (cantidadProducto >= 0 && cantidadProducto < 100)
-            {
-                int idProducto = Convert.ToInt32(DGV_ListaProductosSinAgregar.DataKeys[index].Value.ToString().Trim());
-                CheckBox CHK_Producto = (CheckBox)DGV_ListaProductosSinAgregar.Rows[index].FindControl("CHK_Producto");
-                if (CHK_Producto.Checked)
-                {
-                    productosAgregar[idProducto] = cantidadProducto;
-                }
-                else
-                {
-                    if (!productosAgregar.ContainsKey(idProducto))
-                    {
-                        productosAgregar.Add(idProducto, cantidadProducto);
-                    }
-                    CHK_Producto.Checked = true;
-                }
-            }
-            UpdatePanel_ListaProductosSinAgregar.Update();
-            string script = "cargarFiltros();enterCantidad2(" + index + ");";
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductos", script, true);
-        }
+            DT.DT1.Clear();
 
-        protected void CHK_Producto_OnCheckedChanged(object sender, EventArgs e)
-        {
-            GridViewRow row = ((GridViewRow)((CheckBox)sender).NamingContainer);
-            int index = row.RowIndex;
-            int idProducto = Convert.ToInt32(DGV_ListaProductosSinAgregar.DataKeys[index].Value.ToString().Trim());
-            CheckBox CHK_Producto = (CheckBox)DGV_ListaProductosSinAgregar.Rows[index].FindControl("CHK_Producto");
-            TextBox TXT_CantidadAgregar = (TextBox)DGV_ListaProductosSinAgregar.Rows[index].FindControl("TXT_CantidadAgregar");
-            if (CHK_Producto.Checked)
-            {
-                if (!productosAgregar.ContainsKey(idProducto))
-                {
-                    productosAgregar.Add(idProducto, Convert.ToInt32(TXT_CantidadAgregar.Text));
-                }
-            }
-            else
-            {
-                TXT_CantidadAgregar.Text = "0";
-                productosAgregar.Remove(idProducto);
-            }
-            UpdatePanel_ListaProductosSinAgregar.Update();
-            string script = "cargarFiltros();";
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductos", script, true);
-        }
+            DT.DT1.Rows.Add("@DevolucionID", idDevolucion, SqlDbType.Int);
+            DT.DT1.Rows.Add("@ProductoID", idProducto, SqlDbType.Int);
+            DT.DT1.Rows.Add("@UsuarioID", idUsuario, SqlDbType.Int);
+            DT.DT1.Rows.Add("@CantidadDevolucion", cantidadProducto, SqlDbType.Int);
 
-        protected void BTN_Agregar_Click(object sender, EventArgs e)
-        {
-            string script = "cargarFiltros();";
+            DT.DT1.Rows.Add("@Usuario", usuario, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "AgregarProducto", SqlDbType.VarChar);
 
-            if (productosAgregar.Count > 0)
-            {
-                foreach (KeyValuePair<int, int> producto in productosAgregar)
-                {
-                    DT.DT1.Clear();
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP19_0001");
 
-                    DT.DT1.Rows.Add("@DevolucionID", HDF_IDDevolucion.Value, SqlDbType.Int);
-                    DT.DT1.Rows.Add("@UsuarioID", Session["UserID"].ToString().Trim(), SqlDbType.Int);
-                    DT.DT1.Rows.Add("@PuntoVentaID", DDL_PuntoVenta.SelectedValue, SqlDbType.Int);
-                    DT.DT1.Rows.Add("@ProductoID", producto.Key, SqlDbType.Int);
-                    DT.DT1.Rows.Add("@CantidadDevolucion", producto.Value, SqlDbType.Int);
-
-                    DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
-                    DT.DT1.Rows.Add("@TipoSentencia", "AgregarProducto", SqlDbType.VarChar);
-
-                    Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP19_0001");
-                }
-            }
-            script += "cerrarModalAgregarProductos();alertifysuccess('Productos agregados con éxito.');";
-            cargarProductosDevolucion();
-            cargarProductosSinAsignar();
-            cargarDevolucion(script);
+            return "correcto";
         }
         #endregion
 
@@ -683,44 +598,86 @@ namespace MCWebHogar.ControlPedidos
                 
             }
         }
-        
-        protected void TXT_Cantidad_OnTextChanged(object sender, EventArgs e)
+
+        protected void DGV_ListaProductosDevolucion_Sorting(object sender, GridViewSortEventArgs e)
         {
-            GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
-            int index = gvRow.RowIndex;
-            TextBox cantidad = sender as TextBox;            
-            DropDownList ddlUnds = DGV_ListaProductosDevolucion.Rows[index].FindControl("DDL_Unidades") as DropDownList;
-            DropDownList ddlDecs = DGV_ListaProductosDevolucion.Rows[index].FindControl("DDL_Decenas") as DropDownList;
-            if (cantidad.Text != "")
+            DT.DT1.Clear();
+            DT.DT1.Rows.Add("@DevolucionID", HDF_IDDevolucion.Value, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@Buscar", TXT_Buscar.Text, SqlDbType.VarChar);
+
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "CargarProductos", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP19_0001");
+
+            if (ViewState["Ordenamiento"].ToString().Trim() == "ASC")
             {
-                decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
-                int unds = Convert.ToInt32(cantidadProducto) % 10;
-                int decs = Convert.ToInt32(cantidadProducto) / 10;
-                if (cantidadProducto > 0 && cantidadProducto < 99)
+                ViewState["Ordenamiento"] = "DESC";
+            }
+            else
+            {
+                ViewState["Ordenamiento"] = "ASC";
+            }
+
+            Result.DefaultView.Sort = e.SortExpression + " " + ViewState["Ordenamiento"].ToString().Trim();
+            if (Result != null && Result.Rows.Count > 0)
+            {
+                if (Result.Rows[0][0].ToString().Trim() == "ERROR")
                 {
-                    ddlUnds.SelectedValue = unds.ToString();
-                    ddlDecs.SelectedValue = decs.ToString();
-                    cantidad.Text = cantidadProducto.ToString();
-                    guardarProductoDevolucion(index);
+                    return;
                 }
                 else
                 {
-                    unds = Convert.ToInt32(ddlUnds.SelectedValue);
-                    decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
-                    cantidadProducto = decs + unds;
-                    cantidad.Text = cantidadProducto.ToString();
+                    DGV_ListaProductosDevolucion.DataSource = Result;
+                    DGV_ListaProductosDevolucion.DataBind();
+                    UpdatePanel_ListaProductosDevolucion.Update();
                 }
             }
             else
             {
-                cantidad.Text = "0";
-                ddlUnds.SelectedValue = "0";
-                ddlDecs.SelectedValue = "0";
-                guardarProductoDevolucion(index);
+                DGV_ListaProductosDevolucion.DataSource = Result;
+                DGV_ListaProductosDevolucion.DataBind();
+                UpdatePanel_ListaProductosDevolucion.Update();
             }
-            UpdatePanel_ListaProductosDevolucion.Update();
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", "enterCantidad(" + index + ");", true);
-        }
+        }        
+        
+        //protected void TXT_Cantidad_OnTextChanged(object sender, EventArgs e)
+        //{
+        //    GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
+        //    int index = gvRow.RowIndex;
+        //    TextBox cantidad = sender as TextBox;            
+        //    DropDownList ddlUnds = DGV_ListaProductosDevolucion.Rows[index].FindControl("DDL_Unidades") as DropDownList;
+        //    DropDownList ddlDecs = DGV_ListaProductosDevolucion.Rows[index].FindControl("DDL_Decenas") as DropDownList;
+        //    if (cantidad.Text != "")
+        //    {
+        //        decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
+        //        int unds = Convert.ToInt32(cantidadProducto) % 10;
+        //        int decs = Convert.ToInt32(cantidadProducto) / 10;
+        //        if (cantidadProducto > 0 && cantidadProducto < 99)
+        //        {
+        //            ddlUnds.SelectedValue = unds.ToString();
+        //            ddlDecs.SelectedValue = decs.ToString();
+        //            cantidad.Text = cantidadProducto.ToString();
+        //            guardarProductoDevolucion(index);
+        //        }
+        //        else
+        //        {
+        //            unds = Convert.ToInt32(ddlUnds.SelectedValue);
+        //            decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
+        //            cantidadProducto = decs + unds;
+        //            cantidad.Text = cantidadProducto.ToString();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        cantidad.Text = "0";
+        //        ddlUnds.SelectedValue = "0";
+        //        ddlDecs.SelectedValue = "0";
+        //        guardarProductoDevolucion(index);
+        //    }
+        //    UpdatePanel_ListaProductosDevolucion.Update();
+        //    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", "enterCantidad(" + index + ");", true);
+        //}
 
         protected void DDL_DecenasUnidades_OnSelectedIndexChanged(object sender, EventArgs e)
         {
@@ -764,48 +721,24 @@ namespace MCWebHogar.ControlPedidos
                 }
             }
         }
-        
-        protected void DGV_ListaProductosDevolucion_Sorting(object sender, GridViewSortEventArgs e)
-        {
-            DT.DT1.Clear();
-            DT.DT1.Rows.Add("@DevolucionID", HDF_IDDevolucion.Value, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@Buscar", TXT_Buscar.Text, SqlDbType.VarChar);
 
-            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@TipoSentencia", "CargarProductos", SqlDbType.VarChar);
+        [WebMethod()]
+        public static string guardarProductoDevolucion(int idDevolucionDetalle, int cantidadProducto, string usuario)
+        {
+            CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
+            DataTable Result = new DataTable();
+
+            DT.DT1.Clear();
+            DT.DT1.Rows.Add("@IDDevolucionDetalle", idDevolucionDetalle, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@CantidadDevolucion", cantidadProducto, SqlDbType.VarChar);
+
+            DT.DT1.Rows.Add("@Usuario", usuario, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "UpdateProducto", SqlDbType.VarChar);
 
             Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP19_0001");
 
-            if (ViewState["Ordenamiento"].ToString().Trim() == "ASC")
-            {
-                ViewState["Ordenamiento"] = "DESC";
-            }
-            else
-            {
-                ViewState["Ordenamiento"] = "ASC";
-            }
-
-            Result.DefaultView.Sort = e.SortExpression + " " + ViewState["Ordenamiento"].ToString().Trim();
-            if (Result != null && Result.Rows.Count > 0)
-            {
-                if (Result.Rows[0][0].ToString().Trim() == "ERROR")
-                {
-                    return;
-                }
-                else
-                {
-                    DGV_ListaProductosDevolucion.DataSource = Result;
-                    DGV_ListaProductosDevolucion.DataBind();
-                    UpdatePanel_ListaProductosDevolucion.Update();
-                }
-            }
-            else
-            {
-                DGV_ListaProductosDevolucion.DataSource = Result;
-                DGV_ListaProductosDevolucion.DataBind();
-                UpdatePanel_ListaProductosDevolucion.Update();
-            }
-        }        
+            return "correct";
+        }
         #endregion
         #endregion
     }

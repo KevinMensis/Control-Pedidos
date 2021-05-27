@@ -76,6 +76,15 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.TextBox TXT_TotalProductos;
         
         /// <summary>
+        /// TXT_MontoPedido control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TXT_MontoPedido;
+        
+        /// <summary>
         /// TXT_EstadoRecibidoPedido control.
         /// </summary>
         /// <remarks>

@@ -69,46 +69,6 @@
             return correct
         }
 
-        <%--function TXT_FechaCreacionDesdeChange() {
-            var fechaCreacionDesde = $(<%= TXT_FechaCreacionDesde.ClientID %>)[0].value
-            var fechaCreacionHasta = $(<%= TXT_FechaCreacionHasta.ClientID %>)[0].value
-            
-            if (fechaCreacionHasta === '1900-01-01') {
-                $(<%= TXT_FechaCreacionHasta.ClientID %>)[0].value = fechaCreacionDesde
-            }
-            return true
-        }
-
-        function TXT_FechaCreacionHastaChange() {
-            var fechaCreacionDesde = $(<%= TXT_FechaCreacionDesde.ClientID %>)[0].value
-            var fechaCreacionHasta = $(<%= TXT_FechaCreacionHasta.ClientID %>)[0].value
-            
-            if (fechaCreacionDesde === '1900-01-01') {
-                $(<%= TXT_FechaCreacionDesde.ClientID %>)[0].value = fechaCreacionHasta
-            }
-            return true
-        }
-
-        function TXT_FechaPedidoDesdeChange() {
-            var fechaPedidoDesde = $(<%= TXT_FechaPedidoDesde.ClientID %>)[0].value
-            var fechaPedidoHasta = $(<%= TXT_FechaPedidoHasta.ClientID %>)[0].value
-
-            if (fechaPedidoHasta === '1900-01-01') {
-                $(<%= TXT_FechaPedidoHasta.ClientID %>)[0].value = fechaPedidoDesde
-            }
-            return true
-        }
-
-        function TXT_FechaPedidoHastaChange() {
-            var fechaPedidoDesde = $(<%= TXT_FechaPedidoDesde.ClientID %>)[0].value
-            var fechaPedidoHasta = $(<%= TXT_FechaPedidoHasta.ClientID %>)[0].value
-
-            if (fechaPedidoDesde === '1900-01-01') {
-                $(<%= TXT_FechaPedidoDesde.ClientID %>)[0].value = fechaPedidoHasta
-            }
-            return true
-        }--%>
-
         function showMenu() {
             $('#div_Menu')[0].style.webkitTransform = 'none';
             $(<%= BTN_CloseMenu.ClientID %>).removeClass('btn-close');
@@ -165,12 +125,6 @@
                         </a>
                     </li>
                     <li>
-                        <a href="Empaque.aspx">
-                            <i class="fas fa-box-open"></i>
-                            <p>Empaque</p>
-                        </a>
-                    </li>
-                    <li>
                         <a href="Despacho.aspx">
                             <i class="fas fa-truck"></i>
                             <p>Despacho</p>
@@ -180,6 +134,12 @@
                         <a href="PedidosRecibidos.aspx">
                             <i class="fas fa-check-double"></i>
                             <p>Pedidos recibidos</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Empaque.aspx">
+                            <i class="fas fa-box-open"></i>
+                            <p>Empaque</p>
                         </a>
                     </li>
                     <li>
@@ -272,6 +232,7 @@
                                     <ContentTemplate> 
                                         <div class="row">                         
                                             <div class="input-group no-border col-md-3">
+                                                <br />
                                                 <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar número pedido..." OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>
                                                 <div class="input-group-append">
                                                     <div class="input-group-text">
@@ -279,25 +240,11 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <label style="margin-top: 1%;">Fecha desde:</label> 
+                                            <div class="input-group no-border col-md-2">                                               
+                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaCreacionDesde" runat="server" TextMode="Date" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
+                                            </div>
                                         </div> 
-                                        <%--<div class="row">
-                                            <div class="input-group no-border col-md-3">     
-                                                <label for="TXT_FechaCreacionDesde"> Fecha creación desde:</label>                                          
-                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaCreacionDesde" runat="server" TextMode="Date" onchange="TXT_FechaCreacionDesdeChange();" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
-                                            </div>
-                                            <div class="input-group no-border col-md-3">
-                                                <label for="TXT_FechaCreacionHasta"> Fecha creación hasta:</label>
-                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaCreacionHasta" runat="server" TextMode="Date" onchange="TXT_FechaCreacionHastaChange();" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
-                                            </div>
-                                            <div class="input-group no-border col-md-3">     
-                                                <label for="TXT_FechaPedidoDesde"> Fecha pedido desde:</label>                                          
-                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaPedidoDesde" runat="server" TextMode="Date" onchange="TXT_FechaPedidoDesdeChange();" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
-                                            </div>
-                                            <div class="input-group no-border col-md-3">
-                                                <label for="TXT_FechaPedidoHasta"> Fecha pedido hasta:</label>
-                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaPedidoHasta" runat="server" TextMode="Date" onchange="TXT_FechaPedidoHastaChange();" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
-                                            </div>
-                                        </div>--%>
                                         <div class="row">
                                             <div class="col-md-3">
                                                 <asp:ListBox class="form-control" runat="server" ID="LB_Sucursal" SelectionMode="Multiple" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:ListBox>
@@ -311,9 +258,6 @@
                                             <div class="col-md-3">
                                                 <asp:ListBox class="form-control" runat="server" ID="LB_Solicitante" SelectionMode="Multiple" OnTextChanged="TXT_FiltrarPedidos_OnTextChanged" AutoPostBack="true"></asp:ListBox>
                                             </div>
-                                        </div>
-                                        <div class="row" style="float: right;">
-                                            <asp:Button id="BTN_EliminarFiltro" UseSubmitBehavior="false" style="float: right;" runat="server" CssClass="btn btn-danger" Text="Eliminar filtro" OnClick="BTN_EliminarFiltro_Click" />
                                         </div>
                                         <div class="row" style="margin-left: 10px; margin-top: 10px;">
                                             <asp:Label id="LBL_Filtro" runat="server" Text="Filtros: Ninguno;"></asp:Label>                                                                                            

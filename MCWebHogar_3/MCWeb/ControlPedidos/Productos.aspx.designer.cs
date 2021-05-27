@@ -31,24 +31,6 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.LinkButton LNK_CerrarSession;
         
         /// <summary>
-        /// UpdatePanel_CrearProducto control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel_CrearProducto;
-        
-        /// <summary>
-        /// BTN_CrearProducto control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BTN_CrearProducto;
-        
-        /// <summary>
         /// UpdatePanel_FiltrosProductos control.
         /// </summary>
         /// <remarks>
@@ -76,13 +58,13 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.ListBox LB_Categoria;
         
         /// <summary>
-        /// LBL_Filtro control.
+        /// BTN_CrearProducto control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LBL_Filtro;
+        protected global::System.Web.UI.WebControls.Button BTN_CrearProducto;
         
         /// <summary>
         /// UpdatePanel_ListaProductos control.

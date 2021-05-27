@@ -36,7 +36,7 @@
             document.getElementById('modalloading').style.display = 'none';
         }
 
-        function TXT_FechaDesechoDesdeChange() {
+        <%--function TXT_FechaDesechoDesdeChange() {
             var fechaDesechoDesde = $(<%= TXT_FechaDesechoDesde.ClientID %>)[0].value
             var fechaDesechoHasta = $(<%= TXT_FechaDesechoHasta.ClientID %>)[0].value
 
@@ -54,7 +54,7 @@
                 $(<%= TXT_FechaDesechoDesde.ClientID %>)[0].value = fechaDesechoHasta
             }
             return true
-        }
+        }--%>
     </script>
 </asp:Content>
 
@@ -88,12 +88,6 @@
                         </a>
                     </li>
                     <li>
-                        <a href="Empaque.aspx">
-                            <i class="fas fa-box-open"></i>
-                            <p>Empaque</p>
-                        </a>
-                    </li>
-                    <li>
                         <a href="Despacho.aspx">
                             <i class="fas fa-truck"></i>
                             <p>Despacho</p>
@@ -103,6 +97,12 @@
                         <a href="PedidosRecibidos.aspx">
                             <i class="fas fa-check-double"></i>
                             <p>Pedidos recibidos</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Empaque.aspx">
+                            <i class="fas fa-box-open"></i>
+                            <p>Empaque</p>
                         </a>
                     </li>
                     <li>
@@ -174,13 +174,11 @@
                                                 
                                             </div>
                                             <div class="col-md-6" style="text-align: right;">
-                                                <div class="card-header" style="text-align: right;">
-                                                    <asp:Button ID="BTN_CrearDesechos" runat="server" Text="Crear nuevo desecho" CssClass="btn btn-secondary" OnClick="BTN_CrearDesechos_Click"></asp:Button>                                    
-                                                </div>
+                                                
                                             </div>
                                         </div> 
                                         <div class="row">                         
-                                            <div class="input-group no-border col-md-6">
+                                            <div class="input-group no-border col-md-4">
                                                 <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar número desecho..." OnTextChanged="TXT_FiltrarDesechos_OnTextChanged" AutoPostBack="true"></asp:TextBox>
                                                 <div class="input-group-append">
                                                     <div class="input-group-text">
@@ -188,17 +186,17 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="input-group no-border col-md-3">     
-                                                <label for="TXT_FechaDesechoDesde"> Fecha desecho desde:</label>                                          
-                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaDesechoDesde" runat="server" TextMode="Date" onchange="TXT_FechaDesechoDesdeChange();" OnTextChanged="TXT_FiltrarDesechos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
+                                            <label style="margin-top: 1%;">Fecha desde:</label> 
+                                            <div class="input-group no-border col-md-2">                                               
+                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaCreacionDesde" runat="server" TextMode="Date" OnTextChanged="TXT_FiltrarDesechos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
                                             </div>
-                                            <div class="input-group no-border col-md-3">
-                                                <label for="TXT_FechaDesechoHasta"> Fecha desecho hasta:</label>
-                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaDesechoHasta" runat="server" TextMode="Date" onchange="TXT_FechaDesechoHastaChange();" OnTextChanged="TXT_FiltrarDesechos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
+                                            <div class="input-group no-border col-md-4" style="text-align: right; display: inline-block;">
+                                                <asp:Button ID="BTN_CrearDesechos" style="margin: 0px;" runat="server" Text="Crear nuevo desecho" CssClass="btn btn-secondary" OnClick="BTN_CrearDesechos_Click"></asp:Button>                                    
                                             </div>
                                         </div>
                                     </ContentTemplate>
                                 </asp:UpdatePanel>
+                                <br />
                                 <div class="table">
                                     <asp:UpdatePanel ID="UpdatePanel_ListaDesechos" runat="server" UpdateMode="Conditional">
                                         <ContentTemplate>

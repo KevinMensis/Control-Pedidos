@@ -40,15 +40,6 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.UpdatePanel UpdatePanel_FiltrosEmpaques;
         
         /// <summary>
-        /// BTN_CrearEmpaques control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BTN_CrearEmpaques;
-        
-        /// <summary>
         /// TXT_Buscar control.
         /// </summary>
         /// <remarks>
@@ -58,22 +49,22 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.TextBox TXT_Buscar;
         
         /// <summary>
-        /// TXT_FechaEmpaqueDesde control.
+        /// TXT_FechaCreacionDesde control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_FechaEmpaqueDesde;
+        protected global::System.Web.UI.WebControls.TextBox TXT_FechaCreacionDesde;
         
         /// <summary>
-        /// TXT_FechaEmpaqueHasta control.
+        /// BTN_CrearEmpaques control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_FechaEmpaqueHasta;
+        protected global::System.Web.UI.WebControls.Button BTN_CrearEmpaques;
         
         /// <summary>
         /// UpdatePanel_ListaEmpaques control.

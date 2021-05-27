@@ -22,6 +22,24 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.Label LBL_GenerandoInforme;
         
         /// <summary>
+        /// HDF_UsuarioID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField HDF_UsuarioID;
+        
+        /// <summary>
+        /// HDF_IDUsuario control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField HDF_IDUsuario;
+        
+        /// <summary>
         /// HDF_IDDevolucion control.
         /// </summary>
         /// <remarks>
@@ -74,6 +92,15 @@ namespace MCWebHogar.ControlPedidos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TXT_TotalProductos;
+        
+        /// <summary>
+        /// TXT_MontoDevolucion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TXT_MontoDevolucion;
         
         /// <summary>
         /// TXT_FechaDevolucion control.

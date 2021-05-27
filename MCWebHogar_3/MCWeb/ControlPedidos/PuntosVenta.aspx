@@ -84,12 +84,6 @@
                         </a>
                     </li>
                     <li>
-                        <a href="Empaque.aspx">
-                            <i class="fas fa-box-open"></i>
-                            <p>Empaque</p>
-                        </a>
-                    </li>
-                    <li>
                         <a href="Despacho.aspx">
                             <i class="fas fa-truck"></i>
                             <p>Despacho</p>
@@ -99,6 +93,12 @@
                         <a href="PedidosRecibidos.aspx">
                             <i class="fas fa-check-double"></i>
                             <p>Pedidos recibidos</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Empaque.aspx">
+                            <i class="fas fa-box-open"></i>
+                            <p>Empaque</p>
                         </a>
                     </li>
                     <li>
@@ -162,17 +162,10 @@
                     <h1 class="h3 mb-2 text-gray-800">Mantenimiento puntos de venta</h1>
                     <br />
                     <div class="card shadow mb-4">
-                        <asp:UpdatePanel ID="UpdatePanel_CrearPuntoVenta" runat="server" UpdateMode="Conditional">
-                            <ContentTemplate>
-                                <div class="card-header py-3" style="text-align: right;">
-                                    <asp:Button ID="BTN_CrearPuntoVenta" runat="server" Text="Crear nuevo punto venta" CssClass="btn btn-secondary" OnClick="BTN_CrearPuntoVenta_OnClick"></asp:Button>
-                                </div>
-                            </ContentTemplate>
-                        </asp:UpdatePanel>
                         <div class="card-body">
                             <asp:UpdatePanel ID="UpdatePanel_FiltrosPuntosVenta" runat="server" UpdateMode="Conditional">
                                 <ContentTemplate>                           
-                                    <div class="input-group no-border">
+                                    <div class="input-group no-border col-md-3">
                                         <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar..." OnTextChanged="TXT_Buscar_OnTextChanged" AutoPostBack="true"></asp:TextBox>
                                         <div class="input-group-append">
                                             <div class="input-group-text">
@@ -180,10 +173,13 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="input-group no-border col-md-9" style="text-align: right; display: inline-block;">
+                                        <asp:Button ID="BTN_CrearPuntoVenta" style="margin: 0px;" runat="server" Text="Crear nuevo punto venta" CssClass="btn btn-secondary" OnClick="BTN_CrearPuntoVenta_OnClick"></asp:Button>                                        
+                                    </div>
                                 </ContentTemplate>
                             </asp:UpdatePanel> 
-                            <div class="table-responsive">
-                                <asp:UpdatePanel ID="UpdatePanel_ListaPuntosVenta" runat="server" UpdateMode="Conditional">
+                            <div class="table">
+                                <asp:UpdatePanel ID="UpdatePanel_ListaPuntosVenta" runat="server" UpdateMode="Conditional" style="margin-top: 7rem;">
                                     <ContentTemplate>
                                         <asp:GridView ID="DGV_ListaPuntosVenta" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
                                             AutoGenerateColumns="False" DataKeyNames="IDPuntoVenta,Activo" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
@@ -192,9 +188,9 @@
                                             OnRowCommand="DGV_ListaPuntosVenta_RowCommand"
                                             OnRowDataBound="DGV_ListaPuntosVenta_RowDataBound">
                                             <Columns>
-                                                <asp:BoundField DataField="DescripcionPuntoVenta" SortExpression="DescripcionPuntoVenta" HeaderText="Descripción" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                <asp:BoundField DataField="UbicacionPuntoVenta" SortExpression="UbicacionPuntoVenta" HeaderText="Ubicación" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                <asp:BoundField DataField="PorcentajeDescuento" SortExpression="PorcentajeDescuento" HeaderText="Porcentaje Descuento" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                <asp:BoundField DataField="DescripcionPuntoVenta" SortExpression="DescripcionPuntoVenta" HeaderText="Descripción" ItemStyle-HorizontalAlign="Center" ItemStyle-ForeColor="black"></asp:BoundField>
+                                                <asp:BoundField DataField="UbicacionPuntoVenta" SortExpression="UbicacionPuntoVenta" HeaderText="Ubicación" ItemStyle-HorizontalAlign="Center" ItemStyle-ForeColor="black"></asp:BoundField>
+                                                <asp:BoundField DataField="PorcentajeDescuento" SortExpression="PorcentajeDescuento" HeaderText="Porcentaje Descuento" ItemStyle-HorizontalAlign="Center" ItemStyle-ForeColor="black"></asp:BoundField>
                                                 <asp:TemplateField>
                                                     <HeaderTemplate>
                                                         <asp:Label ID="LBL_Acciones" runat="server" Text="Acciones"></asp:Label>

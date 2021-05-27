@@ -40,15 +40,6 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.UpdatePanel UpdatePanel_FiltrosDevoluciones;
         
         /// <summary>
-        /// BTN_CrearDevoluciones control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BTN_CrearDevoluciones;
-        
-        /// <summary>
         /// TXT_Buscar control.
         /// </summary>
         /// <remarks>
@@ -58,22 +49,22 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.TextBox TXT_Buscar;
         
         /// <summary>
-        /// TXT_FechaDevolucionDesde control.
+        /// TXT_FechaCreacionDesde control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_FechaDevolucionDesde;
+        protected global::System.Web.UI.WebControls.TextBox TXT_FechaCreacionDesde;
         
         /// <summary>
-        /// TXT_FechaDevolucionHasta control.
+        /// BTN_CrearDevoluciones control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_FechaDevolucionHasta;
+        protected global::System.Web.UI.WebControls.Button BTN_CrearDevoluciones;
         
         /// <summary>
         /// UpdatePanel_ListaDevoluciones control.

@@ -49,6 +49,15 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.TextBox TXT_Buscar;
         
         /// <summary>
+        /// TXT_FechaCreacionDesde control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TXT_FechaCreacionDesde;
+        
+        /// <summary>
         /// UpdatePanel_ListaOrdenesProduccion control.
         /// </summary>
         /// <remarks>

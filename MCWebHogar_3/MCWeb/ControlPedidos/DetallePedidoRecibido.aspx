@@ -46,36 +46,60 @@
             document.getElementById('BTN_ModalOrdenProduccion').click()
         }
 
-        function enterClickAgregar(txtCantidad) {
+        function TXT_Cantidad_onKeyUp(txtCantidad, e) {
             var values = txtCantidad.id.split('_')
             var index = values.pop() * 1 + 1
-            var rows = $(<%= DGV_ListaProductosRecibidoPedido.ClientID %>)[0].rows.length - 1
-            var id = ''
-            if (index === rows) {
-                id = 'Content_DGV_ListaProductosRecibidoPedido_TXT_Cantidad_' + 0
-            } else {
-                id = 'Content_DGV_ListaProductosRecibidoPedido_TXT_Cantidad_' + index
+            if (e.keyCode === 13) {
+                var rows = $(<%= DGV_ListaProductosRecibidoPedido.ClientID %>)[0].rows.length - 1
+                var id = ''
+                if (index === rows) {
+                    id = 'Content_DGV_ListaProductosRecibidoPedido_TXT_Cantidad_' + 0
+                } else {
+                    id = 'Content_DGV_ListaProductosRecibidoPedido_TXT_Cantidad_' + index
+                }
+                document.getElementById(id).autofocus = true;
+                document.getElementById(id).focus();
+                document.getElementById(id).select();
             }
-            document.getElementById(id).autofocus = true;
-            document.getElementById(id).focus();
-            document.getElementById(id).select();
-            console.dir(document.getElementById(id))
-            return false;
         }
 
-        function enterCantidad(index) {
-            // var values = txtCantidad.id.split('_')
-            var index = index + 1
-            var rows = $(<%= DGV_ListaProductosRecibidoPedido.ClientID %>)[0].rows.length - 1
-            var id = ''
-            if (index === rows) {
-                id = 'Content_DGV_ListaProductosRecibidoPedido_TXT_Cantidad_' + 0
-            } else {
-                id = 'Content_DGV_ListaProductosRecibidoPedido_TXT_Cantidad_' + index
+        function TXT_Cantidad_onChange(txtCantidad) {
+            var values = txtCantidad.id.split('_')
+            var index = values.pop() * 1
+            var idUnidades = 'Content_DGV_ListaProductosRecibidoPedido_DDL_Unidades_' + index
+            var idDecenas = 'Content_DGV_ListaProductosRecibidoPedido_DDL_Decenas_' + index
+            var cantidadProducto = txtCantidad.value
+            if (cantidadProducto !== '') {
+                var unds = cantidadProducto % 10;
+                var decs = Math.trunc(cantidadProducto / 10);
+                if (cantidadProducto >= 0 && cantidadProducto < 100) {
+                    document.getElementById(idUnidades).value = unds;
+                    document.getElementById(idDecenas).value = decs;
+                    txtCantidad.value = cantidadProducto;
+                } else {
+                    unds = document.getElementById(idUnidades).value * 1;
+                    decs = document.getElementById(idDecenas).value * 10;
+                    cantidadProducto = decs + unds;
+                    txtCantidad.value = cantidadProducto;
+                }
             }
-            document.getElementById(id).autofocus = true;
-            document.getElementById(id).focus();
-            document.getElementById(id).select();
+            else {
+                txtCantidad.value = '0';
+                document.getElementById(idUnidades).value = '0';
+                document.getElementById(idDecenas).value = '0';
+            }
+        }
+
+        function DDL_UnidadesDecenas_onChange(ddlUnidadesDecenas) {
+            var values = ddlUnidadesDecenas.id.split('_')
+            var index = values.pop() * 1
+            var idUnidades = 'Content_DGV_ListaProductosRecibidoPedido_DDL_Unidades_' + index
+            var idDecenas = 'Content_DGV_ListaProductosRecibidoPedido_DDL_Decenas_' + index
+            var txtCantidad = 'Content_DGV_ListaProductosRecibidoPedido_TXT_Cantidad_' + index
+            var cantUnidades = document.getElementById(idUnidades).value * 1
+            var cantDecenas = document.getElementById(idDecenas).value * 10
+            var cantidadProducto = cantDecenas + cantUnidades
+            document.getElementById(txtCantidad).value = cantidadProducto
         }
 
         function estilosElementosBloqueados() {
@@ -83,6 +107,8 @@
             document.getElementById('<%= TXT_CodigoRecibidoPedido.ClientID %>').classList.add('form-control')
             document.getElementById('<%= TXT_TotalProductos.ClientID %>').classList.remove('aspNetDisabled')
             document.getElementById('<%= TXT_TotalProductos.ClientID %>').classList.add('form-control')
+            document.getElementById('<%= TXT_MontoPedido.ClientID %>').classList.remove('aspNetDisabled')
+            document.getElementById('<%= TXT_MontoPedido.ClientID %>').classList.add('form-control')
             document.getElementById('<%= TXT_EstadoRecibidoPedido.ClientID %>').classList.remove('aspNetDisabled')
             document.getElementById('<%= TXT_EstadoRecibidoPedido.ClientID %>').classList.add('form-control')
             document.getElementById('<%= TXT_FechaRecibidoPedido.ClientID %>').classList.remove('aspNetDisabled')
@@ -133,12 +159,6 @@
                         </a>
                     </li>
                     <li>
-                        <a href="Empaque.aspx">
-                            <i class="fas fa-box-open"></i>
-                            <p>Empaque</p>
-                        </a>
-                    </li>
-                    <li>
                         <a href="Despacho.aspx">
                             <i class="fas fa-truck"></i>
                             <p>Despacho</p>
@@ -148,6 +168,12 @@
                         <a href="PedidosRecibidos.aspx">
                             <i class="fas fa-check-double"></i>
                             <p>Pedidos recibidos</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Empaque.aspx">
+                            <i class="fas fa-box-open"></i>
+                            <p>Empaque</p>
                         </a>
                     </li>
                     <li>
@@ -225,10 +251,14 @@
                                             <asp:TextBox class="form-control" ID="TXT_TotalProductos" runat="server" TextMode="Number" Enabled="false"></asp:TextBox>
                                         </div>
                                         <div class="form-group col-md-2">
+                                            <label for="TXT_MontoPedido">Monto del pedido</label>
+                                            <asp:TextBox class="form-control" ID="TXT_MontoPedido" runat="server" Enabled="false"></asp:TextBox>
+                                        </div>
+                                        <div class="form-group col-md-2">
                                             <label for="TXT_EstadoRecibidoPedido">Estado pedido recibido</label>
                                             <asp:TextBox class="form-control" ID="TXT_EstadoRecibidoPedido" runat="server" Enabled="false"></asp:TextBox>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-3">
                                             <label for="TXT_FechaRecibidoPedido">Fecha y hora pedido recibido</label>
                                             <div class="form-row">
                                                 <div class="col-md-7">
@@ -268,10 +298,10 @@
                                     </div>
                                     <div class="form-row">                                                                                
                                         <div class="col-md-6">                                       
-                                            <asp:Button ID="BTN_ConfirmarRecibidoPedido" runat="server" Text="Confirmar pedido recibido" CssClass="btn btn-secondary" OnClick="BTN_ConfirmarRecibidoPedido_Click"></asp:Button>                                            
+                                            <asp:Button UseSubmitBehavior="false" ID="BTN_ConfirmarRecibidoPedido" runat="server" Text="Confirmar pedido recibido" CssClass="btn btn-secondary" OnClick="BTN_ConfirmarRecibidoPedido_Click"></asp:Button>                                            
                                         </div>                                        
                                         <div class="col-md-6" style="text-align: right;"> 
-                                            <asp:Button ID="BTN_CompletarRecibidoPedido" runat="server" Text="Completar pedido recibido" CssClass="btn btn-success" OnClick="BTN_CompletarRecibidoPedido_Click"></asp:Button>
+                                            <asp:Button UseSubmitBehavior="false" ID="BTN_CompletarRecibidoPedido" runat="server" Text="Completar pedido recibido" CssClass="btn btn-success" OnClick="BTN_CompletarRecibidoPedido_Click"></asp:Button>
                                         </div>
                                     </div>
                                 </div>
@@ -284,7 +314,7 @@
                             <div class="card-body">
                                 <asp:UpdatePanel ID="UpdatePanel_FiltrosProductos" runat="server" UpdateMode="Conditional">
                                     <ContentTemplate>                           
-                                        <div class="input-group no-border col-md-6">
+                                        <div class="input-group no-border col-md-4">
                                             <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar producto..." OnTextChanged="TXT_Buscar_OnTextChanged" AutoPostBack="true"></asp:TextBox>
                                             <div class="input-group-append">
                                                 <div class="input-group-text">
@@ -316,9 +346,8 @@
                                                     <ItemTemplate>
                                                         <div class="row">
                                                             <asp:TextBox class="form-control" TextMode="Number" MaxLength="2" min="0" max="99" style="width: 40%" runat="server" ID="TXT_Cantidad" 
-                                                                OnTextChanged="TXT_Cantidad_OnTextChanged" AutoPostBack="true" onchange="enterClickAgregar(this);" Text='0' />                                                            
-                                                            <asp:DropDownList class="form-control" style="width: 30%" runat="server" ID="DDL_Decenas" 
-                                                                OnSelectedIndexChanged="DDL_DecenasUnidades_OnSelectedIndexChanged" AutoPostBack="true">
+                                                                onkeyup="TXT_Cantidad_onKeyUp(this, event);" onchange="TXT_Cantidad_onChange(this);" Text='0' />                                                            
+                                                            <asp:DropDownList class="form-control" style="width: 30%" runat="server" ID="DDL_Decenas" onchange="DDL_UnidadesDecenas_onChange(this);">
                                                                 <asp:ListItem Value="0">0</asp:ListItem>
                                                                 <asp:ListItem Value="1">1</asp:ListItem>
                                                                 <asp:ListItem Value="2">2</asp:ListItem>
@@ -330,8 +359,7 @@
                                                                 <asp:ListItem Value="8">8</asp:ListItem>
                                                                 <asp:ListItem Value="9">9</asp:ListItem>
                                                             </asp:DropDownList>
-                                                            <asp:DropDownList class="form-control" style="width: 30%" runat="server" ID="DDL_Unidades"
-                                                                OnSelectedIndexChanged="DDL_DecenasUnidades_OnSelectedIndexChanged" AutoPostBack="true">
+                                                            <asp:DropDownList class="form-control" style="width: 30%" runat="server" ID="DDL_Unidades" onchange="DDL_UnidadesDecenas_onChange(this);">
                                                                 <asp:ListItem Value="0">0</asp:ListItem>
                                                                 <asp:ListItem Value="1">1</asp:ListItem>
                                                                 <asp:ListItem Value="2">2</asp:ListItem>

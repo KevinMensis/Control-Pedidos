@@ -22,6 +22,8 @@
     </style>
     <script src="../Assets/js/qz-tray.js"></script>
     <script type="text/javascript">
+        var productosAgregar;
+
         function alertifysuccess(msj) {
             alertify.notify(msj, 'success', 5, null);
             return false
@@ -51,10 +53,12 @@
         }
 
         function abrirModalAgregarProductos() {
+            productosAgregar = new Map();
             document.getElementById('BTN_ModalAgregarProductos').click()
         }
 
         function cerrarModalAgregarProductos() {
+            productosAgregar = new Map();
             document.getElementById('BTN_ModalAgregarProductos').click()
         }
 
@@ -73,23 +77,6 @@
             document.getElementById(id).select();
         }
 
-        function estilosElementosBloqueados() {
-            document.getElementById('<%= TXT_CodigoPedido.ClientID %>').classList.remove('aspNetDisabled')
-            document.getElementById('<%= TXT_CodigoPedido.ClientID %>').classList.add('form-control')
-            document.getElementById('<%= TXT_TotalProductos.ClientID %>').classList.remove('aspNetDisabled')
-            document.getElementById('<%= TXT_TotalProductos.ClientID %>').classList.add('form-control')
-            document.getElementById('<%= TXT_MontoPedido.ClientID %>').classList.remove('aspNetDisabled')
-            document.getElementById('<%= TXT_MontoPedido.ClientID %>').classList.add('form-control')
-            document.getElementById('<%= TXT_EstadoPedido.ClientID %>').classList.remove('aspNetDisabled')
-            document.getElementById('<%= TXT_EstadoPedido.ClientID %>').classList.add('form-control')
-            document.getElementById('<%= TXT_FechaPedido.ClientID %>').classList.remove('aspNetDisabled')
-            document.getElementById('<%= TXT_FechaPedido.ClientID %>').classList.add('form-control')
-            document.getElementById('<%= TXT_HoraPedido.ClientID %>').classList.remove('aspNetDisabled')
-            document.getElementById('<%= TXT_HoraPedido.ClientID %>').classList.add('form-control')
-            document.getElementById('<%= TXT_NombreImpresora.ClientID %>').classList.remove('aspNetDisabled')
-            document.getElementById('<%= TXT_NombreImpresora.ClientID %>').classList.add('form-control')
-        }
-
         function abrirModalDetallePedido() {
             document.getElementById('BTN_ModalDetallePedido').click()
         }
@@ -106,66 +93,211 @@
             document.getElementById('BTN_ModalSeleccionarImpresora').click()
         }
 
-        function enterClickAgregar(txtCantidad, e) {
-            console.dir(e)
+        function TXT_Cantidad_onKeyUp(txtCantidad, e) {
             var values = txtCantidad.id.split('_')
             var index = values.pop() * 1 + 1
-            var rows = $(<%= DGV_ListaProductos.ClientID %>)[0].rows.length - 1
-            var id = ''
-            if (index === rows) {
-                id = 'Content_DGV_ListaProductos_TXT_Cantidad_' + 0
-            } else {
-                id = 'Content_DGV_ListaProductos_TXT_Cantidad_' + index
+            if (e.keyCode === 13)
+            {                
+                var rows = $(<%= DGV_ListaProductos.ClientID %>)[0].rows.length - 1
+                var id = ''
+                if (index === rows) {
+                    id = 'Content_DGV_ListaProductos_TXT_Cantidad_' + 0
+                } else {
+                    id = 'Content_DGV_ListaProductos_TXT_Cantidad_' + index
+                }
+                document.getElementById(id).autofocus = true;
+                document.getElementById(id).focus();
+                document.getElementById(id).select();
             }
-            document.getElementById(id).autofocus = true;
-            document.getElementById(id).focus();
-            document.getElementById(id).select();
-            return false;
         }
 
-        function enterClickAgregar2(txtCantidad) {
+        function TXT_Cantidad_onChange(txtCantidad) {
+            var values = txtCantidad.id.split('_')
+            var index = values.pop() * 1
+            var idUnidades = 'Content_DGV_ListaProductos_DDL_Unidades_' + index
+            var idDecenas = 'Content_DGV_ListaProductos_DDL_Decenas_' + index
+            var cantidadProducto = txtCantidad.value
+            if (cantidadProducto !== '')
+            {               
+                var unds = cantidadProducto % 10;
+                var decs = Math.trunc(cantidadProducto / 10);
+                if (cantidadProducto >= 0 && cantidadProducto < 100)
+                {
+                    document.getElementById(idUnidades).value = unds;
+                    document.getElementById(idDecenas).value = decs;
+                    txtCantidad.value = cantidadProducto;
+                    guardarCantidadProductoPedido(index, cantidadProducto);
+                }
+                else
+                {
+                    unds = document.getElementById(idUnidades).value * 1;
+                    decs = document.getElementById(idDecenas).value * 10;
+                    cantidadProducto = decs + unds;
+                    txtCantidad.value = cantidadProducto;
+                }
+            }
+            else
+            {
+                txtCantidad.value = '0';
+                document.getElementById(idUnidades).value = '0';
+                document.getElementById(idDecenas).value = '0';
+                guardarCantidadProductoPedido(index, 0);
+            }
+        }
+
+        function guardarCantidadProductoPedido(index, cantidad) {
+            var id = 'Content_DGV_ListaProductos_HDF_IDPedidoDetalle_' + index
+            var HDF_IDPedidoDetalle = document.getElementById(id)
+            var idPedidoDetalle = HDF_IDPedidoDetalle.value
+            var usuario = document.getElementById('Content_HDF_IDUsuario').value;
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "DetallePedido.aspx/guardarCantidadProductoPedido",
+                data: JSON.stringify({
+                    "idPedidoDetalle": idPedidoDetalle,
+                    "cantidadProducto": cantidad,
+                    "usuario": usuario
+                }),
+                dataType: "json",
+                success: function (Result) {
+                    console.log(Result)
+                },
+                error: function (Result) {
+                    alert("ERROR " + Result.status + ' ' + Result.statusText);
+                }
+            })
+        }
+
+        function TXT_CantidadAgregar_onKeyUp(txtCantidad, e) {
             var values = txtCantidad.id.split('_')
             var index = values.pop() * 1 + 1
-            var rows = $(<%= DGV_ListaProductosSinAgregar.ClientID %>)[0].rows.length - 1
-            var id = ''
-            if (index === rows) {
-                id = 'Content_DGV_ListaProductosSinAgregar_TXT_CantidadAgregar_' + 0
-            } else {
-                id = 'Content_DGV_ListaProductosSinAgregar_TXT_CantidadAgregar_' + index
-            }
-            document.getElementById(id).autofocus = true;
-            document.getElementById(id).focus();
-            document.getElementById(id).select();
-            return false;
+            if (e.keyCode === 13) {
+                var rows = $(<%= DGV_ListaProductosSinAgregar.ClientID %>)[0].rows.length - 1
+                var id = ''
+                if (index === rows) {
+                    id = 'Content_DGV_ListaProductosSinAgregar_TXT_CantidadAgregar_' + 0
+                } else {
+                    id = 'Content_DGV_ListaProductosSinAgregar_TXT_CantidadAgregar_' + index
+                }
+                document.getElementById(id).autofocus = true;
+                document.getElementById(id).focus();
+                document.getElementById(id).select();
+            }            
         }
 
-        function enterCantidad(index) {
-            console.log(123)
-            var index = index + 1
-            var rows = $(<%= DGV_ListaProductos.ClientID %>)[0].rows.length - 1
-            var id = ''
-            if (index === rows) {
-                id = 'Content_DGV_ListaProductos_TXT_Cantidad_' + 0
+        function TXT_CantidadAgregar_onChange(txtCantidad) {
+            var values = txtCantidad.id.split('_')
+            var index = values.pop() * 1
+            var idSelect = 'Content_DGV_ListaProductosSinAgregar_CHK_Producto_' + index
+            var CHK_Producto = document.getElementById(idSelect)
+            var id = 'Content_DGV_ListaProductosSinAgregar_HDF_IDProducto_' + index
+            var HDF_IDProducto = document.getElementById(id)
+            var idProducto = HDF_IDProducto.value
+            var cantidadProducto = txtCantidad.value * 1
+            
+            if (cantidadProducto === '' || cantidadProducto === 0 || cantidadProducto === '0') {
+                txtCantidad.value = 0
             } else {
-                id = 'Content_DGV_ListaProductos_TXT_Cantidad_' + index
+                if (cantidadProducto < 0 || cantidadProducto > 99) {
+                    cantidadProducto = 0
+                }
             }
-            document.getElementById(id).autofocus = true;
-            document.getElementById(id).focus();
-            document.getElementById(id).select();
+            if (cantidadProducto >= 0 && cantidadProducto < 100)
+            {
+                productosAgregar.set(idProducto, cantidadProducto)
+                CHK_Producto.checked = true;
+            }
         }
 
-        function enterCantidad2(index) {
-            var index = index + 1
-            var rows = $(<%= DGV_ListaProductosSinAgregar.ClientID %>)[0].rows.length - 1
-            var id = ''
-            if (index === rows) {
-                id = 'Content_DGV_ListaProductosSinAgregar_TXT_CantidadAgregar_' + 0
+        function CHK_Producto_onChange(CHK_Producto) {
+            var values = CHK_Producto.childNodes[0].id.split('_')
+            var index = values.pop() * 1
+
+            var idSelect = 'Content_DGV_ListaProductosSinAgregar_CHK_Producto_' + index
+            var CHK_Producto = document.getElementById(idSelect)
+
+            var idTXT_Cantidad = 'Content_DGV_ListaProductosSinAgregar_TXT_CantidadAgregar_' + index
+            var TXT_Cantidad = document.getElementById(idTXT_Cantidad)
+
+            var id = 'Content_DGV_ListaProductosSinAgregar_HDF_IDProducto_' + index
+            var HDF_IDProducto = document.getElementById(id)
+            var idProducto = HDF_IDProducto.value
+
+            if (CHK_Producto.checked) {
+                productosAgregar.set(idProducto, 0)                
             } else {
-                id = 'Content_DGV_ListaProductosSinAgregar_TXT_CantidadAgregar_' + index
+                productosAgregar.delete(idProducto)
             }
-            document.getElementById(id).autofocus = true;
-            document.getElementById(id).focus();
-            document.getElementById(id).select();
+            TXT_Cantidad.value = 0
+        }
+
+        function productosMarcados() {
+            var table, tbody, i, rowLen, row, j, colLen, cell;
+
+            table = document.getElementById('Content_DGV_ListaProductosSinAgregar');
+            tbody = table.tBodies[0];
+
+            for (i = 0, rowLen = tbody.rows.length - 1; i < rowLen; i++) {
+                var id = 'Content_DGV_ListaProductosSinAgregar_HDF_IDProducto_' + i
+
+                var HDF_IDProducto = document.getElementById(id)
+                var idProducto = HDF_IDProducto.value
+                productosAgregar.forEach(function (valor, clave) {
+                    if (idProducto === clave) {
+                        var idSelect = 'Content_DGV_ListaProductosSinAgregar_CHK_Producto_' + i                        
+                        var CHK_Producto = document.getElementById(idSelect)
+                        var idTXT_Cantidad = 'Content_DGV_ListaProductosSinAgregar_TXT_CantidadAgregar_' + i
+                        var TXT_Cantidad = document.getElementById(idTXT_Cantidad)
+                        CHK_Producto.checked = true
+                        TXT_Cantidad.value = valor
+                    }
+                })
+            }
+        }
+
+        function cargarProductosAgregar() {
+            document.getElementById('Content_LBL_GenerandoInforme').innerText = 'Agregando productos, espere por favor.'            
+            activarloading();
+            var usuario = document.getElementById('Content_HDF_IDUsuario').value;
+            var idPedido = document.getElementById('Content_HDF_IDPedido').value;
+            var promises = [];
+            productosAgregar.forEach(function (valor, clave) {
+                promises.push(
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: "DetallePedido.aspx/BTN_Agregar_Click",
+                        data: JSON.stringify({
+                            "idPedido": idPedido,
+                            "idProducto": clave,
+                            "cantidadProducto": valor,
+                            "usuario": usuario
+                        }),
+                        dataType: "json",
+                        success: function (Result) {
+                            console.dir(Result)
+                        },
+                        error: function (Result) {
+                            alert("ERROR " + Result.status + ' ' + Result.statusText);
+                        }
+                    })
+                )
+            })
+            Promise.all(promises).then(function () {
+                if (productosAgregar.size > 0) {
+                    cerrarModalAgregarProductos();
+                    __doPostBack('CargarPedido')
+                    alertifysuccess('Productos agregados con éxito.');
+                    desactivarloading();
+                } else {
+                    alertifywarning('Por favor, seleccione al menos un producto para agregar al pedido.');
+                    cargarFiltros();
+                    desactivarloading();
+                    console.log(123)
+                }
+            });
+            
         }
 
         function imprimir(estado, codigoPedido, sucursal, plantaProduccion, printer) {
@@ -284,6 +416,23 @@
             });
         }
 
+        function estilosElementosBloqueados() {
+            document.getElementById('<%= TXT_CodigoPedido.ClientID %>').classList.remove('aspNetDisabled')
+            document.getElementById('<%= TXT_CodigoPedido.ClientID %>').classList.add('form-control')
+            document.getElementById('<%= TXT_TotalProductos.ClientID %>').classList.remove('aspNetDisabled')
+            document.getElementById('<%= TXT_TotalProductos.ClientID %>').classList.add('form-control')
+            document.getElementById('<%= TXT_MontoPedido.ClientID %>').classList.remove('aspNetDisabled')
+            document.getElementById('<%= TXT_MontoPedido.ClientID %>').classList.add('form-control')
+            document.getElementById('<%= TXT_EstadoPedido.ClientID %>').classList.remove('aspNetDisabled')
+            document.getElementById('<%= TXT_EstadoPedido.ClientID %>').classList.add('form-control')
+            document.getElementById('<%= TXT_FechaPedido.ClientID %>').classList.remove('aspNetDisabled')
+            document.getElementById('<%= TXT_FechaPedido.ClientID %>').classList.add('form-control')
+            document.getElementById('<%= TXT_HoraPedido.ClientID %>').classList.remove('aspNetDisabled')
+            document.getElementById('<%= TXT_HoraPedido.ClientID %>').classList.add('form-control')
+            document.getElementById('<%= TXT_NombreImpresora.ClientID %>').classList.remove('aspNetDisabled')
+            document.getElementById('<%= TXT_NombreImpresora.ClientID %>').classList.add('form-control')
+        }
+
         function cargarFiltros() {
             $(<%= LB_Categoria.ClientID %>).SumoSelect({ selectAll: true, placeholder: 'Categoria' })
         }
@@ -308,7 +457,8 @@
         </span>
     </a>
     <div class="wrapper">
-        <asp:HiddenField ID="HDF_IDPedido" runat="server" Value="0" Visible="false" />
+        <asp:HiddenField ID="HDF_IDUsuario" runat="server" Value="0" Visible="true" />
+        <asp:HiddenField ID="HDF_IDPedido" runat="server" Value="0" Visible="true" />
         <asp:HiddenField ID="HDF_EstadoPedido" runat="server" Value="" Visible="false" />
         <div class="sidebar" data-color="white" data-active-color="danger">
             <div class="sidebar-wrapper scroll" style="overflow-y: auto;">
@@ -333,12 +483,6 @@
                         </a>
                     </li>
                     <li>
-                        <a href="Empaque.aspx">
-                            <i class="fas fa-box-open"></i>
-                            <p>Empaque</p>
-                        </a>
-                    </li>
-                    <li>
                         <a href="Despacho.aspx">
                             <i class="fas fa-truck"></i>
                             <p>Despacho</p>
@@ -348,6 +492,12 @@
                         <a href="PedidosRecibidos.aspx">
                             <i class="fas fa-check-double"></i>
                             <p>Pedidos recibidos</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Empaque.aspx">
+                            <i class="fas fa-box-open"></i>
+                            <p>Empaque</p>
                         </a>
                     </li>
                     <li>
@@ -527,7 +677,7 @@
                                                     <ItemTemplate>
                                                         <div class="row">
                                                             <asp:TextBox class="form-control" TextMode="Number" MaxLength="2" min="0" max="99" style="width: 40%" runat="server" ID="TXT_Cantidad" 
-                                                               OnTextChanged="TXT_Cantidad_OnTextChanged" AutoPostBack="true" onchange="enterClickAgregar(this,event);" Text='<%#Eval("CantidadProduccion") %>' />                                                            
+                                                               onkeyup="TXT_Cantidad_onKeyUp(this,event);" onchange="TXT_Cantidad_onChange(this);" Text='<%#Eval("CantidadProduccion") %>' /> <!-- OnTextChanged="TXT_Cantidad_OnTextChanged" AutoPostBack="true" -->
                                                             <asp:DropDownList class="form-control" style="width: 30%" runat="server" ID="DDL_Decenas" 
                                                                 OnSelectedIndexChanged="DDL_DecenasUnidades_OnSelectedIndexChanged" AutoPostBack="true">
                                                                 <asp:ListItem Value="0">0</asp:ListItem>
@@ -555,6 +705,7 @@
                                                                 <asp:ListItem Value="9">9</asp:ListItem>
                                                             </asp:DropDownList>                                                            
                                                         </div>
+                                                        <asp:HiddenField ID="HDF_IDPedidoDetalle" runat="server" Value='<%# Eval("IDPedidoDetalle") %>' />
                                                     </ItemTemplate>
                                                     <ItemStyle HorizontalAlign="Center" />
                                                 </asp:TemplateField>
@@ -587,7 +738,7 @@
     <div class="modal bd-example-modal-lg" id="ModalAgregarProductos" tabindex="-1" role="dialog" aria-labelledby="popAgregarProductos" aria-hidden="true">
         <asp:UpdatePanel ID="UpdatePanel_ModalAgregarProductos" runat="server" UpdateMode="Conditional">
             <ContentTemplate>
-                <div class="modal-dialog modal-lg">
+                <div class="modal-dialog modal-lg" style="padding-top: 5px;">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -595,25 +746,25 @@
                             </button>
                             <h5 class="modal-title" runat="server">Agregar productos a la orden</h5>
                         </div>
-                        <div class="modal-body">                            
-                            <div class="table-responsive">
-                                <asp:UpdatePanel ID="UpdatePanel_ListaProductosSinAgregar" runat="server" UpdateMode="Conditional">
-                                    <ContentTemplate>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="input-group no-border">
-                                                    <asp:TextBox class="form-control" ID="TXT_BuscarProductosSinAsignar" runat="server" placeholder="Buscar..." OnTextChanged="FiltrarProductos_OnClick" AutoPostBack="true" onchange="cargarFiltros();"></asp:TextBox>
-                                                    <div class="input-group-append">
-                                                        <div class="input-group-text">
-                                                            <i class="nc-icon nc-zoom-split"></i>
-                                                        </div>
+                        <div class="modal-body" style="padding-bottom: 0px;">                                                        
+                            <asp:UpdatePanel ID="UpdatePanel_ListaProductosSinAgregar" runat="server" UpdateMode="Conditional">
+                                <ContentTemplate>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="input-group no-border">
+                                                <asp:TextBox class="form-control" ID="TXT_BuscarProductosSinAsignar" runat="server" placeholder="Buscar..." OnTextChanged="FiltrarProductos_OnClick" AutoPostBack="true"></asp:TextBox>
+                                                <div class="input-group-append">
+                                                    <div class="input-group-text">
+                                                        <i class="nc-icon nc-zoom-split"></i>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
-                                                <asp:ListBox class="form-control" runat="server" ID="LB_Categoria" SelectionMode="Multiple" OnTextChanged="FiltrarProductos_OnClick" AutoPostBack="true"></asp:ListBox>
-                                            </div>
                                         </div>
+                                        <div class="col-md-3">
+                                            <asp:ListBox class="form-control" runat="server" ID="LB_Categoria" SelectionMode="Multiple" OnTextChanged="FiltrarProductos_OnClick" AutoPostBack="true"></asp:ListBox>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive">
                                         <asp:GridView ID="DGV_ListaProductosSinAgregar" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
                                             AutoGenerateColumns="False" DataKeyNames="IDProducto,DescripcionProducto,Categoria" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
                                             ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true"
@@ -625,7 +776,8 @@
                                                         <asp:Label ID="LBL_Acciones" runat="server" Text="Seleccionar"></asp:Label>
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
-                                                        <asp:CheckBox ID="CHK_Producto" runat="server" AutoPostBack="true" OnCheckedChanged="CHK_Producto_OnCheckedChanged" />
+                                                        <asp:CheckBox ID="CHK_Producto" runat="server" onchange="CHK_Producto_onChange(this);" /> <%-- AutoPostBack="true" OnCheckedChanged="CHK_Producto_OnCheckedChanged" --%>
+                                                        <asp:HiddenField ID="HDF_IDProducto" runat="server" Value='<%# Eval("IDProducto") %>' />
                                                     </ItemTemplate>
                                                     <ItemStyle HorizontalAlign="Center" />
                                                     <ItemStyle Width="50px" />
@@ -639,19 +791,19 @@
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
                                                         <asp:TextBox class="form-control" TextMode="Number" MaxLength="0" min="0" max="99" style="width: 100%" runat="server" ID="TXT_CantidadAgregar" 
-                                                            OnTextChanged="TXT_CantidadAgregar_OnTextChanged" onchange="enterClickAgregar2(this);" Text='0' AutoPostBack="true" />
+                                                            onkeyup="TXT_CantidadAgregar_onKeyUp(this,event);" onchange="TXT_CantidadAgregar_onChange(this)" Text='0' /> <%-- OnTextChanged="TXT_CantidadAgregar_OnTextChanged" AutoPostBack="true" --%>
                                                     </ItemTemplate>
                                                     <ItemStyle HorizontalAlign="Center" />                                                    
                                                 </asp:TemplateField>
                                             </Columns>
                                         </asp:GridView>
-                                    </ContentTemplate>
-                                </asp:UpdatePanel>
-                            </div>
+                                    </div>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
                         </div>
                         <div class="modal-footer">
                             <asp:Button ID="BTN_CerrarModalCrearPedido" UseSubmitBehavior="false" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-primary" />
-                            <asp:Button ID="BTN_Agregar" runat="server" UseSubmitBehavior="false" Text="Agregar" CssClass="btn btn-secondary" OnClick="BTN_Agregar_Click" />
+                            <asp:Button ID="BTN_Agregar" runat="server" UseSubmitBehavior="false" Text="Agregar" CssClass="btn btn-secondary" OnClientClick="cargarProductosAgregar();" />
                         </div>
                     </div>
                 </div>
@@ -713,7 +865,6 @@
                                             ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros.">
                                             <Columns>                                         
                                                 <asp:BoundField DataField="DescripcionCategoria" HeaderText="Categoría" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                <asp:BoundField DataField="ProductoID" HeaderText="Código producto" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="DescripcionProducto" HeaderText="Nombre producto" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="CantidadProduccion" HeaderText="Cantidad solicitada" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
                                             </Columns>
@@ -724,8 +875,8 @@
                         </div>
                         <div class="modal-footer">                            
                             <div style="text-align: right;">
-                                <asp:Button ID="BTN_CerrarModalDetallePedido" UseSubmitBehavior="false" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-secondary" />  
-                                <asp:Button ID="BTN_ImprimirDetallePedido" UseSubmitBehavior="false" runat="server" Text="Imprimir" CssClass="btn btn-success" OnClick="BTN_ImprimirDetallePedido_Click" />                              
+                                <asp:Button ID="BTN_CerrarModalDetallePedido" UseSubmitBehavior="false" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-primary" />  
+                                <asp:Button ID="BTN_ImprimirDetallePedido" UseSubmitBehavior="false" runat="server" Text="Imprimir" CssClass="btn btn-secondary" OnClick="BTN_ImprimirDetallePedido_Click" />                              
                             </div>
                         </div>
                     </div>

@@ -40,15 +40,6 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.UpdatePanel UpdatePanel_CrearUsuario;
         
         /// <summary>
-        /// BTN_CrearUsuario control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BTN_CrearUsuario;
-        
-        /// <summary>
         /// UpdatePanel_FiltrosUsuarios control.
         /// </summary>
         /// <remarks>
@@ -74,6 +65,15 @@ namespace MCWebHogar.ControlPedidos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ListBox LB_Rol;
+        
+        /// <summary>
+        /// BTN_CrearUsuario control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_CrearUsuario;
         
         /// <summary>
         /// UpdatePanel_ListaUsuarios control.

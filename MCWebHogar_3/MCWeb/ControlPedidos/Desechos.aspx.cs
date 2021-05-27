@@ -38,8 +38,12 @@ namespace MCWebHogar.ControlPedidos
         }
         private void cargarDDLs()
         {
-            TXT_FechaDesechoDesde.Text = "1900-01-01";
-            TXT_FechaDesechoHasta.Text = "1900-01-01";
+            DateTime hoy = DateTime.Now.AddDays(-1);
+            string mes = hoy.Month < 10 ? "0" + Convert.ToString(hoy.Month) : Convert.ToString(hoy.Month);
+            string dia = hoy.Day < 10 ? "0" + Convert.ToString(hoy.Day) : Convert.ToString(hoy.Day);
+            TXT_FechaCreacionDesde.Text = Convert.ToString(hoy.Year) + "-" + mes + "-" + dia; // "1900-01-01";
+            //TXT_FechaDesechoDesde.Text = "1900-01-01";
+            //TXT_FechaDesechoHasta.Text = "1900-01-01";
 
             UpdatePanel_FiltrosDesechos.Update();
         }
@@ -52,22 +56,22 @@ namespace MCWebHogar.ControlPedidos
 
             #region Fechas
             string fechaDesechoDesde = "1900-01-01";
-            string fechaDesechoHasta = "1900-01-01";
+            // string fechaDesechoHasta = "1900-01-01";
 
             try
             {
-                fechaDesechoDesde = Convert.ToDateTime(TXT_FechaDesechoDesde.Text).ToString();
-                fechaDesechoHasta = Convert.ToDateTime(TXT_FechaDesechoHasta.Text).ToString();
+                fechaDesechoDesde = Convert.ToDateTime(TXT_FechaCreacionDesde.Text).ToString();
+                // fechaDesechoHasta = Convert.ToDateTime(TXT_FechaDesechoHasta.Text).ToString();
 
             }
             catch (Exception e)
             {
                 fechaDesechoDesde = "1900-01-01";
-                fechaDesechoHasta = "1900-01-01";
+                // fechaDesechoHasta = "1900-01-01";
             }
 
             DT.DT1.Rows.Add("@fechaDesechoDesde", fechaDesechoDesde, SqlDbType.Date);
-            DT.DT1.Rows.Add("@fechaDesechoHasta", fechaDesechoHasta, SqlDbType.Date);
+            // DT.DT1.Rows.Add("@fechaDesechoHasta", fechaDesechoHasta, SqlDbType.Date);
             #endregion
 
             UpdatePanel_FiltrosDesechos.Update();
@@ -190,6 +194,7 @@ namespace MCWebHogar.ControlPedidos
                 else
                 {
                     Session["IDDesecho"] = Result.Rows[0][1].ToString().Trim();
+                    Session["NuevoDesecho"] = Result.Rows[0][1].ToString().Trim();
                     Response.Redirect("DetalleDesecho.aspx", true);
                 }
             }

@@ -38,8 +38,12 @@ namespace MCWebHogar.ControlPedidos
         }
         private void cargarDDLs()
         {
-            TXT_FechaEmpaqueDesde.Text = "1900-01-01";
-            TXT_FechaEmpaqueHasta.Text = "1900-01-01";
+            DateTime hoy = DateTime.Now.AddDays(-1);
+            string mes = hoy.Month < 10 ? "0" + Convert.ToString(hoy.Month) : Convert.ToString(hoy.Month);
+            string dia = hoy.Day < 10 ? "0" + Convert.ToString(hoy.Day) : Convert.ToString(hoy.Day);
+            TXT_FechaCreacionDesde.Text = Convert.ToString(hoy.Year) + "-" + mes + "-" + dia; // "1900-01-01";
+            //TXT_FechaEmpaqueDesde.Text = "1900-01-01";
+            //TXT_FechaEmpaqueHasta.Text = "1900-01-01";
 
             UpdatePanel_FiltrosEmpaques.Update();
         }
@@ -51,22 +55,22 @@ namespace MCWebHogar.ControlPedidos
             DT.DT1.Clear();
             #region Fechas
             string fechaEmpaqueDesde = "1900-01-01";
-            string fechaEmpaqueHasta = "1900-01-01";
+            // string fechaEmpaqueHasta = "1900-01-01";
 
             try
             {
-                fechaEmpaqueDesde = Convert.ToDateTime(TXT_FechaEmpaqueDesde.Text).ToString();
-                fechaEmpaqueHasta = Convert.ToDateTime(TXT_FechaEmpaqueHasta.Text).ToString();
+                fechaEmpaqueDesde = Convert.ToDateTime(TXT_FechaCreacionDesde.Text).ToString();
+                // fechaEmpaqueHasta = Convert.ToDateTime(TXT_FechaEmpaqueHasta.Text).ToString();
 
             }
             catch (Exception e)
             {
                 fechaEmpaqueDesde = "1900-01-01";
-                fechaEmpaqueHasta = "1900-01-01";
+                // fechaEmpaqueHasta = "1900-01-01";
             }
 
             DT.DT1.Rows.Add("@fechaEmpaqueDesde", fechaEmpaqueDesde, SqlDbType.Date);
-            DT.DT1.Rows.Add("@fechaEmpaqueHasta", fechaEmpaqueHasta, SqlDbType.Date);
+            // DT.DT1.Rows.Add("@fechaEmpaqueHasta", fechaEmpaqueHasta, SqlDbType.Date);
             #endregion
             
             UpdatePanel_FiltrosEmpaques.Update();
@@ -189,6 +193,7 @@ namespace MCWebHogar.ControlPedidos
                 else
                 {
                     Session["IDEmpaque"] = Result.Rows[0][1].ToString().Trim();
+                    Session["NuevoEmpaque"] = Result.Rows[0][1].ToString().Trim();
                     Response.Redirect("DetalleEmpaque.aspx", true);
                 }
             }

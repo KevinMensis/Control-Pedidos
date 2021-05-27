@@ -28,6 +28,14 @@ namespace MCWebHogar.ControlPedidos
                     ViewState["Ordenamiento"] = "ASC";
                 }
             }
+            else
+            {
+                string opcion = Page.Request.Params["__EVENTTARGET"];
+                if (opcion.Contains("TXT_Buscar"))
+                {
+                    cargarUsuarios("");
+                }
+            }
         }
 
         #region General

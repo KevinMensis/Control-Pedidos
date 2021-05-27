@@ -23,8 +23,8 @@ namespace MCWebHogar.ControlPedidos
                 }
                 else
                 {
+                    cargarDDLs();
                     cargarODPs();
-                    // cargarDDLs();
                     ViewState["Ordenamiento"] = "ASC";
                 }
             }
@@ -36,12 +36,35 @@ namespace MCWebHogar.ControlPedidos
             Session.RemoveAll();
             Response.Redirect("../Default.aspx");
         }
+
+        private void cargarDDLs()
+        {
+            DateTime hoy = DateTime.Now.AddDays(-1);
+            string mes = hoy.Month < 10 ? "0" + Convert.ToString(hoy.Month) : Convert.ToString(hoy.Month);
+            string dia = hoy.Day < 10 ? "0" + Convert.ToString(hoy.Day) : Convert.ToString(hoy.Day);
+            TXT_FechaCreacionDesde.Text = Convert.ToString(hoy.Year) + "-" + mes + "-" + dia;
+        }
         #endregion
 
         #region ODPS
         private DataTable cargarODPsConsulta()
         {
             DT.DT1.Clear();
+
+            #region Fechas
+            string fechaCreacionDesde = "1900-01-01";
+
+            try
+            {
+                fechaCreacionDesde = Convert.ToDateTime(TXT_FechaCreacionDesde.Text).ToString();
+            }
+            catch (Exception e)
+            {
+                fechaCreacionDesde = "1900-01-01";
+            }
+
+            DT.DT1.Rows.Add("@fechaCreacionDesde", fechaCreacionDesde, SqlDbType.Date);
+            #endregion
 
             DT.DT1.Rows.Add("@Buscar", TXT_Buscar.Text, SqlDbType.VarChar);
 

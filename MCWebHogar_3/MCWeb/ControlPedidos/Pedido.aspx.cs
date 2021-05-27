@@ -132,11 +132,10 @@ namespace MCWebHogar.ControlPedidos
                 LB_Estado.DataValueField = "Estado";
                 LB_Estado.DataBind();
             }
-
-            //TXT_FechaCreacionDesde.Text = "1900-01-01";
-            //TXT_FechaCreacionHasta.Text = "1900-01-01";
-            //TXT_FechaPedidoDesde.Text = "1900-01-01";
-            //TXT_FechaPedidoHasta.Text = "1900-01-01";
+            DateTime hoy = DateTime.Now.AddDays(-1);
+            string mes = hoy.Month < 10 ? "0" + Convert.ToString(hoy.Month) : Convert.ToString(hoy.Month);
+            string dia = hoy.Day < 10 ? "0" + Convert.ToString(hoy.Day) : Convert.ToString(hoy.Day);
+            TXT_FechaCreacionDesde.Text = Convert.ToString(hoy.Year) + "-" + mes + "-" + dia; 
 
             UpdatePanel_FiltrosPedidos.Update();
         }
@@ -235,43 +234,20 @@ namespace MCWebHogar.ControlPedidos
 
             #region Fechas
             string fechaCreacionDesde = "1900-01-01";
-            string fechaCreacionHasta = "1900-01-01";
-            string fechaPedidoDesde = "1900-01-01";
-            string fechaPedidoHasta = "1900-01-01";
 
-            //try
-            //{
-            //    fechaCreacionDesde = Convert.ToDateTime(TXT_FechaCreacionDesde.Text).ToString();
-            //    fechaCreacionHasta = Convert.ToDateTime(TXT_FechaCreacionHasta.Text).ToString();
-                
-            //}
-            //catch (Exception e)
-            //{
-            //    fechaCreacionDesde = "1900-01-01";
-            //    fechaCreacionHasta = "1900-01-01";
-            //}
+            try
+            {
+                fechaCreacionDesde = Convert.ToDateTime(TXT_FechaCreacionDesde.Text).ToString();
+            }
+            catch (Exception e)
+            {
+                fechaCreacionDesde = "1900-01-01";
+            }
 
-            //try
-            //{
-            //    fechaPedidoDesde = Convert.ToDateTime(TXT_FechaPedidoDesde.Text).ToString();
-            //    fechaPedidoHasta = Convert.ToDateTime(TXT_FechaPedidoHasta.Text).ToString();                
-            //}
-            //catch (Exception e)
-            //{
-            //    fechaPedidoDesde = "1900-01-01";
-            //    fechaPedidoHasta = "1900-01-01";
-            //}
+            if (Convert.ToDateTime(fechaCreacionDesde).ToString() != Convert.ToDateTime("1900-01-01").ToString())
+                LBL_Filtro.Text += "Creación desde " + Convert.ToDateTime(fechaCreacionDesde).ToString("dd-MM-yyyy"); 
 
-            if (Convert.ToDateTime(fechaCreacionHasta).ToString() != Convert.ToDateTime("1900-01-01").ToString())
-                LBL_Filtro.Text += "Creación desde " + Convert.ToDateTime(fechaCreacionDesde).ToString("dd-MM-yyyy") + " hasta " + Convert.ToDateTime(fechaCreacionHasta).ToString("dd-MM-yyyy") + ";";
-
-            if (Convert.ToDateTime(fechaPedidoHasta).ToString() != Convert.ToDateTime("1900-01-01").ToString())
-                LBL_Filtro.Text += "Pedido desde " + Convert.ToDateTime(fechaPedidoDesde).ToString("dd-MM-yyyy") + " hasta " + Convert.ToDateTime(fechaPedidoHasta).ToString("dd-MM-yyyy") + ";";
-
-            DT.DT1.Rows.Add("@fechaCreacionDesde", fechaCreacionDesde, SqlDbType.Date);
-            DT.DT1.Rows.Add("@fechaCreacionHasta", fechaCreacionHasta, SqlDbType.Date);
-            DT.DT1.Rows.Add("@fechaPedidoDesde", fechaPedidoDesde, SqlDbType.Date);
-            DT.DT1.Rows.Add("@fechaPedidoHasta", fechaPedidoHasta, SqlDbType.Date);            
+            DT.DT1.Rows.Add("@fechaCreacionDesde", fechaCreacionDesde, SqlDbType.Date);            
             #endregion
 
             if (LBL_Filtro.Text == "Filtros: ")
@@ -323,46 +299,7 @@ namespace MCWebHogar.ControlPedidos
         {
             cargarPedido("");
         }
-
-        protected void BTN_EliminarFiltro_Click(object sender, EventArgs e)
-        {
-            TXT_Buscar.Text = "";
-            //TXT_FechaCreacionDesde.Text = "1900-01-01";
-            //TXT_FechaCreacionHasta.Text = "1900-01-01";
-            //TXT_FechaPedidoDesde.Text = "1900-01-01";
-            //TXT_FechaPedidoHasta.Text = "1900-01-01";
-
-            #region Puntos Venta
-            foreach (ListItem l in LB_Sucursal.Items)
-            {
-                l.Selected = false;
-            }
-            #endregion
-
-            #region Plantas Produccion
-            foreach (ListItem l in LB_PlantaProduccion.Items)
-            {
-                l.Selected = false;
-            }
-            #endregion
-
-            #region Estado
-            foreach (ListItem l in LB_Estado.Items)
-            {
-                l.Selected = false;
-            }
-            #endregion
-
-            #region Usuarios
-            foreach (ListItem l in LB_Solicitante.Items)
-            {
-                l.Selected = false;
-            }
-            #endregion
-
-            cargarPedido("");
-        }
-
+         
         protected void BTN_CrearPedido_Click(object sender, EventArgs e)
         {
             DT.DT1.Clear();
@@ -391,6 +328,7 @@ namespace MCWebHogar.ControlPedidos
                 else
                 {
                     Session["IDPedido"] = Result.Rows[0][1].ToString().Trim();
+                    Session["NuevoPedido"] = Result.Rows[0][1].ToString().Trim();
                     Response.Redirect("DetallePedido.aspx", true);
                 }
             }
@@ -491,7 +429,7 @@ namespace MCWebHogar.ControlPedidos
                         }
                         else if (plantaProduccionID != DGV_ListaPedidos.DataKeys[row.RowIndex].Values[3].ToString().Trim()) 
                         {
-                            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptSeleccionarBTN_CrearOrdenes_Click", "alertifywarning('Debe seleccionar solo pedios para la misma planta de producción.');", true);
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptSeleccionarBTN_CrearOrdenes_Click", "alertifywarning('Debe seleccionar solo pedidos para la misma planta de producción.');", true);
                             return;
                         }
                         contador++;

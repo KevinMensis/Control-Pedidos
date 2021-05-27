@@ -38,8 +38,12 @@ namespace MCWebHogar.ControlPedidos
         }
         private void cargarDDLs()
         {
-            TXT_FechaDevolucionDesde.Text = "1900-01-01";
-            TXT_FechaDevolucionHasta.Text = "1900-01-01";
+            DateTime hoy = DateTime.Now.AddDays(-1);
+            string mes = hoy.Month < 10 ? "0" + Convert.ToString(hoy.Month) : Convert.ToString(hoy.Month);
+            string dia = hoy.Day < 10 ? "0" + Convert.ToString(hoy.Day) : Convert.ToString(hoy.Day);
+            TXT_FechaCreacionDesde.Text = Convert.ToString(hoy.Year) + "-" + mes + "-" + dia; // "1900-01-01";
+            // TXT_FechaDevolucionDesde.Text = "1900-01-01";
+            // TXT_FechaDevolucionHasta.Text = "1900-01-01";
 
             UpdatePanel_FiltrosDevoluciones.Update();
         }
@@ -52,22 +56,22 @@ namespace MCWebHogar.ControlPedidos
 
             #region Fechas
             string fechaDevolucionDesde = "1900-01-01";
-            string fechaDevolucionHasta = "1900-01-01";
+            // string fechaDevolucionHasta = "1900-01-01";
 
             try
             {
-                fechaDevolucionDesde = Convert.ToDateTime(TXT_FechaDevolucionDesde.Text).ToString();
-                fechaDevolucionHasta = Convert.ToDateTime(TXT_FechaDevolucionHasta.Text).ToString();
+                fechaDevolucionDesde = Convert.ToDateTime(TXT_FechaCreacionDesde.Text).ToString();
+                // fechaDevolucionHasta = Convert.ToDateTime(TXT_FechaDevolucionHasta.Text).ToString();
 
             }
             catch (Exception e)
             {
                 fechaDevolucionDesde = "1900-01-01";
-                fechaDevolucionHasta = "1900-01-01";
+                // fechaDevolucionHasta = "1900-01-01";
             }
 
             DT.DT1.Rows.Add("@fechaDevolucionDesde", fechaDevolucionDesde, SqlDbType.Date);
-            DT.DT1.Rows.Add("@fechaDevolucionHasta", fechaDevolucionHasta, SqlDbType.Date);
+            // DT.DT1.Rows.Add("@fechaDevolucionHasta", fechaDevolucionHasta, SqlDbType.Date);
             #endregion
 
             UpdatePanel_FiltrosDevoluciones.Update();
@@ -190,6 +194,7 @@ namespace MCWebHogar.ControlPedidos
                 else
                 {
                     Session["IDDevolucion"] = Result.Rows[0][1].ToString().Trim();
+                    Session["NuevaDevolucion"] = Result.Rows[0][1].ToString().Trim();
                     Response.Redirect("DetalleDevolucion.aspx", true);
                 }
             }

@@ -88,12 +88,6 @@
                         </a>
                     </li>
                     <li>
-                        <a href="Empaque.aspx">
-                            <i class="fas fa-box-open"></i>
-                            <p>Empaque</p>
-                        </a>
-                    </li>
-                    <li>
                         <a href="Despacho.aspx">
                             <i class="fas fa-truck"></i>
                             <p>Despacho</p>
@@ -103,6 +97,12 @@
                         <a href="PedidosRecibidos.aspx">
                             <i class="fas fa-check-double"></i>
                             <p>Pedidos recibidos</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Empaque.aspx">
+                            <i class="fas fa-box-open"></i>
+                            <p>Empaque</p>
                         </a>
                     </li>
                     <li>
@@ -169,14 +169,14 @@
                         <asp:UpdatePanel ID="UpdatePanel_CrearUsuario" runat="server" UpdateMode="Conditional">
                             <ContentTemplate>
                                 <div class="card-header py-3" style="text-align: right;">
-                                    <asp:Button ID="BTN_CrearUsuario" runat="server" Text="Crear nuevo usuario" CssClass="btn btn-secondary" OnClick="BTN_CrearUsuario_OnClick"></asp:Button>
+                                    
                                 </div>
                             </ContentTemplate>
                         </asp:UpdatePanel>
                         <div class="card-body">
                             <asp:UpdatePanel ID="UpdatePanel_FiltrosUsuarios" runat="server" UpdateMode="Conditional">
                                 <ContentTemplate>                           
-                                    <div class="input-group no-border">
+                                    <div class="input-group no-border col-md-3">
                                         <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar..." OnTextChanged="FiltrarUsuarios_OnClick" AutoPostBack="true"></asp:TextBox>
                                         <div class="input-group-append">
                                             <div class="input-group-text">
@@ -184,15 +184,16 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <asp:ListBox class="form-control" runat="server" ID="LB_Rol" SelectionMode="Multiple" OnTextChanged="FiltrarUsuarios_OnClick" AutoPostBack="true"></asp:ListBox>
-                                        </div>
+                                    <div class="col-md-3">
+                                        <asp:ListBox class="form-control" runat="server" ID="LB_Rol" SelectionMode="Multiple" OnTextChanged="FiltrarUsuarios_OnClick" AutoPostBack="true"></asp:ListBox>
+                                    </div>
+                                    <div class="input-group no-border col-md-6" style="text-align: right; display: inline-block;">
+                                        <asp:Button ID="BTN_CrearUsuario" style="margin: 0px;" runat="server" Text="Crear nuevo usuario" CssClass="btn btn-secondary" OnClick="BTN_CrearUsuario_OnClick"></asp:Button>                                        
                                     </div>
                                 </ContentTemplate>
                             </asp:UpdatePanel> 
-                            <div class="table-responsive">
-                                <asp:UpdatePanel ID="UpdatePanel_ListaUsuarios" runat="server" UpdateMode="Conditional">
+                            <div class="table">
+                                <asp:UpdatePanel ID="UpdatePanel_ListaUsuarios" runat="server" UpdateMode="Conditional" style="margin-top: 7rem;">
                                     <ContentTemplate>
                                         <asp:GridView ID="DGV_ListaUsuarios" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
                                             AutoGenerateColumns="False" DataKeyNames="IDUsuario,Activo,Usuario,RolID,Cargo" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
@@ -201,10 +202,10 @@
                                             OnRowCommand="DGV_ListaUsuarios_RowCommand"
                                             OnRowDataBound="DGV_ListaUsuarios_RowDataBound">
                                             <Columns>
-                                                <asp:BoundField DataField="Nombre" SortExpression="Nombre" HeaderText="Nombre" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                <asp:BoundField DataField="Usuario" SortExpression="Usuario" HeaderText="Usuario" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                <asp:BoundField DataField="DescripcionRol" SortExpression="DescripcionRol" HeaderText="Rol" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                <asp:BoundField DataField="Cargo" SortExpression="Cargo" HeaderText="Cargo" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                <asp:BoundField DataField="Nombre" SortExpression="Nombre" HeaderText="Nombre" ItemStyle-HorizontalAlign="Center" ItemStyle-ForeColor="black"></asp:BoundField>
+                                                <asp:BoundField DataField="Usuario" SortExpression="Usuario" HeaderText="Usuario" ItemStyle-HorizontalAlign="Center" ItemStyle-ForeColor="black"></asp:BoundField>
+                                                <asp:BoundField DataField="DescripcionRol" SortExpression="DescripcionRol" HeaderText="Rol" ItemStyle-HorizontalAlign="Center" ItemStyle-ForeColor="black"></asp:BoundField>
+                                                <asp:BoundField DataField="Cargo" SortExpression="Cargo" HeaderText="Cargo" ItemStyle-HorizontalAlign="Center" ItemStyle-ForeColor="black"></asp:BoundField>
                                                 <asp:TemplateField>
                                                     <HeaderTemplate>
                                                         <asp:Label ID="LBL_Acciones" runat="server" Text="Acciones"></asp:Label>

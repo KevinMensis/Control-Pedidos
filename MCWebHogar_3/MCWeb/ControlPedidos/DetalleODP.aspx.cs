@@ -5,6 +5,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -31,7 +32,8 @@ namespace MCWebHogar.ControlPedidos
                     }
                     else
                     {
-                        HDF_IDODP.Value = Session["IDODP"].ToString();                        
+                        HDF_IDODP.Value = Session["IDODP"].ToString();
+                        HDF_IDUsuario.Value = Session["Usuario"].ToString();
                         cargarDDLs();
                         cargarODP("");
                         cargarCategoriasODP();
@@ -696,45 +698,45 @@ namespace MCWebHogar.ControlPedidos
             }
         }
         
-        protected void TXT_Cantidad_OnTextChanged(object sender, EventArgs e)
-        {
-            GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
-            int index = gvRow.RowIndex;
-            TextBox cantidad = sender as TextBox;            
+        //protected void TXT_Cantidad_OnTextChanged(object sender, EventArgs e)
+        //{
+        //    GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
+        //    int index = gvRow.RowIndex;
+        //    TextBox cantidad = sender as TextBox;            
             
-            DropDownList ddlUnds = DGV_ListaProductosODP.Rows[index].FindControl("DDL_Unidades") as DropDownList;
-            DropDownList ddlDecs = DGV_ListaProductosODP.Rows[index].FindControl("DDL_Decenas") as DropDownList;
-            if (cantidad.Text != "")
-            {
-                decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
-                int unds = Convert.ToInt32(cantidadProducto) % 10;
-                int decs = Convert.ToInt32(cantidadProducto) / 10;
-                if (cantidadProducto >= 0 && cantidadProducto < 100)
-                {
-                    ddlUnds.SelectedValue = unds.ToString();
-                    ddlDecs.SelectedValue = decs.ToString();
-                    cantidad.Text = cantidadProducto.ToString();
-                    guardarProductoODP(index);
-                }
-                else
-                {
-                    unds = Convert.ToInt32(ddlUnds.SelectedValue);
-                    decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
-                    cantidadProducto = decs + unds;
-                    cantidad.Text = cantidadProducto.ToString();
-                }
-            }
-            else
-            {
-                cantidad.Text = "0";
-                ddlUnds.SelectedValue = "0";
-                ddlDecs.SelectedValue = "0";
-                guardarProductoODP(index);
-            }
-            UpdatePanel_ListaProductosODP.Update();
-            string script = "enterCantidad(" + index + ");";
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", script, true);
-        }
+        //    DropDownList ddlUnds = DGV_ListaProductosODP.Rows[index].FindControl("DDL_Unidades") as DropDownList;
+        //    DropDownList ddlDecs = DGV_ListaProductosODP.Rows[index].FindControl("DDL_Decenas") as DropDownList;
+        //    if (cantidad.Text != "")
+        //    {
+        //        decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
+        //        int unds = Convert.ToInt32(cantidadProducto) % 10;
+        //        int decs = Convert.ToInt32(cantidadProducto) / 10;
+        //        if (cantidadProducto >= 0 && cantidadProducto < 100)
+        //        {
+        //            ddlUnds.SelectedValue = unds.ToString();
+        //            ddlDecs.SelectedValue = decs.ToString();
+        //            cantidad.Text = cantidadProducto.ToString();
+        //            guardarProductoODP(index);
+        //        }
+        //        else
+        //        {
+        //            unds = Convert.ToInt32(ddlUnds.SelectedValue);
+        //            decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
+        //            cantidadProducto = decs + unds;
+        //            cantidad.Text = cantidadProducto.ToString();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        cantidad.Text = "0";
+        //        ddlUnds.SelectedValue = "0";
+        //        ddlDecs.SelectedValue = "0";
+        //        guardarProductoODP(index);
+        //    }
+        //    UpdatePanel_ListaProductosODP.Update();
+        //    string script = "enterCantidad(" + index + ");";
+        //    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", script, true);
+        //}
 
         protected void DDL_DecenasUnidades_OnSelectedIndexChanged(object sender, EventArgs e)
         {
@@ -777,6 +779,24 @@ namespace MCWebHogar.ControlPedidos
                     cargarODP("");
                 }
             }
+        }
+
+        [WebMethod()]
+        public static string guardarProductoODP(int idODPDetalle, int cantidadProducto, string usuario)
+        {
+            CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
+            DataTable Result = new DataTable();
+
+            DT.DT1.Clear();
+            DT.DT1.Rows.Add("@IDODPDetalle", idODPDetalle, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@CantidadProducida", cantidadProducto, SqlDbType.VarChar);
+
+            DT.DT1.Rows.Add("@Usuario", usuario, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "UpdateProducto", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP08_0001");
+
+            return "correct";
         }
         
         protected void BTN_ImprimirOrdenProduccion_Click(object sender, EventArgs e)

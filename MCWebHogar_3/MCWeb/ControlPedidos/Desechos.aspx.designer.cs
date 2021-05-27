@@ -40,15 +40,6 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.UpdatePanel UpdatePanel_FiltrosDesechos;
         
         /// <summary>
-        /// BTN_CrearDesechos control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BTN_CrearDesechos;
-        
-        /// <summary>
         /// TXT_Buscar control.
         /// </summary>
         /// <remarks>
@@ -58,22 +49,22 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.TextBox TXT_Buscar;
         
         /// <summary>
-        /// TXT_FechaDesechoDesde control.
+        /// TXT_FechaCreacionDesde control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_FechaDesechoDesde;
+        protected global::System.Web.UI.WebControls.TextBox TXT_FechaCreacionDesde;
         
         /// <summary>
-        /// TXT_FechaDesechoHasta control.
+        /// BTN_CrearDesechos control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_FechaDesechoHasta;
+        protected global::System.Web.UI.WebControls.Button BTN_CrearDesechos;
         
         /// <summary>
         /// UpdatePanel_ListaDesechos control.

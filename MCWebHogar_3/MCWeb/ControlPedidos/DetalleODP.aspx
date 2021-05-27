@@ -141,36 +141,74 @@
             });
         }
 
-        function enterClickAgregar(txtCantidad) {
+        function TXT_Cantidad_onKeyUp(txtCantidad, e) {
             var values = txtCantidad.id.split('_')
             var index = values.pop() * 1 + 1
-            var rows = $(<%= DGV_ListaProductosODP.ClientID %>)[0].rows.length - 1
-            var id = ''
-            if (index === rows) {
-                id = 'Content_DGV_ListaProductosODP_TXT_Cantidad_' + 0
-            } else {
-                id = 'Content_DGV_ListaProductosODP_TXT_Cantidad_' + index
+            if (e.keyCode === 13) {
+                var rows = $(<%= DGV_ListaProductosODP.ClientID %>)[0].rows.length - 1
+                var id = ''
+                if (index === rows) {
+                    id = 'Content_DGV_ListaProductosODP_TXT_Cantidad_' + 0
+                } else {
+                    id = 'Content_DGV_ListaProductosODP_TXT_Cantidad_' + index
+                }
+                document.getElementById(id).autofocus = true;
+                document.getElementById(id).focus();
+                document.getElementById(id).select();
             }
-            document.getElementById(id).autofocus = true;
-            document.getElementById(id).focus();
-            document.getElementById(id).select();
-            console.dir(document.getElementById(id))
-            return false;
         }
 
-        function enterCantidad(index) {
-            // var values = txtCantidad.id.split('_')
-            var index = index + 1
-            var rows = $(<%= DGV_ListaProductosODP.ClientID %>)[0].rows.length - 1
-            var id = ''
-            if (index === rows) {
-                id = 'Content_DGV_ListaProductosODP_TXT_Cantidad_' + 0
-            } else {
-                id = 'Content_DGV_ListaProductosODP_TXT_Cantidad_' + index
+        function TXT_Cantidad_onChange(txtCantidad) {
+            var values = txtCantidad.id.split('_')
+            var index = values.pop() * 1
+            var idUnidades = 'Content_DGV_ListaProductosODP_DDL_Unidades_' + index
+            var idDecenas = 'Content_DGV_ListaProductosODP_DDL_Decenas_' + index
+            var cantidadProducto = txtCantidad.value
+            if (cantidadProducto !== '') {
+                var unds = cantidadProducto % 10;
+                var decs = Math.trunc(cantidadProducto / 10);
+                if (cantidadProducto >= 0 && cantidadProducto < 100) {
+                    document.getElementById(idUnidades).value = unds;
+                    document.getElementById(idDecenas).value = decs;
+                    txtCantidad.value = cantidadProducto;
+                    guardarProductoODP(index, cantidadProducto);
+                } else {
+                    unds = document.getElementById(idUnidades).value * 1;
+                    decs = document.getElementById(idDecenas).value * 10;
+                    cantidadProducto = decs + unds;
+                    txtCantidad.value = cantidadProducto;
+                }
             }
-            document.getElementById(id).autofocus = true;
-            document.getElementById(id).focus();
-            document.getElementById(id).select();
+            else {
+                txtCantidad.value = '0';
+                document.getElementById(idUnidades).value = '0';
+                document.getElementById(idDecenas).value = '0';
+                guardarProductoODP(index, 0);
+            }
+        }
+
+        function guardarProductoODP(index, cantidad) {
+            var id = 'Content_DGV_ListaProductosODP_HDF_IDODPDetalle_' + index
+            var HDF_IDODPDetalle = document.getElementById(id)
+            var idODPDetalle = HDF_IDODPDetalle.value
+            var usuario = document.getElementById('Content_HDF_IDUsuario').value;
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "DetalleODP.aspx/guardarProductoODP",
+                data: JSON.stringify({
+                    "idODPDetalle": idODPDetalle,
+                    "cantidadProducto": cantidad,
+                    "usuario": usuario
+                }),
+                dataType: "json",
+                success: function (Result) {
+                    console.log(Result)
+                },
+                error: function (Result) {
+                    alert("ERROR " + Result.status + ' ' + Result.statusText);
+                }
+            })
         }
 
         function estilosElementosBloqueados() {
@@ -196,11 +234,11 @@
 
         $("[src*=plus]").live("click", function () {
             $(this).closest("tr").after("<tr><td></td><td colspan = '999'>" + $(this).next().html() + "</td></tr>")
-            $(this).attr("src", "./Assets/img/minus.png");
+            $(this).attr("src", "../Assets/img/minus.png");
         });
 
         $("[src*=minus]").live("click", function () {
-            $(this).attr("src", "./Assets/img/plus.png");
+            $(this).attr("src", "../Assets/img/plus.png");
             $(this).closest("tr").next().remove();
         });
 
@@ -235,6 +273,7 @@
         </span>
     </a>
     <div class="wrapper">
+        <asp:HiddenField ID="HDF_IDUsuario" runat="server" Value="0" Visible="true" />
         <asp:HiddenField ID="HDF_IDODP" runat="server" Value="0" Visible="false" />
         <asp:HiddenField ID="HDF_EstadoODP" runat="server" Value="" Visible="false" />     
         <asp:HiddenField ID="HDF_IDsPedidos" runat="server" Value="" Visible="false" />
@@ -261,12 +300,6 @@
                         </a>
                     </li>
                     <li>
-                        <a href="Empaque.aspx">
-                            <i class="fas fa-box-open"></i>
-                            <p>Empaque</p>
-                        </a>
-                    </li>
-                    <li>
                         <a href="Despacho.aspx">
                             <i class="fas fa-truck"></i>
                             <p>Despacho</p>
@@ -276,6 +309,12 @@
                         <a href="PedidosRecibidos.aspx">
                             <i class="fas fa-check-double"></i>
                             <p>Pedidos recibidos</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Empaque.aspx">
+                            <i class="fas fa-box-open"></i>
+                            <p>Empaque</p>
                         </a>
                     </li>
                     <li>
@@ -352,15 +391,15 @@
                                             <label for="TXT_TotalProductos">Total de productos</label>
                                             <asp:TextBox class="form-control" ID="TXT_TotalProductos" runat="server" TextMode="Number" Enabled="false"></asp:TextBox>
                                         </div>
-                                        <div class="form-group col-md-2">
-                                            <label for="TXT_CostoODP">Costo</label>
+                                        <div class="form-group col-md-2.5">
+                                            <label for="TXT_CostoODP">Monto orden producción</label>
                                             <asp:TextBox class="form-control" ID="TXT_CostoODP" runat="server" Enabled="false"></asp:TextBox>
                                         </div>
                                         <div class="form-group col-md-2">
                                             <label for="TXT_EstadoODP">Estado</label>
                                             <asp:TextBox class="form-control" ID="TXT_EstadoODP" runat="server" Enabled="false"></asp:TextBox>
                                         </div>
-                                        <div class="form-group col-md-3.5">
+                                        <div class="form-group col-md-3">
                                             <label for="TXT_FechaODP">Fecha y hora orden producción</label>
                                             <div class="form-row">
                                                 <div class="col-md-7">
@@ -448,7 +487,7 @@
                                                     <ItemTemplate>
                                                         <div class="row">
                                                             <asp:TextBox class="form-control" TextMode="Number" MaxLength="2" min="0" max="99" style="width: 40%" runat="server" ID="TXT_Cantidad" 
-                                                                OnTextChanged="TXT_Cantidad_OnTextChanged" AutoPostBack="true" onchange="enterClickAgregar(this);" Text='<%#Eval("CantidadProducida") %>' />                                                            
+                                                                onkeyup="TXT_Cantidad_onKeyUp(this, event);" onchange="TXT_Cantidad_onChange(this);" Text='<%#Eval("CantidadProducida") %>' />                                                            
                                                             <asp:DropDownList class="form-control" style="width: 30%" runat="server" ID="DDL_Decenas" 
                                                                 OnSelectedIndexChanged="DDL_DecenasUnidades_OnSelectedIndexChanged" AutoPostBack="true">
                                                                 <asp:ListItem Value="0">0</asp:ListItem>
@@ -474,7 +513,8 @@
                                                                 <asp:ListItem Value="7">7</asp:ListItem>
                                                                 <asp:ListItem Value="8">8</asp:ListItem>
                                                                 <asp:ListItem Value="9">9</asp:ListItem>
-                                                            </asp:DropDownList>                                                            
+                                                            </asp:DropDownList>    
+                                                            <asp:HiddenField ID="HDF_IDODPDetalle" runat="server" Value='<%# Eval("IDODPDetalle") %>' />                                                        
                                                         </div>
                                                     </ItemTemplate>
                                                     <ItemStyle HorizontalAlign="Center" />
@@ -548,7 +588,7 @@
                                                         <asp:Label ID="Lbl_VerDetalle" runat="server" Text="Acciones"></asp:Label>
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
-                                                        <asp:LinkButton ID="lnk_Imprimir" runat="server" class="btn btn-success" CommandName="imprimir" CommandArgument="<%# ((GridViewRow)Container).RowIndex %>">
+                                                        <asp:LinkButton ID="lnk_Imprimir" runat="server" class="btn btn-secondary" CommandName="imprimir" CommandArgument="<%# ((GridViewRow)Container).RowIndex %>">
                                                             <span>Imprimir</span>
                                                         </asp:LinkButton>
                                                     </ItemTemplate>
@@ -562,7 +602,7 @@
                         </div>
                         <div class="modal-footer">                            
                             <div style="text-align: right;">
-                                <asp:Button UseSubmitBehavior="false" ID="BTN_CerrarModalCrearPedido" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-secondary" />                                
+                                <asp:Button UseSubmitBehavior="false" ID="BTN_CerrarModalCrearPedido" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-primary" />                                
                             </div>
                         </div>
                     </div>

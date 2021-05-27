@@ -90,12 +90,6 @@
                         </a>
                     </li>
                     <li>
-                        <a href="Empaque.aspx">
-                            <i class="fas fa-box-open"></i>
-                            <p>Empaque</p>
-                        </a>
-                    </li>
-                    <li>
                         <a href="Despacho.aspx">
                             <i class="fas fa-truck"></i>
                             <p>Despacho</p>
@@ -105,6 +99,12 @@
                         <a href="PedidosRecibidos.aspx">
                             <i class="fas fa-check-double"></i>
                             <p>Pedidos recibidos</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Empaque.aspx">
+                            <i class="fas fa-box-open"></i>
+                            <p>Empaque</p>
                         </a>
                     </li>
                     <li>
@@ -168,17 +168,10 @@
                     <h1 class="h3 mb-2 text-gray-800">Mantenimiento productos</h1>
                     <br />
                     <div class="card shadow mb-4">
-                        <asp:UpdatePanel ID="UpdatePanel_CrearProducto" runat="server" UpdateMode="Conditional">
-                            <ContentTemplate>
-                                <div class="card-header py-3" style="text-align: right;">
-                                    <asp:Button ID="BTN_CrearProducto" runat="server" Text="Crear nuevo producto" CssClass="btn btn-secondary" OnClick="BTN_CrearProducto_OnClick"></asp:Button>
-                                </div>
-                            </ContentTemplate>
-                        </asp:UpdatePanel>
                         <div class="card-body">
                             <asp:UpdatePanel ID="UpdatePanel_FiltrosProductos" runat="server" UpdateMode="Conditional">
                                 <ContentTemplate>                           
-                                    <div class="input-group no-border">
+                                    <div class="input-group no-border col-md-3">
                                         <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar..." OnTextChanged="FiltrarProductos_OnClick" AutoPostBack="true"></asp:TextBox>
                                         <div class="input-group-append">
                                             <div class="input-group-text">
@@ -186,18 +179,16 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <asp:ListBox class="form-control" runat="server" ID="LB_Categoria" SelectionMode="Multiple" OnTextChanged="FiltrarProductos_OnClick" AutoPostBack="true"></asp:ListBox>
-                                        </div>
+                                    <div class="col-md-3">
+                                        <asp:ListBox class="form-control" runat="server" ID="LB_Categoria" SelectionMode="Multiple" OnTextChanged="FiltrarProductos_OnClick" AutoPostBack="true"></asp:ListBox>
                                     </div>
-                                    <div style="margin-top: 10px; margin-left: 10px;" class="row">
-                                        <asp:Label id="LBL_Filtro" runat="server" Text="Filtros: Ninguno;"></asp:Label>
+                                    <div class="input-group no-border col-md-6" style="text-align: right; display: inline-block;">
+                                        <asp:Button ID="BTN_CrearProducto" style="margin: 0px;" runat="server" Text="Crear nuevo producto" CssClass="btn btn-secondary" OnClick="BTN_CrearProducto_OnClick"></asp:Button>
                                     </div>
                                 </ContentTemplate>
                             </asp:UpdatePanel> 
-                            <div class="table-responsive">
-                                <asp:UpdatePanel ID="UpdatePanel_ListaProductos" runat="server" UpdateMode="Conditional">
+                            <div class="table">
+                                <asp:UpdatePanel ID="UpdatePanel_ListaProductos" runat="server" UpdateMode="Conditional" style="margin-top: 7rem;">
                                     <ContentTemplate>
                                         <asp:GridView ID="DGV_ListaProductos" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
                                             AutoGenerateColumns="False" DataKeyNames="IDProducto,Activo,IDCategoria,CodigoBarra,MedidaVenta,MedidaProduccion,UnidadMedida,EsEmpaque" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
@@ -206,11 +197,11 @@
                                             OnRowCommand="DGV_ListaProductos_RowCommand"
                                             OnRowDataBound="DGV_ListaProductos_RowDataBound">
                                             <Columns>
-                                                <asp:BoundField DataField="DescripcionProducto" SortExpression="DescripcionProducto" HeaderText="Descripción" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                <asp:BoundField DataField="DescripcionCategoria" SortExpression="DescripcionCategoria" HeaderText="Categoría" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                <asp:BoundField DataField="Costo" SortExpression="Costo" HeaderText="Costo" ItemStyle-HorizontalAlign="Center" DataFormatString="{0:n}"></asp:BoundField>
-                                                <asp:BoundField DataField="PrecioVenta" SortExpression="PrecioVenta" HeaderText="Precio al público" ItemStyle-HorizontalAlign="Center" DataFormatString="{0:n}"></asp:BoundField>
-                                                <asp:BoundField DataField="Estado" SortExpression="Estado" HeaderText="Estado" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                <asp:BoundField DataField="DescripcionProducto" SortExpression="DescripcionProducto" HeaderText="Descripción" ItemStyle-HorizontalAlign="Center" ItemStyle-ForeColor="black"></asp:BoundField>
+                                                <asp:BoundField DataField="DescripcionCategoria" SortExpression="DescripcionCategoria" HeaderText="Categoría" ItemStyle-HorizontalAlign="Center" ItemStyle-ForeColor="black"></asp:BoundField>
+                                                <asp:BoundField DataField="Costo" SortExpression="Costo" HeaderText="Costo" ItemStyle-HorizontalAlign="Center" DataFormatString="{0:n}" ItemStyle-ForeColor="black"></asp:BoundField>
+                                                <asp:BoundField DataField="PrecioVenta" SortExpression="PrecioVenta" HeaderText="Precio al público" ItemStyle-HorizontalAlign="Center" DataFormatString="{0:n}" ItemStyle-ForeColor="black"></asp:BoundField>
+                                                <asp:BoundField DataField="Estado" SortExpression="Estado" HeaderText="Estado" ItemStyle-HorizontalAlign="Center" ItemStyle-ForeColor="black"></asp:BoundField>
                                                 <asp:TemplateField>
                                                     <HeaderTemplate>
                                                         <asp:Label ID="LBL_Acciones" runat="server" Text="Acciones"></asp:Label>

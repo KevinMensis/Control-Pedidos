@@ -36,7 +36,7 @@
             document.getElementById('modalloading').style.display = 'none';
         }
 
-        function TXT_FechaDevolucionDesdeChange() {
+        <%--function TXT_FechaDevolucionDesdeChange() {
             var fechaDevolucionDesde = $(<%= TXT_FechaDevolucionDesde.ClientID %>)[0].value
             var fechaDevolucionHasta = $(<%= TXT_FechaDevolucionHasta.ClientID %>)[0].value
 
@@ -54,7 +54,7 @@
                 $(<%= TXT_FechaDevolucionDesde.ClientID %>)[0].value = fechaDevolucionHasta
             }
             return true
-        }
+        }--%>
     </script>
 </asp:Content>
 
@@ -88,12 +88,6 @@
                         </a>
                     </li>
                     <li>
-                        <a href="Empaque.aspx">
-                            <i class="fas fa-box-open"></i>
-                            <p>Empaque</p>
-                        </a>
-                    </li>
-                    <li>
                         <a href="Despacho.aspx">
                             <i class="fas fa-truck"></i>
                             <p>Despacho</p>
@@ -103,6 +97,12 @@
                         <a href="PedidosRecibidos.aspx">
                             <i class="fas fa-check-double"></i>
                             <p>Pedidos recibidos</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Empaque.aspx">
+                            <i class="fas fa-box-open"></i>
+                            <p>Empaque</p>
                         </a>
                     </li>
                     <li class="active">
@@ -173,13 +173,11 @@
                                             <div class="col-md-6">                                                                                            
                                             </div>
                                             <div class="col-md-6" style="text-align: right;">
-                                                <div class="card-header" style="text-align: right;">
-                                                    <asp:Button ID="BTN_CrearDevoluciones" runat="server" Text="Crear nueva devolución" CssClass="btn btn-secondary" OnClick="BTN_CrearDevoluciones_Click"></asp:Button>                                    
-                                                </div>
+                                                
                                             </div>
                                         </div>
                                         <div class="row">                         
-                                            <div class="input-group no-border col-md-6">
+                                            <div class="input-group no-border col-md-4">
                                                 <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar número devolución..." OnTextChanged="TXT_FiltrarDevoluciones_OnTextChanged" AutoPostBack="true"></asp:TextBox>
                                                 <div class="input-group-append">
                                                     <div class="input-group-text">
@@ -187,17 +185,17 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="input-group no-border col-md-3">     
-                                                <label for="TXT_FechaDevolucionDesde"> Fecha devolución desde:</label>                                          
-                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaDevolucionDesde" runat="server" TextMode="Date" onchange="TXT_FechaDevolucionDesdeChange();" OnTextChanged="TXT_FiltrarDevoluciones_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
+                                            <label style="margin-top: 1%;">Fecha desde:</label> 
+                                            <div class="input-group no-border col-md-2">                                               
+                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaCreacionDesde" runat="server" TextMode="Date" OnTextChanged="TXT_FiltrarDevoluciones_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
                                             </div>
-                                            <div class="input-group no-border col-md-3">
-                                                <label for="TXT_FechaDevolucionHasta"> Fecha devolución hasta:</label>
-                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaDevolucionHasta" runat="server" TextMode="Date" onchange="TXT_FechaDevolucionHastaChange();" OnTextChanged="TXT_FiltrarDevoluciones_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
+                                            <div class="input-group no-border col-md-4" style="text-align: right; display: inline-block;">
+                                                <asp:Button ID="BTN_CrearDevoluciones" style="margin: 0px;" runat="server" Text="Crear nueva devolución" CssClass="btn btn-secondary" OnClick="BTN_CrearDevoluciones_Click"></asp:Button>                                    
                                             </div>
                                         </div>
                                     </ContentTemplate>
                                 </asp:UpdatePanel>
+                                <br />
                                 <div class="table">
                                     <asp:UpdatePanel ID="UpdatePanel_ListaDevoluciones" runat="server" UpdateMode="Conditional">
                                         <ContentTemplate>
