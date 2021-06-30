@@ -39,7 +39,36 @@ namespace MCWebHogar.ControlPedidos
             }
             else
             {
-                
+                string opcion = Page.Request.Params["__EVENTTARGET"];
+                string argument = Page.Request.Params["__EVENTARGUMENT"];
+                if (opcion.Contains("DDL_ImpresorasLoad"))
+                {
+                    DataTable dt = new DataTable();
+                    dt.Clear();
+                    dt.Columns.Add("Text");
+                    dt.Columns.Add("Value");
+
+                    string printer = Session["Printer"].ToString().Trim();
+                    string[] nombresImpresoras = argument.Split(',');
+
+                    dt.Rows.Add("Seleccione", "Seleccione");
+
+                    foreach (string impresora in nombresImpresoras)
+                    {
+                        dt.Rows.Add(impresora, impresora);
+                    }
+
+                    DDL_Impresoras.DataSource = dt;
+                    DDL_Impresoras.DataTextField = "Text";
+                    DDL_Impresoras.DataValueField = "Value";
+                    DDL_Impresoras.DataBind();
+                    UpdatePanel_SeleccionarImpresora.Update();
+
+                    DDL_Impresoras.SelectedValue = printer;
+
+                    string script = "estilosElementosBloqueados();abrirModalSeleccionarImpresora();";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDDL_Impresoras", script, true);
+                }
             }
         }
 
@@ -80,6 +109,14 @@ namespace MCWebHogar.ControlPedidos
                 DDL_PuntoVenta.DataBind();
             }
         }
+
+        protected void DDL_Impresoras_OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            string printer = DDL_Impresoras.SelectedValue;
+            Session["Printer"] = printer;
+            string script = "estilosElementosBloqueados();cerrarModalSeleccionarImpresora();alertifysuccess('Se ha seleccionado la impresora: " + printer + "');";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDDL_Impresoras_OnSelectedIndexChanged", script, true);
+        }
         #endregion
 
         #region Recibido Pedido
@@ -113,6 +150,7 @@ namespace MCWebHogar.ControlPedidos
                         DDL_PuntoVenta.SelectedValue = dr["PuntoVentaID"].ToString().Trim();
 
                         HDF_EstadoRecibidoPedido.Value = dr["Estado"].ToString().Trim();
+                        HDF_PedidoID.Value = dr["NumeroPedido"].ToString().Trim();
 
                         BTN_ConfirmarRecibidoPedido.Visible = HDF_EstadoRecibidoPedido.Value == "Revisión";
                         BTN_ConfirmarRecibidoPedido.Text = "Confirmar  pedido recibido # " + dr["ConsecutivoRecibidio"].ToString().Trim();
@@ -175,14 +213,14 @@ namespace MCWebHogar.ControlPedidos
                 }
                 else
                 {
-                    string script = "";
+                    string script = "desactivarloading();";
                     cargarRecibidoPedido(script);
                     cargarProductosRecibidoPedido();
                 }
             }
             else
             {
-                string script = "";
+                string script = "desactivarloading();";
                 cargarRecibidoPedido(script);
             }
         }
@@ -268,6 +306,9 @@ namespace MCWebHogar.ControlPedidos
                     DGV_ListaProductosRecibidoPedido.DataSource = Result;
                     DGV_ListaProductosRecibidoPedido.DataBind();
                     UpdatePanel_ListaProductosRecibidoPedido.Update();
+                    DGV_DetallePedido.DataSource = Result;
+                    DGV_DetallePedido.DataBind();
+                    UpdatePanel_DetallePedido.Update();
                 }
             }
             else
@@ -275,6 +316,9 @@ namespace MCWebHogar.ControlPedidos
                 DGV_ListaProductosRecibidoPedido.DataSource = Result;
                 DGV_ListaProductosRecibidoPedido.DataBind();
                 UpdatePanel_ListaProductosRecibidoPedido.Update();
+                DGV_DetallePedido.DataSource = Result;
+                DGV_DetallePedido.DataBind();
+                UpdatePanel_DetallePedido.Update();
             }
         }
 
@@ -285,11 +329,14 @@ namespace MCWebHogar.ControlPedidos
                 TextBox cantidad = (TextBox)e.Row.FindControl("TXT_Cantidad");
                 DropDownList ddlUnds = (DropDownList)e.Row.FindControl("DDL_Unidades");
                 DropDownList ddlDecs = (DropDownList)e.Row.FindControl("DDL_Decenas");
+                DropDownList ddlCents = (DropDownList)e.Row.FindControl("DDL_Centenas");
                 decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
                 int unds = Convert.ToInt32(cantidadProducto) % 10;
-                int decs = Convert.ToInt32(cantidadProducto) / 10;
+                int decs = (Convert.ToInt32(cantidadProducto) / 10) % 10;
+                int cents = Convert.ToInt32(cantidadProducto) / 100;
                 ddlUnds.SelectedValue = unds.ToString();
                 ddlDecs.SelectedValue = decs.ToString();
+                ddlCents.SelectedValue = cents.ToString();
 
                 if (HDF_EstadoRecibidoPedido.Value != "Revisión")
                 {                    
@@ -299,6 +346,8 @@ namespace MCWebHogar.ControlPedidos
                     ddlUnds.CssClass = "form-control";
                     ddlDecs.Enabled = false;
                     ddlDecs.CssClass = "form-control";
+                    ddlCents.Enabled = false;
+                    ddlCents.CssClass = "form-control";
                 }
             }
         }
@@ -337,57 +386,6 @@ namespace MCWebHogar.ControlPedidos
             }
         }
         
-        //protected void TXT_Cantidad_OnTextChanged(object sender, EventArgs e)
-        //{
-        //    GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
-        //    int index = gvRow.RowIndex;
-        //    TextBox cantidad = sender as TextBox;            
-        //    DropDownList ddlUnds = DGV_ListaProductosRecibidoPedido.Rows[index].FindControl("DDL_Unidades") as DropDownList;
-        //    DropDownList ddlDecs = DGV_ListaProductosRecibidoPedido.Rows[index].FindControl("DDL_Decenas") as DropDownList;
-
-        //    if (cantidad.Text != "")
-        //    {
-        //        decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
-        //        int unds = Convert.ToInt32(cantidadProducto) % 10;
-        //        int decs = Convert.ToInt32(cantidadProducto) / 10;
-        //        if (cantidadProducto > 0 && cantidadProducto < 99)
-        //        {
-        //            ddlUnds.SelectedValue = unds.ToString();
-        //            ddlDecs.SelectedValue = decs.ToString();
-        //            cantidad.Text = cantidadProducto.ToString();
-        //        }
-        //        else
-        //        {
-        //            unds = Convert.ToInt32(ddlUnds.SelectedValue);
-        //            decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
-        //            cantidadProducto = decs + unds;
-        //            cantidad.Text = cantidadProducto.ToString();
-        //        }
-        //    }
-        //    else
-        //    {
-        //        cantidad.Text = "0";
-        //        ddlUnds.SelectedValue = "0";
-        //        ddlDecs.SelectedValue = "0";
-        //    }
-        //    UpdatePanel_ListaProductosRecibidoPedido.Update();
-        //    string script = "estilosElementosBloqueados();enterCantidad(" + index + ");";
-        //    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", script, true);
-        //}
-
-        //protected void DDL_DecenasUnidades_OnSelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
-        //    int index = gvRow.RowIndex;
-        //    DropDownList ddlUnds = DGV_ListaProductosRecibidoPedido.Rows[index].FindControl("DDL_Unidades") as DropDownList;
-        //    DropDownList ddlDecs = DGV_ListaProductosRecibidoPedido.Rows[index].FindControl("DDL_Decenas") as DropDownList;
-        //    TextBox cantidad = DGV_ListaProductosRecibidoPedido.Rows[index].FindControl("TXT_Cantidad") as TextBox;
-        //    int unds = Convert.ToInt32(ddlUnds.SelectedValue);
-        //    int decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
-        //    decimal cantidadProducto = decs + unds;
-        //    cantidad.Text = cantidadProducto.ToString();
-        //}
-
         protected void DGV_ListaProductosRecibidoPedido_Sorting(object sender, GridViewSortEventArgs e)
         {
             DT.DT1.Clear();
@@ -428,7 +426,25 @@ namespace MCWebHogar.ControlPedidos
                 DGV_ListaProductosRecibidoPedido.DataBind();
                 UpdatePanel_ListaProductosRecibidoPedido.Update();
             }
-        }        
+        }
+
+        protected void BTN_ImprimirPedidoRecibido_Click(object sender, EventArgs e)
+        {
+            cargarProductosRecibidoPedido();
+            string printer = Session["Printer"].ToString().Trim();
+            TXT_NombreImpresora.Text = printer;
+            UpdatePanel_ModalDetallePedido.Update();
+            string script = "abrirModalPedidoRecibido();estilosElementosBloqueados();";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_ImprimirOrdenProduccion_Click", script, true);
+        }
+
+        protected void BTN_ImprimirDetallePedido_Click(object sender, EventArgs e)
+        {
+            string sucursal = DDL_PuntoVenta.SelectedItem.Text;
+            string printer = TXT_NombreImpresora.Text.Trim();
+            string script = "estilosElementosBloqueados();imprimir('" + HDF_PedidoID.Value.ToString().Trim() +"', '" + sucursal + "', '" + printer + "');";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDGV_ListaCategorias_RowCommand", script, true);
+        }
         #endregion
         #endregion
     }

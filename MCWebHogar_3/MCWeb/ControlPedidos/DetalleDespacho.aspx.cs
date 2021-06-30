@@ -45,6 +45,34 @@ namespace MCWebHogar.ControlPedidos
                 {
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Buscar_OnTextChanged", "cargarFiltros();estilosElementosBloqueados();", true);
                 }
+                if (opcion.Contains("DDL_ImpresorasLoad"))
+                {
+                    DataTable dt = new DataTable();
+                    dt.Clear();
+                    dt.Columns.Add("Text");
+                    dt.Columns.Add("Value");
+
+                    string printer = Session["Printer"].ToString().Trim();
+                    string[] nombresImpresoras = argument.Split(',');
+
+                    dt.Rows.Add("Seleccione", "Seleccione");
+
+                    foreach (string impresora in nombresImpresoras)
+                    {
+                        dt.Rows.Add(impresora, impresora);
+                    }
+
+                    DDL_Impresoras.DataSource = dt;
+                    DDL_Impresoras.DataTextField = "Text";
+                    DDL_Impresoras.DataValueField = "Value";
+                    DDL_Impresoras.DataBind();
+                    UpdatePanel_SeleccionarImpresora.Update();
+
+                    DDL_Impresoras.SelectedValue = printer;
+
+                    string script = "estilosElementosBloqueados();abrirModalSeleccionarImpresora();";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDDL_Impresoras", script, true);
+                }
             }
         }
 
@@ -103,6 +131,14 @@ namespace MCWebHogar.ControlPedidos
                 LB_Pedido.DataValueField = "PedidoID";
                 LB_Pedido.DataBind();
             }
+        }
+        
+        protected void DDL_Impresoras_OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            string printer = DDL_Impresoras.SelectedValue;
+            Session["Printer"] = printer;
+            string script = "estilosElementosBloqueados();cerrarModalSeleccionarImpresora();alertifysuccess('Se ha seleccionado la impresora: " + printer + "');";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDDL_Impresoras_OnSelectedIndexChanged", script, true);
         }
         #endregion
 
@@ -378,39 +414,61 @@ namespace MCWebHogar.ControlPedidos
                 GridView DGV_ListaProductos = e.Row.FindControl("DGV_ListaProductos") as GridView;
                 DGV_ListaProductos.DataSource = Result;
                 DGV_ListaProductos.DataBind();
+
+                if (HDF_EstadoDespacho.Value == "Confirmado")
+                {
+                    DGV_ListaProductos.Enabled = false;
+                }
             }
         }
         
         protected void DGV_ListaPedidosDespacho_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            //if (e.CommandName != "Sort")
-            //{
-            //    int index = Convert.ToInt32(e.CommandArgument);
-                
-            //    TextBox cantidad = DGV_ListaProductosDespacho.Rows[index].FindControl("TXT_Cantidad") as TextBox;
-            //    decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
-            //    DropDownList ddlUnds = DGV_ListaProductosDespacho.Rows[index].FindControl("DDL_Unidades") as DropDownList;
-            //    DropDownList ddlDecs = DGV_ListaProductosDespacho.Rows[index].FindControl("DDL_Decenas") as DropDownList;
-            //    if (e.CommandName == "minus")
-            //    {
-            //        if (cantidadProducto > 0)
-            //        {
-            //            cantidadProducto--;
-            //        }
-            //    }
-            //    if (e.CommandName == "plus")
-            //    {
-            //        if (cantidadProducto < 99)
-            //        {
-            //            cantidadProducto++;
-            //        }
-            //    }
-            //    int unds = Convert.ToInt32(cantidadProducto) % 10;
-            //    int decs = Convert.ToInt32(cantidadProducto) / 10;
-            //    ddlUnds.SelectedValue = unds.ToString();
-            //    ddlDecs.SelectedValue = decs.ToString();
-            //    cantidad.Text = cantidadProducto.ToString();                
-            //}
+            if (e.CommandName == "Imprimir")
+            {
+                int index = Convert.ToInt32(e.CommandArgument);
+                int idPedido = Convert.ToInt32(DGV_ListaPedidosDespacho.DataKeys[index].Values[1].ToString());
+                HDF_Pedido.Value = DGV_ListaPedidosDespacho.DataKeys[index].Values[3].ToString();
+                HDF_PuntoVenta.Value = DGV_ListaPedidosDespacho.DataKeys[index].Values[4].ToString();
+                DT.DT1.Clear();
+                DT.DT1.Rows.Add("@DespachoID", HDF_IDDespacho.Value, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@PedidoID", idPedido, SqlDbType.VarChar);
+
+                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", "CargarProductosPedido", SqlDbType.VarChar);
+
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP11_0001");
+
+                int montoDespacho = 0;
+                if (Result.Rows.Count > 0)
+                {
+                    for (int i = 0; i < Result.Rows.Count; i++)
+                    {
+                        int cantidad = Convert.ToInt32(Result.Rows[i]["CantidadDespachada"].ToString());
+                        int precioUnitario = Convert.ToInt32(Result.Rows[i]["PrecioProducto"].ToString());
+                        montoDespacho += cantidad * precioUnitario;
+                    }
+                }
+                HDF_MontoDespacho.Value = string.Format("{0:n0}", montoDespacho);
+
+                DT.DT1.Clear();
+                DT.DT1.Rows.Add("@DespachoID", HDF_IDDespacho.Value, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@PedidoID", idPedido, SqlDbType.VarChar);
+
+                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", "CargarConsecutivosDespacho", SqlDbType.VarChar);
+
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP11_0001");
+                DGV_ConsecutivoDespacho.DataSource = Result;
+                DGV_ConsecutivoDespacho.DataBind();
+
+                string printer = Session["Printer"].ToString().Trim();
+                TXT_NombreImpresora.Text = printer;
+                UpdatePanel_DetallePedido.Update();
+                UpdatePanel_ModalDetallePedido.Update();
+                string script = "abrirModalDetallePedido();estilosElementosBloqueados();cargarFiltros();";
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_ImprimirDetallePedido_Click", script, true);
+            }
         }
        
         protected void DGV_ListaPedidosDespacho_Sorting(object sender, GridViewSortEventArgs e)
@@ -454,57 +512,46 @@ namespace MCWebHogar.ControlPedidos
                 UpdatePanel_ListaPedidosDespacho.Update();
             }
         }
-        
-        //protected void TXT_Cantidad_OnTextChanged(object sender, EventArgs e)
-        //{
-        //    GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
-        //    int index = gvRow.RowIndex;
-        //    TextBox cantidad = sender as TextBox;            
-            
-        //    DropDownList ddlUnds = DGV_ListaProductosDespacho.Rows[index].FindControl("DDL_Unidades") as DropDownList;
-        //    DropDownList ddlDecs = DGV_ListaProductosDespacho.Rows[index].FindControl("DDL_Decenas") as DropDownList;
-        //    if (cantidad.Text != "")
-        //    {
-        //        decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
-        //        int unds = Convert.ToInt32(cantidadProducto) % 10;
-        //        int decs = Convert.ToInt32(cantidadProducto) / 10;
-        //        if (cantidadProducto > 0 && cantidadProducto < 99)
-        //        {
-        //            ddlUnds.SelectedValue = unds.ToString();
-        //            ddlDecs.SelectedValue = decs.ToString();
-        //            cantidad.Text = cantidadProducto.ToString();
-        //        }
-        //        else
-        //        {
-        //            unds = Convert.ToInt32(ddlUnds.SelectedValue);
-        //            decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
-        //            cantidadProducto = decs + unds;
-        //            cantidad.Text = cantidadProducto.ToString();
-        //        }
-        //    }
-        //    else
-        //    {
-        //        cantidad.Text = "0";
-        //        ddlUnds.SelectedValue = "0";
-        //        ddlDecs.SelectedValue = "0";
-        //    }
-        //    UpdatePanel_ListaProductosDespacho.Update();
-        //    string script = "estilosElementosBloqueados();cargarFiltros();enterCantidad(" + index + ");";
-        //    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", script, true);
-        //}
 
-        //protected void DDL_DecenasUnidades_OnSelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
-        //    int index = gvRow.RowIndex;
-        //    DropDownList ddlUnds = DGV_ListaProductosDespacho.Rows[index].FindControl("DDL_Unidades") as DropDownList;
-        //    DropDownList ddlDecs = DGV_ListaProductosDespacho.Rows[index].FindControl("DDL_Decenas") as DropDownList;
-        //    TextBox cantidad = DGV_ListaProductosDespacho.Rows[index].FindControl("TXT_Cantidad") as TextBox;
-        //    int unds = Convert.ToInt32(ddlUnds.SelectedValue);
-        //    int decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
-        //    decimal cantidadProducto = decs + unds;
-        //    cantidad.Text = cantidadProducto.ToString();
-        //}                
+        protected void DGV_ConsecutivoDespacho_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                int consecutivo = Convert.ToInt32(DGV_ConsecutivoDespacho.DataKeys[e.Row.RowIndex].Values[0].ToString());
+                int idDespacho = Convert.ToInt32(DGV_ConsecutivoDespacho.DataKeys[e.Row.RowIndex].Values[1].ToString());
+                int idPedido = Convert.ToInt32(DGV_ConsecutivoDespacho.DataKeys[e.Row.RowIndex].Values[2].ToString());
+                DT.DT1.Clear();
+                DT.DT1.Rows.Add("@Consecutivo", consecutivo, SqlDbType.Int);
+                DT.DT1.Rows.Add("@DespachoID", idDespacho, SqlDbType.Int);
+                DT.DT1.Rows.Add("@PedidoID", idPedido, SqlDbType.Int);
+
+                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", "CargarProductosConsecutivo", SqlDbType.VarChar);
+
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP11_0001");
+                GridView DGV_ListaProductos = e.Row.FindControl("DGV_ListaProductos") as GridView;
+                DGV_ListaProductos.DataSource = Result;
+                DGV_ListaProductos.DataBind();
+            }
+        }
+
+        protected void DGV_ConsecutivoDespacho_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName != "Sort")
+            {
+                int index = Convert.ToInt32(e.CommandArgument);
+                if (e.CommandName == "imprimir")
+                {
+                    string sucursal = HDF_PuntoVenta.Value;
+                    string pedido = HDF_Pedido.Value;
+                    decimal monto = Convert.ToDecimal(DGV_ConsecutivoDespacho.DataKeys[index].Values[3].ToString().Trim());
+                    string montoDespacho = string.Format("{0:n0}", monto);
+                    string printer = TXT_NombreImpresora.Text.Trim();
+                    string script = "estilosElementosBloqueados();imprimir('" + montoDespacho + "', '" + sucursal + "', '" + pedido + "', " + index + ", '" + printer + "');";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDGV_ConsecutivoDespacho_RowCommand", script, true);
+                }
+            }
+        }
         #endregion
         #endregion
     }

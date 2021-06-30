@@ -169,13 +169,6 @@
                             <div class="card-body">
                                 <asp:UpdatePanel ID="UpdatePanel_FiltrosDevoluciones" runat="server" UpdateMode="Conditional">
                                     <ContentTemplate> 
-                                        <div class="row">
-                                            <div class="col-md-6">                                                                                            
-                                            </div>
-                                            <div class="col-md-6" style="text-align: right;">
-                                                
-                                            </div>
-                                        </div>
                                         <div class="row">                         
                                             <div class="input-group no-border col-md-4">
                                                 <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar número devolución..." OnTextChanged="TXT_FiltrarDevoluciones_OnTextChanged" AutoPostBack="true"></asp:TextBox>

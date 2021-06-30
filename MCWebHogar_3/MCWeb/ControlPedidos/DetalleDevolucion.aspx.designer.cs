@@ -193,6 +193,15 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.TextBox TXT_Buscar;
         
         /// <summary>
+        /// LB_PuntoVenta control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListBox LB_PuntoVenta;
+        
+        /// <summary>
         /// UpdatePanel_ListaProductosDevolucion control.
         /// </summary>
         /// <remarks>

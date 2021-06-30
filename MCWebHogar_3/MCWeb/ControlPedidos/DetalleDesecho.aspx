@@ -69,20 +69,24 @@
             var index = values.pop() * 1
             var idUnidades = 'Content_DGV_ListaProductosDesecho_DDL_Unidades_' + index
             var idDecenas = 'Content_DGV_ListaProductosDesecho_DDL_Decenas_' + index
+            var idCentenas = 'Content_DGV_ListaProductosDesecho_DDL_Centenas_' + index
             var cantidadProducto = txtCantidad.value
             if (cantidadProducto !== '') {
                 var unds = cantidadProducto % 10;
-                var decs = Math.trunc(cantidadProducto / 10);
-                if (cantidadProducto >= 0 && cantidadProducto < 100) {
+                var decs = Math.trunc(cantidadProducto / 10) % 10;
+                var cents = Math.trunc(cantidadProducto / 100);
+                if (cantidadProducto >= 0 && cantidadProducto < 1000) {
                     document.getElementById(idUnidades).value = unds;
                     document.getElementById(idDecenas).value = decs;
+                    document.getElementById(idCentenas).value = cents;
                     txtCantidad.value = cantidadProducto;
                     guardarCantidadProductoDesecho(index, cantidadProducto);
                 }
                 else {
                     unds = document.getElementById(idUnidades).value * 1;
                     decs = document.getElementById(idDecenas).value * 10;
-                    cantidadProducto = decs + unds;
+                    cents = document.getElementById(idCentenas).value * 100;
+                    cantidadProducto = cents + decs + unds;
                     txtCantidad.value = cantidadProducto;
                 }
             }
@@ -90,6 +94,7 @@
                 txtCantidad.value = '0';
                 document.getElementById(idUnidades).value = '0';
                 document.getElementById(idDecenas).value = '0';
+                document.getElementById(idCentenas).value = '0';
                 guardarCantidadProductoDesecho(index, 0);
             }
         }
@@ -148,11 +153,12 @@
             if (cantidadProducto === '' || cantidadProducto === 0 || cantidadProducto === '0') {
                 txtCantidad.value = 0
             } else {
-                if (cantidadProducto < 0 || cantidadProducto > 99) {
+                if (cantidadProducto < 0 || cantidadProducto > 999) {
                     cantidadProducto = 0
+                    txtCantidad.value = 0
                 }
             }
-            if (cantidadProducto >= 0 && cantidadProducto < 100) {
+            if (cantidadProducto >= 0 && cantidadProducto < 1000) {
                 productosAgregar.set(idProducto, cantidadProducto)
                 CHK_Producto.checked = true;
             }
@@ -188,7 +194,6 @@
 
             for (i = 0, rowLen = tbody.rows.length - 1; i < rowLen; i++) {
                 var id = 'Content_DGV_ListaProductosSinAgregar_HDF_IDProducto_' + i
-
                 var HDF_IDProducto = document.getElementById(id)
                 var idProducto = HDF_IDProducto.value
                 productosAgregar.forEach(function (valor, clave) {
@@ -221,6 +226,7 @@
                             url: "DetalleDesecho.aspx/BTN_Agregar_Click",
                             data: JSON.stringify({
                                 "idDesecho": idDesecho,
+                                "idPuntoVenta": idPuntoVenta,
                                 "idProducto": clave,
                                 "idUsuario": idUsuario,
                                 "cantidadProducto": valor,
@@ -273,6 +279,7 @@
 
         function cargarFiltros() {
             $(<%= LB_Categoria.ClientID %>).SumoSelect({ selectAll: true, placeholder: 'Categoria' })
+            $(<%= LB_PuntoVenta.ClientID %>).SumoSelect({ selectAll: true, placeholder: 'Punto venta' })
         }
 
         $(document).ready(function () {
@@ -463,6 +470,9 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="input-group no-border col-md-3">     
+                                            <asp:ListBox class="form-control" runat="server" ID="LB_PuntoVenta" SelectionMode="Multiple" OnTextChanged="TXT_Buscar_OnTextChanged" AutoPostBack="true"></asp:ListBox>
+                                        </div>
                                     </ContentTemplate>
                                 </asp:UpdatePanel>
                             </div>
@@ -487,9 +497,9 @@
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
                                                         <div class="row">
-                                                            <asp:TextBox class="form-control" TextMode="Number" MaxLength="2" min="0" max="99" style="width: 40%" runat="server" ID="TXT_Cantidad" 
+                                                            <asp:TextBox class="form-control" TextMode="Number" MaxLength="2" min="0" max="999" style="width: 30%" runat="server" ID="TXT_Cantidad" 
                                                                 onkeyup="TXT_Cantidad_onKeyUp(this,event);" onchange="TXT_Cantidad_onChange(this);" Text='<%#Eval("CantidadDesecho") %>' />                                                            
-                                                            <asp:DropDownList class="form-control" style="width: 30%" runat="server" ID="DDL_Decenas" 
+                                                            <asp:DropDownList class="form-control" style="width: 20%" runat="server" ID="DDL_Centenas" 
                                                                 OnSelectedIndexChanged="DDL_DecenasUnidades_OnSelectedIndexChanged" AutoPostBack="true">
                                                                 <asp:ListItem Value="0">0</asp:ListItem>
                                                                 <asp:ListItem Value="1">1</asp:ListItem>
@@ -502,7 +512,20 @@
                                                                 <asp:ListItem Value="8">8</asp:ListItem>
                                                                 <asp:ListItem Value="9">9</asp:ListItem>
                                                             </asp:DropDownList>
-                                                            <asp:DropDownList class="form-control" style="width: 30%" runat="server" ID="DDL_Unidades"
+                                                            <asp:DropDownList class="form-control" style="width: 25%" runat="server" ID="DDL_Decenas" 
+                                                                OnSelectedIndexChanged="DDL_DecenasUnidades_OnSelectedIndexChanged" AutoPostBack="true">
+                                                                <asp:ListItem Value="0">0</asp:ListItem>
+                                                                <asp:ListItem Value="1">1</asp:ListItem>
+                                                                <asp:ListItem Value="2">2</asp:ListItem>
+                                                                <asp:ListItem Value="3">3</asp:ListItem>
+                                                                <asp:ListItem Value="4">4</asp:ListItem>
+                                                                <asp:ListItem Value="5">5</asp:ListItem>
+                                                                <asp:ListItem Value="6">6</asp:ListItem>
+                                                                <asp:ListItem Value="7">7</asp:ListItem>
+                                                                <asp:ListItem Value="8">8</asp:ListItem>
+                                                                <asp:ListItem Value="9">9</asp:ListItem>
+                                                            </asp:DropDownList>
+                                                            <asp:DropDownList class="form-control" style="width: 25%" runat="server" ID="DDL_Unidades"
                                                                 OnSelectedIndexChanged="DDL_DecenasUnidades_OnSelectedIndexChanged" AutoPostBack="true">
                                                                 <asp:ListItem Value="0">0</asp:ListItem>
                                                                 <asp:ListItem Value="1">1</asp:ListItem>

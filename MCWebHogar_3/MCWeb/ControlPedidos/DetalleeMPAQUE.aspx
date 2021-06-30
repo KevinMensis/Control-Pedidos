@@ -69,20 +69,24 @@
             var index = values.pop() * 1
             var idUnidades = 'Content_DGV_ListaProductosEmpaque_DDL_Unidades_' + index
             var idDecenas = 'Content_DGV_ListaProductosEmpaque_DDL_Decenas_' + index
+            var idCentenas = 'Content_DGV_ListaProductosEmpaque_DDL_Centenas_' + index
             var cantidadProducto = txtCantidad.value
             if (cantidadProducto !== '') {
                 var unds = cantidadProducto % 10;
-                var decs = Math.trunc(cantidadProducto / 10);
-                if (cantidadProducto >= 0 && cantidadProducto < 100) {
+                var decs = Math.trunc(cantidadProducto / 10) % 10;
+                var cents = Math.trunc(cantidadProducto / 100);
+                if (cantidadProducto >= 0 && cantidadProducto < 1000) {
                     document.getElementById(idUnidades).value = unds;
                     document.getElementById(idDecenas).value = decs;
+                    document.getElementById(idCentenas).value = cents;
                     txtCantidad.value = cantidadProducto;
                     guardarCantidadProductoEmpaque(index, cantidadProducto);
                 }
                 else {
                     unds = document.getElementById(idUnidades).value * 1;
                     decs = document.getElementById(idDecenas).value * 10;
-                    cantidadProducto = decs + unds;
+                    cents = document.getElementById(idCentenas).value * 100;
+                    cantidadProducto = cents + decs + unds;
                     txtCantidad.value = cantidadProducto;
                 }
             }
@@ -90,6 +94,7 @@
                 txtCantidad.value = '0';
                 document.getElementById(idUnidades).value = '0';
                 document.getElementById(idDecenas).value = '0';
+                document.getElementById(idCentenas).value = '0';
                 guardarCantidadProductoEmpaque(index, 0);
             }
         }
@@ -148,11 +153,12 @@
             if (cantidadProducto === '' || cantidadProducto === 0 || cantidadProducto === '0') {
                 txtCantidad.value = 0
             } else {
-                if (cantidadProducto < 0 || cantidadProducto > 99) {
+                if (cantidadProducto < 0 || cantidadProducto > 999) {
                     cantidadProducto = 0
+                    txtCantidad.value = 0
                 }
             }
-            if (cantidadProducto >= 0 && cantidadProducto < 100) {
+            if (cantidadProducto >= 0 && cantidadProducto < 1000) {
                 productosAgregar.set(idProducto, cantidadProducto)
                 CHK_Producto.checked = true;
             }
@@ -479,9 +485,9 @@
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
                                                         <div class="row">
-                                                            <asp:TextBox class="form-control" TextMode="Number" MaxLength="2" min="0" max="99" style="width: 40%" runat="server" ID="TXT_Cantidad" 
+                                                            <asp:TextBox class="form-control" TextMode="Number" MaxLength="2" min="0" max="999" style="width: 30%" runat="server" ID="TXT_Cantidad" 
                                                                 onkeyup="TXT_Cantidad_onKeyUp(this,event);" onchange="TXT_Cantidad_onChange(this);" Text='<%#Eval("CantidadEmpaque") %>' />                                                            
-                                                            <asp:DropDownList class="form-control" style="width: 30%" runat="server" ID="DDL_Decenas" 
+                                                            <asp:DropDownList class="form-control" style="width: 20%" runat="server" ID="DDL_Centenas" 
                                                                 OnSelectedIndexChanged="DDL_DecenasUnidades_OnSelectedIndexChanged" AutoPostBack="true">
                                                                 <asp:ListItem Value="0">0</asp:ListItem>
                                                                 <asp:ListItem Value="1">1</asp:ListItem>
@@ -494,7 +500,20 @@
                                                                 <asp:ListItem Value="8">8</asp:ListItem>
                                                                 <asp:ListItem Value="9">9</asp:ListItem>
                                                             </asp:DropDownList>
-                                                            <asp:DropDownList class="form-control" style="width: 30%" runat="server" ID="DDL_Unidades"
+                                                            <asp:DropDownList class="form-control" style="width: 25%" runat="server" ID="DDL_Decenas" 
+                                                                OnSelectedIndexChanged="DDL_DecenasUnidades_OnSelectedIndexChanged" AutoPostBack="true">
+                                                                <asp:ListItem Value="0">0</asp:ListItem>
+                                                                <asp:ListItem Value="1">1</asp:ListItem>
+                                                                <asp:ListItem Value="2">2</asp:ListItem>
+                                                                <asp:ListItem Value="3">3</asp:ListItem>
+                                                                <asp:ListItem Value="4">4</asp:ListItem>
+                                                                <asp:ListItem Value="5">5</asp:ListItem>
+                                                                <asp:ListItem Value="6">6</asp:ListItem>
+                                                                <asp:ListItem Value="7">7</asp:ListItem>
+                                                                <asp:ListItem Value="8">8</asp:ListItem>
+                                                                <asp:ListItem Value="9">9</asp:ListItem>
+                                                            </asp:DropDownList>
+                                                            <asp:DropDownList class="form-control" style="width: 25%" runat="server" ID="DDL_Unidades"
                                                                 OnSelectedIndexChanged="DDL_DecenasUnidades_OnSelectedIndexChanged" AutoPostBack="true">
                                                                 <asp:ListItem Value="0">0</asp:ListItem>
                                                                 <asp:ListItem Value="1">1</asp:ListItem>
@@ -580,7 +599,7 @@
                                                         <asp:Label ID="LBL_Cantidad" runat="server" Text="Cantidad"></asp:Label>
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
-                                                        <asp:TextBox class="form-control" TextMode="Number" MaxLength="0" min="0" max="99" style="width: 100%" runat="server" ID="TXT_CantidadAgregar" 
+                                                        <asp:TextBox class="form-control" TextMode="Number" MaxLength="0" min="0" max="999" style="width: 100%" runat="server" ID="TXT_CantidadAgregar" 
                                                            onkeyup="TXT_CantidadAgregar_onKeyUp(this,event);" onchange="TXT_CantidadAgregar_onChange(this)" Text='0' />
                                                     </ItemTemplate>
                                                     <ItemStyle HorizontalAlign="Center" />                                                    

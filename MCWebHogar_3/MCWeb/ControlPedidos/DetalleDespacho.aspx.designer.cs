@@ -211,6 +211,33 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.UpdatePanel UpdatePanel_ListaPedidosDespacho;
         
         /// <summary>
+        /// HDF_Pedido control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField HDF_Pedido;
+        
+        /// <summary>
+        /// HDF_PuntoVenta control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField HDF_PuntoVenta;
+        
+        /// <summary>
+        /// HDF_MontoDespacho control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField HDF_MontoDespacho;
+        
+        /// <summary>
         /// DGV_ListaPedidosDespacho control.
         /// </summary>
         /// <remarks>
@@ -218,5 +245,86 @@ namespace MCWebHogar.ControlPedidos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView DGV_ListaPedidosDespacho;
+        
+        /// <summary>
+        /// UpdatePanel_SeleccionarImpresora control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_SeleccionarImpresora;
+        
+        /// <summary>
+        /// UpdatePanel1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
+        
+        /// <summary>
+        /// DDL_Impresoras control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DDL_Impresoras;
+        
+        /// <summary>
+        /// BTN_CerrarModalSeleccionarImpresora control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_CerrarModalSeleccionarImpresora;
+        
+        /// <summary>
+        /// UpdatePanel_ModalDetallePedido control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_ModalDetallePedido;
+        
+        /// <summary>
+        /// TXT_NombreImpresora control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TXT_NombreImpresora;
+        
+        /// <summary>
+        /// UpdatePanel_DetallePedido control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_DetallePedido;
+        
+        /// <summary>
+        /// DGV_ConsecutivoDespacho control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView DGV_ConsecutivoDespacho;
+        
+        /// <summary>
+        /// BTN_CerrarModalDetallePedido control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_CerrarModalDetallePedido;
     }
 }

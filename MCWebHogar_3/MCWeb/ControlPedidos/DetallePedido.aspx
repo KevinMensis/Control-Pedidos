@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DetallePedido.aspx.cs" MasterPageFile="~/MenuPrincipal.Master" Inherits="MCWebHogar.ControlPedidos.DetallePedido" %>
+﻿    <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DetallePedido.aspx.cs" MasterPageFile="~/MenuPrincipal.Master" Inherits="MCWebHogar.ControlPedidos.DetallePedido" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajax" %>
 
@@ -42,6 +42,14 @@
         function activarloading() {
             var value = $(<%= DDL_Reportes.ClientID %>)[0].value
             if (value !== 2 && value !== '2') {
+                document.getElementById('fade2').style.display = 'block';
+                document.getElementById('modalloading').style.display = 'block';
+            }
+        }
+
+        function activarloadingReporte() {
+            var value = $(<%= DDL_Reportes.ClientID %>)[0].value
+            if (value === 1 || value === '1') {
                 document.getElementById('fade2').style.display = 'block';
                 document.getElementById('modalloading').style.display = 'block';
             }
@@ -116,15 +124,18 @@
             var index = values.pop() * 1
             var idUnidades = 'Content_DGV_ListaProductos_DDL_Unidades_' + index
             var idDecenas = 'Content_DGV_ListaProductos_DDL_Decenas_' + index
+            var idCentenas = 'Content_DGV_ListaProductos_DDL_Centenas_' + index
             var cantidadProducto = txtCantidad.value
             if (cantidadProducto !== '')
             {               
                 var unds = cantidadProducto % 10;
-                var decs = Math.trunc(cantidadProducto / 10);
-                if (cantidadProducto >= 0 && cantidadProducto < 100)
+                var decs = Math.trunc(cantidadProducto / 10) % 10;
+                var cents = Math.trunc(cantidadProducto / 100);
+                if (cantidadProducto >= 0 && cantidadProducto < 1000)
                 {
                     document.getElementById(idUnidades).value = unds;
                     document.getElementById(idDecenas).value = decs;
+                    document.getElementById(idCentenas).value = cents;
                     txtCantidad.value = cantidadProducto;
                     guardarCantidadProductoPedido(index, cantidadProducto);
                 }
@@ -132,7 +143,8 @@
                 {
                     unds = document.getElementById(idUnidades).value * 1;
                     decs = document.getElementById(idDecenas).value * 10;
-                    cantidadProducto = decs + unds;
+                    cents = document.getElementById(idCentenas).value * 100;
+                    cantidadProducto = cents + decs + unds;
                     txtCantidad.value = cantidadProducto;
                 }
             }
@@ -141,6 +153,7 @@
                 txtCantidad.value = '0';
                 document.getElementById(idUnidades).value = '0';
                 document.getElementById(idDecenas).value = '0';
+                document.getElementById(idCentenas).value = '0';
                 guardarCantidadProductoPedido(index, 0);
             }
         }
@@ -195,15 +208,16 @@
             var HDF_IDProducto = document.getElementById(id)
             var idProducto = HDF_IDProducto.value
             var cantidadProducto = txtCantidad.value * 1
-            
+           
             if (cantidadProducto === '' || cantidadProducto === 0 || cantidadProducto === '0') {
                 txtCantidad.value = 0
             } else {
-                if (cantidadProducto < 0 || cantidadProducto > 99) {
+                if (cantidadProducto < 0 || cantidadProducto > 999) {
                     cantidadProducto = 0
+                    txtCantidad.value = 0
                 }
             }
-            if (cantidadProducto >= 0 && cantidadProducto < 100)
+            if (cantidadProducto >= 0 && cantidadProducto < 1000)
             {
                 productosAgregar.set(idProducto, cantidadProducto)
                 CHK_Producto.checked = true;
@@ -294,7 +308,6 @@
                     alertifywarning('Por favor, seleccione al menos un producto para agregar al pedido.');
                     cargarFiltros();
                     desactivarloading();
-                    console.log(123)
                 }
             });
             
@@ -317,40 +330,42 @@
                     }
                 }
             }
-            imprimir2(estado, codigoPedido, sucursal, plantaProduccion, printer, categorias, 0);
+            imprimir2(estado, codigoPedido, sucursal, plantaProduccion, printer, categorias, 0, 31);            
         }
 
-        function imprimir2(estado, codigoPedido, sucursal, plantaProduccion, printer, categorias, index) {
-            if (index < categorias.length) {
-                var listaProductos = 'Content_DGV_DetallePedido';
-                var table, tbody, i, rowLen, row, j, colLen, cell, resultHTML;
+        function imprimir2(estado, codigoPedido, sucursal, plantaProduccion, printer, categorias, index, indexFin) {
+            var listaProductos = 'Content_DGV_DetallePedido';
+            var table, tbody, i, rowLen, row, j, colLen, cell, resultHTML;
 
-                resultHTML = '<tbody><tr class="table" align="center" style="border-color:#51CBCE;">'
+            resultHTML = '<tbody><tr class="table" align="center" style="border-color:#51CBCE;">'
 
-                table = document.getElementById(listaProductos);
-                tbody = table.tBodies[0];
+            table = document.getElementById(listaProductos);
+            tbody = table.tBodies[0];
+            var pag = index / 30 + 1
+            var totalPags = Math.trunc(tbody.rows.length / 30)
+            totalPags += 0 < tbody.rows.length % 30 ? 1 : 0
 
-                for (i = 0, rowLen = tbody.rows.length; i < rowLen; i++) {
-                    row = tbody.rows[i];
-                    for (j = 0, colLen = row.cells.length; j < colLen; j++) {
-                        cell = row.cells[j];
-                        if (categorias[index] === row.cells[0].innerHTML || i === 0){
+            if (index < tbody.rows.length) {
+                for (i = index, rowLen = tbody.rows.length; i < rowLen; i++) {
+                    if (i < indexFin) {
+                        row = tbody.rows[i];
+                        for (j = 0, colLen = row.cells.length; j < colLen; j++) {
+                            cell = row.cells[j];
                             if (i == 0) {
-                                if (j == 2 || j == 3) {
+                                if (j == 1 || j == 2) {
                                     resultHTML += '<th scope="col">' + cell.innerHTML + '</th>'
                                 }
                             } else {
-                                if (j == 2) {
+                                if (j == 1) {
                                     resultHTML += '</tr><tr>'
                                     resultHTML += '<td align="center" style="color:Black;"><strong>' + cell.innerHTML + '</strong></td>'
-                                } else if (j == 3) {
+                                } else if (j == 2) {
                                     resultHTML += '<td align="center" style="color:Black;"><strong>' + cell.innerHTML + '</strong></td>'
                                     resultHTML += '</tr>'
                                 }
                             }
                         }
                     }
-
                 }
 
                 resultHTML += '</tbody>'
@@ -388,6 +403,7 @@
                                     '<h2><strong>Planta produccion:</strong> ' + plantaProduccion + '</h2><br /><br />' +
                                     '<table>' + resultHTML + '</table><br />' +
                                     '<h3 style="text-align: center;"><strong> *** FIN *** </strong></h3>' +
+                                    '<h4 style="text-align: left;"><strong> Página: ' + pag + ' de ' + totalPags + '</strong></h4><br />' +
                                     '<h4 style="text-align: left;"><strong> Tiquete generado el: ' + fecha + '</strong></h4><br />' +
                                 '</body>' +
                                '</html>'
@@ -396,7 +412,9 @@
                 }).catch(function (error) {
                     alert(error);
                 }).finally(function () {
-                    return qz.websocket.disconnect().then(function () { imprimir2(estado, codigoPedido, sucursal, plantaProduccion, printer, categorias, index + 1) });
+                    return qz.websocket.disconnect().then(function () {
+                        imprimir2(estado, codigoPedido, sucursal, plantaProduccion, printer, categorias, index + 30, indexFin + 30)
+                    });
                 });
             } else {
                 cerrarModalDetallePedido();
@@ -610,7 +628,7 @@
                                         </div>
                                         <div class="form-group col-md-3">
                                             <label for="DDL_Reportes">Reportes</label>
-                                            <asp:DropDownList class="form-control" ID="DDL_Reportes" runat="server" AutoPostBack="true" onchange="activarloading();estilosElementosBloqueados();" OnSelectedIndexChanged="DDL_Reportes_SelectedIndexChanged">
+                                            <asp:DropDownList class="form-control" ID="DDL_Reportes" runat="server" AutoPostBack="true" onchange="activarloadingReporte();estilosElementosBloqueados();" OnSelectedIndexChanged="DDL_Reportes_SelectedIndexChanged">
                                                 <asp:ListItem Value="0">Seleccione</asp:ListItem>
                                                 <asp:ListItem Value="1">Reporte pedido</asp:ListItem>
                                                 <asp:ListItem Value="2">Descargar pedido</asp:ListItem>
@@ -676,9 +694,9 @@
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
                                                         <div class="row">
-                                                            <asp:TextBox class="form-control" TextMode="Number" MaxLength="2" min="0" max="99" style="width: 40%" runat="server" ID="TXT_Cantidad" 
+                                                            <asp:TextBox class="form-control" TextMode="Number" MaxLength="2" min="0" max="999" style="width: 30%" runat="server" ID="TXT_Cantidad" 
                                                                onkeyup="TXT_Cantidad_onKeyUp(this,event);" onchange="TXT_Cantidad_onChange(this);" Text='<%#Eval("CantidadProduccion") %>' /> <!-- OnTextChanged="TXT_Cantidad_OnTextChanged" AutoPostBack="true" -->
-                                                            <asp:DropDownList class="form-control" style="width: 30%" runat="server" ID="DDL_Decenas" 
+                                                            <asp:DropDownList class="form-control" style="width: 20%" runat="server" ID="DDL_Centenas" 
                                                                 OnSelectedIndexChanged="DDL_DecenasUnidades_OnSelectedIndexChanged" AutoPostBack="true">
                                                                 <asp:ListItem Value="0">0</asp:ListItem>
                                                                 <asp:ListItem Value="1">1</asp:ListItem>
@@ -691,7 +709,20 @@
                                                                 <asp:ListItem Value="8">8</asp:ListItem>
                                                                 <asp:ListItem Value="9">9</asp:ListItem>
                                                             </asp:DropDownList>
-                                                            <asp:DropDownList class="form-control" style="width: 30%" runat="server" ID="DDL_Unidades"
+                                                            <asp:DropDownList class="form-control" style="width: 25%" runat="server" ID="DDL_Decenas" 
+                                                                OnSelectedIndexChanged="DDL_DecenasUnidades_OnSelectedIndexChanged" AutoPostBack="true">
+                                                                <asp:ListItem Value="0">0</asp:ListItem>
+                                                                <asp:ListItem Value="1">1</asp:ListItem>
+                                                                <asp:ListItem Value="2">2</asp:ListItem>
+                                                                <asp:ListItem Value="3">3</asp:ListItem>
+                                                                <asp:ListItem Value="4">4</asp:ListItem>
+                                                                <asp:ListItem Value="5">5</asp:ListItem>
+                                                                <asp:ListItem Value="6">6</asp:ListItem>
+                                                                <asp:ListItem Value="7">7</asp:ListItem>
+                                                                <asp:ListItem Value="8">8</asp:ListItem>
+                                                                <asp:ListItem Value="9">9</asp:ListItem>
+                                                            </asp:DropDownList>
+                                                            <asp:DropDownList class="form-control" style="width: 25%" runat="server" ID="DDL_Unidades"
                                                                 OnSelectedIndexChanged="DDL_DecenasUnidades_OnSelectedIndexChanged" AutoPostBack="true">
                                                                 <asp:ListItem Value="0">0</asp:ListItem>
                                                                 <asp:ListItem Value="1">1</asp:ListItem>
@@ -790,7 +821,7 @@
                                                         <asp:Label ID="LBL_Cantidad" runat="server" Text="Cantidad"></asp:Label>
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
-                                                        <asp:TextBox class="form-control" TextMode="Number" MaxLength="0" min="0" max="99" style="width: 100%" runat="server" ID="TXT_CantidadAgregar" 
+                                                        <asp:TextBox class="form-control" TextMode="Number" MaxLength="0" min="0" max="999" style="width: 100%" runat="server" ID="TXT_CantidadAgregar" 
                                                             onkeyup="TXT_CantidadAgregar_onKeyUp(this,event);" onchange="TXT_CantidadAgregar_onChange(this)" Text='0' /> <%-- OnTextChanged="TXT_CantidadAgregar_OnTextChanged" AutoPostBack="true" --%>
                                                     </ItemTemplate>
                                                     <ItemStyle HorizontalAlign="Center" />                                                    
@@ -828,8 +859,8 @@
                             <p>La confirmación del pedido no permitirá agregar nuevos productos o editar la información del pedido. ¿Desea confirmar el pedido?</p>
                         </div>
                         <div class="modal-footer">
-                            <asp:Button ID="BTN_CerrarModalConfirmacionPedido" UseSubmitBehavior="false" runat="server" Text="Cancelar" data-dismiss="modal" CssClass="btn btn-secondary" />
-                            <asp:Button ID="BTN_ConfirmacionPedido" runat="server" UseSubmitBehavior="false" Text="Confirmar" CssClass="btn btn-success" OnClick="BTN_ConfirmacionPedido_Click" />
+                            <asp:Button ID="BTN_CerrarModalConfirmacionPedido" UseSubmitBehavior="false" runat="server" Text="Cancelar" data-dismiss="modal" CssClass="btn btn-primary" />
+                            <asp:Button ID="BTN_ConfirmacionPedido" runat="server" UseSubmitBehavior="false" Text="Confirmar" CssClass="btn btn-secondary" OnClick="BTN_ConfirmacionPedido_Click" />
                         </div>
                     </div>
                 </div>
@@ -848,7 +879,7 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                            <h5 class="modal-title" runat="server">Detalle Pedido</h5>
+                            <h5 class="modal-title" runat="server">Detalle pedido</h5>
                         </div>
                         <div class="modal-body">                            
                             <div class="table-responsive" id="tableCategorias">

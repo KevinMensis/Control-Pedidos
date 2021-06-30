@@ -38,7 +38,7 @@ namespace MCWebHogar.ControlPedidos
                         cargarDDLs();
                         cargarEmpaque("");
                         cargarProductosEmpaque();
-                        cargarProductosSinAsignar();
+                        cargarProductosSinAsignar("");
                         ViewState["Ordenamiento"] = "ASC";
                     }                    
                 }
@@ -51,7 +51,7 @@ namespace MCWebHogar.ControlPedidos
                 {
                     cargarEmpaque("");
                     cargarProductosEmpaque();
-                    cargarProductosSinAsignar();
+                    cargarProductosSinAsignar("");
                 }
                 if (opcion.Contains("TXT_BuscarProductosSinAsignar") || opcion.Contains("BTN_Agregar"))
                 {
@@ -342,7 +342,7 @@ namespace MCWebHogar.ControlPedidos
             return;
         }
 
-        public void cargarProductosSinAsignar()
+        public void cargarProductosSinAsignar(string ejecutar)
         {
             DT.DT1.Clear();
 
@@ -384,7 +384,7 @@ namespace MCWebHogar.ControlPedidos
                     DGV_ListaProductosSinAgregar.DataBind();
                     UpdatePanel_ListaProductosSinAgregar.Update();
                     UpdatePanel_ModalAgregarProductos.Update();
-                    string script = "cargarFiltros();";
+                    string script = "cargarFiltros();" + ejecutar;
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductos", script, true);
                 }
             }
@@ -394,14 +394,14 @@ namespace MCWebHogar.ControlPedidos
                 DGV_ListaProductosSinAgregar.DataBind();
                 UpdatePanel_ListaProductosSinAgregar.Update();
                 UpdatePanel_ModalAgregarProductos.Update();
-                string script = "cargarFiltros();";
+                string script = "cargarFiltros();" + ejecutar;
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductos", script, true);
             }
         }
 
         protected void FiltrarProductos_OnClick(object sender, EventArgs e)
         {
-            cargarProductosSinAsignar();
+            cargarProductosSinAsignar("productosMarcados();");
         }
 
         protected void DGV_ListaProductosSinAsignar_Sorting(object sender, GridViewSortEventArgs e)
@@ -521,27 +521,25 @@ namespace MCWebHogar.ControlPedidos
                 TextBox cantidad = (TextBox)e.Row.FindControl("TXT_Cantidad");
                 DropDownList ddlUnds = (DropDownList)e.Row.FindControl("DDL_Unidades");
                 DropDownList ddlDecs = (DropDownList)e.Row.FindControl("DDL_Decenas");
+                DropDownList ddlCents = (DropDownList)e.Row.FindControl("DDL_Centenas");
                 decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
                 int unds = Convert.ToInt32(cantidadProducto) % 10;
-                int decs = Convert.ToInt32(cantidadProducto) / 10;
+                int decs = (Convert.ToInt32(cantidadProducto) / 10) % 10;
+                int cents = (Convert.ToInt32(cantidadProducto) / 100);
                 ddlUnds.SelectedValue = unds.ToString();
                 ddlDecs.SelectedValue = decs.ToString();
+                ddlCents.SelectedValue = cents.ToString();
 
                 if (TXT_FechaEmpaque.Text != DateTime.Now.ToString("yyyy-MM-dd"))
                 {
-                    // Button minus = (Button)e.Row.FindControl("BTN_Minus");
-                    // Button plus = (Button)e.Row.FindControl("BTN_Plus");
-
                     cantidad.Enabled = false;
                     cantidad.CssClass = "form-control";
                     ddlUnds.Enabled = false;
                     ddlUnds.CssClass = "form-control";
                     ddlDecs.Enabled = false;
                     ddlDecs.CssClass = "form-control";
-                    // minus.Enabled = false;
-                    // minus.CssClass = "btn btn-outline-primary btn-round";
-                    // plus.Enabled = false;
-                    // plus.CssClass = "btn btn-outline-primary btn-round";
+                    ddlCents.Enabled = false;
+                    ddlCents.CssClass = "form-control";
                 }
             }
         }
@@ -626,55 +624,18 @@ namespace MCWebHogar.ControlPedidos
             }
         }        
         
-        //protected void TXT_Cantidad_OnTextChanged(object sender, EventArgs e)
-        //{
-        //    GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
-        //    int index = gvRow.RowIndex;
-        //    TextBox cantidad = sender as TextBox;            
-            
-        //    DropDownList ddlUnds = DGV_ListaProductosEmpaque.Rows[index].FindControl("DDL_Unidades") as DropDownList;
-        //    DropDownList ddlDecs = DGV_ListaProductosEmpaque.Rows[index].FindControl("DDL_Decenas") as DropDownList;
-        //    if (cantidad.Text != "")
-        //    {
-        //        decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
-        //        int unds = Convert.ToInt32(cantidadProducto) % 10;
-        //        int decs = Convert.ToInt32(cantidadProducto) / 10;
-        //        if (cantidadProducto >= 0 && cantidadProducto < 100)
-        //        {
-        //            ddlUnds.SelectedValue = unds.ToString();
-        //            ddlDecs.SelectedValue = decs.ToString();
-        //            cantidad.Text = cantidadProducto.ToString();
-        //            guardarProductoEmpaque(index);
-        //        }
-        //        else
-        //        {
-        //            unds = Convert.ToInt32(ddlUnds.SelectedValue);
-        //            decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
-        //            cantidadProducto = decs + unds;
-        //            cantidad.Text = cantidadProducto.ToString();
-        //        }
-        //    }
-        //    else
-        //    {
-        //        cantidad.Text = "0";
-        //        ddlUnds.SelectedValue = "0";
-        //        ddlDecs.SelectedValue = "0";
-        //        guardarProductoEmpaque(index);
-        //    }
-        //    UpdatePanel_ListaProductosEmpaque.Update();
-        //    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", "enterCantidad(" + index + ");", true);
-        //}
-
         protected void DDL_DecenasUnidades_OnSelectedIndexChanged(object sender, EventArgs e)
         {
             GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
             int index = gvRow.RowIndex;
             DropDownList ddlUnds = DGV_ListaProductosEmpaque.Rows[index].FindControl("DDL_Unidades") as DropDownList;
             DropDownList ddlDecs = DGV_ListaProductosEmpaque.Rows[index].FindControl("DDL_Decenas") as DropDownList;
+            DropDownList ddlCents = DGV_ListaProductosEmpaque.Rows[index].FindControl("DDL_Centenas") as DropDownList;
             TextBox cantidad = DGV_ListaProductosEmpaque.Rows[index].FindControl("TXT_Cantidad") as TextBox;
             int unds = Convert.ToInt32(ddlUnds.SelectedValue);
             int decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
-            decimal cantidadProducto = decs + unds;
+            int cents = Convert.ToInt32(ddlCents.SelectedValue) * 100;
+            decimal cantidadProducto = cents + decs + unds;
             cantidad.Text = cantidadProducto.ToString();
             guardarProductoEmpaque(index);
         }

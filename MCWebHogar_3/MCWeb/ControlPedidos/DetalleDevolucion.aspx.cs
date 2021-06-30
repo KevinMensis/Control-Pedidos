@@ -38,7 +38,7 @@ namespace MCWebHogar.ControlPedidos
                         cargarDDLs();
                         cargarDevolucion("");
                         cargarProductosDevolucion();
-                        cargarProductosSinAsignar();
+                        cargarProductosSinAsignar("");
                         ViewState["Ordenamiento"] = "ASC";
                     }                    
                 }
@@ -50,10 +50,15 @@ namespace MCWebHogar.ControlPedidos
                 if (opcion.Contains("CargarDevolucion"))
                 {
                     cargarDevolucion("");
+                    cargarDDLs();
                     cargarProductosDevolucion();
-                    cargarProductosSinAsignar();
+                    cargarProductosSinAsignar("");
                 }
                 if (opcion.Contains("TXT_BuscarProductosSinAsignar") || opcion.Contains("BTN_Agregar"))
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Buscar_OnTextChanged", "cargarFiltros();estilosElementosBloqueados();", true);
+                }
+                if (opcion.Contains("TXT_Buscar"))
                 {
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Buscar_OnTextChanged", "cargarFiltros();estilosElementosBloqueados();", true);
                 }
@@ -95,6 +100,23 @@ namespace MCWebHogar.ControlPedidos
                 DDL_PuntoVenta.DataTextField = "DescripcionPuntoVenta";
                 DDL_PuntoVenta.DataValueField = "IDPuntoVenta";
                 DDL_PuntoVenta.DataBind();
+            }
+
+            DT.DT1.Clear();
+            DT.DT1.Rows.Add("@IDDevolucion", HDF_IDDevolucion.Value, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "CargarPuntosVentaDevolucion", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP02_0001");
+
+            if (Result != null && Result.Rows.Count > 0)
+            {
+                DataView dv = new DataView(Result);
+                dv.RowFilter = "IDPuntoVenta <> 0";
+                LB_PuntoVenta.DataSource = dv;
+                LB_PuntoVenta.DataTextField = "DescripcionPuntoVenta";
+                LB_PuntoVenta.DataValueField = "IDPuntoVenta";
+                LB_PuntoVenta.DataBind();
             }
 
             DT.DT1.Clear();
@@ -164,6 +186,41 @@ namespace MCWebHogar.ControlPedidos
                 }
             }
         }
+
+        //public void cargarPuntosVentaDevolucion()
+        //{
+        //    DT.DT1.Clear();
+        //    DT.DT1.Rows.Add("@DevolucionID", HDF_IDDevolucion.Value, SqlDbType.VarChar);
+
+        //    DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+        //    DT.DT1.Rows.Add("@TipoSentencia", "CargarPuntosVenta", SqlDbType.VarChar);
+
+        //    Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP19_0001");
+
+        //    if (Result != null && Result.Rows.Count > 0)
+        //    {
+        //        if (Result.Rows[0][0].ToString().Trim() == "ERROR")
+        //        {
+        //            return;
+        //        }
+        //        else
+        //        {
+        //            DGV_ListaPuntosVenta.DataSource = Result;
+        //            DGV_ListaPuntosVenta.DataBind();
+        //            UpdatePanel_ListaProductosDevolucion.Update();
+        //            string script = "estilosElementosBloqueados();cargarFiltros();";
+        //            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductosDevolucion", script, true);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        DGV_ListaPuntosVenta.DataSource = Result;
+        //        DGV_ListaPuntosVenta.DataBind();
+        //        UpdatePanel_ListaProductosDevolucion.Update();
+        //        string script = "estilosElementosBloqueados();cargarFiltros();";
+        //        ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductosDevolucion", script, true);
+        //    }
+        //}
 
         protected void BTN_ConfirmarDevolucion_Click(object sender, EventArgs e)
         {
@@ -351,14 +408,19 @@ namespace MCWebHogar.ControlPedidos
                 CHK_Producto.Checked = false;
                 TXT_CantidadAgregar.Text = "0";
             }
-
+            DDL_PuntoVenta.SelectedValue = "0";
+            DGV_ListaProductosSinAgregar.Enabled = false;
+            TXT_BuscarProductosSinAsignar.Enabled = false;
+            LB_Categoria.Enabled = false;
+            BTN_Agregar.Enabled = false;
             UpdatePanel_ListaProductosSinAgregar.Update();
+            UpdatePanel_ModalAgregarProductos.Update();
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptAgregarProductos", "abrirModalAgregarProductos();estilosElementosBloqueados();cargarFiltros();", true);
             return;
         }
 
-        public void cargarProductosSinAsignar()
+        public void cargarProductosSinAsignar(string ejecutar)
         {
             DT.DT1.Clear();
             string categorias = "";
@@ -400,7 +462,7 @@ namespace MCWebHogar.ControlPedidos
                     DGV_ListaProductosSinAgregar.DataSource = Result;
                     DGV_ListaProductosSinAgregar.DataBind();
                     UpdatePanel_ListaProductosSinAgregar.Update();
-                    string script = "cargarFiltros();";
+                    string script = "cargarFiltros();" + ejecutar;
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductos", script, true);
                 }
             }
@@ -409,14 +471,33 @@ namespace MCWebHogar.ControlPedidos
                 DGV_ListaProductosSinAgregar.DataSource = Result;
                 DGV_ListaProductosSinAgregar.DataBind();
                 UpdatePanel_ListaProductosSinAgregar.Update();
-                string script = "cargarFiltros();";
+                string script = "cargarFiltros();" + ejecutar;
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductos", script, true);
             }
         }
 
         protected void FiltrarProductos_OnClick(object sender, EventArgs e)
         {
-            cargarProductosSinAsignar();
+            if (DDL_PuntoVenta.SelectedValue == "0")
+            {
+                DGV_ListaProductosSinAgregar.Enabled = false;
+                TXT_BuscarProductosSinAsignar.Enabled = false;
+                LB_Categoria.Enabled = false;
+                BTN_Agregar.Enabled = false;
+                UpdatePanel_ListaProductosSinAgregar.Update();
+                UpdatePanel_ModalAgregarProductos.Update();
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptAgregarProductos", "estilosElementosBloqueados();cargarFiltros();", true);
+            }
+            else
+            {
+                DGV_ListaProductosSinAgregar.Enabled = true;
+                TXT_BuscarProductosSinAsignar.Enabled = true;
+                LB_Categoria.Enabled = true;
+                BTN_Agregar.Enabled = true;
+                UpdatePanel_ListaProductosSinAgregar.Update();
+                UpdatePanel_ModalAgregarProductos.Update();
+                cargarProductosSinAsignar("productosMarcados();");
+            }
         }
 
         protected void DGV_ListaProductosSinAsignar_Sorting(object sender, GridViewSortEventArgs e)
@@ -466,7 +547,7 @@ namespace MCWebHogar.ControlPedidos
         }
 
         [WebMethod()]
-        public static string BTN_Agregar_Click(string idDevolucion, int idProducto, int idUsuario, int cantidadProducto, string usuario)
+        public static string BTN_Agregar_Click(string idDevolucion, int idPuntoVenta, int idProducto, int idUsuario, int cantidadProducto, string usuario)
         {
             CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
             DataTable Result = new DataTable();
@@ -474,6 +555,7 @@ namespace MCWebHogar.ControlPedidos
             DT.DT1.Clear();
 
             DT.DT1.Rows.Add("@DevolucionID", idDevolucion, SqlDbType.Int);
+            DT.DT1.Rows.Add("@PuntoVentaID", idPuntoVenta, SqlDbType.Int);
             DT.DT1.Rows.Add("@ProductoID", idProducto, SqlDbType.Int);
             DT.DT1.Rows.Add("@UsuarioID", idUsuario, SqlDbType.Int);
             DT.DT1.Rows.Add("@CantidadDevolucion", cantidadProducto, SqlDbType.Int);
@@ -496,6 +578,25 @@ namespace MCWebHogar.ControlPedidos
         public void cargarProductosDevolucion()
         {
             DT.DT1.Clear();
+
+            string puntosVenta = "";
+
+            #region Puntos Venta
+            foreach (ListItem l in LB_PuntoVenta.Items)
+            {
+                if (l.Selected)
+                {
+                    puntosVenta += "'" + l.Value + "',";
+                }
+            }
+            puntosVenta = puntosVenta.TrimEnd(',');
+            if (puntosVenta != "")
+            {
+                DT.DT1.Rows.Add("@FiltrarSucursales", 1, SqlDbType.Int);
+                DT.DT1.Rows.Add("@FiltroSucursales", puntosVenta, SqlDbType.VarChar);
+            }
+            #endregion
+
             DT.DT1.Rows.Add("@DevolucionID", HDF_IDDevolucion.Value, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@Buscar", TXT_Buscar.Text, SqlDbType.VarChar);
 
@@ -536,27 +637,25 @@ namespace MCWebHogar.ControlPedidos
                 TextBox cantidad = (TextBox)e.Row.FindControl("TXT_Cantidad");
                 DropDownList ddlUnds = (DropDownList)e.Row.FindControl("DDL_Unidades");
                 DropDownList ddlDecs = (DropDownList)e.Row.FindControl("DDL_Decenas");
+                DropDownList ddlCents = (DropDownList)e.Row.FindControl("DDL_Centenas");
                 decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
                 int unds = Convert.ToInt32(cantidadProducto) % 10;
-                int decs = Convert.ToInt32(cantidadProducto) / 10;
+                int decs = (Convert.ToInt32(cantidadProducto) / 10) % 10;
+                int cents = (Convert.ToInt32(cantidadProducto) / 100);
                 ddlUnds.SelectedValue = unds.ToString();
                 ddlDecs.SelectedValue = decs.ToString();
+                ddlCents.SelectedValue = cents.ToString();
 
                 if (TXT_FechaDevolucion.Text != DateTime.Now.ToString("yyyy-MM-dd"))
                 {
-                    // Button minus = (Button)e.Row.FindControl("BTN_Minus");
-                    // Button plus = (Button)e.Row.FindControl("BTN_Plus");
-
                     cantidad.Enabled = false;
                     cantidad.CssClass = "form-control";
                     ddlUnds.Enabled = false;
                     ddlUnds.CssClass = "form-control";
                     ddlDecs.Enabled = false;
                     ddlDecs.CssClass = "form-control";
-                    // minus.Enabled = false;
-                    // minus.CssClass = "btn btn-outline-primary btn-round";
-                    // plus.Enabled = false;
-                    // plus.CssClass = "btn btn-outline-primary btn-round";
+                    ddlCents.Enabled = false;
+                    ddlCents.CssClass = "form-control";
                 }
             }
         }
@@ -641,54 +740,18 @@ namespace MCWebHogar.ControlPedidos
             }
         }        
         
-        //protected void TXT_Cantidad_OnTextChanged(object sender, EventArgs e)
-        //{
-        //    GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
-        //    int index = gvRow.RowIndex;
-        //    TextBox cantidad = sender as TextBox;            
-        //    DropDownList ddlUnds = DGV_ListaProductosDevolucion.Rows[index].FindControl("DDL_Unidades") as DropDownList;
-        //    DropDownList ddlDecs = DGV_ListaProductosDevolucion.Rows[index].FindControl("DDL_Decenas") as DropDownList;
-        //    if (cantidad.Text != "")
-        //    {
-        //        decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
-        //        int unds = Convert.ToInt32(cantidadProducto) % 10;
-        //        int decs = Convert.ToInt32(cantidadProducto) / 10;
-        //        if (cantidadProducto > 0 && cantidadProducto < 99)
-        //        {
-        //            ddlUnds.SelectedValue = unds.ToString();
-        //            ddlDecs.SelectedValue = decs.ToString();
-        //            cantidad.Text = cantidadProducto.ToString();
-        //            guardarProductoDevolucion(index);
-        //        }
-        //        else
-        //        {
-        //            unds = Convert.ToInt32(ddlUnds.SelectedValue);
-        //            decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
-        //            cantidadProducto = decs + unds;
-        //            cantidad.Text = cantidadProducto.ToString();
-        //        }
-        //    }
-        //    else
-        //    {
-        //        cantidad.Text = "0";
-        //        ddlUnds.SelectedValue = "0";
-        //        ddlDecs.SelectedValue = "0";
-        //        guardarProductoDevolucion(index);
-        //    }
-        //    UpdatePanel_ListaProductosDevolucion.Update();
-        //    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", "enterCantidad(" + index + ");", true);
-        //}
-
         protected void DDL_DecenasUnidades_OnSelectedIndexChanged(object sender, EventArgs e)
         {
             GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
             int index = gvRow.RowIndex;
             DropDownList ddlUnds = DGV_ListaProductosDevolucion.Rows[index].FindControl("DDL_Unidades") as DropDownList;
             DropDownList ddlDecs = DGV_ListaProductosDevolucion.Rows[index].FindControl("DDL_Decenas") as DropDownList;
+            DropDownList ddlCents = DGV_ListaProductosDevolucion.Rows[index].FindControl("DDL_Centenas") as DropDownList;
             TextBox cantidad = DGV_ListaProductosDevolucion.Rows[index].FindControl("TXT_Cantidad") as TextBox;
             int unds = Convert.ToInt32(ddlUnds.SelectedValue);
             int decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
-            decimal cantidadProducto = decs + unds;
+            int cents = Convert.ToInt32(ddlCents.SelectedValue) * 100;
+            decimal cantidadProducto = cents + decs + unds;
             cantidad.Text = cantidadProducto.ToString();
             guardarProductoDevolucion(index);
         }

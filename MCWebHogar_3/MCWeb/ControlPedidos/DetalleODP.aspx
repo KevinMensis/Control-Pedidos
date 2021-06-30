@@ -68,77 +68,92 @@
         }
 
         function imprimir(categoria, codigoODP, index, printer) {
-            var listaProductos = 'Content_DGV_ListaCategorias_DGV_ListaProductos_' + index;
+            imprimir2(codigoODP, printer, categoria, index, 0, 31)
+        }
 
+        function imprimir2(codigoODP, printer, categoria, index, indexInicio, indexFin) {
+            var listaProductos = 'Content_DGV_ListaCategorias_DGV_ListaProductos_' + index;
             var table, tbody, i, rowLen, row, j, colLen, cell, resultHTML;
 
             resultHTML = '<tbody><tr class="table" align="center" style="border-color:#51CBCE;">'
 
             table = document.getElementById(listaProductos);
             tbody = table.tBodies[0];
+            var pag = indexInicio / 30 + 1
+            var totalPags = Math.trunc(tbody.rows.length / 30)
+            totalPags += 0 < tbody.rows.length % 30 ? 1 : 0
 
-            for (i = 0, rowLen = tbody.rows.length; i < rowLen; i++) {
-                row = tbody.rows[i];
-                for (j = 0, colLen = row.cells.length; j < colLen; j++) {
-                    cell = row.cells[j];
-                    if (i == 0) {
-                        if (j == 1 || j == 2) {
-                            resultHTML += '<th scope="col" style="font-size: 25px;">' + cell.innerHTML + '</th>'
+            if (indexInicio < tbody.rows.length) {
+                for (i = indexInicio, rowLen = tbody.rows.length; i < rowLen; i++) {
+                    if (i < indexFin) {
+                        row = tbody.rows[i];
+                        for (j = 0, colLen = row.cells.length; j < colLen; j++) {
+                            cell = row.cells[j];
+                            if (i == 0) {
+                                if (j == 0 || j == 1) {
+                                    resultHTML += '<th scope="col">' + cell.innerHTML + '</th>'
+                                }
+                            } else {
+                                if (j == 0) {
+                                    resultHTML += '</tr><tr>'
+                                    resultHTML += '<td align="center" style="color:Black;"><strong>' + cell.innerHTML + '</strong></td>'
+                                } else if (j == 1) {
+                                    resultHTML += '<td align="center" style="color:Black;"><strong>' + cell.innerHTML + '</strong></td>'
+                                    resultHTML += '</tr>'
+                                }
+                            }
                         }
-                    } else {
-                        if (j == 1) {
-                            resultHTML += '</tr><tr>'
-                            resultHTML += '<td align="center" style="color:Black;font-size: 25px;">' + cell.innerHTML + '</td>'
-                        } else if (j == 2) {
-                            resultHTML += '<td align="center" style="color:Black;font-size: 25px;">' + cell.innerHTML + '</td>'
-                            resultHTML += '</tr>'
-                        }
-                    }
+                    }                    
                 }
-            }
-            resultHTML += '</tbody>'
-            var d = new Date(),
-            year = d.getFullYear(),
-            month = d.getMonth() + 1,
-            day = d.getDate(),
-            hours = d.getHours(),
-			minute = d.getMinutes(),
-			second = d.getSeconds(),
-			ap = 'AM';
-            if (hours > 11) { ap = 'PM'; }
-            if (hours > 12) { hours = hours - 12; }
-            if (hours == 0) { hours = 12; }
-            if (month < 10) { month = "0" + month; }
-            if (day < 10) { day = "0" + day; }
-            if (minute < 10) { minute = "0" + minute; }
+                resultHTML += '</tbody>'
+                var d = new Date(),
+                year = d.getFullYear(),
+                month = d.getMonth() + 1,
+                day = d.getDate(),
+                hours = d.getHours(),
+                minute = d.getMinutes(),
+                second = d.getSeconds(),
+                ap = 'AM';
+                if (hours > 11) { ap = 'PM'; }
+                if (hours > 12) { hours = hours - 12; }
+                if (hours == 0) { hours = 12; }
+                if (month < 10) { month = "0" + month; }
+                if (day < 10) { day = "0" + day; }
+                if (minute < 10) { minute = "0" + minute; }
 
-            var fecha = day + '/' + month + '/' + year + ' ' + hours + ':' + minute + ' ' + ap
-            
-            qz.websocket.connect().then(function () {
-                return qz.printers.find(printer);
-            }).then(function (found) {
-                var config = qz.configs.create(found);
-                var data = [{
-                    type: 'pixel',
-                    format: 'html',
-                    flavor: 'plain',
-                    data: '<html>' +
-                            '<head><title>' + document.title + '</title></head>' +
-                            '<body>' +
-                                '<h2><strong>' + codigoODP + '</strong></h2><br /><br />' +
-                                '<h2><strong>Categoría:</strong> ' + categoria + '</h2><br /><br />' +
-                                '<table>' + resultHTML + '</table><br />' +
-                                '<h3 style="text-align: center;"><strong> *** FIN *** </strong></h3>' +
-                                '<h4 style="text-align: left;"><strong> Tiquete generado el: ' + fecha + '</strong></h4><br />' +
-                            '</body>' +
-                           '</html>'
-                }];
-                return qz.print(config, data).catch(function (e) { console.error(e); });
-            }).catch(function (error) {
-                alert(error);
-            }).finally(function () {
-                return qz.websocket.disconnect();
-            });
+                var fecha = day + '/' + month + '/' + year + ' ' + hours + ':' + minute + ' ' + ap
+
+                qz.websocket.connect().then(function () {
+                    return qz.printers.find(printer);
+                }).then(function (found) {
+                    var config = qz.configs.create(found);
+                    var data = [{
+                        type: 'pixel',
+                        format: 'html',
+                        flavor: 'plain',
+                        data: '<html>' +
+                                '<head><title>' + document.title + '</title></head>' +
+                                '<body>' +
+                                    '<h2><strong>' + codigoODP + '</strong></h2><br /><br />' +
+                                    '<h2><strong>Categoría:</strong> ' + categoria + '</h2><br /><br />' +
+                                    '<table>' + resultHTML + '</table><br />' +
+                                    '<h3 style="text-align: center;"><strong> *** FIN *** </strong></h3>' +
+                                    '<h4 style="text-align: left;"><strong> Página: ' + pag + ' de ' + totalPags + '</strong></h4><br />' +
+                                    '<h4 style="text-align: left;"><strong> Tiquete generado el: ' + fecha + '</strong></h4><br />' +
+                                '</body>' +
+                               '</html>'
+                    }];
+                    return qz.print(config, data).catch(function (e) { console.error(e); });
+                }).catch(function (error) {
+                    alert(error);
+                }).finally(function () {
+                    return qz.websocket.disconnect().then(function () {
+                        imprimir2(codigoODP, printer, categoria, index, indexInicio + 30, indexFin + 30)
+                    });
+                });
+            } else {
+                alertifysuccess('Impresión finalizada.');
+            }
         }
 
         function TXT_Cantidad_onKeyUp(txtCantidad, e) {
@@ -163,19 +178,23 @@
             var index = values.pop() * 1
             var idUnidades = 'Content_DGV_ListaProductosODP_DDL_Unidades_' + index
             var idDecenas = 'Content_DGV_ListaProductosODP_DDL_Decenas_' + index
+            var idCentenas = 'Content_DGV_ListaProductosODP_DDL_Centenas_' + index
             var cantidadProducto = txtCantidad.value
             if (cantidadProducto !== '') {
                 var unds = cantidadProducto % 10;
-                var decs = Math.trunc(cantidadProducto / 10);
-                if (cantidadProducto >= 0 && cantidadProducto < 100) {
+                var decs = Math.trunc(cantidadProducto / 10) % 10;
+                var cents = Math.trunc(cantidadProducto / 100);
+                if (cantidadProducto >= 0 && cantidadProducto < 1000) {
                     document.getElementById(idUnidades).value = unds;
                     document.getElementById(idDecenas).value = decs;
+                    document.getElementById(idCentenas).value = cents;
                     txtCantidad.value = cantidadProducto;
                     guardarProductoODP(index, cantidadProducto);
                 } else {
                     unds = document.getElementById(idUnidades).value * 1;
                     decs = document.getElementById(idDecenas).value * 10;
-                    cantidadProducto = decs + unds;
+                    cents = document.getElementById(idCentenas).value * 100;
+                    cantidadProducto = cents + decs + unds;
                     txtCantidad.value = cantidadProducto;
                 }
             }
@@ -183,6 +202,7 @@
                 txtCantidad.value = '0';
                 document.getElementById(idUnidades).value = '0';
                 document.getElementById(idDecenas).value = '0';
+                document.getElementById(idCentenas).value = '0';
                 guardarProductoODP(index, 0);
             }
         }
@@ -486,9 +506,9 @@
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
                                                         <div class="row">
-                                                            <asp:TextBox class="form-control" TextMode="Number" MaxLength="2" min="0" max="99" style="width: 40%" runat="server" ID="TXT_Cantidad" 
+                                                            <asp:TextBox class="form-control" TextMode="Number" MaxLength="2" min="0" max="999" style="width: 30%" runat="server" ID="TXT_Cantidad" 
                                                                 onkeyup="TXT_Cantidad_onKeyUp(this, event);" onchange="TXT_Cantidad_onChange(this);" Text='<%#Eval("CantidadProducida") %>' />                                                            
-                                                            <asp:DropDownList class="form-control" style="width: 30%" runat="server" ID="DDL_Decenas" 
+                                                            <asp:DropDownList class="form-control" style="width: 20%" runat="server" ID="DDL_Centenas" 
                                                                 OnSelectedIndexChanged="DDL_DecenasUnidades_OnSelectedIndexChanged" AutoPostBack="true">
                                                                 <asp:ListItem Value="0">0</asp:ListItem>
                                                                 <asp:ListItem Value="1">1</asp:ListItem>
@@ -501,7 +521,20 @@
                                                                 <asp:ListItem Value="8">8</asp:ListItem>
                                                                 <asp:ListItem Value="9">9</asp:ListItem>
                                                             </asp:DropDownList>
-                                                            <asp:DropDownList class="form-control" style="width: 30%" runat="server" ID="DDL_Unidades"
+                                                            <asp:DropDownList class="form-control" style="width: 25%" runat="server" ID="DDL_Decenas" 
+                                                                OnSelectedIndexChanged="DDL_DecenasUnidades_OnSelectedIndexChanged" AutoPostBack="true">
+                                                                <asp:ListItem Value="0">0</asp:ListItem>
+                                                                <asp:ListItem Value="1">1</asp:ListItem>
+                                                                <asp:ListItem Value="2">2</asp:ListItem>
+                                                                <asp:ListItem Value="3">3</asp:ListItem>
+                                                                <asp:ListItem Value="4">4</asp:ListItem>
+                                                                <asp:ListItem Value="5">5</asp:ListItem>
+                                                                <asp:ListItem Value="6">6</asp:ListItem>
+                                                                <asp:ListItem Value="7">7</asp:ListItem>
+                                                                <asp:ListItem Value="8">8</asp:ListItem>
+                                                                <asp:ListItem Value="9">9</asp:ListItem>
+                                                            </asp:DropDownList>
+                                                            <asp:DropDownList class="form-control" style="width: 25%" runat="server" ID="DDL_Unidades"
                                                                 OnSelectedIndexChanged="DDL_DecenasUnidades_OnSelectedIndexChanged" AutoPostBack="true">
                                                                 <asp:ListItem Value="0">0</asp:ListItem>
                                                                 <asp:ListItem Value="1">1</asp:ListItem>

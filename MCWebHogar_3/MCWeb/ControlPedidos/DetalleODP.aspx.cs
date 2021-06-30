@@ -586,7 +586,7 @@ namespace MCWebHogar.ControlPedidos
                 if (e.CommandName == "imprimir")
                 {
                     string categoria = DGV_ListaCategorias.DataKeys[index].Values[1].ToString().Trim();
-                    string printer = DDL_Impresoras.SelectedValue;
+                    string printer = TXT_NombreImpresora.Text.Trim();
                     string script = "estilosElementosBloqueados();imprimir('" + categoria + "', '" + TXT_CodigoODP.Text + "', " + index + ", '" + printer + "');";
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDGV_ListaCategorias_RowCommand", script, true);
                 }
@@ -642,11 +642,14 @@ namespace MCWebHogar.ControlPedidos
                 TextBox cantidad = (TextBox)e.Row.FindControl("TXT_Cantidad");
                 DropDownList ddlUnds = (DropDownList)e.Row.FindControl("DDL_Unidades");
                 DropDownList ddlDecs = (DropDownList)e.Row.FindControl("DDL_Decenas");
+                DropDownList ddlCents = (DropDownList)e.Row.FindControl("DDL_Centenas");
                 decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
                 int unds = Convert.ToInt32(cantidadProducto) % 10;
-                int decs = Convert.ToInt32(cantidadProducto) / 10;
+                int decs = (Convert.ToInt32(cantidadProducto) / 10) % 10;
+                int cents = Convert.ToInt32(cantidadProducto) / 100;
                 ddlUnds.SelectedValue = unds.ToString();
                 ddlDecs.SelectedValue = decs.ToString();
+                ddlCents.SelectedValue = cents.ToString();
 
                 if (HDF_EstadoODP.Value != "Confirmada")
                 {
@@ -656,6 +659,8 @@ namespace MCWebHogar.ControlPedidos
                     ddlUnds.CssClass = "form-control";
                     ddlDecs.Enabled = false;
                     ddlDecs.CssClass = "form-control";
+                    ddlCents.Enabled = false;
+                    ddlCents.CssClass = "form-control";
                 }
             }
         }
@@ -697,57 +702,19 @@ namespace MCWebHogar.ControlPedidos
                 
             }
         }
-        
-        //protected void TXT_Cantidad_OnTextChanged(object sender, EventArgs e)
-        //{
-        //    GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
-        //    int index = gvRow.RowIndex;
-        //    TextBox cantidad = sender as TextBox;            
-            
-        //    DropDownList ddlUnds = DGV_ListaProductosODP.Rows[index].FindControl("DDL_Unidades") as DropDownList;
-        //    DropDownList ddlDecs = DGV_ListaProductosODP.Rows[index].FindControl("DDL_Decenas") as DropDownList;
-        //    if (cantidad.Text != "")
-        //    {
-        //        decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
-        //        int unds = Convert.ToInt32(cantidadProducto) % 10;
-        //        int decs = Convert.ToInt32(cantidadProducto) / 10;
-        //        if (cantidadProducto >= 0 && cantidadProducto < 100)
-        //        {
-        //            ddlUnds.SelectedValue = unds.ToString();
-        //            ddlDecs.SelectedValue = decs.ToString();
-        //            cantidad.Text = cantidadProducto.ToString();
-        //            guardarProductoODP(index);
-        //        }
-        //        else
-        //        {
-        //            unds = Convert.ToInt32(ddlUnds.SelectedValue);
-        //            decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
-        //            cantidadProducto = decs + unds;
-        //            cantidad.Text = cantidadProducto.ToString();
-        //        }
-        //    }
-        //    else
-        //    {
-        //        cantidad.Text = "0";
-        //        ddlUnds.SelectedValue = "0";
-        //        ddlDecs.SelectedValue = "0";
-        //        guardarProductoODP(index);
-        //    }
-        //    UpdatePanel_ListaProductosODP.Update();
-        //    string script = "enterCantidad(" + index + ");";
-        //    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Cantidad_OnTextChanged", script, true);
-        //}
-
+                                                                                       
         protected void DDL_DecenasUnidades_OnSelectedIndexChanged(object sender, EventArgs e)
         {
             GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
             int index = gvRow.RowIndex;
             DropDownList ddlUnds = DGV_ListaProductosODP.Rows[index].FindControl("DDL_Unidades") as DropDownList;
             DropDownList ddlDecs = DGV_ListaProductosODP.Rows[index].FindControl("DDL_Decenas") as DropDownList;
+            DropDownList ddlCents = DGV_ListaProductosODP.Rows[index].FindControl("DDL_Centenas") as DropDownList;
             TextBox cantidad = DGV_ListaProductosODP.Rows[index].FindControl("TXT_Cantidad") as TextBox;
             int unds = Convert.ToInt32(ddlUnds.SelectedValue);
             int decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
-            decimal cantidadProducto = decs + unds;
+            int cents = Convert.ToInt32(ddlCents.SelectedValue) * 100;
+            decimal cantidadProducto = cents + decs + unds;
             cantidad.Text = cantidadProducto.ToString();
             guardarProductoODP(index);
         }

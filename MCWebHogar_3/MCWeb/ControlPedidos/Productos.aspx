@@ -207,15 +207,15 @@
                                                         <asp:Label ID="LBL_Acciones" runat="server" Text="Acciones"></asp:Label>
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
-                                                        <asp:Button class="btn btn-outline-success btn-round" ID="BTN_Activar" runat="server"
+                                                        <asp:Button class="btn btn-outline-success btn-round-mant" ID="BTN_Activar" runat="server"
                                                             CommandName="activar"
                                                             CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
                                                             Text="Activar" AutoPostBack="true" />
-                                                        <asp:Button class="btn btn-outline-primary btn-round" ID="BTN_Editar" runat="server"
+                                                        <asp:Button class="btn btn-outline-primary btn-round-mant" ID="BTN_Editar" runat="server"
                                                             CommandName="editar"
                                                             CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
                                                             Text="Editar" AutoPostBack="true" />
-                                                        <asp:Button class="btn btn-outline-danger btn-round" ID="BTN_Eliminar" runat="server"
+                                                        <asp:Button class="btn btn-outline-danger btn-round-mant" ID="BTN_Eliminar" runat="server"
                                                             CommandName="desactivar"
                                                             CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
                                                             Text="Desactivar" AutoPostBack="true" />
@@ -295,8 +295,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <asp:Button ID="BTN_CerrarModalCrearProducto" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-secondary" />
-                            <asp:Button ID="BTN_GuardarProducto" runat="server" Text="Guardar producto" CssClass="btn btn-success" OnClientClick="return validarCrearProducto();" OnClick="BTN_GuardarProducto_OnClick" />
+                            <asp:Button ID="BTN_CerrarModalCrearProducto" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-primary" />
+                            <asp:Button ID="BTN_GuardarProducto" runat="server" Text="Guardar producto" CssClass="btn btn-secondary" OnClientClick="return validarCrearProducto();" OnClick="BTN_GuardarProducto_OnClick" />
                         </div>
                     </div>
                 </div>

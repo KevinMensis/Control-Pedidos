@@ -8927,6 +8927,13 @@ fieldset[disabled] .btn-link.active {
   padding-left: 23px;
 }
 
+.btn-round-mant {
+  border-width: 1px;
+  border-radius: 10px;
+  padding-right: 23px;
+  padding-left: 23px;
+}
+
 .btn-round.btn-simple {
   padding: 10px 22px;
 }
