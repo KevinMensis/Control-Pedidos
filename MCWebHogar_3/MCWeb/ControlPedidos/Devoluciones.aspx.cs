@@ -21,6 +21,11 @@ namespace MCWebHogar.ControlPedidos
                 {
                     Response.Redirect("../Default.aspx", true);
                 }
+                else if (ClasePermiso.Permiso("Ingreso", "Módulo", "Devoluciones", Convert.ToInt32(Session["UserId"].ToString().Trim())) <= 0)
+                {
+                    Session.Add("Message", "No tiene permisos para acceder al módulo de Devoluciones.");
+                    Response.Redirect("Pedido.aspx");
+                }
                 else
                 {
                     cargarDDLs();
@@ -127,6 +132,21 @@ namespace MCWebHogar.ControlPedidos
                     Session["IDDevolucion"] = idDevolucion;
                     Response.Redirect("DetalleDevolucion.aspx", true);
                 }
+                else if (e.CommandName == "Eliminar")
+                {
+                    if (ClasePermiso.Permiso("Eliminar", "Acciones", "Eliminar", Convert.ToInt32(Session["UserId"].ToString().Trim())) > 0)
+                    {
+                        HDF_IDDevolucion.Value = idDevolucion;
+                        UpdatePanel_EliminarDevolucion.Update();
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDGV_ListaDevoluciones_RowCommand", "abrirModalEliminarDevolucion();", true);
+                    }
+                    else
+                    {
+                        HDF_IDDevolucion.Value = "0";
+                        UpdatePanel_EliminarDevolucion.Update();
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDGV_ListaDevoluciones_RowCommand", "alertifywarning('No tiene permisos para realizar esta acción.');", true);
+                    }
+                }
             }
         }
 
@@ -202,6 +222,50 @@ namespace MCWebHogar.ControlPedidos
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_CrearDevoluciones_Click", "alertifywarning('No se ha podido crear la orden de devolución, por favor intente de nuevo.');", true);
                 return;
+            }
+        }
+
+        protected void BTN_EliminarDevolucion_Click(object sender, EventArgs e)
+        {
+            if (ClasePermiso.Permiso("Eliminar", "Acciones", "Eliminar", Convert.ToInt32(Session["UserId"].ToString().Trim())) > 0)
+            {
+                DT.DT1.Clear();
+
+                DT.DT1.Rows.Add("@IDDevolucion", HDF_IDDevolucion.Value, SqlDbType.Int);
+                DT.DT1.Rows.Add("@UsuarioID", Session["UserId"].ToString(), SqlDbType.VarChar);
+
+                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", "EliminarDevolucion", SqlDbType.VarChar);
+
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP18_0001");
+
+                if (Result != null && Result.Rows.Count > 0)
+                {
+                    if (Result.Rows[0][0].ToString().Trim() == "ERROR")
+                    {
+                        HDF_IDDevolucion.Value = "0";
+                        UpdatePanel_EliminarDevolucion.Update();
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_EliminarDevolucion_Click", "alertifywarning('" + Result.Rows[0][1].ToString().Trim() + "');", true);
+                        return;
+                    }
+                    else
+                    {
+                        HDF_IDDevolucion.Value = "0";
+                        UpdatePanel_EliminarDevolucion.Update();
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_EliminarDevolucion_Click", "alertifysuccess('Devolucion eliminado con éxito');cerrarModalEliminarDevolucion();", true);
+                        cargarDevoluciones();
+                    }
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_EliminarDevolucion_Click", "alertifywarning('No se ha podido eliminar la orden de Devolucion, por favor intente de nuevo.');", true);
+                    return;
+                }
+            }
+            else
+            {
+                HDF_IDDevolucion.Value = "0";
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_EliminarDevolucion_Clickd", "alertifywarning('No tiene permisos para realizar esta acción.');", true);
             }
         }
         #endregion

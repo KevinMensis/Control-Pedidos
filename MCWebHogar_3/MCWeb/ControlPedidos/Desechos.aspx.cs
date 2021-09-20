@@ -21,6 +21,11 @@ namespace MCWebHogar.ControlPedidos
                 {
                     Response.Redirect("../Default.aspx", true);
                 }
+                else if (ClasePermiso.Permiso("Ingreso", "Módulo", "Desechos", Convert.ToInt32(Session["UserId"].ToString().Trim())) <= 0)
+                {
+                    Session.Add("Message", "No tiene permisos para acceder al módulo de Desechos.");
+                    Response.Redirect("Pedido.aspx");
+                }
                 else
                 {
                     cargarDDLs();
@@ -127,6 +132,21 @@ namespace MCWebHogar.ControlPedidos
                     Session["IDDesecho"] = idDesecho;
                     Response.Redirect("DetalleDesecho.aspx", true);
                 }
+                else if (e.CommandName == "Eliminar")
+                {
+                    if (ClasePermiso.Permiso("Eliminar", "Acciones", "Eliminar", Convert.ToInt32(Session["UserId"].ToString().Trim())) > 0)
+                    {
+                        HDF_IDDesecho.Value = idDesecho;
+                        UpdatePanel_EliminarDesecho.Update();
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDGV_ListaDesechos_RowCommand", "abrirModalEliminarDesecho();", true);
+                    }
+                    else
+                    {
+                        HDF_IDDesecho.Value = "0";
+                        UpdatePanel_EliminarDesecho.Update();
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDGV_ListaDesechos_RowCommand", "alertifywarning('No tiene permisos para realizar esta acción.');", true);
+                    }
+                }
             }
         }
 
@@ -202,6 +222,50 @@ namespace MCWebHogar.ControlPedidos
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_CrearDesechos_Click", "alertifywarning('No se ha podido crear la orden de desecho, por favor intente de nuevo.');", true);
                 return;
+            }
+        }
+
+        protected void BTN_EliminarDesecho_Click(object sender, EventArgs e)
+        {
+            if (ClasePermiso.Permiso("Eliminar", "Acciones", "Eliminar", Convert.ToInt32(Session["UserId"].ToString().Trim())) > 0)
+            {
+                DT.DT1.Clear();
+
+                DT.DT1.Rows.Add("@IDDesecho", HDF_IDDesecho.Value, SqlDbType.Int);
+                DT.DT1.Rows.Add("@UsuarioID", Session["UserId"].ToString(), SqlDbType.VarChar);
+
+                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", "EliminarDesecho", SqlDbType.VarChar);
+
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP16_0001");
+
+                if (Result != null && Result.Rows.Count > 0)
+                {
+                    if (Result.Rows[0][0].ToString().Trim() == "ERROR")
+                    {
+                        HDF_IDDesecho.Value = "0";
+                        UpdatePanel_EliminarDesecho.Update();
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_EliminarDesecho_Click", "alertifywarning('" + Result.Rows[0][1].ToString().Trim() + "');", true);
+                        return;
+                    }
+                    else
+                    {
+                        HDF_IDDesecho.Value = "0";
+                        UpdatePanel_EliminarDesecho.Update();
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_EliminarDesecho_Click", "alertifysuccess('Desecho eliminado con éxito');cerrarModalEliminarDesecho();", true);
+                        cargarDesechos();
+                    }
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_EliminarDesecho_Click", "alertifywarning('No se ha podido eliminar la orden de Desecho, por favor intente de nuevo.');", true);
+                    return;
+                }
+            }
+            else
+            {
+                HDF_IDDesecho.Value = "0";
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_EliminarDesecho_Clickd", "alertifywarning('No tiene permisos para realizar esta acción.');", true);
             }
         }
         #endregion

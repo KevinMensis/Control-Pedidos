@@ -154,6 +154,12 @@
                             <p>Desechos</p>
                         </a>
                     </li>
+                    <li>
+                        <a href="Insumos.aspx">
+                            <i class="fas fa-box"></i>
+                            <p>Insumos</p>
+                        </a>
+                    </li>
                 </ul>
                 <hr style="width: 230px; color: #2c2c2c;" />
                 <h5 style="text-align: center;">Mantenimiento</h5>
@@ -190,7 +196,7 @@
                         </asp:LinkButton>
                         <a href="https://mensis.cr/" target="_blank" style="margin-top: 0px !important;">
                             <p style="margin-left: 29%; font-size: 7px;">Desarrollado por</p>
-                            <img style="width: 25%; display: block; margin-left: 30%;" src="../Assets/img/logoMensis.png" />
+                            <img style="width: 75%; display: block; margin-left: 10%;" src="https://mensis.cr/svg/logos/logoMensis.jpg" />
                         </a>
                     </li>
                 </ul>
@@ -269,12 +275,26 @@
                                 <asp:UpdatePanel ID="UpdatePanel_ListaPedidos" runat="server" UpdateMode="Conditional">
                                     <ContentTemplate>
                                         <asp:GridView ID="DGV_ListaPedidos" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
-                                            AutoGenerateColumns="False" DataKeyNames="IDPedido,Estado,UsuarioID,PlantaProduccionID,PuntoVentaID" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
+                                            AutoGenerateColumns="False" DataKeyNames="IDPedido,Estado,UsuarioID,PlantaProduccionID,PuntoVentaID,IDODP,IDDespacho,IDPedidoRecibido" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
                                             ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true"
                                             OnRowCommand="DGV_ListaPedidos_RowCommand"
                                             OnSorting="DGV_ListaPedidos_Sorting"
                                             OnRowDataBound="DGV_ListaPedidos_OnRowDataBound">
                                             <Columns>
+                                                <asp:TemplateField>
+                                                    <HeaderTemplate>
+                                                        <asp:Label ID="LBL_IrA" runat="server" Text="Ir a"></asp:Label>
+                                                    </HeaderTemplate>
+                                                    <ItemTemplate>
+                                                        <asp:DropDownList UseSubmitBehavior="false" class="form-control btn-round" runat="server" ID="DDL_Ira" AutoPostBack="true" OnSelectedIndexChanged="DDL_Ira_SelectedIndexChanged">
+                                                            <asp:ListItem Value="">Seleccione</asp:ListItem>
+                                                            <asp:ListItem Value="ODP">Orden de producción</asp:ListItem>
+                                                            <asp:ListItem Value="Despacho">Despacho</asp:ListItem>
+                                                            <asp:ListItem Value="Pedido Recibido">Pedido Recibido</asp:ListItem>
+                                                        </asp:DropDownList>
+                                                    </ItemTemplate>
+                                                    <ItemStyle HorizontalAlign="Center" />
+                                                </asp:TemplateField>
                                                 <asp:BoundField DataField="NumeroPedido" SortExpression="IDPedido" HeaderText="Número pedido" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="FPedido" SortExpression="FechaIngreso" HeaderText="Fecha pedido" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
                                                 <asp:BoundField DataField="DescripcionPuntoVenta" SortExpression="DescripcionPuntoVenta" HeaderText="Sucursal" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
@@ -301,7 +321,7 @@
                                                             Text="Ver detalles" AutoPostBack="true" />
                                                     </ItemTemplate>
                                                     <ItemStyle HorizontalAlign="Center" />
-                                                </asp:TemplateField>
+                                                </asp:TemplateField>                                                
                                             </Columns>
                                         </asp:GridView>
                                     </ContentTemplate>

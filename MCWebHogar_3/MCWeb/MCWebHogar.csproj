@@ -880,10 +880,12 @@
     <Content Include="bin\Microsoft.ReportViewer.WebForms.DLL" />
     <Content Include="ControlPedidos\DetalleDevolucion.aspx" />
     <Content Include="ControlPedidos\DetalleDesecho.aspx" />
+    <Content Include="ControlPedidos\DetalleInsumo.aspx" />
     <Content Include="ControlPedidos\DetalleEmpaque.aspx" />
     <Content Include="ControlPedidos\DetallePedidoRecibido.aspx" />
     <Content Include="ControlPedidos\DetalleDespacho.aspx" />
     <Content Include="ControlPedidos\DetalleODP.aspx" />
+    <Content Include="ControlPedidos\Insumos.aspx" />
     <Content Include="ControlPedidos\PlantasProduccion.aspx" />
     <Content Include="ControlPedidos\PuntosVenta.aspx" />
     <Content Include="ControlPedidos\Productos.aspx" />
@@ -1083,6 +1085,7 @@
     <Content Include="Styles\fonts\icomoon.woff" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ControlPedidos\ClasePermiso.cs" />
     <Compile Include="ControlPedidos\DetalleDevolucion.aspx.cs">
       <DependentUpon>DetalleDevolucion.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1096,6 +1099,13 @@
     </Compile>
     <Compile Include="ControlPedidos\DetalleDesecho.aspx.designer.cs">
       <DependentUpon>DetalleDesecho.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ControlPedidos\DetalleInsumo.aspx.cs">
+      <DependentUpon>DetalleInsumo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ControlPedidos\DetalleInsumo.aspx.designer.cs">
+      <DependentUpon>DetalleInsumo.aspx</DependentUpon>
     </Compile>
     <Compile Include="ControlPedidos\DetalleEmpaque.aspx.cs">
       <DependentUpon>DetalleEmpaque.aspx</DependentUpon>
@@ -1124,6 +1134,13 @@
     </Compile>
     <Compile Include="ControlPedidos\DetalleODP.aspx.designer.cs">
       <DependentUpon>DetalleODP.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ControlPedidos\Insumos.aspx.cs">
+      <DependentUpon>Insumos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ControlPedidos\Insumos.aspx.designer.cs">
+      <DependentUpon>Insumos.aspx</DependentUpon>
     </Compile>
     <Compile Include="ControlPedidos\PlantasProduccion.aspx.cs">
       <DependentUpon>PlantasProduccion.aspx</DependentUpon>

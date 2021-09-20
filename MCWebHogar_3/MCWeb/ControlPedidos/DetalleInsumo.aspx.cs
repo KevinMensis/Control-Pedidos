@@ -11,10 +11,10 @@ using System.Web.UI.WebControls;
 
 namespace MCWebHogar.ControlPedidos
 {
-    public partial class DetalleDesecho : System.Web.UI.Page
+    public partial class DetalleInsumo : System.Web.UI.Page
     {
         CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
-        DataTable Result = new DataTable();
+        DataTable Result = new DataTable();  
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -26,18 +26,18 @@ namespace MCWebHogar.ControlPedidos
                 }
                 else
                 {
-                    if (Session["IDDesecho"] == null)
+                    if (Session["IDInsumo"] == null)
                     {
-                        Response.Redirect("Desecho.aspx", true);
+                        Response.Redirect("Insumo.aspx", true);
                     }
                     else
                     {
-                        HDF_IDDesecho.Value = Session["IDDesecho"].ToString();
+                        HDF_IDInsumo.Value = Session["IDInsumo"].ToString();
                         HDF_IDUsuario.Value = Session["Usuario"].ToString();
                         HDF_UsuarioID.Value = Session["UserId"].ToString();
                         cargarDDLs();
-                        cargarDesecho("");
-                        cargarProductosDesecho();
+                        cargarInsumo("");
+                        cargarProductosInsumo();
                         cargarProductosSinAsignar("");
                         ViewState["Ordenamiento"] = "ASC";
                     }                    
@@ -47,11 +47,10 @@ namespace MCWebHogar.ControlPedidos
             {
                 string opcion = Page.Request.Params["__EVENTTARGET"];
                 string argument = Page.Request.Params["__EVENTARGUMENT"];
-                if (opcion.Contains("CargarDesecho"))
+                if (opcion.Contains("CargarInsumo"))
                 {
-                    cargarDesecho("");
-                    cargarDDLs();
-                    cargarProductosDesecho();
+                    cargarInsumo("");
+                    cargarProductosInsumo();
                     cargarProductosSinAsignar("");
                 }
                 if (opcion.Contains("TXT_BuscarProductosSinAsignar") || opcion.Contains("BTN_Agregar"))
@@ -86,37 +85,6 @@ namespace MCWebHogar.ControlPedidos
 
             DT.DT1.Clear();
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@TipoSentencia", "CargarPuntosVentaSelect", SqlDbType.VarChar);
-
-            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP02_0001");
-
-            if (Result != null && Result.Rows.Count > 0)
-            {
-                DDL_PuntoVenta.DataSource = Result;
-                DDL_PuntoVenta.DataTextField = "DescripcionPuntoVenta";
-                DDL_PuntoVenta.DataValueField = "IDPuntoVenta";
-                DDL_PuntoVenta.DataBind();
-            }
-
-            DT.DT1.Clear();
-            DT.DT1.Rows.Add("@IDDesecho", HDF_IDDesecho.Value, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@TipoSentencia", "CargarPuntosVentaDesecho", SqlDbType.VarChar);
-
-            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP02_0001");
-
-            if (Result != null && Result.Rows.Count > 0)
-            {
-                DataView dv = new DataView(Result);
-                dv.RowFilter = "IDPuntoVenta <> 0";
-                LB_PuntoVenta.DataSource = dv;
-                LB_PuntoVenta.DataTextField = "DescripcionPuntoVenta";
-                LB_PuntoVenta.DataValueField = "IDPuntoVenta";
-                LB_PuntoVenta.DataBind();
-            }
-
-            DT.DT1.Clear();
-            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
             DT.DT1.Rows.Add("@TipoSentencia", "CargarCategorias", SqlDbType.VarChar);
 
             Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP03_Categoria_001");
@@ -128,16 +96,16 @@ namespace MCWebHogar.ControlPedidos
         }
         #endregion
 
-        #region Desecho
-        public void cargarDesecho(string ejecutar)
+        #region Insumo
+        public void cargarInsumo(string ejecutar)
         {
             DT.DT1.Clear();
-            DT.DT1.Rows.Add("@IDDesecho", HDF_IDDesecho.Value, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@IDInsumo", HDF_IDInsumo.Value, SqlDbType.VarChar);
 
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@TipoSentencia", "CargarDesechos", SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "CargarInsumos", SqlDbType.VarChar);
 
-            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP16_0001");
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP20_0001");
             
             if (Result != null && Result.Rows.Count > 0)
             {
@@ -149,25 +117,25 @@ namespace MCWebHogar.ControlPedidos
                 {
                     foreach (DataRow dr in Result.Rows)
                     {
-                        TXT_CodigoDesecho.Text = dr["NumeroDesecho"].ToString().Trim(); ;
+                        TXT_CodigoInsumo.Text = dr["NumeroInsumo"].ToString().Trim(); ;
                         TXT_TotalProductos.Text = dr["CantidadProductos"].ToString().Trim();
-                        TXT_MontoDesecho.Text = String.Format("{0:n}", dr["MontoDesecho"]);
-                        // TXT_EstadoDesecho.Text = dr["Estado"].ToString().Trim();
-                        TXT_FechaDesecho.Text = dr["FDesecho"].ToString().Trim();
-                        TXT_HoraDesecho.Text = dr["HDesecho"].ToString().Trim();
+                        TXT_MontoInsumo.Text = String.Format("{0:n}", dr["MontoInsumo"]);
+                        TXT_FechaInsumo.Text = dr["FInsumo"].ToString().Trim();
+                        TXT_HoraInsumo.Text = dr["HInsumo"].ToString().Trim();
                         DDL_Propietario.SelectedValue = dr["UsuarioID"].ToString().Trim();
 
-                        BTN_AgregarProducto.Visible = TXT_FechaDesecho.Text == DateTime.Now.ToString("yyyy-MM-dd");
+                        BTN_AgregarProducto.Visible = TXT_FechaInsumo.Text == DateTime.Now.ToString("yyyy-MM-dd");
 
-                        // HDF_EstadoDesecho.Value = dr["Estado"].ToString().Trim();
+                        // HDF_EstadoInsumo.Value = dr["Estado"].ToString().Trim();
 
-                        // BTN_ConfirmarDesecho.Visible = HDF_EstadoDesecho.Value != "Confirmado";
-                        if (Session["NuevoDesecho"] != null)
+                        // BTN_ConfirmarInsumo.Visible = HDF_EstadoInsumo.Value != "Confirmado";
+
+                        if (Session["NuevoInsumo"] != null)
                         {
                             ejecutar += "abrirModalAgregarProductos();";
-                            Session.Remove("NuevoDesecho");
+                            Session.Remove("NuevoInsumo");
                         }
-                        
+
                         LBL_CreadoPor.Text = "Ingresado por: " + dr["QuienIngreso"].ToString().Trim() + ", " + dr["FIngreso"];
                         if (dr["QuienModifico"].ToString().Trim() == "" || dr["FModifico"].ToString().Trim() == "01/01/1900")
                             LBL_UltimaModificacion.Text = "";
@@ -176,80 +144,80 @@ namespace MCWebHogar.ControlPedidos
                         UpdatePanel_Header.Update();
 
                         string script = "estilosElementosBloqueados();" + ejecutar;
-                        ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarDesecho", script, true);
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarInsumo", script, true);
                     }
                 }
             }
         }
 
-        protected void BTN_ConfirmarDesecho_Click(object sender, EventArgs e)
+        protected void BTN_ConfirmarInsumo_Click(object sender, EventArgs e)
         {
             DT.DT1.Clear();
 
-            DT.DT1.Rows.Add("@IDDesecho", HDF_IDDesecho.Value, SqlDbType.Int);
+            DT.DT1.Rows.Add("@IDInsumo", HDF_IDInsumo.Value, SqlDbType.Int);
             DT.DT1.Rows.Add("@Estado", "Confirmado", SqlDbType.VarChar);
 
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@TipoSentencia", "ConfirmarDesecho", SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "ConfirmarInsumo", SqlDbType.VarChar);
 
-            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP16_0001");
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP20_0001");
 
             if (Result != null && Result.Rows.Count > 0)
             {
                 if (Result.Rows[0][0].ToString().Trim() == "ERROR")
                 {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_ConfirmarDesecho_Click", "alertifywarning('No se ha confirmado el Desecho. Error: " + Result.Rows[0][1].ToString().Trim() + "');", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_ConfirmarInsumo_Click", "alertifywarning('No se ha confirmado el Insumo. Error: " + Result.Rows[0][1].ToString().Trim() + "');", true);
                     return;
                 }
                 else
                 {
-                    string script = "alertifysuccess('Se ha confirmado el Desecho.');";
-                    cargarDesecho(script);
-                    cargarProductosDesecho();
+                    string script = "alertifysuccess('Se ha confirmado el Insumo.');";
+                    cargarInsumo(script);
+                    cargarProductosInsumo();
                 }
             }
             else
             {
-                string script = "alertifywarning('No se ha confirmado el Desecho.');";
-                cargarDesecho(script);
+                string script = "alertifywarning('No se ha confirmado el Insumo.');";
+                cargarInsumo(script);
             }
         }
 
-        protected void BTN_ReporteDesecho_Click(object sender, EventArgs e)
+        protected void BTN_ReporteInsumo_Click(object sender, EventArgs e)
         {
             try
             {
-                MCWebHogar.DataSets.DSSolicitud dsReporteDesecho = new MCWebHogar.DataSets.DSSolicitud();
+                MCWebHogar.DataSets.DSSolicitud dsReporteInsumo = new MCWebHogar.DataSets.DSSolicitud();
                 DT.DT1.Clear();
-                DT.DT1.Rows.Add("@IDDesecho", HDF_IDDesecho.Value, SqlDbType.Int);
+                DT.DT1.Rows.Add("@IDInsumo", HDF_IDInsumo.Value, SqlDbType.Int);
                 DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString().Trim(), SqlDbType.VarChar);
-                DT.DT1.Rows.Add("@TipoSentencia", "CargarDesechos", SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", "CargarInsumos", SqlDbType.VarChar);
 
-                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP16_0001");
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP20_0001");
                 if (Result.Rows.Count == 0)
                 {
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerControlScript", "alertifywarning('No hay datos para mostrar');desactivarloading();estilosElementosBloqueados();", true);
                     return;
                 }
-                dsReporteDesecho.Tables["DT_EncabezadoDesecho"].Merge(Result, true, MissingSchemaAction.Ignore);
+                dsReporteInsumo.Tables["DT_EncabezadoInsumo"].Merge(Result, true, MissingSchemaAction.Ignore);
 
                 DT.DT1.Clear();
-                DT.DT1.Rows.Add("@DesechoID", HDF_IDDesecho.Value, SqlDbType.Int);
+                DT.DT1.Rows.Add("@InsumoID", HDF_IDInsumo.Value, SqlDbType.Int);
                 DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString().Trim(), SqlDbType.VarChar);
                 DT.DT1.Rows.Add("@TipoSentencia", "CargarReporteProductos", SqlDbType.VarChar);
 
-                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP17_0001");
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP21_0001");
                 if (Result.Rows.Count == 0)
                 {
                     DataTable dt = new DataTable();
-                    dt.Columns.Add("DesechoID");
+                    dt.Columns.Add("InsumoID");
                     dt.Columns.Add("DescripcionProducto");
                     dt.Rows.Add("1", "No hay registros.");
-                    dsReporteDesecho.Tables["DT_DetalleDesecho"].Merge(dt, true, MissingSchemaAction.Ignore);
+                    dsReporteInsumo.Tables["DT_DetalleInsumo"].Merge(dt, true, MissingSchemaAction.Ignore);
                 }
                 else
                 {
-                    dsReporteDesecho.Tables["DT_DetalleDesecho"].Merge(Result, true, MissingSchemaAction.Ignore);
+                    dsReporteInsumo.Tables["DT_DetalleInsumo"].Merge(Result, true, MissingSchemaAction.Ignore);
                 }
 
                 DataTable DT_Encabezado = new DataTable();
@@ -262,8 +230,8 @@ namespace MCWebHogar.ControlPedidos
                 DT_Encabezado.Columns.Add("DTName");
 
                 DT_Encabezado.TableName = "Encabezado";
-                DT_Encabezado.Rows.Add("01", "Datos Encabezado", "EE_Reports", "MCWebHogar.rptDesecho.rdlc", "DT_EncabezadoDesecho", "DT_EncabezadoDesecho");
-                DT_Encabezado.Rows.Add("01", "Datos Encabezado", "EE_Reports", "MCWebHogar.rptDesecho.rdlc", "DT_DetalleDesecho", "DT_DetalleDesecho");
+                DT_Encabezado.Rows.Add("01", "Datos Encabezado", "EE_Reports", "MCWebHogar.rptInsumo.rdlc", "DT_EncabezadoInsumo", "DT_EncabezadoInsumo");
+                DT_Encabezado.Rows.Add("01", "Datos Encabezado", "EE_Reports", "MCWebHogar.rptInsumo.rdlc", "DT_DetalleInsumo", "DT_DetalleInsumo");
 
                 Microsoft.Reporting.WebForms.ReportViewer ReportViewer1 = new Microsoft.Reporting.WebForms.ReportViewer();
 
@@ -284,7 +252,7 @@ namespace MCWebHogar.ControlPedidos
                     ReportViewer1.LocalReport.ReportPath = Server.MapPath(String.Format("{0}.rdlc", @"..\" + nombre));
 
                     report = dr["DTName"].ToString().Trim();
-                    foreach (DataTable dt in dsReporteDesecho.Tables)
+                    foreach (DataTable dt in dsReporteInsumo.Tables)
                     {
                         if (dt.Rows.Count > 0 && dt.TableName.Trim() == report)
                         {
@@ -304,7 +272,7 @@ namespace MCWebHogar.ControlPedidos
                 byte[] bytes2 = ReportViewer1.LocalReport.Render("PDF", null, out mimeType, out encoding, out extension, out streamIds, out warnings);
                 //Generamos archivo en el servidor
                 string strCurrentDir2 = Server.MapPath(".") + "\\ReportesTemp\\";
-                string strFilePDF2 = "ReporteDesecho.pdf";
+                string strFilePDF2 = "ReporteInsumo.pdf";
                 string strFilePathPDF2 = strCurrentDir2 + strFilePDF2;
                 using (FileStream fs = new FileStream(strFilePathPDF2, FileMode.Create))
                 {
@@ -320,30 +288,30 @@ namespace MCWebHogar.ControlPedidos
             }
         }
 
-        protected void BTN_DescargarDesecho_Click(object sender, EventArgs e)
+        protected void BTN_DescargarInsumo_Click(object sender, EventArgs e)
         {
             DT.DT1.Clear();
-            DT.DT1.Rows.Add("@IDDesecho", HDF_IDDesecho.Value, SqlDbType.Int);
+            DT.DT1.Rows.Add("@IDInsumo", HDF_IDInsumo.Value, SqlDbType.Int);
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString().Trim(), SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@TipoSentencia", "ReporteDesecho", SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "ReporteInsumo", SqlDbType.VarChar);
 
-            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP16_0001");
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP20_0001");
 
             if (Result.Rows.Count <= 0)
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerControlScriptBTN_DescargarDesecho_Click", "desactivarloading();estilosElementosBloqueados();alertifyerror('No hay registros para descargar.');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerControlScriptBTN_DescargarInsumo_Click", "desactivarloading();estilosElementosBloqueados();alertifyerror('No hay registros para descargar.');", true);
                 return;
             }
 
             using (XLWorkbook wb = new XLWorkbook())
             {
-                wb.Worksheets.Add(Result, "Desecho");
+                wb.Worksheets.Add(Result, "Insumo");
 
                 Response.Clear();
                 Response.Buffer = true;
                 Response.Charset = "";
                 Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                Response.AddHeader("content-disposition", "attachment;filename=Desecho.xlsx");
+                Response.AddHeader("content-disposition", "attachment;filename=Insumo.xlsx");
                 using (MemoryStream MyMemoryStream = new MemoryStream())
                 {
                     wb.SaveAs(MyMemoryStream);
@@ -368,21 +336,16 @@ namespace MCWebHogar.ControlPedidos
                 CHK_Producto.Checked = false;
                 TXT_CantidadAgregar.Text = "0";
             }
-            DDL_PuntoVenta.SelectedValue = "0";
-            DGV_ListaProductosSinAgregar.Enabled = false;
-            TXT_BuscarProductosSinAsignar.Enabled = false;
-            LB_Categoria.Enabled = false;
-            BTN_Agregar.Enabled = false;
-            UpdatePanel_ListaProductosSinAgregar.Update();
-            UpdatePanel_ModalAgregarProductos.Update();
 
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptAgregarProductos", "abrirModalAgregarProductos();estilosElementosBloqueados();cargarFiltros();", true);
+            UpdatePanel_ListaProductosSinAgregar.Update();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptAgregarProductos", "abrirModalAgregarProductos();estilosElementosBloqueados();", true);
             return;
         }
 
         public void cargarProductosSinAsignar(string ejecutar)
         {
             DT.DT1.Clear();
+
             string categorias = "";
 
             #region Categorias
@@ -400,14 +363,12 @@ namespace MCWebHogar.ControlPedidos
             }
             #endregion
 
-            DT.DT1.Rows.Add("@DesechoID", HDF_IDDesecho.Value, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@PuntoVentaID", DDL_PuntoVenta.SelectedValue, SqlDbType.VarChar);
-
+            DT.DT1.Rows.Add("@InsumoID", HDF_IDInsumo.Value, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@CategoriasFiltro", categorias, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@DescripcionProducto", TXT_BuscarProductosSinAsignar.Text, SqlDbType.VarChar);
 
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@TipoSentencia", "CargarProductosDesecho", SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "CargarProductosInsumo", SqlDbType.VarChar);
 
             Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP03_0001");
 
@@ -422,6 +383,7 @@ namespace MCWebHogar.ControlPedidos
                     DGV_ListaProductosSinAgregar.DataSource = Result;
                     DGV_ListaProductosSinAgregar.DataBind();
                     UpdatePanel_ListaProductosSinAgregar.Update();
+                    UpdatePanel_ModalAgregarProductos.Update();
                     string script = "cargarFiltros();" + ejecutar;
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductos", script, true);
                 }
@@ -431,6 +393,7 @@ namespace MCWebHogar.ControlPedidos
                 DGV_ListaProductosSinAgregar.DataSource = Result;
                 DGV_ListaProductosSinAgregar.DataBind();
                 UpdatePanel_ListaProductosSinAgregar.Update();
+                UpdatePanel_ModalAgregarProductos.Update();
                 string script = "cargarFiltros();" + ejecutar;
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductos", script, true);
             }
@@ -438,35 +401,16 @@ namespace MCWebHogar.ControlPedidos
 
         protected void FiltrarProductos_OnClick(object sender, EventArgs e)
         {
-            if (DDL_PuntoVenta.SelectedValue == "0")
-            {
-                DGV_ListaProductosSinAgregar.Enabled = false;
-                TXT_BuscarProductosSinAsignar.Enabled = false;
-                LB_Categoria.Enabled = false;
-                BTN_Agregar.Enabled = false;
-                UpdatePanel_ListaProductosSinAgregar.Update();
-                UpdatePanel_ModalAgregarProductos.Update();
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptAgregarProductos", "estilosElementosBloqueados();cargarFiltros();", true);            
-            }
-            else
-            {
-                DGV_ListaProductosSinAgregar.Enabled = true;
-                TXT_BuscarProductosSinAsignar.Enabled = true;
-                LB_Categoria.Enabled = true;
-                BTN_Agregar.Enabled = true;
-                UpdatePanel_ListaProductosSinAgregar.Update();
-                UpdatePanel_ModalAgregarProductos.Update();
-                cargarProductosSinAsignar("productosMarcados();");
-            }
+            cargarProductosSinAsignar("productosMarcados();");
         }
 
         protected void DGV_ListaProductosSinAsignar_Sorting(object sender, GridViewSortEventArgs e)
         {
             DT.DT1.Clear();
-            DT.DT1.Rows.Add("@DesechoID", HDF_IDDesecho.Value, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@InsumoID", HDF_IDInsumo.Value, SqlDbType.VarChar);
 
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@TipoSentencia", "CargarProductosDesecho", SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "CargarProductosInsumo", SqlDbType.VarChar);
 
             Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP03_0001");
             if (ViewState["Ordenamiento"].ToString().Trim() == "ASC")
@@ -507,62 +451,43 @@ namespace MCWebHogar.ControlPedidos
         }
 
         [WebMethod()]
-        public static string BTN_Agregar_Click(string idDesecho, int idPuntoVenta, int idProducto, int idUsuario, int cantidadProducto, string usuario)
-        {
+        public static string BTN_Agregar_Click(string idInsumo, int idProducto, int idUsuario, decimal cantidadProducto, string usuario)
+        {        
             CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
             DataTable Result = new DataTable();
 
             DT.DT1.Clear();
 
-            DT.DT1.Rows.Add("@DesechoID", idDesecho, SqlDbType.Int);
-            DT.DT1.Rows.Add("@PuntoVentaID", idPuntoVenta, SqlDbType.Int);
+            DT.DT1.Rows.Add("@InsumoID", idInsumo, SqlDbType.Int);
             DT.DT1.Rows.Add("@ProductoID", idProducto, SqlDbType.Int);
             DT.DT1.Rows.Add("@UsuarioID", idUsuario, SqlDbType.Int);
-            DT.DT1.Rows.Add("@CantidadDesecho", cantidadProducto, SqlDbType.Int);
+            DT.DT1.Rows.Add("@CantidadInsumo", cantidadProducto, SqlDbType.Decimal);
 
             DT.DT1.Rows.Add("@Usuario", usuario, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@TipoSentencia", "AgregarProducto", SqlDbType.VarChar);
 
-            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP17_0001");
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP21_0001");
+
             return "correcto";
         }
         #endregion
 
-        #region Productos Desecho
+        #region Productos Insumo
         protected void TXT_Buscar_OnTextChanged(object sender, EventArgs e)
         {
-            cargarProductosDesecho();
+            cargarProductosInsumo();
         }
         
-        public void cargarProductosDesecho()
+        public void cargarProductosInsumo()
         {
             DT.DT1.Clear();
-
-            string puntosVenta = "";
-
-            #region Puntos Venta
-            foreach (ListItem l in LB_PuntoVenta.Items)
-            {
-                if (l.Selected)
-                {
-                    puntosVenta += "'" + l.Value + "',";
-                }
-            }
-            puntosVenta = puntosVenta.TrimEnd(',');
-            if (puntosVenta != "")
-            {
-                DT.DT1.Rows.Add("@FiltrarSucursales", 1, SqlDbType.Int);
-                DT.DT1.Rows.Add("@FiltroSucursales", puntosVenta, SqlDbType.VarChar);
-            }
-            #endregion
-
-            DT.DT1.Rows.Add("@DesechoID", HDF_IDDesecho.Value, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@InsumoID", HDF_IDInsumo.Value, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@Buscar", TXT_Buscar.Text, SqlDbType.VarChar);
 
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
             DT.DT1.Rows.Add("@TipoSentencia", "CargarProductos", SqlDbType.VarChar);
 
-            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP17_0001");
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP21_0001");
 
             if (Result != null && Result.Rows.Count > 0)
             {
@@ -572,63 +497,45 @@ namespace MCWebHogar.ControlPedidos
                 }
                 else
                 {
-                    DGV_ListaProductosDesecho.DataSource = Result;
-                    DGV_ListaProductosDesecho.DataBind();
-                    UpdatePanel_ListaProductosDesecho.Update();
+                    DGV_ListaProductosInsumo.DataSource = Result;
+                    DGV_ListaProductosInsumo.DataBind();
+                    UpdatePanel_ListaProductosInsumo.Update();
                     string script = "estilosElementosBloqueados();cargarFiltros();";
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductosDesecho", script, true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductosInsumo", script, true);
                 }
             }
             else
             {
-                DGV_ListaProductosDesecho.DataSource = Result;
-                DGV_ListaProductosDesecho.DataBind();
-                UpdatePanel_ListaProductosDesecho.Update();
+                DGV_ListaProductosInsumo.DataSource = Result;
+                DGV_ListaProductosInsumo.DataBind();
+                UpdatePanel_ListaProductosInsumo.Update();
                 string script = "estilosElementosBloqueados();cargarFiltros();";
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductosDesecho", script, true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductosInsumo", script, true);
             }
         }
 
-        protected void DGV_ListaProductosDesecho_RowDataBound(object sender, GridViewRowEventArgs e)
+        protected void DGV_ListaProductosInsumo_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 TextBox cantidad = (TextBox)e.Row.FindControl("TXT_Cantidad");
-                DropDownList ddlUnds = (DropDownList)e.Row.FindControl("DDL_Unidades");
-                DropDownList ddlDecs = (DropDownList)e.Row.FindControl("DDL_Decenas");
-                DropDownList ddlCents = (DropDownList)e.Row.FindControl("DDL_Centenas");
-                decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
-                int unds = Convert.ToInt32(cantidadProducto) % 10;
-                int decs = (Convert.ToInt32(cantidadProducto) / 10) % 10;
-                int cents = (Convert.ToInt32(cantidadProducto) / 100);
-                ddlUnds.SelectedValue = unds.ToString();
-                ddlDecs.SelectedValue = decs.ToString();
-                ddlCents.SelectedValue = cents.ToString();
 
-                if (TXT_FechaDesecho.Text != DateTime.Now.ToString("yyyy-MM-dd") && (ClasePermiso.Permiso("Editar", "Acciones", "Editar", Convert.ToInt32(Session["UserId"].ToString().Trim())) <= 0))
+                if (TXT_FechaInsumo.Text != DateTime.Now.ToString("yyyy-MM-dd") && (ClasePermiso.Permiso("Editar", "Acciones", "Editar", Convert.ToInt32(Session["UserId"].ToString().Trim())) <= 0))
                 {
                     cantidad.Enabled = false;
                     cantidad.CssClass = "form-control";
-                    ddlUnds.Enabled = false;
-                    ddlUnds.CssClass = "form-control";
-                    ddlDecs.Enabled = false;
-                    ddlDecs.CssClass = "form-control";
-                    ddlCents.Enabled = false;
-                    ddlCents.CssClass = "form-control";
                 }
             }
         }
         
-        protected void DGV_ListaProductosDesecho_RowCommand(object sender, GridViewCommandEventArgs e)
+        protected void DGV_ListaProductosInsumo_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             if (e.CommandName != "Sort")
             {
                 int index = Convert.ToInt32(e.CommandArgument);
                 
-                TextBox cantidad = DGV_ListaProductosDesecho.Rows[index].FindControl("TXT_Cantidad") as TextBox;
+                TextBox cantidad = DGV_ListaProductosInsumo.Rows[index].FindControl("TXT_Cantidad") as TextBox;
                 decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
-                DropDownList ddlUnds = DGV_ListaProductosDesecho.Rows[index].FindControl("DDL_Unidades") as DropDownList;
-                DropDownList ddlDecs = DGV_ListaProductosDesecho.Rows[index].FindControl("DDL_Decenas") as DropDownList;
                 bool modifico = false;
                 if (e.CommandName == "minus")
                 {
@@ -648,25 +555,23 @@ namespace MCWebHogar.ControlPedidos
                 }
                 int unds = Convert.ToInt32(cantidadProducto) % 10;
                 int decs = Convert.ToInt32(cantidadProducto) / 10;
-                ddlUnds.SelectedValue = unds.ToString();
-                ddlDecs.SelectedValue = decs.ToString();
                 cantidad.Text = cantidadProducto.ToString();
                 if (modifico)
-                    guardarProductoDesecho(index);
+                    guardarProductoInsumo(index);
                 
             }
         }
 
-        protected void DGV_ListaProductosDesecho_Sorting(object sender, GridViewSortEventArgs e)
+        protected void DGV_ListaProductosInsumo_Sorting(object sender, GridViewSortEventArgs e)
         {
             DT.DT1.Clear();
-            DT.DT1.Rows.Add("@DesechoID", HDF_IDDesecho.Value, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@InsumoID", HDF_IDInsumo.Value, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@Buscar", TXT_Buscar.Text, SqlDbType.VarChar);
 
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
             DT.DT1.Rows.Add("@TipoSentencia", "CargarProductos", SqlDbType.VarChar);
 
-            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP17_0001");
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP21_0001");
 
             if (ViewState["Ordenamiento"].ToString().Trim() == "ASC")
             {
@@ -686,81 +591,65 @@ namespace MCWebHogar.ControlPedidos
                 }
                 else
                 {
-                    DGV_ListaProductosDesecho.DataSource = Result;
-                    DGV_ListaProductosDesecho.DataBind();
-                    UpdatePanel_ListaProductosDesecho.Update();
+                    DGV_ListaProductosInsumo.DataSource = Result;
+                    DGV_ListaProductosInsumo.DataBind();
+                    UpdatePanel_ListaProductosInsumo.Update();
                 }
             }
             else
             {
-                DGV_ListaProductosDesecho.DataSource = Result;
-                DGV_ListaProductosDesecho.DataBind();
-                UpdatePanel_ListaProductosDesecho.Update();
+                DGV_ListaProductosInsumo.DataSource = Result;
+                DGV_ListaProductosInsumo.DataBind();
+                UpdatePanel_ListaProductosInsumo.Update();
             }
-        }
+        }        
         
-        protected void DDL_DecenasUnidades_OnSelectedIndexChanged(object sender, EventArgs e)
+        private void guardarProductoInsumo(int index)
         {
-            GridViewRow gvRow = (GridViewRow)(sender as Control).Parent.Parent;
-            int index = gvRow.RowIndex;
-            DropDownList ddlUnds = DGV_ListaProductosDesecho.Rows[index].FindControl("DDL_Unidades") as DropDownList;
-            DropDownList ddlDecs = DGV_ListaProductosDesecho.Rows[index].FindControl("DDL_Decenas") as DropDownList;
-            DropDownList ddlCents = DGV_ListaProductosDesecho.Rows[index].FindControl("DDL_Centenas") as DropDownList;
-            TextBox cantidad = DGV_ListaProductosDesecho.Rows[index].FindControl("TXT_Cantidad") as TextBox;
-            int unds = Convert.ToInt32(ddlUnds.SelectedValue);
-            int decs = Convert.ToInt32(ddlDecs.SelectedValue) * 10;
-            int cents = Convert.ToInt32(ddlCents.SelectedValue) * 100;
-            decimal cantidadProducto = cents + decs + unds;
-            cantidad.Text = cantidadProducto.ToString();
-            guardarProductoDesecho(index);
-        }
-
-        private void guardarProductoDesecho(int index)
-        {
-            TextBox cantidad = DGV_ListaProductosDesecho.Rows[index].FindControl("TXT_Cantidad") as TextBox;
+            TextBox cantidad = DGV_ListaProductosInsumo.Rows[index].FindControl("TXT_Cantidad") as TextBox;
             decimal cantidadProducto = (Convert.ToDecimal(cantidad.Text));
-            string IDDesechoDetalle = DGV_ListaProductosDesecho.DataKeys[index].Value.ToString().Trim();
+            string IDInsumoDetalle = DGV_ListaProductosInsumo.DataKeys[index].Value.ToString().Trim();
 
             DT.DT1.Clear();
-            DT.DT1.Rows.Add("@IDDesechoDetalle", IDDesechoDetalle, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@CantidadDesecho", cantidadProducto, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@IDInsumoDetalle", IDInsumoDetalle, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@CantidadInsumo", cantidadProducto, SqlDbType.Decimal);
 
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
             DT.DT1.Rows.Add("@TipoSentencia", "UpdateProducto", SqlDbType.VarChar);
 
-            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP17_0001");
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP21_0001");
 
             if (Result != null && Result.Rows.Count > 0)
             {
                 if (Result.Rows[0][0].ToString().Trim() == "ERROR")
                 {
-                    cargarProductosDesecho();
+                    cargarProductosInsumo();
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptguardarProductoPedido", "alertifywarning('" + Result.Rows[0][1].ToString().Trim() + "');", true);
                 }
                 else
                 {
-                    cargarDesecho("");
+                    cargarInsumo("");
                 }
             }
         }
-
+        
         [WebMethod()]
-        public static string guardarProductoDesecho(int idDesechoDetalle, int cantidadProducto, string usuario)
+        public static string guardarCantidadProductoInsumo(int idInsumoDetalle, decimal cantidadProducto, string usuario)
         {
             CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
             DataTable Result = new DataTable();
 
             DT.DT1.Clear();
-            DT.DT1.Rows.Add("@IDDesechoDetalle", idDesechoDetalle, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@CantidadDesecho", cantidadProducto, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@IDInsumoDetalle", idInsumoDetalle, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@CantidadInsumo", cantidadProducto, SqlDbType.Decimal);
 
             DT.DT1.Rows.Add("@Usuario", usuario, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@TipoSentencia", "UpdateProducto", SqlDbType.VarChar);
 
-            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP17_0001");
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP21_0001");
 
             return "correct";
-        }        
+        }
         #endregion
         #endregion
     }

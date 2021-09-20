@@ -47,7 +47,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>Fecha empaque:</Value>
+                <Value>Fecha Insumo:</Value>
                 <Style>
                   <Color>Turquoise</Color>
                 </Style>
@@ -63,7 +63,7 @@
         <Width>3.86208cm</Width>
         <ZIndex>1</ZIndex>
         <Visibility>
-          <Hidden>=First(Fields!FechaEmpaque.Value, "DT_EncabezadoEmpaque")="1/1/1900 12:00:00 AM"</Hidden>
+          <Hidden>=First(Fields!FechaInsumo.Value, "DT_EncabezadoInsumo")="1/1/1900 12:00:00 AM"</Hidden>
         </Visibility>
         <Style>
           <Border>
@@ -82,7 +82,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=First(Fields!FechaIngreso.Value, "DT_EncabezadoEmpaque")</Value>
+                <Value>=First(Fields!FechaIngreso.Value, "DT_EncabezadoInsumo")</Value>
                 <Style>
                   <Format>d MMM yyyy</Format>
                 </Style>
@@ -100,7 +100,7 @@
         <Width>7.2016cm</Width>
         <ZIndex>2</ZIndex>
         <Visibility>
-          <Hidden>=First(Fields!FechaEmpaque.Value, "DT_EncabezadoEmpaque")="1/1/1900 12:00:00 AM"</Hidden>
+          <Hidden>=First(Fields!FechaInsumo.Value, "DT_EncabezadoInsumo")="1/1/1900 12:00:00 AM"</Hidden>
         </Visibility>
         <Style>
           <Border>
@@ -324,7 +324,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Cantidad empaque</Value>
+                              <Value>Cantidad Insumo</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                                 <Color>Turquoise</Color>
@@ -500,14 +500,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="CantidadEmpaque">
+                    <Textbox Name="CantidadInsumo">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!CantidadEmpaque.Value</Value>
+                              <Value>=Fields!CantidadInsumo.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
@@ -518,7 +518,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>CantidadEmpaque</rd:DefaultName>
+                      <rd:DefaultName>CantidadInsumo</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>None</Style>
@@ -554,7 +554,7 @@
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
-        <DataSetName>DT_DetalleEmpaque</DataSetName>
+        <DataSetName>DT_DetalleInsumo</DataSetName>
         <Top>1.9582cm</Top>
         <Left>0.38961cm</Left>
         <Height>1.6445cm</Height>
@@ -584,7 +584,7 @@
             <Paragraph>
               <TextRuns>
                 <TextRun>
-                  <Value>DETALLE DE EMPAQUE</Value>
+                  <Value>DETALLE DE Insumo</Value>
                   <Style>
                     <FontFamily>Calibri</FontFamily>
                     <FontSize>12pt</FontSize>
@@ -759,14 +759,14 @@
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="DT_EncabezadoEmpaque">
+    <DataSet Name="DT_EncabezadoInsumo">
       <Query>
         <DataSourceName>DSSolicitud</DataSourceName>
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
-        <Field Name="IDEmpaque">
-          <DataField>IDEmpaque</DataField>
+        <Field Name="IDInsumo">
+          <DataField>IDInsumo</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="UsuarioID">
@@ -777,8 +777,8 @@
           <DataField>NombreUsuario</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="FechaEmpaque">
-          <DataField>FechaEmpaque</DataField>
+        <Field Name="FechaInsumo">
+          <DataField>FechaInsumo</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
         <Field Name="QuienIngreso">
@@ -797,8 +797,8 @@
           <DataField>FechaModifico</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
-        <Field Name="NumeroEmpaque">
-          <DataField>NumeroEmpaque</DataField>
+        <Field Name="NumeroInsumo">
+          <DataField>NumeroInsumo</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="CantidadProductos">
@@ -809,20 +809,20 @@
       <rd:DataSetInfo>
         <rd:DataSetName>DSSolicitud</rd:DataSetName>
         <rd:SchemaPath>C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\DataSets\DS_ControlPedidos.xsd</rd:SchemaPath>
-        <rd:TableName>DT_EncabezadoEmpaque</rd:TableName>
+        <rd:TableName>DT_EncabezadoInsumo</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />
         <rd:TableAdapterName />
       </rd:DataSetInfo>
     </DataSet>
-    <DataSet Name="DT_DetalleEmpaque">
+    <DataSet Name="DT_DetalleInsumo">
       <Query>
         <DataSourceName>DSSolicitud</DataSourceName>
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
-        <Field Name="EmpaqueID">
-          <DataField>EmpaqueID</DataField>
+        <Field Name="InsumoID">
+          <DataField>InsumoID</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="ProductoID">
@@ -837,8 +837,8 @@
           <DataField>PrecioProducto</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
-        <Field Name="CantidadEmpaque">
-          <DataField>CantidadEmpaque</DataField>
+        <Field Name="CantidadInsumo">
+          <DataField>CantidadInsumo</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="UnidadMedida">
@@ -865,7 +865,7 @@
       <rd:DataSetInfo>
         <rd:DataSetName>DSSolicitud</rd:DataSetName>
         <rd:SchemaPath>C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\DataSets\DS_ControlPedidos.xsd</rd:SchemaPath>
-        <rd:TableName>DT_DetalleEmpaque</rd:TableName>
+        <rd:TableName>DT_DetalleInsumo</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />
         <rd:TableAdapterName />

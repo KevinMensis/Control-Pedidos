@@ -113,6 +113,12 @@
                             <p>Desechos</p>
                         </a>
                     </li>
+                    <li>
+                        <a href="Insumos.aspx">
+                            <i class="fas fa-box"></i>
+                            <p>Insumos</p>
+                        </a>
+                    </li>
                 </ul>
                 <hr style="width: 230px; color: #2c2c2c;" />
                 <h5 style="text-align: center;">Mantenimiento</h5>
@@ -149,7 +155,7 @@
                         </asp:LinkButton>
                         <a href="https://mensis.cr/" target="_blank" style="margin-top: 0px !important;">
                             <p style="margin-left: 29%; font-size: 7px;">Desarrollado por</p>
-                            <img style="width: 25%; display: block; margin-left: 30%;" src="../Assets/img/logoMensis.png" />
+                            <img style="width: 75%; display: block; margin-left: 10%;" src="https://mensis.cr/svg/logos/logoMensis.jpg" />
                         </a>
                     </li>
                 </ul>

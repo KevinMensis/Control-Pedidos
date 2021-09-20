@@ -651,7 +651,7 @@ namespace MCWebHogar.ControlPedidos
                 ddlDecs.SelectedValue = decs.ToString();
                 ddlCents.SelectedValue = cents.ToString();
 
-                if (HDF_EstadoODP.Value != "Confirmada")
+                if (HDF_EstadoODP.Value != "Confirmada" && (ClasePermiso.Permiso("Editar", "Acciones", "Editar", Convert.ToInt32(Session["UserId"].ToString().Trim())) <= 0))
                 {
                     cantidad.Enabled = false;
                     cantidad.CssClass = "form-control";

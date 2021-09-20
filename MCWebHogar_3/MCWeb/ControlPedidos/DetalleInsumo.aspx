@@ -1,11 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DetalleDevolucion.aspx.cs" MasterPageFile="~/MenuPrincipal.Master" Inherits="MCWebHogar.ControlPedidos.DetalleDevolucion" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DetalleInsumo.aspx.cs" MasterPageFile="~/MenuPrincipal.Master" Inherits="MCWebHogar.ControlPedidos.DetalleInsumo" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajax" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Detalle Devolucion</title>
+    <title>Detalle Insumo</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <style>
     </style>
@@ -51,12 +51,12 @@
             var values = txtCantidad.id.split('_')
             var index = values.pop() * 1 + 1
             if (e.keyCode === 13) {
-                var rows = $(<%= DGV_ListaProductosDevolucion.ClientID %>)[0].rows.length - 1
+                var rows = $(<%= DGV_ListaProductosInsumo.ClientID %>)[0].rows.length - 1
                 var id = ''
                 if (index === rows) {
-                    id = 'Content_DGV_ListaProductosDevolucion_TXT_Cantidad_' + 0
+                    id = 'Content_DGV_ListaProductosInsumo_TXT_Cantidad_' + 0
                 } else {
-                    id = 'Content_DGV_ListaProductosDevolucion_TXT_Cantidad_' + index
+                    id = 'Content_DGV_ListaProductosInsumo_TXT_Cantidad_' + index
                 }
                 document.getElementById(id).autofocus = true;
                 document.getElementById(id).focus();
@@ -67,49 +67,31 @@
         function TXT_Cantidad_onChange(txtCantidad) {
             var values = txtCantidad.id.split('_')
             var index = values.pop() * 1
-            var idUnidades = 'Content_DGV_ListaProductosDevolucion_DDL_Unidades_' + index
-            var idDecenas = 'Content_DGV_ListaProductosDevolucion_DDL_Decenas_' + index
-            var idCentenas = 'Content_DGV_ListaProductosDevolucion_DDL_Centenas_' + index
+            
             var cantidadProducto = txtCantidad.value
-            if (cantidadProducto !== '') {
-                var unds = cantidadProducto % 10;
-                var decs = Math.trunc(cantidadProducto / 10) % 10;
-                var cents = Math.trunc(cantidadProducto / 100);
-                if (cantidadProducto >= 0 && cantidadProducto < 1000) {
-                    document.getElementById(idUnidades).value = unds;
-                    document.getElementById(idDecenas).value = decs;
-                    document.getElementById(idCentenas).value = cents;
-                    txtCantidad.value = cantidadProducto;
-                    guardarCantidadProductoDevolucion(index, cantidadProducto);
+            if (cantidadProducto !== '') {                
+                if (cantidadProducto < 0 && cantidadProducto >= 1000) {
+                    cantidadProducto = 0;
                 }
-                else {
-                    unds = document.getElementById(idUnidades).value * 1;
-                    decs = document.getElementById(idDecenas).value * 10;
-                    cents = document.getElementById(idCentenas).value * 100;
-                    cantidadProducto = cents + decs + unds;
-                    txtCantidad.value = cantidadProducto;
-                }
-            }
-            else {
+                txtCantidad.value = cantidadProducto;
+                guardarCantidadProductoInsumo(index, cantidadProducto);                
+            } else {
                 txtCantidad.value = '0';
-                document.getElementById(idUnidades).value = '0';
-                document.getElementById(idDecenas).value = '0';
-                document.getElementById(idCentenas).value = '0';
-                guardarCantidadProductoDevolucion(index, 0);
+                guardarCantidadProductoInsumo(index, 0);
             }
         }
 
-        function guardarCantidadProductoDevolucion(index, cantidad) {
-            var id = 'Content_DGV_ListaProductosDevolucion_HDF_IDDevolucionDetalle_' + index
-            var HDF_IDDevolucionDetalle = document.getElementById(id)
-            var idDevolucionDetalle = HDF_IDDevolucionDetalle.value
+        function guardarCantidadProductoInsumo(index, cantidad) {
+            var id = 'Content_DGV_ListaProductosInsumo_HDF_IDInsumoDetalle_' + index
+            var HDF_IDInsumoDetalle = document.getElementById(id)
+            var idInsumoDetalle = HDF_IDInsumoDetalle.value
             var usuario = document.getElementById('Content_HDF_IDUsuario').value;
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
-                url: "DetalleDevolucion.aspx/guardarProductoDevolucion",
+                url: "DetalleInsumo.aspx/guardarCantidadProductoInsumo",
                 data: JSON.stringify({
-                    "idDevolucionDetalle": idDevolucionDetalle,
+                    "idInsumoDetalle": idInsumoDetalle,
                     "cantidadProducto": cantidad,
                     "usuario": usuario
                 }),
@@ -187,7 +169,6 @@
         }
 
         function productosMarcados() {
-            console.dir(productosAgregar)
             var table, tbody, i, rowLen, row, j, colLen, cell;
 
             table = document.getElementById('Content_DGV_ListaProductosSinAgregar');
@@ -216,72 +197,63 @@
             activarloading();
             var usuario = document.getElementById('Content_HDF_IDUsuario').value;
             var idUsuario = document.getElementById('Content_HDF_UsuarioID').value;
-            var idDevolucion = document.getElementById('Content_HDF_IDDevolucion').value;
-            var idPuntoVenta = document.getElementById('Content_DDL_PuntoVenta').value;
-            if (idPuntoVenta !== 0 && idPuntoVenta !== "0") {
-                var promises = [];
-                productosAgregar.forEach(function (valor, clave) {
-                    promises.push(
-                        $.ajax({
-                            type: "POST",
-                            contentType: "application/json; charset=utf-8",
-                            url: "DetalleDevolucion.aspx/BTN_Agregar_Click",
-                            data: JSON.stringify({
-                                "idDevolucion": idDevolucion,
-                                "idPuntoVenta": idPuntoVenta,
-                                "idProducto": clave,
-                                "idUsuario": idUsuario,
-                                "cantidadProducto": valor,
-                                "usuario": usuario
-                            }),
-                            dataType: "json",
-                            success: function (Result) {
-                                console.dir(Result)
-                            },
-                            error: function (Result) {
-                                alert("ERROR " + Result.status + ' ' + Result.statusText);
-                            }
-                        })
-                    )
-                })
-                Promise.all(promises).then(function () {
-                    if (productosAgregar.size > 0) {
-                        cerrarModalAgregarProductos();
-                        __doPostBack('CargarDevolucion')
-                        desactivarloading();
-                        alertifysuccess('Productos agregados con éxito.');                        
-                    } else {
-                        cargarFiltros();
-                        desactivarloading();
-                        alertifywarning('Por favor, seleccione al menos un producto.');
-                    }
-                });
-            } else {
-                cargarFiltros();
-                desactivarloading();
-                document.getElementById('Content_DDL_PuntoVenta').focus();
-                alertifywarning('Por favor, seleccione el punto de venta.');                
-            }
+            var idInsumo = document.getElementById('Content_HDF_IDInsumo').value;
+            var promises = [];
+            productosAgregar.forEach(function (valor, clave) {
+                promises.push(
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: "DetalleInsumo.aspx/BTN_Agregar_Click",
+                        data: JSON.stringify({
+                            "idInsumo": idInsumo,
+                            "idProducto": clave,
+                            "idUsuario": idUsuario,
+                            "cantidadProducto": valor,
+                            "usuario": usuario
+                        }),
+                        dataType: "json",
+                        success: function (Result) {
+                            console.dir(Result)
+                        },
+                        error: function (Result) {
+                            alert("ERROR " + Result.status + ' ' + Result.statusText);
+                        }
+                    })
+                )
+            })
+            Promise.all(promises).then(function () {
+                if (productosAgregar.size > 0) {
+                    cerrarModalAgregarProductos();
+                    __doPostBack('CargarInsumo')
+                    alertifysuccess('Productos agregados con éxito.');
+                    desactivarloading();
+                } else {
+                    alertifywarning('Por favor, seleccione al menos un producto.');
+                    cargarFiltros();
+                    desactivarloading();
+                }
+            });
+
         }
         
         function estilosElementosBloqueados() {
-            document.getElementById('<%= TXT_CodigoDevolucion.ClientID %>').classList.remove('aspNetDisabled')
-            document.getElementById('<%= TXT_CodigoDevolucion.ClientID %>').classList.add('form-control')
+            document.getElementById('<%= TXT_CodigoInsumo.ClientID %>').classList.remove('aspNetDisabled')
+            document.getElementById('<%= TXT_CodigoInsumo.ClientID %>').classList.add('form-control')
             document.getElementById('<%= TXT_TotalProductos.ClientID %>').classList.remove('aspNetDisabled')
             document.getElementById('<%= TXT_TotalProductos.ClientID %>').classList.add('form-control')
-            document.getElementById('<%= TXT_MontoDevolucion.ClientID %>').classList.remove('aspNetDisabled')
-            document.getElementById('<%= TXT_MontoDevolucion.ClientID %>').classList.add('form-control')
-            document.getElementById('<%= TXT_FechaDevolucion.ClientID %>').classList.remove('aspNetDisabled')
-            document.getElementById('<%= TXT_FechaDevolucion.ClientID %>').classList.add('form-control')
-            document.getElementById('<%= TXT_HoraDevolucion.ClientID %>').classList.remove('aspNetDisabled')
-            document.getElementById('<%= TXT_HoraDevolucion.ClientID %>').classList.add('form-control')
+            document.getElementById('<%= TXT_MontoInsumo.ClientID %>').classList.remove('aspNetDisabled')
+            document.getElementById('<%= TXT_MontoInsumo.ClientID %>').classList.add('form-control')
+            document.getElementById('<%= TXT_FechaInsumo.ClientID %>').classList.remove('aspNetDisabled')
+            document.getElementById('<%= TXT_FechaInsumo.ClientID %>').classList.add('form-control')
+            document.getElementById('<%= TXT_HoraInsumo.ClientID %>').classList.remove('aspNetDisabled')
+            document.getElementById('<%= TXT_HoraInsumo.ClientID %>').classList.add('form-control')
             document.getElementById('<%= DDL_Propietario.ClientID %>').classList.remove('aspNetDisabled')
             document.getElementById('<%= DDL_Propietario.ClientID %>').classList.add('form-control')
         }
 
         function cargarFiltros() {
             $(<%= LB_Categoria.ClientID %>).SumoSelect({ selectAll: true, placeholder: 'Categoria' })
-            $(<%= LB_PuntoVenta.ClientID %>).SumoSelect({ selectAll: true, placeholder: 'Punto venta' })
         }
 
         $(document).ready(function () {
@@ -300,8 +272,8 @@
     <div class="wrapper">
         <asp:HiddenField ID="HDF_UsuarioID" runat="server" Value="0" Visible="true" />
         <asp:HiddenField ID="HDF_IDUsuario" runat="server" Value="0" Visible="true" />
-        <asp:HiddenField ID="HDF_IDDevolucion" runat="server" Value="0" Visible="true" />
-        <asp:HiddenField ID="HDF_EstadoDevolucion" runat="server" Value="" Visible="false" />
+        <asp:HiddenField ID="HDF_IDInsumo" runat="server" Value="0" Visible="true" />
+        <asp:HiddenField ID="HDF_EstadoInsumo" runat="server" Value="" Visible="false" />
         <div class="sidebar" data-color="white" data-active-color="danger">
             <div class="sidebar-wrapper scroll" style="overflow-y: auto;">
                 <img style="width: 60%; display: block; margin-left: 30%; margin-top: 3%;" src="../Assets/img/logo.png" />
@@ -342,7 +314,7 @@
                             <p>Empaque</p>
                         </a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="Devoluciones.aspx">
                             <i class="fas fa-undo-alt"></i>
                             <p>Devoluciones</p>
@@ -354,7 +326,7 @@
                             <p>Desechos</p>
                         </a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="Insumos.aspx">
                             <i class="fas fa-box"></i>
                             <p>Insumos</p>
@@ -406,7 +378,7 @@
             <div class="content">
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Detalle devolución</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Detalle insumo</h1>
                     <br />
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
@@ -415,26 +387,26 @@
                                 <div class="card-header py-3">
                                     <div class="form-row">
                                         <div class="form-group col-md-2">
-                                            <label for="TXT_CodigoDevolucion">Número devolución</label>
-                                            <asp:TextBox class="form-control" ID="TXT_CodigoDevolucion" runat="server" Enabled="false"></asp:TextBox>
+                                            <label for="TXT_CodigoInsumo">Número insumo</label>
+                                            <asp:TextBox class="form-control" ID="TXT_CodigoInsumo" runat="server" Enabled="false"></asp:TextBox>
                                         </div>
                                         <div class="form-group col-md-2">
                                             <label for="TXT_TotalProductos">Total de productos</label>
                                             <asp:TextBox class="form-control" ID="TXT_TotalProductos" runat="server" TextMode="Number" Enabled="false"></asp:TextBox>
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label for="TXT_MontoDevolucion">Monto devolución</label>
-                                            <asp:TextBox class="form-control" ID="TXT_MontoDevolucion" runat="server" Enabled="false"></asp:TextBox>
+                                            <label for="TXT_MontoInsumo">Monto insumo</label>
+                                            <asp:TextBox class="form-control" ID="TXT_MontoInsumo" runat="server" Enabled="false"></asp:TextBox>
                                         </div>
                                         <div class="form-group col-md-4">                                            
                                             <div class="form-row">
                                                 <div class="col-md-7">
-                                                    <label for="TXT_FechaDevolucion">Fecha devolución</label>
-                                                    <asp:TextBox ID="TXT_FechaDevolucion" runat="server" CssClass="form-control" TextMode="Date" format="dd/MM/yyyy" Enabled="false"></asp:TextBox>
+                                                    <label for="TXT_FechaInsumo">Fecha insumo</label>
+                                                    <asp:TextBox ID="TXT_FechaInsumo" runat="server" CssClass="form-control" TextMode="Date" format="dd/MM/yyyy" Enabled="false"></asp:TextBox>
                                                 </div>
                                                 <div class="col-md-5">
-                                                    <label for="TXT_FechaDevolucion">Hora devolución</label>
-                                                    <asp:TextBox ID="TXT_HoraDevolucion" runat="server" CssClass="form-control" TextMode="Time" format="HH:mm" Enabled="false"></asp:TextBox>
+                                                    <label for="TXT_HoraInsumo">Hora insumo</label>
+                                                    <asp:TextBox ID="TXT_HoraInsumo" runat="server" CssClass="form-control" TextMode="Time" format="HH:mm" Enabled="false"></asp:TextBox>
                                                 </div>
                                             </div>
                                         </div>
@@ -451,19 +423,19 @@
 							                <asp:Label ID="LBL_UltimaModificacion" runat="server"></asp:Label>
                                         </div>
                                     </div>
-                                    <div class="form-row">                                                                                
+                                    <div class="form-row"> 
                                         <div class="col-md-6">                                       
-                                            <asp:Button UseSubmitBehavior="false" ID="BTN_AgregarProducto" runat="server" Text="Agregar productos" CssClass="btn btn-secondary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_CargarProductos_Click"></asp:Button>       
+                                            <asp:Button UseSubmitBehavior="false" ID="BTN_AgregarProducto" runat="server" Text="Agregar productos" CssClass="btn btn-secondary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_CargarProductos_Click"></asp:Button>                                        
                                         </div>                                        
                                         <div class="col-md-6" style="text-align: right;"> 
-                                            <asp:Button UseSubmitBehavior="false" ID="BTN_ReporteDevolucion" runat="server" Text="Reporte devolución" CssClass="btn btn-secondary" OnClientClick="activarloading();estilosElementosBloqueados();" OnClick="BTN_ReporteDevolucion_Click"></asp:Button>                                                                                
-                                            <asp:Button UseSubmitBehavior="false" ID="BTN_DescargarDevolucion" runat="server" Text="Descargar devolución" CssClass="btn btn-primary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_DescargarDevolucion_Click"></asp:Button>                                        
+                                            <asp:Button UseSubmitBehavior="false" ID="BTN_ReporteInsumo" runat="server" Text="Reporte insumo" CssClass="btn btn-secondary" OnClientClick="activarloading();estilosElementosBloqueados();" OnClick="BTN_ReporteInsumo_Click"></asp:Button>                                                                                
+                                            <asp:Button UseSubmitBehavior="false" ID="BTN_DescargarInsumo" runat="server" Text="Descargar insumo" CssClass="btn btn-primary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_DescargarInsumo_Click"></asp:Button>                                        
                                         </div>
                                     </div>
                                 </div>
                             </ContentTemplate>
                             <Triggers>
-                                <asp:PostBackTrigger ControlID="BTN_DescargarDevolucion" />
+                                <asp:PostBackTrigger ControlID="BTN_DescargarInsumo" />
                             </Triggers>
                         </asp:UpdatePanel>
                         <div class="card-body">
@@ -471,103 +443,41 @@
                                 <asp:UpdatePanel ID="UpdatePanel_FiltrosProductos" runat="server" UpdateMode="Conditional">
                                     <ContentTemplate>                           
                                         <div class="input-group no-border col-md-6">
-                                            <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar..." OnTextChanged="TXT_Buscar_OnTextChanged" AutoPostBack="true"></asp:TextBox>
+                                            <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar producto..." OnTextChanged="TXT_Buscar_OnTextChanged" AutoPostBack="true"></asp:TextBox>
                                             <div class="input-group-append">
                                                 <div class="input-group-text">
                                                     <i class="nc-icon nc-zoom-split"></i>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="input-group no-border col-md-3">     
-                                            <asp:ListBox class="form-control" runat="server" ID="LB_PuntoVenta" SelectionMode="Multiple" OnTextChanged="TXT_Buscar_OnTextChanged" AutoPostBack="true"></asp:ListBox>
-                                        </div>
                                     </ContentTemplate>
                                 </asp:UpdatePanel>
                             </div>
                             <div class="table">
-                                <asp:UpdatePanel ID="UpdatePanel_ListaProductosDevolucion" runat="server" UpdateMode="Conditional">
+                                <asp:UpdatePanel ID="UpdatePanel_ListaProductosInsumo" runat="server" UpdateMode="Conditional">
                                     <ContentTemplate>
-                                        <%--<asp:GridView ID="DGV_ListaPuntosVenta" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Left"
-                                            AutoGenerateColumns="False" DataKeyNames="DevolucionID,PuntoVentaID" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
-                                            ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true">
-                                            <Columns>
-                                                <asp:TemplateField>
-                                                    <HeaderTemplate>
-                                                        <asp:Label ID="Lbl_VerDetalle" runat="server" Text="Ver detalle"></asp:Label>
-                                                    </HeaderTemplate>
-                                                    <ItemTemplate>
-                                                        <div class="table" id="tableProductos">
-                                                            <img alt="" style="cursor: pointer" src="../Assets/img/plus.png" />
-                                                        </div>
-                                                    </ItemTemplate>
-                                                </asp:TemplateField>
-                                                <asp:BoundField DataField="DescripcionPuntoVenta" SortExpression="DescripcionPuntoVenta" HeaderText="Punto venta" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
-                                            </Columns>
-                                        </asp:GridView>--%>
-                                        <asp:GridView ID="DGV_ListaProductosDevolucion" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
-                                            AutoGenerateColumns="False" DataKeyNames="IDDevolucionDetalle,DevolucionID,ProductoID,UsuarioID,PuntoVentaID" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
+                                        <asp:GridView ID="DGV_ListaProductosInsumo" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
+                                            AutoGenerateColumns="False" DataKeyNames="IDInsumoDetalle,InsumoID,ProductoID,UsuarioID" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
                                             ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true"
-                                            OnSorting="DGV_ListaProductosDevolucion_Sorting"
-                                            OnRowCommand="DGV_ListaProductosDevolucion_RowCommand"
-                                            OnRowDataBound="DGV_ListaProductosDevolucion_RowDataBound">
+                                            OnSorting="DGV_ListaProductosInsumo_Sorting"
+                                            OnRowCommand="DGV_ListaProductosInsumo_RowCommand"
+                                            OnRowDataBound="DGV_ListaProductosInsumo_RowDataBound">
                                             <Columns>
                                                 <asp:BoundField DataField="Nombre" SortExpression="Nombre" HeaderText="Usuario" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="DescripcionProducto" SortExpression="DescripcionProducto" HeaderText="Nombre producto" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                <asp:BoundField DataField="CostoProducto" SortExpression="CostoProducto" HeaderText="Costo producto" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                <asp:BoundField DataField="PrecioProducto" SortExpression="PrecioProducto" HeaderText="Precio producto" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
-                                                <asp:BoundField DataField="DescripcionPuntoVenta" SortExpression="DescripcionPuntoVenta" HeaderText="Punto venta" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
+                                                <asp:BoundField DataField="CostoProducto" SortExpression="CostoProducto" HeaderText="Costo producto" DataFormatString="{0:n2}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                <asp:BoundField DataField="PrecioProducto" SortExpression="PrecioProducto" HeaderText="Precio producto" DataFormatString="{0:n2}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
                                                 <asp:TemplateField>
                                                     <HeaderTemplate>
-                                                        <asp:Label ID="LBL_Cantidad" runat="server" Text="Cantidad Devolucion"></asp:Label>
+                                                        <asp:Label ID="LBL_Cantidad" runat="server" Text="Cantidad insumo"></asp:Label>
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
-                                                        <div class="row">
-                                                            <asp:TextBox class="form-control" TextMode="Number" MaxLength="2" min="0" max="999" style="width: 30%" runat="server" ID="TXT_Cantidad" 
-                                                                onkeyup="TXT_Cantidad_onKeyUp(this,event);" onchange="TXT_Cantidad_onChange(this);" Text='<%#Eval("CantidadDevolucion") %>' />                                                            
-                                                            <asp:DropDownList class="form-control" style="width: 20%" runat="server" ID="DDL_Centenas" 
-                                                                OnSelectedIndexChanged="DDL_DecenasUnidades_OnSelectedIndexChanged" AutoPostBack="true">
-                                                                <asp:ListItem Value="0">0</asp:ListItem>
-                                                                <asp:ListItem Value="1">1</asp:ListItem>
-                                                                <asp:ListItem Value="2">2</asp:ListItem>
-                                                                <asp:ListItem Value="3">3</asp:ListItem>
-                                                                <asp:ListItem Value="4">4</asp:ListItem>
-                                                                <asp:ListItem Value="5">5</asp:ListItem>
-                                                                <asp:ListItem Value="6">6</asp:ListItem>
-                                                                <asp:ListItem Value="7">7</asp:ListItem>
-                                                                <asp:ListItem Value="8">8</asp:ListItem>
-                                                                <asp:ListItem Value="9">9</asp:ListItem>
-                                                            </asp:DropDownList>
-                                                            <asp:DropDownList class="form-control" style="width: 25%" runat="server" ID="DDL_Decenas" 
-                                                                OnSelectedIndexChanged="DDL_DecenasUnidades_OnSelectedIndexChanged" AutoPostBack="true">
-                                                                <asp:ListItem Value="0">0</asp:ListItem>
-                                                                <asp:ListItem Value="1">1</asp:ListItem>
-                                                                <asp:ListItem Value="2">2</asp:ListItem>
-                                                                <asp:ListItem Value="3">3</asp:ListItem>
-                                                                <asp:ListItem Value="4">4</asp:ListItem>
-                                                                <asp:ListItem Value="5">5</asp:ListItem>
-                                                                <asp:ListItem Value="6">6</asp:ListItem>
-                                                                <asp:ListItem Value="7">7</asp:ListItem>
-                                                                <asp:ListItem Value="8">8</asp:ListItem>
-                                                                <asp:ListItem Value="9">9</asp:ListItem>
-                                                            </asp:DropDownList>
-                                                            <asp:DropDownList class="form-control" style="width: 25%" runat="server" ID="DDL_Unidades"
-                                                                OnSelectedIndexChanged="DDL_DecenasUnidades_OnSelectedIndexChanged" AutoPostBack="true">
-                                                                <asp:ListItem Value="0">0</asp:ListItem>
-                                                                <asp:ListItem Value="1">1</asp:ListItem>
-                                                                <asp:ListItem Value="2">2</asp:ListItem>
-                                                                <asp:ListItem Value="3">3</asp:ListItem>
-                                                                <asp:ListItem Value="4">4</asp:ListItem>
-                                                                <asp:ListItem Value="5">5</asp:ListItem>
-                                                                <asp:ListItem Value="6">6</asp:ListItem>
-                                                                <asp:ListItem Value="7">7</asp:ListItem>
-                                                                <asp:ListItem Value="8">8</asp:ListItem>
-                                                                <asp:ListItem Value="9">9</asp:ListItem>
-                                                            </asp:DropDownList>                                                            
-                                                        </div>
-                                                        <asp:HiddenField ID="HDF_IDDevolucionDetalle" runat="server" Value='<%# Eval("IDDevolucionDetalle") %>' />
+                                                        <asp:TextBox class="form-control" TextMode="Number" MaxLength="6" min="0" max="999" style="width: 35%" runat="server" ID="TXT_Cantidad" 
+                                                            onkeyup="TXT_Cantidad_onKeyUp(this,event);" onchange="TXT_Cantidad_onChange(this);" Text='<%#Eval("CantidadInsumo") %>' />                                                                                                                                                                                                                                        
+                                                        <asp:HiddenField ID="HDF_IDInsumoDetalle" runat="server" Value='<%# Eval("IDInsumoDetalle") %>' />
                                                     </ItemTemplate>
                                                     <ItemStyle HorizontalAlign="Center" />
-                                                </asp:TemplateField>
+                                                </asp:TemplateField>                                                
                                             </Columns>
                                         </asp:GridView>
                                     </ContentTemplate>
@@ -585,17 +495,17 @@
     <div class="modal bd-example-modal-lg" id="ModalAgregarProductos" tabindex="-1" role="dialog" aria-labelledby="popAgregarProductos" aria-hidden="true">
         <asp:UpdatePanel ID="UpdatePanel_ModalAgregarProductos" runat="server" UpdateMode="Conditional">
             <ContentTemplate>
-                <div class="modal-dialog modal-lg" style="padding-top: 5px;">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                            <h5 class="modal-title" runat="server">Agregar productos a devolver</h5>
+                            <h5 class="modal-title" runat="server">Agregar productos</h5>
                         </div>
-                        <div class="modal-body" style="padding-bottom: 0px;">                                                                                   
+                        <div class="modal-body"> 
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-5">
                                     <div class="input-group no-border">
                                         <asp:TextBox class="form-control" ID="TXT_BuscarProductosSinAsignar" runat="server" placeholder="Buscar..." OnTextChanged="FiltrarProductos_OnClick" AutoPostBack="true"></asp:TextBox>
                                         <div class="input-group-append">
@@ -605,14 +515,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-4">
-                                    <asp:DropDownList class="form-control" ID="DDL_PuntoVenta" runat="server" OnSelectedIndexChanged="FiltrarProductos_OnClick" AutoPostBack="true"></asp:DropDownList>
-                                </div>
                                 <div class="col-md-3">
                                     <asp:ListBox class="form-control" runat="server" ID="LB_Categoria" SelectionMode="Multiple" OnTextChanged="FiltrarProductos_OnClick" AutoPostBack="true"></asp:ListBox>
                                 </div>
-                            </div>   
-                             <div class="table-responsive">                                                             
+                            </div>                           
+                            <div class="table-responsive">
                                 <asp:UpdatePanel ID="UpdatePanel_ListaProductosSinAgregar" runat="server" UpdateMode="Conditional">
                                     <ContentTemplate>
                                         <asp:GridView ID="DGV_ListaProductosSinAgregar" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
@@ -632,15 +539,15 @@
                                                     <ItemStyle HorizontalAlign="Center" />
                                                 </asp:TemplateField>
                                                 <asp:BoundField DataField="DescripcionProducto" SortExpression="DescripcionProducto" HeaderText="Nombre producto" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                <asp:BoundField DataField="PrecioVentaFinal" SortExpression="PrecioVentaFinal" HeaderText="Precio unitario" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                <asp:BoundField DataField="PrecioVentaFinal" SortExpression="PrecioVentaFinal" HeaderText="Precio unitario" DataFormatString="{0:n2}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="DescripcionCategoria" SortExpression="DescripcionCategoria" HeaderText="Categoria" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:TemplateField>
                                                     <HeaderTemplate>
                                                         <asp:Label ID="LBL_Cantidad" runat="server" Text="Cantidad"></asp:Label>
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
-                                                        <asp:TextBox class="form-control" TextMode="Number" MaxLength="0" min="0" max="99" style="width: 100%" runat="server" ID="TXT_CantidadAgregar" 
-                                                            onkeyup="TXT_CantidadAgregar_onKeyUp(this,event);" onchange="TXT_CantidadAgregar_onChange(this)" Text='0' />
+                                                        <asp:TextBox class="form-control" TextMode="Number" MaxLength="0" min="0" max="999" style="width: 100%" runat="server" ID="TXT_CantidadAgregar" 
+                                                           onkeyup="TXT_CantidadAgregar_onKeyUp(this,event);" onchange="TXT_CantidadAgregar_onChange(this)" Text='0' />
                                                     </ItemTemplate>
                                                     <ItemStyle HorizontalAlign="Center" />                                                    
                                                 </asp:TemplateField>

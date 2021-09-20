@@ -21,6 +21,11 @@ namespace MCWebHogar.ControlPedidos
                 {
                     Response.Redirect("../Default.aspx", true);
                 }
+                else if (ClasePermiso.Permiso("Ingreso", "Módulo", "Productos", Convert.ToInt32(Session["UserId"].ToString().Trim())) <= 0)
+                {
+                    Session.Add("Message", "No tiene permisos para acceder al módulo de Productos.");
+                    Response.Redirect("Pedido.aspx");
+                }
                 else
                 {
                     cargarFiltros();
@@ -288,6 +293,7 @@ namespace MCWebHogar.ControlPedidos
                             TXT_MedidaProduccion.Text = dr["MedidaProduccion"].ToString().Trim();
                             TXT_UnidadMedida.Text = dr["UnidadMedida"].ToString().Trim();
                             CHK_EsEmpaque.Checked = Convert.ToBoolean(dr["EsEmpaque"]);
+                            CHK_EsInsumo.Checked = Convert.ToBoolean(dr["EsInsumo"]);
                         }
                     }
 
@@ -327,6 +333,7 @@ namespace MCWebHogar.ControlPedidos
             TXT_MedidaProduccion.Text = "0";
             TXT_UnidadMedida.Text = "";
             CHK_EsEmpaque.Checked = false;
+            CHK_EsInsumo.Checked = false;
 
             title_CrearPedido.InnerHtml = "Crear producto";
             UpdatePanel_ModalCrearProducto.Update();
@@ -349,6 +356,7 @@ namespace MCWebHogar.ControlPedidos
             DT.DT1.Rows.Add("@MedidaProduccion", TXT_MedidaProduccion.Text, SqlDbType.Decimal);
             DT.DT1.Rows.Add("@UnidadMedida", TXT_UnidadMedida.Text, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@EsEmpaque", CHK_EsEmpaque.Checked, SqlDbType.Bit);
+            DT.DT1.Rows.Add("@EsInsumo", CHK_EsInsumo.Checked, SqlDbType.Bit);
 
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
             if (HDF_IDProducto.Value == "0")

@@ -10,8 +10,8 @@
     <Shape ID="DesignTable:DT_DetallePedido" ZOrder="13" X="288" Y="56" Height="194" Width="195" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="190" />
     <Shape ID="DesignTable:DT_EncabezadoODP" ZOrder="12" X="500" Y="57" Height="355" Width="239" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="351" />
     <Shape ID="DesignTable:DT_DetalleODP" ZOrder="11" X="764" Y="59" Height="263" Width="189" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="259" />
-    <Shape ID="DesignTable:DT_EncabezadoEmpaque" ZOrder="10" X="971" Y="60" Height="263" Width="247" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="259" />
-    <Shape ID="DesignTable:DT_DetalleEmpaque" ZOrder="1" X="1227" Y="62" Height="263" Width="212" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="259" />
+    <Shape ID="DesignTable:DT_EncabezadoInsumo" ZOrder="10" X="971" Y="60" Height="263" Width="247" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="259" />
+    <Shape ID="DesignTable:DT_DetalleInsumo" ZOrder="1" X="1227" Y="62" Height="263" Width="212" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="259" />
     <Shape ID="DesignTable:DT_EncabezadoDesecho" ZOrder="9" X="971" Y="339" Height="263" Width="256" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="259" />
     <Shape ID="DesignTable:DT_DetalleDesecho" ZOrder="2" X="1236" Y="297" Height="309" Width="206" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="305" />
     <Shape ID="DesignTable:DT_EncabezadoDevolucion" ZOrder="8" X="973" Y="622" Height="263" Width="249" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="259" />

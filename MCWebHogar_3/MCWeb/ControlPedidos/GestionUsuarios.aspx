@@ -8,7 +8,9 @@
     <title>Gestion Usuarios</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <style>
-        
+        [id*=DGV_PermisosSinAsignar] tr:hover, [id*=DGV_PermisosAsignados] tr:hover {
+          background-color: #51cbce;
+        }
     </style>
     <script type="text/javascript">
         function alertifysuccess(msj) {
@@ -44,6 +46,14 @@
             document.getElementById('BTN_ModalCrearUsuario').click()
         }
 
+        function abrirModalPermisosUsuario() {
+            document.getElementById('BTN_ModalPermisosUsuario').click()
+        }
+
+        function cerrarModalPermisosUsuario() {
+            document.getElementById('BTN_ModalPermisosUsuario').click()
+        }
+
         function validarCrearUsuario() {
 
         }
@@ -61,7 +71,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
     <div id="modalloading" class="loading">
         <img src="../Assets/img/cargando.gif" width="100" height="100" /><br />
-        <asp:Label runat="server" ID="LBL_GenerandoInforme" style="color: white;" Text="Generando informe espere por favor..."></asp:Label>
+        <asp:Label runat="server" ID="LBL_GenerandoInforme" Style="color: white;" Text="Generando informe espere por favor..."></asp:Label>
     </div>
     <div id="fade2" class="overlayload"></div>
     <div class="wrapper ">
@@ -84,7 +94,7 @@
                     <li>
                         <a href="OrdenesProduccion.aspx">
                             <i class="fas fa-sort"></i>
-                           <p>Ordenes de producción</p>
+                            <p>Ordenes de producción</p>
                         </a>
                     </li>
                     <li>
@@ -115,6 +125,12 @@
                         <a href="Desechos.aspx">
                             <i class="fas fa-trash"></i>
                             <p>Desechos</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="Insumos.aspx">
+                            <i class="fas fa-box"></i>
+                            <p>Insumos</p>
                         </a>
                     </li>
                 </ul>
@@ -153,7 +169,7 @@
                         </asp:LinkButton>
                         <a href="https://mensis.cr/" target="_blank" style="margin-top: 0px !important;">
                             <p style="margin-left: 29%; font-size: 7px;">Desarrollado por</p>
-                            <img style="width: 25%; display: block; margin-left: 30%;" src="../Assets/img/logoMensis.png" />
+                            <img style="width: 75%; display: block; margin-left: 10%;" src="https://mensis.cr/svg/logos/logoMensis.jpg" />
                         </a>
                     </li>
                 </ul>
@@ -169,13 +185,12 @@
                         <asp:UpdatePanel ID="UpdatePanel_CrearUsuario" runat="server" UpdateMode="Conditional">
                             <ContentTemplate>
                                 <div class="card-header py-3" style="text-align: right;">
-                                    
                                 </div>
                             </ContentTemplate>
                         </asp:UpdatePanel>
                         <div class="card-body">
                             <asp:UpdatePanel ID="UpdatePanel_FiltrosUsuarios" runat="server" UpdateMode="Conditional">
-                                <ContentTemplate>                           
+                                <ContentTemplate>
                                     <div class="input-group no-border col-md-3">
                                         <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar..." OnTextChanged="FiltrarUsuarios_OnClick" AutoPostBack="true"></asp:TextBox>
                                         <div class="input-group-append">
@@ -188,15 +203,15 @@
                                         <asp:ListBox class="form-control" runat="server" ID="LB_Rol" SelectionMode="Multiple" OnTextChanged="FiltrarUsuarios_OnClick" AutoPostBack="true"></asp:ListBox>
                                     </div>
                                     <div class="input-group no-border col-md-6" style="text-align: right; display: inline-block;">
-                                        <asp:Button ID="BTN_CrearUsuario" style="margin: 0px;" runat="server" Text="Crear nuevo usuario" CssClass="btn btn-secondary" OnClick="BTN_CrearUsuario_OnClick"></asp:Button>                                        
+                                        <asp:Button UseSubmitBehavior="false" ID="BTN_CrearUsuario" Style="margin: 0px;" runat="server" Text="Crear nuevo usuario" CssClass="btn btn-secondary" OnClick="BTN_CrearUsuario_OnClick"></asp:Button>
                                     </div>
                                 </ContentTemplate>
-                            </asp:UpdatePanel> 
+                            </asp:UpdatePanel>
                             <div class="table">
                                 <asp:UpdatePanel ID="UpdatePanel_ListaUsuarios" runat="server" UpdateMode="Conditional" style="margin-top: 7rem;">
                                     <ContentTemplate>
                                         <asp:GridView ID="DGV_ListaUsuarios" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
-                                            AutoGenerateColumns="False" DataKeyNames="IDUsuario,Activo,Usuario,RolID,Cargo" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
+                                            AutoGenerateColumns="False" DataKeyNames="IDUsuario,Activo,Usuario,RolID,Cargo,Nombre" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
                                             ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true"
                                             OnSorting="DGV_ListaUsuarios_Sorting"
                                             OnRowCommand="DGV_ListaUsuarios_RowCommand"
@@ -211,18 +226,22 @@
                                                         <asp:Label ID="LBL_Acciones" runat="server" Text="Acciones"></asp:Label>
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
-                                                        <asp:Button class="btn btn-outline-success btn-round-mant" ID="BTN_Activar" runat="server"
+                                                        <asp:Button UseSubmitBehavior="false" class="btn btn-outline-success btn-round-mant" ID="BTN_Activar" runat="server"
                                                             CommandName="activar"
                                                             CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
                                                             Text="Activar" AutoPostBack="true" />
-                                                        <asp:Button class="btn btn-outline-primary btn-round-mant" ID="BTN_Editar" runat="server"
+                                                        <asp:Button UseSubmitBehavior="false" class="btn btn-outline-primary btn-round-mant" ID="BTN_Editar" runat="server"
                                                             CommandName="editar"
                                                             CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
                                                             Text="Editar" AutoPostBack="true" />
-                                                        <asp:Button class="btn btn-outline-danger btn-round-mant" ID="BTN_Eliminar" runat="server"
+                                                        <asp:Button UseSubmitBehavior="false" class="btn btn-outline-danger btn-round-mant" ID="BTN_Eliminar" runat="server"
                                                             CommandName="desactivar"
                                                             CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
                                                             Text="Desactivar" AutoPostBack="true" />
+                                                        <asp:Button UseSubmitBehavior="false" class="btn btn-outline-info btn-round-mant" ID="BTN_Permisos" runat="server"
+                                                            CommandName="permisos"
+                                                            CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
+                                                            Text="Permisos" AutoPostBack="true" />
                                                     </ItemTemplate>
                                                     <ItemStyle HorizontalAlign="Center" />
                                                 </asp:TemplateField>
@@ -267,7 +286,7 @@
                                     <asp:DropDownList class="form-control" ID="DDL_Rol" runat="server"></asp:DropDownList>
                                 </div>
                             </div>
-                            <div class="row">                                
+                            <div class="row">
                                 <div class="col-md-4">
                                     <label for="TXT_Cargo">Cargo: </label>
                                     <asp:TextBox ID="TXT_Cargo" runat="server" CssClass="form-control"></asp:TextBox>
@@ -283,8 +302,104 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <asp:Button ID="BTN_CerrarModalCrearUsuario" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-primary" />
-                            <asp:Button ID="BTN_GuardarUsuario" runat="server" Text="Guardar usuario" CssClass="btn btn-secondary" OnClientClick="return validarCrearUsuario();" OnClick="BTN_GuardarUsuario_OnClick" />
+                            <asp:Button UseSubmitBehavior="false" ID="BTN_CerrarModalCrearUsuario" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-primary" />
+                            <asp:Button UseSubmitBehavior="false" ID="BTN_GuardarUsuario" runat="server" Text="Guardar usuario" CssClass="btn btn-secondary" OnClientClick="return validarCrearUsuario();" OnClick="BTN_GuardarUsuario_OnClick" />
+                        </div>
+                    </div>
+                </div>
+            </ContentTemplate>
+        </asp:UpdatePanel>
+    </div>
+
+    <button type="button" id="BTN_ModalPermisosUsuario" data-toggle="modal" data-target="#ModalPermisosUsuario" style="visibility: hidden;">open</button>
+
+    <div class="modal bd-example-modal-lg" id="ModalPermisosUsuario" tabindex="-1" role="dialog" aria-labelledby="popModalPermisosUsuario" aria-hidden="true">
+        <asp:UpdatePanel ID="UpdatePanel_ModalPermisosUsuario" runat="server" UpdateMode="Conditional">
+            <ContentTemplate>
+                <div class="modal-dialog modal-lg" style="max-width: 1200px;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h5 class="modal-title" runat="server" id="title_Permisos"></h5>
+                        </div>
+                        <div class="modal-body">
+                            <asp:HiddenField ID="HDF_IDUsuarioPermisos" runat="server" Value="0" />
+                            <div class="row">
+                                <div class="col-md-2" style="text-align: end;">
+                                </div>
+                                <div class="col-md-2" style="text-align: end;">
+                                    <label for="DDL_Modulo">Permiso:</label>
+                                </div>
+                                <div class="col-md-4" style="padding-left: 0px;">
+                                    <asp:DropDownList ID="DDL_Modulo" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="DDL_Modulo_SelectedIndexChanged"></asp:DropDownList>
+                                </div>
+                                <div class="col-md-4" style="text-align: end;">
+                                </div>
+                            </div>
+                            <br />
+                            <asp:UpdatePanel ID="UpdatePanel_TablaPermisos" runat="server" UpdateMode="Conditional">
+                                <ContentTemplate>
+                                    <div class="row table-responsive" style="text-align: center;">
+                                        <div class="col-md-6">
+                                            <label for="DGV_PermisosSinAsignar">Permisos sin asignar</label>
+                                            <asp:GridView ID="DGV_PermisosSinAsignar" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
+                                                AutoGenerateColumns="False" DataKeyNames="IDPermiso" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
+                                                ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true"
+                                                OnSorting="DGV_PermisosSinAsignar_Sorting"
+                                                OnRowCommand="DGV_PermisosSinAsignar_RowCommand"
+                                                OnRowDataBound="DGV_PermisosSinAsignar_RowDataBound">
+                                                <Columns>
+                                                    <asp:BoundField DataField="Formulario" SortExpression="Formulario" HeaderText="Módulo" ItemStyle-HorizontalAlign="Center" ItemStyle-ForeColor="black"></asp:BoundField>
+                                                    <asp:BoundField DataField="Detalle" SortExpression="Detalle" HeaderText="Detalle" ItemStyle-HorizontalAlign="Center" ItemStyle-ForeColor="black"></asp:BoundField>
+                                                    <asp:TemplateField>
+                                                        <HeaderTemplate>
+                                                            <asp:Label ID="LBL_Acciones" runat="server" Text="Agregar permiso"></asp:Label>
+                                                        </HeaderTemplate>
+                                                        <ItemTemplate>
+                                                            <asp:LinkButton UseSubmitBehavior="false" class="btn btn-outline-success btn-round-mant" ID="BTN_Asignar" runat="server"
+                                                                CommandName="asignar"
+                                                                CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
+                                                                Text="" AutoPostBack="true"><i class="fas fa-angle-right"></i></asp:LinkButton>
+                                                        </ItemTemplate>
+                                                        <ItemStyle HorizontalAlign="Center" />
+                                                    </asp:TemplateField>
+                                                </Columns>
+                                            </asp:GridView>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="DGV_PermisosAsignados">Permisos asignados</label>
+                                            <asp:GridView ID="DGV_PermisosAsignados" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
+                                                AutoGenerateColumns="False" DataKeyNames="IDPermiso,IDLinea,IDUsuario" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
+                                                ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true"
+                                                OnSorting="DGV_PermisosAsignados_Sorting"
+                                                OnRowCommand="DGV_PermisosAsignados_RowCommand"
+                                                OnRowDataBound="DGV_PermisosAsignados_RowDataBound">
+                                                <Columns>
+                                                    <asp:TemplateField>
+                                                        <HeaderTemplate>
+                                                            <asp:Label ID="LBL_Acciones" runat="server" Text="Eliminar permiso"></asp:Label>
+                                                        </HeaderTemplate>
+                                                        <ItemTemplate>
+                                                            <asp:LinkButton UseSubmitBehavior="false" class="btn btn-outline-danger btn-round-mant" ID="BTN_Eliminar" runat="server"
+                                                                CommandName="eliminar"
+                                                                CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
+                                                                Text="" AutoPostBack="true"><i class="fas fa-angle-left"></i></asp:LinkButton>
+                                                        </ItemTemplate>
+                                                        <ItemStyle HorizontalAlign="Center" />
+                                                    </asp:TemplateField>
+                                                    <asp:BoundField DataField="Formulario" SortExpression="Formulario" HeaderText="Módulo" ItemStyle-HorizontalAlign="Center" ItemStyle-ForeColor="black"></asp:BoundField>
+                                                    <asp:BoundField DataField="Detalle" SortExpression="Detalle" HeaderText="Detalle" ItemStyle-HorizontalAlign="Center" ItemStyle-ForeColor="black"></asp:BoundField>
+                                                </Columns>
+                                            </asp:GridView>
+                                        </div>
+                                    </div>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
+                        </div>
+                        <div class="modal-footer">
+                            <asp:Button UseSubmitBehavior="false" ID="BTN_CerrarModalPermisosUsuario" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-primary" />
                         </div>
                     </div>
                 </div>

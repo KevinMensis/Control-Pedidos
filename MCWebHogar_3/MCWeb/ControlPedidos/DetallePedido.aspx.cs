@@ -749,7 +749,7 @@ namespace MCWebHogar.ControlPedidos
                 ddlDecs.SelectedValue = decs.ToString();
                 ddlCents.SelectedValue = cents.ToString();
 
-                if (HDF_EstadoPedido.Value != "Preparación")
+                if (HDF_EstadoPedido.Value != "Preparación" && (ClasePermiso.Permiso("Editar", "Acciones", "Editar", Convert.ToInt32(Session["UserId"].ToString().Trim())) <= 0))
                 {
                     Button eliminar = (Button)e.Row.FindControl("BTN_EliminarProducto");
 

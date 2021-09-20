@@ -10,7 +10,7 @@
 namespace MCWebHogar.ControlPedidos {
     
     
-    public partial class GestionUsuarios {
+    public partial class DetalleInsumo {
         
         /// <summary>
         /// LBL_GenerandoInforme control.
@@ -22,94 +22,13 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.Label LBL_GenerandoInforme;
         
         /// <summary>
-        /// LNK_CerrarSession control.
+        /// HDF_UsuarioID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LNK_CerrarSession;
-        
-        /// <summary>
-        /// UpdatePanel_CrearUsuario control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel_CrearUsuario;
-        
-        /// <summary>
-        /// UpdatePanel_FiltrosUsuarios control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel_FiltrosUsuarios;
-        
-        /// <summary>
-        /// TXT_Buscar control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_Buscar;
-        
-        /// <summary>
-        /// LB_Rol control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ListBox LB_Rol;
-        
-        /// <summary>
-        /// BTN_CrearUsuario control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BTN_CrearUsuario;
-        
-        /// <summary>
-        /// UpdatePanel_ListaUsuarios control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel_ListaUsuarios;
-        
-        /// <summary>
-        /// DGV_ListaUsuarios control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView DGV_ListaUsuarios;
-        
-        /// <summary>
-        /// UpdatePanel_ModalCrearUsuario control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel_ModalCrearUsuario;
-        
-        /// <summary>
-        /// title_CrearPedido control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl title_CrearPedido;
+        protected global::System.Web.UI.WebControls.HiddenField HDF_UsuarioID;
         
         /// <summary>
         /// HDF_IDUsuario control.
@@ -121,147 +40,237 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.HiddenField HDF_IDUsuario;
         
         /// <summary>
-        /// TXT_NombreUsuario control.
+        /// HDF_IDInsumo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_NombreUsuario;
+        protected global::System.Web.UI.WebControls.HiddenField HDF_IDInsumo;
         
         /// <summary>
-        /// TXT_Usuario control.
+        /// HDF_EstadoInsumo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_Usuario;
+        protected global::System.Web.UI.WebControls.HiddenField HDF_EstadoInsumo;
         
         /// <summary>
-        /// DDL_Rol control.
+        /// LNK_CerrarSession control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DDL_Rol;
+        protected global::System.Web.UI.WebControls.LinkButton LNK_CerrarSession;
         
         /// <summary>
-        /// TXT_Cargo control.
+        /// UpdatePanel_Header control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_Cargo;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_Header;
         
         /// <summary>
-        /// TXT_Contrasena control.
+        /// TXT_CodigoInsumo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_Contrasena;
+        protected global::System.Web.UI.WebControls.TextBox TXT_CodigoInsumo;
         
         /// <summary>
-        /// TXT_ConfirmarContrasena control.
+        /// TXT_TotalProductos control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_ConfirmarContrasena;
+        protected global::System.Web.UI.WebControls.TextBox TXT_TotalProductos;
         
         /// <summary>
-        /// BTN_CerrarModalCrearUsuario control.
+        /// TXT_MontoInsumo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BTN_CerrarModalCrearUsuario;
+        protected global::System.Web.UI.WebControls.TextBox TXT_MontoInsumo;
         
         /// <summary>
-        /// BTN_GuardarUsuario control.
+        /// TXT_FechaInsumo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BTN_GuardarUsuario;
+        protected global::System.Web.UI.WebControls.TextBox TXT_FechaInsumo;
         
         /// <summary>
-        /// UpdatePanel_ModalPermisosUsuario control.
+        /// TXT_HoraInsumo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel_ModalPermisosUsuario;
+        protected global::System.Web.UI.WebControls.TextBox TXT_HoraInsumo;
         
         /// <summary>
-        /// title_Permisos control.
+        /// DDL_Propietario control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl title_Permisos;
+        protected global::System.Web.UI.WebControls.DropDownList DDL_Propietario;
         
         /// <summary>
-        /// HDF_IDUsuarioPermisos control.
+        /// LBL_CreadoPor control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField HDF_IDUsuarioPermisos;
+        protected global::System.Web.UI.WebControls.Label LBL_CreadoPor;
         
         /// <summary>
-        /// DDL_Modulo control.
+        /// LBL_UltimaModificacion control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DDL_Modulo;
+        protected global::System.Web.UI.WebControls.Label LBL_UltimaModificacion;
         
         /// <summary>
-        /// UpdatePanel_TablaPermisos control.
+        /// BTN_AgregarProducto control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel_TablaPermisos;
+        protected global::System.Web.UI.WebControls.Button BTN_AgregarProducto;
         
         /// <summary>
-        /// DGV_PermisosSinAsignar control.
+        /// BTN_ReporteInsumo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView DGV_PermisosSinAsignar;
+        protected global::System.Web.UI.WebControls.Button BTN_ReporteInsumo;
         
         /// <summary>
-        /// DGV_PermisosAsignados control.
+        /// BTN_DescargarInsumo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView DGV_PermisosAsignados;
+        protected global::System.Web.UI.WebControls.Button BTN_DescargarInsumo;
         
         /// <summary>
-        /// BTN_CerrarModalPermisosUsuario control.
+        /// UpdatePanel_FiltrosProductos control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BTN_CerrarModalPermisosUsuario;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_FiltrosProductos;
+        
+        /// <summary>
+        /// TXT_Buscar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TXT_Buscar;
+        
+        /// <summary>
+        /// UpdatePanel_ListaProductosInsumo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_ListaProductosInsumo;
+        
+        /// <summary>
+        /// DGV_ListaProductosInsumo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView DGV_ListaProductosInsumo;
+        
+        /// <summary>
+        /// UpdatePanel_ModalAgregarProductos control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_ModalAgregarProductos;
+        
+        /// <summary>
+        /// TXT_BuscarProductosSinAsignar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TXT_BuscarProductosSinAsignar;
+        
+        /// <summary>
+        /// LB_Categoria control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListBox LB_Categoria;
+        
+        /// <summary>
+        /// UpdatePanel_ListaProductosSinAgregar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_ListaProductosSinAgregar;
+        
+        /// <summary>
+        /// DGV_ListaProductosSinAgregar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView DGV_ListaProductosSinAgregar;
+        
+        /// <summary>
+        /// BTN_CerrarModalCrearPedido control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_CerrarModalCrearPedido;
+        
+        /// <summary>
+        /// BTN_Agregar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_Agregar;
     }
 }

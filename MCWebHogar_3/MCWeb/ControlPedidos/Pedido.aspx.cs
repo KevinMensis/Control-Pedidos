@@ -24,6 +24,12 @@ namespace MCWebHogar.ControlPedidos
                 }
                 else
                 {
+                    if (Session["Message"] != null)
+                    {
+                        string script = "alertifywarning('" + Session["Message"].ToString().Trim() + "');";
+                        Session.Remove("Message");
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptPage_Load", script, true); 
+                    }
                     cargarDDLs();
                     cargarPedido("");                    
                     ViewState["Ordenamiento"] = "ASC";
@@ -99,6 +105,7 @@ namespace MCWebHogar.ControlPedidos
             }
 
             DT.DT1.Clear();
+            DT.DT1.Rows.Add("@IDUsuario", Session["UserId"].ToString(), SqlDbType.VarChar);
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
             DT.DT1.Rows.Add("@TipoSentencia", "CargarPuntosVenta", SqlDbType.VarChar);
 
@@ -259,6 +266,7 @@ namespace MCWebHogar.ControlPedidos
             
             DT.DT1.Rows.Add("@Buscar", TXT_Buscar.Text, SqlDbType.VarChar);
 
+            DT.DT1.Rows.Add("@IDUsuario", Session["UserId"].ToString(), SqlDbType.VarChar);
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
             DT.DT1.Rows.Add("@TipoSentencia", "CargarPedidos", SqlDbType.VarChar);
 
@@ -404,6 +412,62 @@ namespace MCWebHogar.ControlPedidos
                     CheckBox chkSeleccionar = (CheckBox)e.Row.FindControl("seleccionarCheckBox");
                     chkSeleccionar.Visible = false;
                 }
+            }
+        }
+
+        protected void DDL_Ira_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DropDownList ddl = (DropDownList)sender;
+            GridViewRow row = (GridViewRow)ddl.Parent.Parent;
+            int rowIndex = row.RowIndex;
+            string idODP = DGV_ListaPedidos.DataKeys[rowIndex].Values[5].ToString().Trim();
+            string idDespacho = DGV_ListaPedidos.DataKeys[rowIndex].Values[6].ToString().Trim();
+            string idPedidoRecibido = DGV_ListaPedidos.DataKeys[rowIndex].Values[7].ToString().Trim();
+            string irA = ddl.SelectedValue.ToString().Trim();
+            switch (irA) {
+                case "ODP":
+                    if (idODP == "0")
+                    {
+                        ddl.SelectedIndex = 0;
+                        UpdatePanel_ListaPedidos.Update();
+                        irA = "Orden de producción";
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptSeleccionarDDL_Ira_SelectedIndexChanged", "alertifywarning('Al pedido no se le ha generado una: " + irA + "');", true);
+                        return;
+                    }
+                    else
+                    {
+                        Session["IDODP"] = idODP;
+                        Response.Redirect("DetalleODP.aspx");
+                    }                        
+                    break;
+                case "Despacho":
+                    if (idDespacho == "0")
+                    {
+                        ddl.SelectedIndex = 0;
+                        UpdatePanel_ListaPedidos.Update();
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptSeleccionarDDL_Ira_SelectedIndexChanged", "alertifywarning('Al pedido no se le ha generado un: " + irA + "');", true);
+                        return;
+                    }
+                    else
+                    {
+                        Session["IDDespacho"] = idDespacho;
+                        Response.Redirect("DetalleDespacho.aspx");
+                    } 
+                    break;
+                case "Pedido Recibido":
+                    if (idPedidoRecibido == "0")
+                    {
+                        ddl.SelectedIndex = 0;
+                        UpdatePanel_ListaPedidos.Update();
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptSeleccionarDDL_Ira_SelectedIndexChanged", "alertifywarning('Al pedido no se le ha generado un: " + irA + "');", true);
+                        return;
+                    }
+                    else
+                    {
+                        Session["IDRecibidoPedido"] = idPedidoRecibido;
+                        Response.Redirect("DetallePedidoRecibido.aspx", true);
+                    } 
+                    break;
             }
         }
         #endregion

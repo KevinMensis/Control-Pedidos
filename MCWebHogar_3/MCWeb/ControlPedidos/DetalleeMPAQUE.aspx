@@ -344,6 +344,12 @@
                             <p>Desechos</p>
                         </a>
                     </li>
+                    <li>
+                        <a href="Insumos.aspx">
+                            <i class="fas fa-box"></i>
+                            <p>Insumos</p>
+                        </a>
+                    </li>
                 </ul>
                 <hr style="width: 230px; color: #2c2c2c;" />
                 <h5 style="text-align: center;">Mantenimiento</h5>
@@ -380,7 +386,7 @@
                         </asp:LinkButton>
                         <a href="https://mensis.cr/" target="_blank" style="margin-top: 0px !important;">
                             <p style="margin-left: 29%; font-size: 7px;">Desarrollado por</p>
-                            <img style="width: 25%; display: block; margin-left: 30%;" src="../Assets/img/logoMensis.png" />
+                            <img style="width: 75%; display: block; margin-left: 10%;" src="https://mensis.cr/svg/logos/logoMensis.jpg" />
                         </a>
                     </li>
                 </ul>
@@ -390,7 +396,7 @@
             <div class="content">
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Detalle empaque</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Detalle Empaque</h1>
                     <br />
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
@@ -399,7 +405,7 @@
                                 <div class="card-header py-3">
                                     <div class="form-row">
                                         <div class="form-group col-md-2">
-                                            <label for="TXT_CodigoEmpaque">Número empaque</label>
+                                            <label for="TXT_CodigoEmpaque">Número Empaque</label>
                                             <asp:TextBox class="form-control" ID="TXT_CodigoEmpaque" runat="server" Enabled="false"></asp:TextBox>
                                         </div>
                                         <div class="form-group col-md-2">
@@ -407,17 +413,17 @@
                                             <asp:TextBox class="form-control" ID="TXT_TotalProductos" runat="server" TextMode="Number" Enabled="false"></asp:TextBox>
                                         </div>
                                         <div class="form-group col-md-2">
-                                            <label for="TXT_MontoEmpaque">Monto empaque</label>
+                                            <label for="TXT_MontoEmpaque">Monto Empaque</label>
                                             <asp:TextBox class="form-control" ID="TXT_MontoEmpaque" runat="server" Enabled="false"></asp:TextBox>
                                         </div>
                                         <div class="form-group col-md-4">                                            
                                             <div class="form-row">
                                                 <div class="col-md-7">
-                                                    <label for="TXT_FechaEmpaque">Fecha empaque</label>
+                                                    <label for="TXT_FechaEmpaque">Fecha Empaque</label>
                                                     <asp:TextBox ID="TXT_FechaEmpaque" runat="server" CssClass="form-control" TextMode="Date" format="dd/MM/yyyy" Enabled="false"></asp:TextBox>
                                                 </div>
                                                 <div class="col-md-5">
-                                                    <label for="TXT_HoraEmpaque">Hora empaque</label>
+                                                    <label for="TXT_HoraEmpaque">Hora Empaque</label>
                                                     <asp:TextBox ID="TXT_HoraEmpaque" runat="server" CssClass="form-control" TextMode="Time" format="HH:mm" Enabled="false"></asp:TextBox>
                                                 </div>
                                             </div>
@@ -440,8 +446,8 @@
                                             <asp:Button UseSubmitBehavior="false" ID="BTN_AgregarProducto" runat="server" Text="Agregar productos" CssClass="btn btn-secondary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_CargarProductos_Click"></asp:Button>                                        
                                         </div>                                        
                                         <div class="col-md-6" style="text-align: right;"> 
-                                            <asp:Button UseSubmitBehavior="false" ID="BTN_ReporteEmpaque" runat="server" Text="Reporte empaque" CssClass="btn btn-secondary" OnClientClick="activarloading();estilosElementosBloqueados();" OnClick="BTN_ReporteEmpaque_Click"></asp:Button>                                                                                
-                                            <asp:Button UseSubmitBehavior="false" ID="BTN_DescargarEmpaque" runat="server" Text="Descargar empaque" CssClass="btn btn-primary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_DescargarEmpaque_Click"></asp:Button>                                        
+                                            <asp:Button UseSubmitBehavior="false" ID="BTN_ReporteEmpaque" runat="server" Text="Reporte Empaque" CssClass="btn btn-secondary" OnClientClick="activarloading();estilosElementosBloqueados();" OnClick="BTN_ReporteEmpaque_Click"></asp:Button>                                                                                
+                                            <asp:Button UseSubmitBehavior="false" ID="BTN_DescargarEmpaque" runat="server" Text="Descargar Empaque" CssClass="btn btn-primary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_DescargarEmpaque_Click"></asp:Button>                                        
                                         </div>
                                     </div>
                                 </div>
@@ -481,7 +487,7 @@
                                                 <asp:BoundField DataField="PrecioProducto" SortExpression="PrecioProducto" HeaderText="Precio producto" DataFormatString="{0:n2}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
                                                 <asp:TemplateField>
                                                     <HeaderTemplate>
-                                                        <asp:Label ID="LBL_Cantidad" runat="server" Text="Cantidad empaque"></asp:Label>
+                                                        <asp:Label ID="LBL_Cantidad" runat="server" Text="Cantidad Empaque"></asp:Label>
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
                                                         <div class="row">

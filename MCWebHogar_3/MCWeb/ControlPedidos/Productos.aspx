@@ -119,6 +119,12 @@
                             <p>Desechos</p>
                         </a>
                     </li>
+                    <li>
+                        <a href="Insumos.aspx">
+                            <i class="fas fa-box"></i>
+                            <p>Insumos</p>
+                        </a>
+                    </li>
                 </ul>
                 <hr style="width: 230px; color: #2c2c2c;" />
                 <h5 style="text-align: center;">Mantenimiento</h5>
@@ -155,7 +161,7 @@
                         </asp:LinkButton>
                         <a href="https://mensis.cr/" target="_blank" style="margin-top: 0px !important;">
                             <p style="margin-left: 29%; font-size: 7px;">Desarrollado por</p>
-                            <img style="width: 25%; display: block; margin-left: 30%;" src="../Assets/img/logoMensis.png" />
+                            <img style="width: 75%; display: block; margin-left: 10%;" src="https://mensis.cr/svg/logos/logoMensis.jpg" />
                         </a>
                     </li>
                 </ul>
@@ -191,7 +197,7 @@
                                 <asp:UpdatePanel ID="UpdatePanel_ListaProductos" runat="server" UpdateMode="Conditional" style="margin-top: 7rem;">
                                     <ContentTemplate>
                                         <asp:GridView ID="DGV_ListaProductos" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
-                                            AutoGenerateColumns="False" DataKeyNames="IDProducto,Activo,IDCategoria,CodigoBarra,MedidaVenta,MedidaProduccion,UnidadMedida,EsEmpaque" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
+                                            AutoGenerateColumns="False" DataKeyNames="IDProducto,Activo,IDCategoria,CodigoBarra,MedidaVenta,MedidaProduccion,UnidadMedida,EsEmpaque,EsInsumo" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
                                             ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true"
                                             OnSorting="DGV_ListaProductos_Sorting"
                                             OnRowCommand="DGV_ListaProductos_RowCommand"
@@ -290,7 +296,11 @@
                             <div class="row">
                                 <div class="col-md-4" style="padding-top: 1%;">
                                     <asp:CheckBox ID="CHK_EsEmpaque" runat="server" CssClass="form-check-input" />
-                                    <label for="CHK_EsEmpaque"> Producto de empaque</label>
+                                    <label for="CHK_EsEmpaque"> Producto de Empaque</label>
+                                </div>
+                                <div class="col-md-4" style="padding-top: 1%;">
+                                    <asp:CheckBox ID="CHK_EsInsumo" runat="server" CssClass="form-check-input" />
+                                    <label for="CHK_EsInsumo"> Producto Insumo</label>
                                 </div>
                             </div>
                         </div>

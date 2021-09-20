@@ -32,9 +32,9 @@ namespace MCWebHogar.DataSets {
         
         private DT_DetalleODPDataTable tableDT_DetalleODP;
         
-        private DT_EncabezadoEmpaqueDataTable tableDT_EncabezadoEmpaque;
+        private DT_EncabezadoInsumoDataTable tableDT_EncabezadoInsumo;
         
-        private DT_DetalleEmpaqueDataTable tableDT_DetalleEmpaque;
+        private DT_DetalleInsumoDataTable tableDT_DetalleInsumo;
         
         private DT_EncabezadoDesechoDataTable tableDT_EncabezadoDesecho;
         
@@ -92,11 +92,11 @@ namespace MCWebHogar.DataSets {
                 if ((ds.Tables["DT_DetalleODP"] != null)) {
                     base.Tables.Add(new DT_DetalleODPDataTable(ds.Tables["DT_DetalleODP"]));
                 }
-                if ((ds.Tables["DT_EncabezadoEmpaque"] != null)) {
-                    base.Tables.Add(new DT_EncabezadoEmpaqueDataTable(ds.Tables["DT_EncabezadoEmpaque"]));
+                if ((ds.Tables["DT_EncabezadoInsumo"] != null)) {
+                    base.Tables.Add(new DT_EncabezadoInsumoDataTable(ds.Tables["DT_EncabezadoInsumo"]));
                 }
-                if ((ds.Tables["DT_DetalleEmpaque"] != null)) {
-                    base.Tables.Add(new DT_DetalleEmpaqueDataTable(ds.Tables["DT_DetalleEmpaque"]));
+                if ((ds.Tables["DT_DetalleInsumo"] != null)) {
+                    base.Tables.Add(new DT_DetalleInsumoDataTable(ds.Tables["DT_DetalleInsumo"]));
                 }
                 if ((ds.Tables["DT_EncabezadoDesecho"] != null)) {
                     base.Tables.Add(new DT_EncabezadoDesechoDataTable(ds.Tables["DT_EncabezadoDesecho"]));
@@ -184,9 +184,9 @@ namespace MCWebHogar.DataSets {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public DT_EncabezadoEmpaqueDataTable DT_EncabezadoEmpaque {
+        public DT_EncabezadoInsumoDataTable DT_EncabezadoInsumo {
             get {
-                return this.tableDT_EncabezadoEmpaque;
+                return this.tableDT_EncabezadoInsumo;
             }
         }
         
@@ -194,9 +194,9 @@ namespace MCWebHogar.DataSets {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public DT_DetalleEmpaqueDataTable DT_DetalleEmpaque {
+        public DT_DetalleInsumoDataTable DT_DetalleInsumo {
             get {
-                return this.tableDT_DetalleEmpaque;
+                return this.tableDT_DetalleInsumo;
             }
         }
         
@@ -359,11 +359,11 @@ namespace MCWebHogar.DataSets {
                 if ((ds.Tables["DT_DetalleODP"] != null)) {
                     base.Tables.Add(new DT_DetalleODPDataTable(ds.Tables["DT_DetalleODP"]));
                 }
-                if ((ds.Tables["DT_EncabezadoEmpaque"] != null)) {
-                    base.Tables.Add(new DT_EncabezadoEmpaqueDataTable(ds.Tables["DT_EncabezadoEmpaque"]));
+                if ((ds.Tables["DT_EncabezadoInsumo"] != null)) {
+                    base.Tables.Add(new DT_EncabezadoInsumoDataTable(ds.Tables["DT_EncabezadoInsumo"]));
                 }
-                if ((ds.Tables["DT_DetalleEmpaque"] != null)) {
-                    base.Tables.Add(new DT_DetalleEmpaqueDataTable(ds.Tables["DT_DetalleEmpaque"]));
+                if ((ds.Tables["DT_DetalleInsumo"] != null)) {
+                    base.Tables.Add(new DT_DetalleInsumoDataTable(ds.Tables["DT_DetalleInsumo"]));
                 }
                 if ((ds.Tables["DT_EncabezadoDesecho"] != null)) {
                     base.Tables.Add(new DT_EncabezadoDesechoDataTable(ds.Tables["DT_EncabezadoDesecho"]));
@@ -446,16 +446,16 @@ namespace MCWebHogar.DataSets {
                     this.tableDT_DetalleODP.InitVars();
                 }
             }
-            this.tableDT_EncabezadoEmpaque = ((DT_EncabezadoEmpaqueDataTable)(base.Tables["DT_EncabezadoEmpaque"]));
+            this.tableDT_EncabezadoInsumo = ((DT_EncabezadoInsumoDataTable)(base.Tables["DT_EncabezadoInsumo"]));
             if ((initTable == true)) {
-                if ((this.tableDT_EncabezadoEmpaque != null)) {
-                    this.tableDT_EncabezadoEmpaque.InitVars();
+                if ((this.tableDT_EncabezadoInsumo != null)) {
+                    this.tableDT_EncabezadoInsumo.InitVars();
                 }
             }
-            this.tableDT_DetalleEmpaque = ((DT_DetalleEmpaqueDataTable)(base.Tables["DT_DetalleEmpaque"]));
+            this.tableDT_DetalleInsumo = ((DT_DetalleInsumoDataTable)(base.Tables["DT_DetalleInsumo"]));
             if ((initTable == true)) {
-                if ((this.tableDT_DetalleEmpaque != null)) {
-                    this.tableDT_DetalleEmpaque.InitVars();
+                if ((this.tableDT_DetalleInsumo != null)) {
+                    this.tableDT_DetalleInsumo.InitVars();
                 }
             }
             this.tableDT_EncabezadoDesecho = ((DT_EncabezadoDesechoDataTable)(base.Tables["DT_EncabezadoDesecho"]));
@@ -524,10 +524,10 @@ namespace MCWebHogar.DataSets {
             base.Tables.Add(this.tableDT_EncabezadoODP);
             this.tableDT_DetalleODP = new DT_DetalleODPDataTable();
             base.Tables.Add(this.tableDT_DetalleODP);
-            this.tableDT_EncabezadoEmpaque = new DT_EncabezadoEmpaqueDataTable();
-            base.Tables.Add(this.tableDT_EncabezadoEmpaque);
-            this.tableDT_DetalleEmpaque = new DT_DetalleEmpaqueDataTable();
-            base.Tables.Add(this.tableDT_DetalleEmpaque);
+            this.tableDT_EncabezadoInsumo = new DT_EncabezadoInsumoDataTable();
+            base.Tables.Add(this.tableDT_EncabezadoInsumo);
+            this.tableDT_DetalleInsumo = new DT_DetalleInsumoDataTable();
+            base.Tables.Add(this.tableDT_DetalleInsumo);
             this.tableDT_EncabezadoDesecho = new DT_EncabezadoDesechoDataTable();
             base.Tables.Add(this.tableDT_EncabezadoDesecho);
             this.tableDT_DetalleDesecho = new DT_DetalleDesechoDataTable();
@@ -572,13 +572,13 @@ namespace MCWebHogar.DataSets {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private bool ShouldSerializeDT_EncabezadoEmpaque() {
+        private bool ShouldSerializeDT_EncabezadoInsumo() {
             return false;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private bool ShouldSerializeDT_DetalleEmpaque() {
+        private bool ShouldSerializeDT_DetalleInsumo() {
             return false;
         }
         
@@ -698,10 +698,10 @@ namespace MCWebHogar.DataSets {
         public delegate void DT_DetalleODPRowChangeEventHandler(object sender, DT_DetalleODPRowChangeEvent e);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public delegate void DT_EncabezadoEmpaqueRowChangeEventHandler(object sender, DT_EncabezadoEmpaqueRowChangeEvent e);
+        public delegate void DT_EncabezadoInsumoRowChangeEventHandler(object sender, DT_EncabezadoInsumoRowChangeEvent e);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public delegate void DT_DetalleEmpaqueRowChangeEventHandler(object sender, DT_DetalleEmpaqueRowChangeEvent e);
+        public delegate void DT_DetalleInsumoRowChangeEventHandler(object sender, DT_DetalleInsumoRowChangeEvent e);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public delegate void DT_EncabezadoDesechoRowChangeEventHandler(object sender, DT_EncabezadoDesechoRowChangeEvent e);
@@ -2359,15 +2359,15 @@ namespace MCWebHogar.DataSets {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class DT_EncabezadoEmpaqueDataTable : global::System.Data.TypedTableBase<DT_EncabezadoEmpaqueRow> {
+        public partial class DT_EncabezadoInsumoDataTable : global::System.Data.TypedTableBase<DT_EncabezadoInsumoRow> {
             
-            private global::System.Data.DataColumn columnIDEmpaque;
+            private global::System.Data.DataColumn columnIDInsumo;
             
             private global::System.Data.DataColumn columnUsuarioID;
             
             private global::System.Data.DataColumn columnNombreUsuario;
             
-            private global::System.Data.DataColumn columnFechaEmpaque;
+            private global::System.Data.DataColumn columnFechaInsumo;
             
             private global::System.Data.DataColumn columnQuienIngreso;
             
@@ -2377,14 +2377,14 @@ namespace MCWebHogar.DataSets {
             
             private global::System.Data.DataColumn columnFechaModifico;
             
-            private global::System.Data.DataColumn columnNumeroEmpaque;
+            private global::System.Data.DataColumn columnNumeroInsumo;
             
             private global::System.Data.DataColumn columnCantidadProductos;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DT_EncabezadoEmpaqueDataTable() {
-                this.TableName = "DT_EncabezadoEmpaque";
+            public DT_EncabezadoInsumoDataTable() {
+                this.TableName = "DT_EncabezadoInsumo";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -2392,7 +2392,7 @@ namespace MCWebHogar.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal DT_EncabezadoEmpaqueDataTable(global::System.Data.DataTable table) {
+            internal DT_EncabezadoInsumoDataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -2409,16 +2409,16 @@ namespace MCWebHogar.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            protected DT_EncabezadoEmpaqueDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected DT_EncabezadoInsumoDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn IDEmpaqueColumn {
+            public global::System.Data.DataColumn IDInsumoColumn {
                 get {
-                    return this.columnIDEmpaque;
+                    return this.columnIDInsumo;
                 }
             }
             
@@ -2440,9 +2440,9 @@ namespace MCWebHogar.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn FechaEmpaqueColumn {
+            public global::System.Data.DataColumn FechaInsumoColumn {
                 get {
-                    return this.columnFechaEmpaque;
+                    return this.columnFechaInsumo;
                 }
             }
             
@@ -2480,9 +2480,9 @@ namespace MCWebHogar.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn NumeroEmpaqueColumn {
+            public global::System.Data.DataColumn NumeroInsumoColumn {
                 get {
-                    return this.columnNumeroEmpaque;
+                    return this.columnNumeroInsumo;
                 }
             }
             
@@ -2505,54 +2505,54 @@ namespace MCWebHogar.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DT_EncabezadoEmpaqueRow this[int index] {
+            public DT_EncabezadoInsumoRow this[int index] {
                 get {
-                    return ((DT_EncabezadoEmpaqueRow)(this.Rows[index]));
+                    return ((DT_EncabezadoInsumoRow)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event DT_EncabezadoEmpaqueRowChangeEventHandler DT_EncabezadoEmpaqueRowChanging;
+            public event DT_EncabezadoInsumoRowChangeEventHandler DT_EncabezadoInsumoRowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event DT_EncabezadoEmpaqueRowChangeEventHandler DT_EncabezadoEmpaqueRowChanged;
+            public event DT_EncabezadoInsumoRowChangeEventHandler DT_EncabezadoInsumoRowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event DT_EncabezadoEmpaqueRowChangeEventHandler DT_EncabezadoEmpaqueRowDeleting;
+            public event DT_EncabezadoInsumoRowChangeEventHandler DT_EncabezadoInsumoRowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event DT_EncabezadoEmpaqueRowChangeEventHandler DT_EncabezadoEmpaqueRowDeleted;
+            public event DT_EncabezadoInsumoRowChangeEventHandler DT_EncabezadoInsumoRowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void AddDT_EncabezadoEmpaqueRow(DT_EncabezadoEmpaqueRow row) {
+            public void AddDT_EncabezadoInsumoRow(DT_EncabezadoInsumoRow row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DT_EncabezadoEmpaqueRow AddDT_EncabezadoEmpaqueRow(int IDEmpaque, string UsuarioID, string NombreUsuario, System.DateTime FechaEmpaque, string QuienIngreso, System.DateTime FechaIngreso, string QuienModifico, System.DateTime FechaModifico, string NumeroEmpaque, int CantidadProductos) {
-                DT_EncabezadoEmpaqueRow rowDT_EncabezadoEmpaqueRow = ((DT_EncabezadoEmpaqueRow)(this.NewRow()));
+            public DT_EncabezadoInsumoRow AddDT_EncabezadoInsumoRow(int IDInsumo, string UsuarioID, string NombreUsuario, System.DateTime FechaInsumo, string QuienIngreso, System.DateTime FechaIngreso, string QuienModifico, System.DateTime FechaModifico, string NumeroInsumo, int CantidadProductos) {
+                DT_EncabezadoInsumoRow rowDT_EncabezadoInsumoRow = ((DT_EncabezadoInsumoRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        IDEmpaque,
+                        IDInsumo,
                         UsuarioID,
                         NombreUsuario,
-                        FechaEmpaque,
+                        FechaInsumo,
                         QuienIngreso,
                         FechaIngreso,
                         QuienModifico,
                         FechaModifico,
-                        NumeroEmpaque,
+                        NumeroInsumo,
                         CantidadProductos};
-                rowDT_EncabezadoEmpaqueRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowDT_EncabezadoEmpaqueRow);
-                return rowDT_EncabezadoEmpaqueRow;
+                rowDT_EncabezadoInsumoRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowDT_EncabezadoInsumoRow);
+                return rowDT_EncabezadoInsumoRow;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                DT_EncabezadoEmpaqueDataTable cln = ((DT_EncabezadoEmpaqueDataTable)(base.Clone()));
+                DT_EncabezadoInsumoDataTable cln = ((DT_EncabezadoInsumoDataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -2560,35 +2560,35 @@ namespace MCWebHogar.DataSets {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new DT_EncabezadoEmpaqueDataTable();
+                return new DT_EncabezadoInsumoDataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
-                this.columnIDEmpaque = base.Columns["IDEmpaque"];
+                this.columnIDInsumo = base.Columns["IDInsumo"];
                 this.columnUsuarioID = base.Columns["UsuarioID"];
                 this.columnNombreUsuario = base.Columns["NombreUsuario"];
-                this.columnFechaEmpaque = base.Columns["FechaEmpaque"];
+                this.columnFechaInsumo = base.Columns["FechaInsumo"];
                 this.columnQuienIngreso = base.Columns["QuienIngreso"];
                 this.columnFechaIngreso = base.Columns["FechaIngreso"];
                 this.columnQuienModifico = base.Columns["QuienModifico"];
                 this.columnFechaModifico = base.Columns["FechaModifico"];
-                this.columnNumeroEmpaque = base.Columns["NumeroEmpaque"];
+                this.columnNumeroInsumo = base.Columns["NumeroInsumo"];
                 this.columnCantidadProductos = base.Columns["CantidadProductos"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnIDEmpaque = new global::System.Data.DataColumn("IDEmpaque", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnIDEmpaque);
+                this.columnIDInsumo = new global::System.Data.DataColumn("IDInsumo", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnIDInsumo);
                 this.columnUsuarioID = new global::System.Data.DataColumn("UsuarioID", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnUsuarioID);
                 this.columnNombreUsuario = new global::System.Data.DataColumn("NombreUsuario", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnNombreUsuario);
-                this.columnFechaEmpaque = new global::System.Data.DataColumn("FechaEmpaque", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnFechaEmpaque);
+                this.columnFechaInsumo = new global::System.Data.DataColumn("FechaInsumo", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnFechaInsumo);
                 this.columnQuienIngreso = new global::System.Data.DataColumn("QuienIngreso", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnQuienIngreso);
                 this.columnFechaIngreso = new global::System.Data.DataColumn("FechaIngreso", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
@@ -2597,39 +2597,39 @@ namespace MCWebHogar.DataSets {
                 base.Columns.Add(this.columnQuienModifico);
                 this.columnFechaModifico = new global::System.Data.DataColumn("FechaModifico", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnFechaModifico);
-                this.columnNumeroEmpaque = new global::System.Data.DataColumn("NumeroEmpaque", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnNumeroEmpaque);
+                this.columnNumeroInsumo = new global::System.Data.DataColumn("NumeroInsumo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnNumeroInsumo);
                 this.columnCantidadProductos = new global::System.Data.DataColumn("CantidadProductos", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCantidadProductos);
-                this.columnIDEmpaque.Caption = "IDPedido";
-                this.columnFechaEmpaque.Caption = "FechaPedido";
-                this.columnNumeroEmpaque.Caption = "NumeroPedido";
+                this.columnIDInsumo.Caption = "IDPedido";
+                this.columnFechaInsumo.Caption = "FechaPedido";
+                this.columnNumeroInsumo.Caption = "NumeroPedido";
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DT_EncabezadoEmpaqueRow NewDT_EncabezadoEmpaqueRow() {
-                return ((DT_EncabezadoEmpaqueRow)(this.NewRow()));
+            public DT_EncabezadoInsumoRow NewDT_EncabezadoInsumoRow() {
+                return ((DT_EncabezadoInsumoRow)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new DT_EncabezadoEmpaqueRow(builder);
+                return new DT_EncabezadoInsumoRow(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(DT_EncabezadoEmpaqueRow);
+                return typeof(DT_EncabezadoInsumoRow);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.DT_EncabezadoEmpaqueRowChanged != null)) {
-                    this.DT_EncabezadoEmpaqueRowChanged(this, new DT_EncabezadoEmpaqueRowChangeEvent(((DT_EncabezadoEmpaqueRow)(e.Row)), e.Action));
+                if ((this.DT_EncabezadoInsumoRowChanged != null)) {
+                    this.DT_EncabezadoInsumoRowChanged(this, new DT_EncabezadoInsumoRowChangeEvent(((DT_EncabezadoInsumoRow)(e.Row)), e.Action));
                 }
             }
             
@@ -2637,8 +2637,8 @@ namespace MCWebHogar.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.DT_EncabezadoEmpaqueRowChanging != null)) {
-                    this.DT_EncabezadoEmpaqueRowChanging(this, new DT_EncabezadoEmpaqueRowChangeEvent(((DT_EncabezadoEmpaqueRow)(e.Row)), e.Action));
+                if ((this.DT_EncabezadoInsumoRowChanging != null)) {
+                    this.DT_EncabezadoInsumoRowChanging(this, new DT_EncabezadoInsumoRowChangeEvent(((DT_EncabezadoInsumoRow)(e.Row)), e.Action));
                 }
             }
             
@@ -2646,8 +2646,8 @@ namespace MCWebHogar.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.DT_EncabezadoEmpaqueRowDeleted != null)) {
-                    this.DT_EncabezadoEmpaqueRowDeleted(this, new DT_EncabezadoEmpaqueRowChangeEvent(((DT_EncabezadoEmpaqueRow)(e.Row)), e.Action));
+                if ((this.DT_EncabezadoInsumoRowDeleted != null)) {
+                    this.DT_EncabezadoInsumoRowDeleted(this, new DT_EncabezadoInsumoRowChangeEvent(((DT_EncabezadoInsumoRow)(e.Row)), e.Action));
                 }
             }
             
@@ -2655,14 +2655,14 @@ namespace MCWebHogar.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.DT_EncabezadoEmpaqueRowDeleting != null)) {
-                    this.DT_EncabezadoEmpaqueRowDeleting(this, new DT_EncabezadoEmpaqueRowChangeEvent(((DT_EncabezadoEmpaqueRow)(e.Row)), e.Action));
+                if ((this.DT_EncabezadoInsumoRowDeleting != null)) {
+                    this.DT_EncabezadoInsumoRowDeleting(this, new DT_EncabezadoInsumoRowChangeEvent(((DT_EncabezadoInsumoRow)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void RemoveDT_EncabezadoEmpaqueRow(DT_EncabezadoEmpaqueRow row) {
+            public void RemoveDT_EncabezadoInsumoRow(DT_EncabezadoInsumoRow row) {
                 this.Rows.Remove(row);
             }
             
@@ -2689,7 +2689,7 @@ namespace MCWebHogar.DataSets {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "DT_EncabezadoEmpaqueDataTable";
+                attribute2.FixedValue = "DT_EncabezadoInsumoDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -2735,9 +2735,9 @@ namespace MCWebHogar.DataSets {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class DT_DetalleEmpaqueDataTable : global::System.Data.TypedTableBase<DT_DetalleEmpaqueRow> {
+        public partial class DT_DetalleInsumoDataTable : global::System.Data.TypedTableBase<DT_DetalleInsumoRow> {
             
-            private global::System.Data.DataColumn columnEmpaqueID;
+            private global::System.Data.DataColumn columnInsumoID;
             
             private global::System.Data.DataColumn columnProductoID;
             
@@ -2745,7 +2745,7 @@ namespace MCWebHogar.DataSets {
             
             private global::System.Data.DataColumn columnPrecioProducto;
             
-            private global::System.Data.DataColumn columnCantidadEmpaque;
+            private global::System.Data.DataColumn columnCantidadInsumo;
             
             private global::System.Data.DataColumn columnUnidadMedida;
             
@@ -2759,8 +2759,8 @@ namespace MCWebHogar.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DT_DetalleEmpaqueDataTable() {
-                this.TableName = "DT_DetalleEmpaque";
+            public DT_DetalleInsumoDataTable() {
+                this.TableName = "DT_DetalleInsumo";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -2768,7 +2768,7 @@ namespace MCWebHogar.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal DT_DetalleEmpaqueDataTable(global::System.Data.DataTable table) {
+            internal DT_DetalleInsumoDataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -2785,16 +2785,16 @@ namespace MCWebHogar.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            protected DT_DetalleEmpaqueDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected DT_DetalleInsumoDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn EmpaqueIDColumn {
+            public global::System.Data.DataColumn InsumoIDColumn {
                 get {
-                    return this.columnEmpaqueID;
+                    return this.columnInsumoID;
                 }
             }
             
@@ -2824,9 +2824,9 @@ namespace MCWebHogar.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn CantidadEmpaqueColumn {
+            public global::System.Data.DataColumn CantidadInsumoColumn {
                 get {
-                    return this.columnCantidadEmpaque;
+                    return this.columnCantidadInsumo;
                 }
             }
             
@@ -2881,54 +2881,54 @@ namespace MCWebHogar.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DT_DetalleEmpaqueRow this[int index] {
+            public DT_DetalleInsumoRow this[int index] {
                 get {
-                    return ((DT_DetalleEmpaqueRow)(this.Rows[index]));
+                    return ((DT_DetalleInsumoRow)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event DT_DetalleEmpaqueRowChangeEventHandler DT_DetalleEmpaqueRowChanging;
+            public event DT_DetalleInsumoRowChangeEventHandler DT_DetalleInsumoRowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event DT_DetalleEmpaqueRowChangeEventHandler DT_DetalleEmpaqueRowChanged;
+            public event DT_DetalleInsumoRowChangeEventHandler DT_DetalleInsumoRowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event DT_DetalleEmpaqueRowChangeEventHandler DT_DetalleEmpaqueRowDeleting;
+            public event DT_DetalleInsumoRowChangeEventHandler DT_DetalleInsumoRowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event DT_DetalleEmpaqueRowChangeEventHandler DT_DetalleEmpaqueRowDeleted;
+            public event DT_DetalleInsumoRowChangeEventHandler DT_DetalleInsumoRowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void AddDT_DetalleEmpaqueRow(DT_DetalleEmpaqueRow row) {
+            public void AddDT_DetalleInsumoRow(DT_DetalleInsumoRow row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DT_DetalleEmpaqueRow AddDT_DetalleEmpaqueRow(int EmpaqueID, int ProductoID, decimal CostoProducto, decimal PrecioProducto, int CantidadEmpaque, string UnidadMedida, string DescripcionProducto, int UsuarioID, int Categoria, string DescripcionCategoria) {
-                DT_DetalleEmpaqueRow rowDT_DetalleEmpaqueRow = ((DT_DetalleEmpaqueRow)(this.NewRow()));
+            public DT_DetalleInsumoRow AddDT_DetalleInsumoRow(int InsumoID, int ProductoID, decimal CostoProducto, decimal PrecioProducto, int CantidadInsumo, string UnidadMedida, string DescripcionProducto, int UsuarioID, int Categoria, string DescripcionCategoria) {
+                DT_DetalleInsumoRow rowDT_DetalleInsumoRow = ((DT_DetalleInsumoRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        EmpaqueID,
+                        InsumoID,
                         ProductoID,
                         CostoProducto,
                         PrecioProducto,
-                        CantidadEmpaque,
+                        CantidadInsumo,
                         UnidadMedida,
                         DescripcionProducto,
                         UsuarioID,
                         Categoria,
                         DescripcionCategoria};
-                rowDT_DetalleEmpaqueRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowDT_DetalleEmpaqueRow);
-                return rowDT_DetalleEmpaqueRow;
+                rowDT_DetalleInsumoRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowDT_DetalleInsumoRow);
+                return rowDT_DetalleInsumoRow;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                DT_DetalleEmpaqueDataTable cln = ((DT_DetalleEmpaqueDataTable)(base.Clone()));
+                DT_DetalleInsumoDataTable cln = ((DT_DetalleInsumoDataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -2936,17 +2936,17 @@ namespace MCWebHogar.DataSets {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new DT_DetalleEmpaqueDataTable();
+                return new DT_DetalleInsumoDataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
-                this.columnEmpaqueID = base.Columns["EmpaqueID"];
+                this.columnInsumoID = base.Columns["InsumoID"];
                 this.columnProductoID = base.Columns["ProductoID"];
                 this.columnCostoProducto = base.Columns["CostoProducto"];
                 this.columnPrecioProducto = base.Columns["PrecioProducto"];
-                this.columnCantidadEmpaque = base.Columns["CantidadEmpaque"];
+                this.columnCantidadInsumo = base.Columns["CantidadInsumo"];
                 this.columnUnidadMedida = base.Columns["UnidadMedida"];
                 this.columnDescripcionProducto = base.Columns["DescripcionProducto"];
                 this.columnUsuarioID = base.Columns["UsuarioID"];
@@ -2957,16 +2957,16 @@ namespace MCWebHogar.DataSets {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnEmpaqueID = new global::System.Data.DataColumn("EmpaqueID", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnEmpaqueID);
+                this.columnInsumoID = new global::System.Data.DataColumn("InsumoID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInsumoID);
                 this.columnProductoID = new global::System.Data.DataColumn("ProductoID", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnProductoID);
                 this.columnCostoProducto = new global::System.Data.DataColumn("CostoProducto", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCostoProducto);
                 this.columnPrecioProducto = new global::System.Data.DataColumn("PrecioProducto", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPrecioProducto);
-                this.columnCantidadEmpaque = new global::System.Data.DataColumn("CantidadEmpaque", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnCantidadEmpaque);
+                this.columnCantidadInsumo = new global::System.Data.DataColumn("CantidadInsumo", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCantidadInsumo);
                 this.columnUnidadMedida = new global::System.Data.DataColumn("UnidadMedida", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnUnidadMedida);
                 this.columnDescripcionProducto = new global::System.Data.DataColumn("DescripcionProducto", typeof(string), null, global::System.Data.MappingType.Element);
@@ -2977,34 +2977,34 @@ namespace MCWebHogar.DataSets {
                 base.Columns.Add(this.columnCategoria);
                 this.columnDescripcionCategoria = new global::System.Data.DataColumn("DescripcionCategoria", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDescripcionCategoria);
-                this.columnEmpaqueID.Caption = "PedidoID";
-                this.columnCantidadEmpaque.Caption = "CantidadProduccion";
+                this.columnInsumoID.Caption = "PedidoID";
+                this.columnCantidadInsumo.Caption = "CantidadProduccion";
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DT_DetalleEmpaqueRow NewDT_DetalleEmpaqueRow() {
-                return ((DT_DetalleEmpaqueRow)(this.NewRow()));
+            public DT_DetalleInsumoRow NewDT_DetalleInsumoRow() {
+                return ((DT_DetalleInsumoRow)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new DT_DetalleEmpaqueRow(builder);
+                return new DT_DetalleInsumoRow(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(DT_DetalleEmpaqueRow);
+                return typeof(DT_DetalleInsumoRow);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.DT_DetalleEmpaqueRowChanged != null)) {
-                    this.DT_DetalleEmpaqueRowChanged(this, new DT_DetalleEmpaqueRowChangeEvent(((DT_DetalleEmpaqueRow)(e.Row)), e.Action));
+                if ((this.DT_DetalleInsumoRowChanged != null)) {
+                    this.DT_DetalleInsumoRowChanged(this, new DT_DetalleInsumoRowChangeEvent(((DT_DetalleInsumoRow)(e.Row)), e.Action));
                 }
             }
             
@@ -3012,8 +3012,8 @@ namespace MCWebHogar.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.DT_DetalleEmpaqueRowChanging != null)) {
-                    this.DT_DetalleEmpaqueRowChanging(this, new DT_DetalleEmpaqueRowChangeEvent(((DT_DetalleEmpaqueRow)(e.Row)), e.Action));
+                if ((this.DT_DetalleInsumoRowChanging != null)) {
+                    this.DT_DetalleInsumoRowChanging(this, new DT_DetalleInsumoRowChangeEvent(((DT_DetalleInsumoRow)(e.Row)), e.Action));
                 }
             }
             
@@ -3021,8 +3021,8 @@ namespace MCWebHogar.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.DT_DetalleEmpaqueRowDeleted != null)) {
-                    this.DT_DetalleEmpaqueRowDeleted(this, new DT_DetalleEmpaqueRowChangeEvent(((DT_DetalleEmpaqueRow)(e.Row)), e.Action));
+                if ((this.DT_DetalleInsumoRowDeleted != null)) {
+                    this.DT_DetalleInsumoRowDeleted(this, new DT_DetalleInsumoRowChangeEvent(((DT_DetalleInsumoRow)(e.Row)), e.Action));
                 }
             }
             
@@ -3030,14 +3030,14 @@ namespace MCWebHogar.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.DT_DetalleEmpaqueRowDeleting != null)) {
-                    this.DT_DetalleEmpaqueRowDeleting(this, new DT_DetalleEmpaqueRowChangeEvent(((DT_DetalleEmpaqueRow)(e.Row)), e.Action));
+                if ((this.DT_DetalleInsumoRowDeleting != null)) {
+                    this.DT_DetalleInsumoRowDeleting(this, new DT_DetalleInsumoRowChangeEvent(((DT_DetalleInsumoRow)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void RemoveDT_DetalleEmpaqueRow(DT_DetalleEmpaqueRow row) {
+            public void RemoveDT_DetalleInsumoRow(DT_DetalleInsumoRow row) {
                 this.Rows.Remove(row);
             }
             
@@ -3064,7 +3064,7 @@ namespace MCWebHogar.DataSets {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "DT_DetalleEmpaqueDataTable";
+                attribute2.FixedValue = "DT_DetalleInsumoDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -7728,30 +7728,30 @@ namespace MCWebHogar.DataSets {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class DT_EncabezadoEmpaqueRow : global::System.Data.DataRow {
+        public partial class DT_EncabezadoInsumoRow : global::System.Data.DataRow {
             
-            private DT_EncabezadoEmpaqueDataTable tableDT_EncabezadoEmpaque;
+            private DT_EncabezadoInsumoDataTable tableDT_EncabezadoInsumo;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal DT_EncabezadoEmpaqueRow(global::System.Data.DataRowBuilder rb) : 
+            internal DT_EncabezadoInsumoRow(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tableDT_EncabezadoEmpaque = ((DT_EncabezadoEmpaqueDataTable)(this.Table));
+                this.tableDT_EncabezadoInsumo = ((DT_EncabezadoInsumoDataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int IDEmpaque {
+            public int IDInsumo {
                 get {
                     try {
-                        return ((int)(this[this.tableDT_EncabezadoEmpaque.IDEmpaqueColumn]));
+                        return ((int)(this[this.tableDT_EncabezadoInsumo.IDInsumoColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'IDEmpaque\' in table \'DT_EncabezadoEmpaque\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'IDInsumo\' in table \'DT_EncabezadoInsumo\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDT_EncabezadoEmpaque.IDEmpaqueColumn] = value;
+                    this[this.tableDT_EncabezadoInsumo.IDInsumoColumn] = value;
                 }
             }
             
@@ -7760,14 +7760,14 @@ namespace MCWebHogar.DataSets {
             public string UsuarioID {
                 get {
                     try {
-                        return ((string)(this[this.tableDT_EncabezadoEmpaque.UsuarioIDColumn]));
+                        return ((string)(this[this.tableDT_EncabezadoInsumo.UsuarioIDColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'UsuarioID\' in table \'DT_EncabezadoEmpaque\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'UsuarioID\' in table \'DT_EncabezadoInsumo\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDT_EncabezadoEmpaque.UsuarioIDColumn] = value;
+                    this[this.tableDT_EncabezadoInsumo.UsuarioIDColumn] = value;
                 }
             }
             
@@ -7776,30 +7776,30 @@ namespace MCWebHogar.DataSets {
             public string NombreUsuario {
                 get {
                     try {
-                        return ((string)(this[this.tableDT_EncabezadoEmpaque.NombreUsuarioColumn]));
+                        return ((string)(this[this.tableDT_EncabezadoInsumo.NombreUsuarioColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'NombreUsuario\' in table \'DT_EncabezadoEmpaque\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'NombreUsuario\' in table \'DT_EncabezadoInsumo\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDT_EncabezadoEmpaque.NombreUsuarioColumn] = value;
+                    this[this.tableDT_EncabezadoInsumo.NombreUsuarioColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime FechaEmpaque {
+            public System.DateTime FechaInsumo {
                 get {
                     try {
-                        return ((global::System.DateTime)(this[this.tableDT_EncabezadoEmpaque.FechaEmpaqueColumn]));
+                        return ((global::System.DateTime)(this[this.tableDT_EncabezadoInsumo.FechaInsumoColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'FechaEmpaque\' in table \'DT_EncabezadoEmpaque\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'FechaInsumo\' in table \'DT_EncabezadoInsumo\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDT_EncabezadoEmpaque.FechaEmpaqueColumn] = value;
+                    this[this.tableDT_EncabezadoInsumo.FechaInsumoColumn] = value;
                 }
             }
             
@@ -7808,14 +7808,14 @@ namespace MCWebHogar.DataSets {
             public string QuienIngreso {
                 get {
                     try {
-                        return ((string)(this[this.tableDT_EncabezadoEmpaque.QuienIngresoColumn]));
+                        return ((string)(this[this.tableDT_EncabezadoInsumo.QuienIngresoColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'QuienIngreso\' in table \'DT_EncabezadoEmpaque\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'QuienIngreso\' in table \'DT_EncabezadoInsumo\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDT_EncabezadoEmpaque.QuienIngresoColumn] = value;
+                    this[this.tableDT_EncabezadoInsumo.QuienIngresoColumn] = value;
                 }
             }
             
@@ -7824,14 +7824,14 @@ namespace MCWebHogar.DataSets {
             public System.DateTime FechaIngreso {
                 get {
                     try {
-                        return ((global::System.DateTime)(this[this.tableDT_EncabezadoEmpaque.FechaIngresoColumn]));
+                        return ((global::System.DateTime)(this[this.tableDT_EncabezadoInsumo.FechaIngresoColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'FechaIngreso\' in table \'DT_EncabezadoEmpaque\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'FechaIngreso\' in table \'DT_EncabezadoInsumo\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDT_EncabezadoEmpaque.FechaIngresoColumn] = value;
+                    this[this.tableDT_EncabezadoInsumo.FechaIngresoColumn] = value;
                 }
             }
             
@@ -7840,14 +7840,14 @@ namespace MCWebHogar.DataSets {
             public string QuienModifico {
                 get {
                     try {
-                        return ((string)(this[this.tableDT_EncabezadoEmpaque.QuienModificoColumn]));
+                        return ((string)(this[this.tableDT_EncabezadoInsumo.QuienModificoColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'QuienModifico\' in table \'DT_EncabezadoEmpaque\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'QuienModifico\' in table \'DT_EncabezadoInsumo\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDT_EncabezadoEmpaque.QuienModificoColumn] = value;
+                    this[this.tableDT_EncabezadoInsumo.QuienModificoColumn] = value;
                 }
             }
             
@@ -7856,30 +7856,30 @@ namespace MCWebHogar.DataSets {
             public System.DateTime FechaModifico {
                 get {
                     try {
-                        return ((global::System.DateTime)(this[this.tableDT_EncabezadoEmpaque.FechaModificoColumn]));
+                        return ((global::System.DateTime)(this[this.tableDT_EncabezadoInsumo.FechaModificoColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'FechaModifico\' in table \'DT_EncabezadoEmpaque\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'FechaModifico\' in table \'DT_EncabezadoInsumo\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDT_EncabezadoEmpaque.FechaModificoColumn] = value;
+                    this[this.tableDT_EncabezadoInsumo.FechaModificoColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string NumeroEmpaque {
+            public string NumeroInsumo {
                 get {
                     try {
-                        return ((string)(this[this.tableDT_EncabezadoEmpaque.NumeroEmpaqueColumn]));
+                        return ((string)(this[this.tableDT_EncabezadoInsumo.NumeroInsumoColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'NumeroEmpaque\' in table \'DT_EncabezadoEmpaque\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'NumeroInsumo\' in table \'DT_EncabezadoInsumo\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDT_EncabezadoEmpaque.NumeroEmpaqueColumn] = value;
+                    this[this.tableDT_EncabezadoInsumo.NumeroInsumoColumn] = value;
                 }
             }
             
@@ -7888,166 +7888,166 @@ namespace MCWebHogar.DataSets {
             public int CantidadProductos {
                 get {
                     try {
-                        return ((int)(this[this.tableDT_EncabezadoEmpaque.CantidadProductosColumn]));
+                        return ((int)(this[this.tableDT_EncabezadoInsumo.CantidadProductosColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'CantidadProductos\' in table \'DT_EncabezadoEmpaque\' is DBNul" +
+                        throw new global::System.Data.StrongTypingException("The value for column \'CantidadProductos\' in table \'DT_EncabezadoInsumo\' is DBNul" +
                                 "l.", e);
                     }
                 }
                 set {
-                    this[this.tableDT_EncabezadoEmpaque.CantidadProductosColumn] = value;
+                    this[this.tableDT_EncabezadoInsumo.CantidadProductosColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsIDEmpaqueNull() {
-                return this.IsNull(this.tableDT_EncabezadoEmpaque.IDEmpaqueColumn);
+            public bool IsIDInsumoNull() {
+                return this.IsNull(this.tableDT_EncabezadoInsumo.IDInsumoColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetIDEmpaqueNull() {
-                this[this.tableDT_EncabezadoEmpaque.IDEmpaqueColumn] = global::System.Convert.DBNull;
+            public void SetIDInsumoNull() {
+                this[this.tableDT_EncabezadoInsumo.IDInsumoColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsUsuarioIDNull() {
-                return this.IsNull(this.tableDT_EncabezadoEmpaque.UsuarioIDColumn);
+                return this.IsNull(this.tableDT_EncabezadoInsumo.UsuarioIDColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetUsuarioIDNull() {
-                this[this.tableDT_EncabezadoEmpaque.UsuarioIDColumn] = global::System.Convert.DBNull;
+                this[this.tableDT_EncabezadoInsumo.UsuarioIDColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsNombreUsuarioNull() {
-                return this.IsNull(this.tableDT_EncabezadoEmpaque.NombreUsuarioColumn);
+                return this.IsNull(this.tableDT_EncabezadoInsumo.NombreUsuarioColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetNombreUsuarioNull() {
-                this[this.tableDT_EncabezadoEmpaque.NombreUsuarioColumn] = global::System.Convert.DBNull;
+                this[this.tableDT_EncabezadoInsumo.NombreUsuarioColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsFechaEmpaqueNull() {
-                return this.IsNull(this.tableDT_EncabezadoEmpaque.FechaEmpaqueColumn);
+            public bool IsFechaInsumoNull() {
+                return this.IsNull(this.tableDT_EncabezadoInsumo.FechaInsumoColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetFechaEmpaqueNull() {
-                this[this.tableDT_EncabezadoEmpaque.FechaEmpaqueColumn] = global::System.Convert.DBNull;
+            public void SetFechaInsumoNull() {
+                this[this.tableDT_EncabezadoInsumo.FechaInsumoColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsQuienIngresoNull() {
-                return this.IsNull(this.tableDT_EncabezadoEmpaque.QuienIngresoColumn);
+                return this.IsNull(this.tableDT_EncabezadoInsumo.QuienIngresoColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetQuienIngresoNull() {
-                this[this.tableDT_EncabezadoEmpaque.QuienIngresoColumn] = global::System.Convert.DBNull;
+                this[this.tableDT_EncabezadoInsumo.QuienIngresoColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsFechaIngresoNull() {
-                return this.IsNull(this.tableDT_EncabezadoEmpaque.FechaIngresoColumn);
+                return this.IsNull(this.tableDT_EncabezadoInsumo.FechaIngresoColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetFechaIngresoNull() {
-                this[this.tableDT_EncabezadoEmpaque.FechaIngresoColumn] = global::System.Convert.DBNull;
+                this[this.tableDT_EncabezadoInsumo.FechaIngresoColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsQuienModificoNull() {
-                return this.IsNull(this.tableDT_EncabezadoEmpaque.QuienModificoColumn);
+                return this.IsNull(this.tableDT_EncabezadoInsumo.QuienModificoColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetQuienModificoNull() {
-                this[this.tableDT_EncabezadoEmpaque.QuienModificoColumn] = global::System.Convert.DBNull;
+                this[this.tableDT_EncabezadoInsumo.QuienModificoColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsFechaModificoNull() {
-                return this.IsNull(this.tableDT_EncabezadoEmpaque.FechaModificoColumn);
+                return this.IsNull(this.tableDT_EncabezadoInsumo.FechaModificoColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetFechaModificoNull() {
-                this[this.tableDT_EncabezadoEmpaque.FechaModificoColumn] = global::System.Convert.DBNull;
+                this[this.tableDT_EncabezadoInsumo.FechaModificoColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsNumeroEmpaqueNull() {
-                return this.IsNull(this.tableDT_EncabezadoEmpaque.NumeroEmpaqueColumn);
+            public bool IsNumeroInsumoNull() {
+                return this.IsNull(this.tableDT_EncabezadoInsumo.NumeroInsumoColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetNumeroEmpaqueNull() {
-                this[this.tableDT_EncabezadoEmpaque.NumeroEmpaqueColumn] = global::System.Convert.DBNull;
+            public void SetNumeroInsumoNull() {
+                this[this.tableDT_EncabezadoInsumo.NumeroInsumoColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsCantidadProductosNull() {
-                return this.IsNull(this.tableDT_EncabezadoEmpaque.CantidadProductosColumn);
+                return this.IsNull(this.tableDT_EncabezadoInsumo.CantidadProductosColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetCantidadProductosNull() {
-                this[this.tableDT_EncabezadoEmpaque.CantidadProductosColumn] = global::System.Convert.DBNull;
+                this[this.tableDT_EncabezadoInsumo.CantidadProductosColumn] = global::System.Convert.DBNull;
             }
         }
         
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class DT_DetalleEmpaqueRow : global::System.Data.DataRow {
+        public partial class DT_DetalleInsumoRow : global::System.Data.DataRow {
             
-            private DT_DetalleEmpaqueDataTable tableDT_DetalleEmpaque;
+            private DT_DetalleInsumoDataTable tableDT_DetalleInsumo;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal DT_DetalleEmpaqueRow(global::System.Data.DataRowBuilder rb) : 
+            internal DT_DetalleInsumoRow(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tableDT_DetalleEmpaque = ((DT_DetalleEmpaqueDataTable)(this.Table));
+                this.tableDT_DetalleInsumo = ((DT_DetalleInsumoDataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int EmpaqueID {
+            public int InsumoID {
                 get {
                     try {
-                        return ((int)(this[this.tableDT_DetalleEmpaque.EmpaqueIDColumn]));
+                        return ((int)(this[this.tableDT_DetalleInsumo.InsumoIDColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'EmpaqueID\' in table \'DT_DetalleEmpaque\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'InsumoID\' in table \'DT_DetalleInsumo\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDT_DetalleEmpaque.EmpaqueIDColumn] = value;
+                    this[this.tableDT_DetalleInsumo.InsumoIDColumn] = value;
                 }
             }
             
@@ -8056,14 +8056,14 @@ namespace MCWebHogar.DataSets {
             public int ProductoID {
                 get {
                     try {
-                        return ((int)(this[this.tableDT_DetalleEmpaque.ProductoIDColumn]));
+                        return ((int)(this[this.tableDT_DetalleInsumo.ProductoIDColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'ProductoID\' in table \'DT_DetalleEmpaque\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'ProductoID\' in table \'DT_DetalleInsumo\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDT_DetalleEmpaque.ProductoIDColumn] = value;
+                    this[this.tableDT_DetalleInsumo.ProductoIDColumn] = value;
                 }
             }
             
@@ -8072,14 +8072,14 @@ namespace MCWebHogar.DataSets {
             public decimal CostoProducto {
                 get {
                     try {
-                        return ((decimal)(this[this.tableDT_DetalleEmpaque.CostoProductoColumn]));
+                        return ((decimal)(this[this.tableDT_DetalleInsumo.CostoProductoColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'CostoProducto\' in table \'DT_DetalleEmpaque\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'CostoProducto\' in table \'DT_DetalleInsumo\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDT_DetalleEmpaque.CostoProductoColumn] = value;
+                    this[this.tableDT_DetalleInsumo.CostoProductoColumn] = value;
                 }
             }
             
@@ -8088,30 +8088,30 @@ namespace MCWebHogar.DataSets {
             public decimal PrecioProducto {
                 get {
                     try {
-                        return ((decimal)(this[this.tableDT_DetalleEmpaque.PrecioProductoColumn]));
+                        return ((decimal)(this[this.tableDT_DetalleInsumo.PrecioProductoColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'PrecioProducto\' in table \'DT_DetalleEmpaque\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'PrecioProducto\' in table \'DT_DetalleInsumo\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDT_DetalleEmpaque.PrecioProductoColumn] = value;
+                    this[this.tableDT_DetalleInsumo.PrecioProductoColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int CantidadEmpaque {
+            public int CantidadInsumo {
                 get {
                     try {
-                        return ((int)(this[this.tableDT_DetalleEmpaque.CantidadEmpaqueColumn]));
+                        return ((int)(this[this.tableDT_DetalleInsumo.CantidadInsumoColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'CantidadEmpaque\' in table \'DT_DetalleEmpaque\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'CantidadInsumo\' in table \'DT_DetalleInsumo\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDT_DetalleEmpaque.CantidadEmpaqueColumn] = value;
+                    this[this.tableDT_DetalleInsumo.CantidadInsumoColumn] = value;
                 }
             }
             
@@ -8120,14 +8120,14 @@ namespace MCWebHogar.DataSets {
             public string UnidadMedida {
                 get {
                     try {
-                        return ((string)(this[this.tableDT_DetalleEmpaque.UnidadMedidaColumn]));
+                        return ((string)(this[this.tableDT_DetalleInsumo.UnidadMedidaColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'UnidadMedida\' in table \'DT_DetalleEmpaque\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'UnidadMedida\' in table \'DT_DetalleInsumo\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDT_DetalleEmpaque.UnidadMedidaColumn] = value;
+                    this[this.tableDT_DetalleInsumo.UnidadMedidaColumn] = value;
                 }
             }
             
@@ -8136,15 +8136,15 @@ namespace MCWebHogar.DataSets {
             public string DescripcionProducto {
                 get {
                     try {
-                        return ((string)(this[this.tableDT_DetalleEmpaque.DescripcionProductoColumn]));
+                        return ((string)(this[this.tableDT_DetalleInsumo.DescripcionProductoColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'DescripcionProducto\' in table \'DT_DetalleEmpaque\' is DBNull" +
+                        throw new global::System.Data.StrongTypingException("The value for column \'DescripcionProducto\' in table \'DT_DetalleInsumo\' is DBNull" +
                                 ".", e);
                     }
                 }
                 set {
-                    this[this.tableDT_DetalleEmpaque.DescripcionProductoColumn] = value;
+                    this[this.tableDT_DetalleInsumo.DescripcionProductoColumn] = value;
                 }
             }
             
@@ -8153,14 +8153,14 @@ namespace MCWebHogar.DataSets {
             public int UsuarioID {
                 get {
                     try {
-                        return ((int)(this[this.tableDT_DetalleEmpaque.UsuarioIDColumn]));
+                        return ((int)(this[this.tableDT_DetalleInsumo.UsuarioIDColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'UsuarioID\' in table \'DT_DetalleEmpaque\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'UsuarioID\' in table \'DT_DetalleInsumo\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDT_DetalleEmpaque.UsuarioIDColumn] = value;
+                    this[this.tableDT_DetalleInsumo.UsuarioIDColumn] = value;
                 }
             }
             
@@ -8169,14 +8169,14 @@ namespace MCWebHogar.DataSets {
             public int Categoria {
                 get {
                     try {
-                        return ((int)(this[this.tableDT_DetalleEmpaque.CategoriaColumn]));
+                        return ((int)(this[this.tableDT_DetalleInsumo.CategoriaColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Categoria\' in table \'DT_DetalleEmpaque\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Categoria\' in table \'DT_DetalleInsumo\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDT_DetalleEmpaque.CategoriaColumn] = value;
+                    this[this.tableDT_DetalleInsumo.CategoriaColumn] = value;
                 }
             }
             
@@ -8185,136 +8185,136 @@ namespace MCWebHogar.DataSets {
             public string DescripcionCategoria {
                 get {
                     try {
-                        return ((string)(this[this.tableDT_DetalleEmpaque.DescripcionCategoriaColumn]));
+                        return ((string)(this[this.tableDT_DetalleInsumo.DescripcionCategoriaColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'DescripcionCategoria\' in table \'DT_DetalleEmpaque\' is DBNul" +
+                        throw new global::System.Data.StrongTypingException("The value for column \'DescripcionCategoria\' in table \'DT_DetalleInsumo\' is DBNul" +
                                 "l.", e);
                     }
                 }
                 set {
-                    this[this.tableDT_DetalleEmpaque.DescripcionCategoriaColumn] = value;
+                    this[this.tableDT_DetalleInsumo.DescripcionCategoriaColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsEmpaqueIDNull() {
-                return this.IsNull(this.tableDT_DetalleEmpaque.EmpaqueIDColumn);
+            public bool IsInsumoIDNull() {
+                return this.IsNull(this.tableDT_DetalleInsumo.InsumoIDColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetEmpaqueIDNull() {
-                this[this.tableDT_DetalleEmpaque.EmpaqueIDColumn] = global::System.Convert.DBNull;
+            public void SetInsumoIDNull() {
+                this[this.tableDT_DetalleInsumo.InsumoIDColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsProductoIDNull() {
-                return this.IsNull(this.tableDT_DetalleEmpaque.ProductoIDColumn);
+                return this.IsNull(this.tableDT_DetalleInsumo.ProductoIDColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetProductoIDNull() {
-                this[this.tableDT_DetalleEmpaque.ProductoIDColumn] = global::System.Convert.DBNull;
+                this[this.tableDT_DetalleInsumo.ProductoIDColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsCostoProductoNull() {
-                return this.IsNull(this.tableDT_DetalleEmpaque.CostoProductoColumn);
+                return this.IsNull(this.tableDT_DetalleInsumo.CostoProductoColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetCostoProductoNull() {
-                this[this.tableDT_DetalleEmpaque.CostoProductoColumn] = global::System.Convert.DBNull;
+                this[this.tableDT_DetalleInsumo.CostoProductoColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsPrecioProductoNull() {
-                return this.IsNull(this.tableDT_DetalleEmpaque.PrecioProductoColumn);
+                return this.IsNull(this.tableDT_DetalleInsumo.PrecioProductoColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetPrecioProductoNull() {
-                this[this.tableDT_DetalleEmpaque.PrecioProductoColumn] = global::System.Convert.DBNull;
+                this[this.tableDT_DetalleInsumo.PrecioProductoColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsCantidadEmpaqueNull() {
-                return this.IsNull(this.tableDT_DetalleEmpaque.CantidadEmpaqueColumn);
+            public bool IsCantidadInsumoNull() {
+                return this.IsNull(this.tableDT_DetalleInsumo.CantidadInsumoColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetCantidadEmpaqueNull() {
-                this[this.tableDT_DetalleEmpaque.CantidadEmpaqueColumn] = global::System.Convert.DBNull;
+            public void SetCantidadInsumoNull() {
+                this[this.tableDT_DetalleInsumo.CantidadInsumoColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsUnidadMedidaNull() {
-                return this.IsNull(this.tableDT_DetalleEmpaque.UnidadMedidaColumn);
+                return this.IsNull(this.tableDT_DetalleInsumo.UnidadMedidaColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetUnidadMedidaNull() {
-                this[this.tableDT_DetalleEmpaque.UnidadMedidaColumn] = global::System.Convert.DBNull;
+                this[this.tableDT_DetalleInsumo.UnidadMedidaColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsDescripcionProductoNull() {
-                return this.IsNull(this.tableDT_DetalleEmpaque.DescripcionProductoColumn);
+                return this.IsNull(this.tableDT_DetalleInsumo.DescripcionProductoColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetDescripcionProductoNull() {
-                this[this.tableDT_DetalleEmpaque.DescripcionProductoColumn] = global::System.Convert.DBNull;
+                this[this.tableDT_DetalleInsumo.DescripcionProductoColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsUsuarioIDNull() {
-                return this.IsNull(this.tableDT_DetalleEmpaque.UsuarioIDColumn);
+                return this.IsNull(this.tableDT_DetalleInsumo.UsuarioIDColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetUsuarioIDNull() {
-                this[this.tableDT_DetalleEmpaque.UsuarioIDColumn] = global::System.Convert.DBNull;
+                this[this.tableDT_DetalleInsumo.UsuarioIDColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsCategoriaNull() {
-                return this.IsNull(this.tableDT_DetalleEmpaque.CategoriaColumn);
+                return this.IsNull(this.tableDT_DetalleInsumo.CategoriaColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetCategoriaNull() {
-                this[this.tableDT_DetalleEmpaque.CategoriaColumn] = global::System.Convert.DBNull;
+                this[this.tableDT_DetalleInsumo.CategoriaColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsDescripcionCategoriaNull() {
-                return this.IsNull(this.tableDT_DetalleEmpaque.DescripcionCategoriaColumn);
+                return this.IsNull(this.tableDT_DetalleInsumo.DescripcionCategoriaColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetDescripcionCategoriaNull() {
-                this[this.tableDT_DetalleEmpaque.DescripcionCategoriaColumn] = global::System.Convert.DBNull;
+                this[this.tableDT_DetalleInsumo.DescripcionCategoriaColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -11228,22 +11228,22 @@ namespace MCWebHogar.DataSets {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public class DT_EncabezadoEmpaqueRowChangeEvent : global::System.EventArgs {
+        public class DT_EncabezadoInsumoRowChangeEvent : global::System.EventArgs {
             
-            private DT_EncabezadoEmpaqueRow eventRow;
+            private DT_EncabezadoInsumoRow eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DT_EncabezadoEmpaqueRowChangeEvent(DT_EncabezadoEmpaqueRow row, global::System.Data.DataRowAction action) {
+            public DT_EncabezadoInsumoRowChangeEvent(DT_EncabezadoInsumoRow row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DT_EncabezadoEmpaqueRow Row {
+            public DT_EncabezadoInsumoRow Row {
                 get {
                     return this.eventRow;
                 }
@@ -11262,22 +11262,22 @@ namespace MCWebHogar.DataSets {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public class DT_DetalleEmpaqueRowChangeEvent : global::System.EventArgs {
+        public class DT_DetalleInsumoRowChangeEvent : global::System.EventArgs {
             
-            private DT_DetalleEmpaqueRow eventRow;
+            private DT_DetalleInsumoRow eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DT_DetalleEmpaqueRowChangeEvent(DT_DetalleEmpaqueRow row, global::System.Data.DataRowAction action) {
+            public DT_DetalleInsumoRowChangeEvent(DT_DetalleInsumoRow row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DT_DetalleEmpaqueRow Row {
+            public DT_DetalleInsumoRow Row {
                 get {
                     return this.eventRow;
                 }

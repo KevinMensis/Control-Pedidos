@@ -10,7 +10,7 @@
 namespace MCWebHogar.ControlPedidos {
     
     
-    public partial class Devoluciones {
+    public partial class Insumos {
         
         /// <summary>
         /// LBL_GenerandoInforme control.
@@ -31,13 +31,13 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.LinkButton LNK_CerrarSession;
         
         /// <summary>
-        /// UpdatePanel_FiltrosDevoluciones control.
+        /// UpdatePanel_FiltrosInsumos control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel_FiltrosDevoluciones;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_FiltrosInsumos;
         
         /// <summary>
         /// TXT_Buscar control.
@@ -58,66 +58,66 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.TextBox TXT_FechaCreacionDesde;
         
         /// <summary>
-        /// BTN_CrearDevoluciones control.
+        /// BTN_CrearInsumos control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BTN_CrearDevoluciones;
+        protected global::System.Web.UI.WebControls.Button BTN_CrearInsumos;
         
         /// <summary>
-        /// UpdatePanel_ListaDevoluciones control.
+        /// UpdatePanel_ListaInsumos control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel_ListaDevoluciones;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_ListaInsumos;
         
         /// <summary>
-        /// DGV_ListaDevoluciones control.
+        /// DGV_ListaInsumos control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView DGV_ListaDevoluciones;
+        protected global::System.Web.UI.WebControls.GridView DGV_ListaInsumos;
         
         /// <summary>
-        /// UpdatePanel_EliminarDevolucion control.
+        /// UpdatePanel_EliminarInsumo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel_EliminarDevolucion;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_EliminarInsumo;
         
         /// <summary>
-        /// HDF_IDDevolucion control.
+        /// HDF_IDInsumo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField HDF_IDDevolucion;
+        protected global::System.Web.UI.WebControls.HiddenField HDF_IDInsumo;
         
         /// <summary>
-        /// BTN_CerrarModalEliminarDevolucion control.
+        /// BTN_CerrarModalEliminarInsumo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BTN_CerrarModalEliminarDevolucion;
+        protected global::System.Web.UI.WebControls.Button BTN_CerrarModalEliminarInsumo;
         
         /// <summary>
-        /// BTN_EliminarDevolucion control.
+        /// BTN_EliminarInsumo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BTN_EliminarDevolucion;
+        protected global::System.Web.UI.WebControls.Button BTN_EliminarInsumo;
     }
 }

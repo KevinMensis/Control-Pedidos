@@ -21,6 +21,11 @@ namespace MCWebHogar.ControlPedidos
                 {
                     Response.Redirect("../Default.aspx", true);
                 }
+                else if (ClasePermiso.Permiso("Ingreso", "Módulo", "Puntos de venta", Convert.ToInt32(Session["UserId"].ToString().Trim())) <= 0)
+                {
+                    Session.Add("Message", "No tiene permisos para acceder al módulo de Puntos de venta.");
+                    Response.Redirect("Pedido.aspx");
+                }
                 else
                 {
                     cargarPuntosVenta("");
@@ -196,6 +201,7 @@ namespace MCWebHogar.ControlPedidos
                             TXT_DescripcionPuntoVenta.Text = dr["DescripcionPuntoVenta"].ToString().Trim();
                             TXT_UbicacionPuntoVenta.Text = dr["UbicacionPuntoVenta"].ToString().Trim();
                             TXT_PorcentajeDescuento.Text = dr["PorcentajeDescuento"].ToString().Trim();
+                            CHK_CrearPedidoRecibido.Checked = Convert.ToBoolean(dr["CrearPedidoRecibido"]);
                         }
                     }
 
@@ -229,6 +235,7 @@ namespace MCWebHogar.ControlPedidos
             TXT_DescripcionPuntoVenta.Text = "";
             TXT_UbicacionPuntoVenta.Text = "";
             TXT_PorcentajeDescuento.Text = "";
+            CHK_CrearPedidoRecibido.Checked = false;
 
             title_CrearPuntoVenta.InnerHtml = "Crear punto venta";
             UpdatePanel_ModalCrearPuntoVenta.Update();
@@ -245,6 +252,7 @@ namespace MCWebHogar.ControlPedidos
             DT.DT1.Rows.Add("@DescripcionPuntoVenta", TXT_DescripcionPuntoVenta.Text, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@UbicacionPuntoVenta", TXT_UbicacionPuntoVenta.Text, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@PorcentajeDescuento", TXT_PorcentajeDescuento.Text, SqlDbType.Decimal);
+            DT.DT1.Rows.Add("@CrearPedidoRecibido", CHK_CrearPedidoRecibido.Checked, SqlDbType.Bit);
 
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
             if (HDF_IDPuntoVenta.Value == "0")

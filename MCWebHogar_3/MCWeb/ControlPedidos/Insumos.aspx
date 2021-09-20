@@ -1,11 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Devoluciones.aspx.cs" MasterPageFile="~/MenuPrincipal.Master" Inherits="MCWebHogar.ControlPedidos.Devoluciones" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Insumos.aspx.cs" MasterPageFile="~/MenuPrincipal.Master" Inherits="MCWebHogar.ControlPedidos.Insumos" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajax" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Devoluciones</title>
+    <title>Insumos</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <style>
         
@@ -36,12 +36,12 @@
             document.getElementById('modalloading').style.display = 'none';
         }
 
-        function abrirModalEliminarDevolucion() {
-            document.getElementById('BTN_ModalEliminarDevolucion').click()
+        function abrirModalEliminarInsumo() {
+            document.getElementById('BTN_ModalEliminarInsumo').click()
         }
 
-        function cerrarModalEliminarDevolucion() {
-            document.getElementById('BTN_ModalEliminarDevolucion').click()
+        function cerrarModalEliminarInsumo() {
+            document.getElementById('BTN_ModalEliminarInsumo').click()
         }
     </script>
 </asp:Content>
@@ -93,7 +93,7 @@
                             <p>Empaque</p>
                         </a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="Devoluciones.aspx">
                             <i class="fas fa-undo-alt"></i>
                             <p>Devoluciones</p>
@@ -105,7 +105,7 @@
                             <p>Desechos</p>
                         </a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="Insumos.aspx">
                             <i class="fas fa-box"></i>
                             <p>Insumos</p>
@@ -157,45 +157,45 @@
             <div class="content">
                 <div class="container-fluid">
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Devoluciones</h1>
+                    <h1 class="h3 mb-2 text-gray-800">Insumos</h1>
                     <div class="card shadow mb-4">
                         <div class="card-body" style="padding-top: 0px;">
                             <div class="card-body">
-                                <asp:UpdatePanel ID="UpdatePanel_FiltrosDevoluciones" runat="server" UpdateMode="Conditional">
+                                <asp:UpdatePanel ID="UpdatePanel_FiltrosInsumos" runat="server" UpdateMode="Conditional">
                                     <ContentTemplate> 
                                         <div class="row">                         
                                             <div class="input-group no-border col-md-4">
-                                                <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar número devolución..." OnTextChanged="TXT_FiltrarDevoluciones_OnTextChanged" AutoPostBack="true"></asp:TextBox>
+                                                <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar número insumo..." OnTextChanged="TXT_FiltrarInsumos_OnTextChanged" AutoPostBack="true"></asp:TextBox>
                                                 <div class="input-group-append">
                                                     <div class="input-group-text">
                                                         <i class="nc-icon nc-zoom-split"></i>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div>                                            
                                             <label style="margin-top: 1%;">Fecha desde:</label> 
                                             <div class="input-group no-border col-md-2">                                               
-                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaCreacionDesde" runat="server" TextMode="Date" OnTextChanged="TXT_FiltrarDevoluciones_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
+                                                <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaCreacionDesde" runat="server" TextMode="Date" OnTextChanged="TXT_FiltrarInsumos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
                                             </div>
                                             <div class="input-group no-border col-md-4" style="text-align: right; display: inline-block;">
-                                                <asp:Button ID="BTN_CrearDevoluciones" style="margin: 0px;" runat="server" Text="Crear nueva devolución" CssClass="btn btn-secondary" OnClick="BTN_CrearDevoluciones_Click"></asp:Button>                                    
+                                                <asp:Button ID="BTN_CrearInsumos" style="margin: 0px;" runat="server" Text="Crear nuevo insumo" CssClass="btn btn-secondary" OnClick="BTN_CrearInsumos_Click"></asp:Button>                                    
                                             </div>
                                         </div>
                                     </ContentTemplate>
                                 </asp:UpdatePanel>
                                 <br />
                                 <div class="table">
-                                    <asp:UpdatePanel ID="UpdatePanel_ListaDevoluciones" runat="server" UpdateMode="Conditional">
+                                    <asp:UpdatePanel ID="UpdatePanel_ListaInsumos" runat="server" UpdateMode="Conditional">
                                         <ContentTemplate>
-                                            <asp:GridView ID="DGV_ListaDevoluciones" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
-                                                AutoGenerateColumns="False" DataKeyNames="IDDevolucion,UsuarioID" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
+                                            <asp:GridView ID="DGV_ListaInsumos" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
+                                                AutoGenerateColumns="False" DataKeyNames="IDInsumo,UsuarioID" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
                                                 ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true"
-                                                OnSorting="DGV_ListaDevoluciones_Sorting"
-                                                OnRowCommand="DGV_ListaDevoluciones_RowCommand"
-                                                OnRowDataBound="DGV_ListaDevoluciones_OnRowDataBound">
+                                                OnSorting="DGV_ListaInsumos_Sorting"
+                                                OnRowCommand="DGV_ListaInsumos_RowCommand"
+                                                OnRowDataBound="DGV_ListaInsumos_OnRowDataBound">
                                                 <Columns>
-                                                    <asp:BoundField DataField="NumeroDevolucion" SortExpression="IDDevolucion" HeaderText="Número devolución" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                    <asp:BoundField DataField="NumeroInsumo" SortExpression="IDInsumo" ItemStyle-ForeColor="black" HeaderText="Número insumo" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                     <asp:BoundField DataField="Nombre" SortExpression="Nombre" HeaderText="Solicitante" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                
-                                                    <asp:BoundField DataField="FDevolucion" SortExpression="FDevolucion" HeaderText="Fecha" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                
+                                                    <asp:BoundField DataField="FInsumo" SortExpression="FInsumo" HeaderText="Fecha" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                
                                                     <asp:TemplateField>
                                                         <HeaderTemplate>
                                                             <asp:Label ID="LBL_Acciones" runat="server" Text="Acciones"></asp:Label>
@@ -225,27 +225,27 @@
         </div>
     </div>
 
-    <button type="button" id="BTN_ModalEliminarDevolucion" data-toggle="modal" data-target="#ModalEliminarDevolucion" style="visibility: hidden;">open</button>
+    <button type="button" id="BTN_ModalEliminarInsumo" data-toggle="modal" data-target="#ModalEliminarInsumo" style="visibility: hidden;">open</button>
 
-    <div class="modal bd-example-modal-lg" id="ModalEliminarDevolucion" tabindex="-1" role="dialog" aria-labelledby="popEliminarDevolucion" aria-hidden="true">
-        <asp:UpdatePanel ID="UpdatePanel_EliminarDevolucion" runat="server" UpdateMode="Conditional">
+    <div class="modal bd-example-modal-lg" id="ModalEliminarInsumo" tabindex="-1" role="dialog" aria-labelledby="popEliminarInsumo" aria-hidden="true">
+        <asp:UpdatePanel ID="UpdatePanel_EliminarInsumo" runat="server" UpdateMode="Conditional">
             <ContentTemplate>
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
-                        <asp:HiddenField ID="HDF_IDDevolucion" runat="server" Value="0" Visible="true" /> 
+                        <asp:HiddenField ID="HDF_IDInsumo" runat="server" Value="0" Visible="true" /> 
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                            <h5 class="modal-title" runat="server">Eliminar el Devolucion</h5>
+                            <h5 class="modal-title" runat="server">Eliminar el insumo</h5>
                         </div>
                         <div class="modal-body">                            
-                            <p>¿Está seguro que desea eliminar el Devolucion?</p>
+                            <p>¿Está seguro que desea eliminar el insumo?</p>
                             <p>La acción es irreversible y los productos agregados se eliminarán también.</p>
                         </div>
                         <div class="modal-footer">
-                            <asp:Button ID="BTN_CerrarModalEliminarDevolucion" UseSubmitBehavior="false" runat="server" Text="Cancelar" data-dismiss="modal" CssClass="btn btn-primary" />
-                            <asp:Button ID="BTN_EliminarDevolucion" runat="server" UseSubmitBehavior="false" Text="Eliminar" CssClass="btn btn-danger" OnClick="BTN_EliminarDevolucion_Click" />
+                            <asp:Button ID="BTN_CerrarModalEliminarInsumo" UseSubmitBehavior="false" runat="server" Text="Cancelar" data-dismiss="modal" CssClass="btn btn-primary" />
+                            <asp:Button ID="BTN_EliminarInsumo" runat="server" UseSubmitBehavior="false" Text="Eliminar" CssClass="btn btn-danger" OnClick="BTN_EliminarInsumo_Click" />
                         </div>
                     </div>
                 </div>

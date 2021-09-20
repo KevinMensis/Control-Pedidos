@@ -21,6 +21,11 @@ namespace MCWebHogar.ControlPedidos
                 {
                     Response.Redirect("../Default.aspx", true);
                 }
+                else if (ClasePermiso.Permiso("Ingreso", "Módulo", "Empaque", Convert.ToInt32(Session["UserId"].ToString().Trim())) <= 0)
+                {
+                    Session.Add("Message", "No tiene permisos para acceder al módulo de Empaque.");
+                    Response.Redirect("Pedido.aspx");
+                }
                 else
                 {
                     cargarDDLs();
@@ -126,6 +131,21 @@ namespace MCWebHogar.ControlPedidos
                     Session["IDEmpaque"] = idEmpaque;
                     Response.Redirect("DetalleEmpaque.aspx", true);
                 }
+                else if (e.CommandName == "Eliminar")
+                {
+                    if (ClasePermiso.Permiso("Eliminar", "Acciones", "Eliminar", Convert.ToInt32(Session["UserId"].ToString().Trim())) > 0)
+                    {
+                        HDF_IDEmpaque.Value = idEmpaque;
+                        UpdatePanel_EliminarEmpaque.Update();
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDGV_ListaEmpaques_RowCommand", "abrirModalEliminarEmpaque();", true);
+                    }
+                    else
+                    {
+                        HDF_IDEmpaque.Value = "0";
+                        UpdatePanel_EliminarEmpaque.Update();
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDGV_ListaEmpaques_RowCommand", "alertifywarning('No tiene permisos para realizar esta acción.');", true);
+                    }
+                }
             }
         }
 
@@ -199,8 +219,52 @@ namespace MCWebHogar.ControlPedidos
             }
             else
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_CrearEmpaques_Click", "alertifywarning('No se ha podido crear la orden de empaque, por favor intente de nuevo.');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_CrearEmpaques_Click", "alertifywarning('No se ha podido crear la orden de Empaque, por favor intente de nuevo.');", true);
                 return;
+            }
+        }
+
+        protected void BTN_EliminarEmpaque_Click(object sender, EventArgs e)
+        {
+            if (ClasePermiso.Permiso("Eliminar", "Acciones", "Eliminar", Convert.ToInt32(Session["UserId"].ToString().Trim())) > 0)
+            {
+                DT.DT1.Clear();
+
+                DT.DT1.Rows.Add("@IDEmpaque", HDF_IDEmpaque.Value, SqlDbType.Int);
+                DT.DT1.Rows.Add("@UsuarioID", Session["UserId"].ToString(), SqlDbType.VarChar);
+
+                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", "EliminarEmpaque", SqlDbType.VarChar);
+
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP14_0001");
+
+                if (Result != null && Result.Rows.Count > 0)
+                {
+                    if (Result.Rows[0][0].ToString().Trim() == "ERROR")
+                    {
+                        HDF_IDEmpaque.Value = "0";
+                        UpdatePanel_EliminarEmpaque.Update();
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_EliminarEmpaque_Click", "alertifywarning('" + Result.Rows[0][1].ToString().Trim() + "');", true);
+                        return;
+                    }
+                    else
+                    {
+                        HDF_IDEmpaque.Value = "0";
+                        UpdatePanel_EliminarEmpaque.Update();
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_EliminarEmpaque_Click", "alertifysuccess('Empaque eliminado con éxito');cerrarModalEliminarEmpaque();", true);
+                        cargarEmpaques();
+                    }
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_EliminarEmpaque_Click", "alertifywarning('No se ha podido eliminar la orden de Empaque, por favor intente de nuevo.');", true);
+                    return;
+                }
+            }
+            else
+            {
+                HDF_IDEmpaque.Value = "0";
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_EliminarEmpaque_Clickd", "alertifywarning('No tiene permisos para realizar esta acción.');", true);
             }
         }
         #endregion

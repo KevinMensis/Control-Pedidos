@@ -21,9 +21,15 @@ namespace MCWebHogar.ControlPedidos
                 {
                     Response.Redirect("../Default.aspx", true);
                 }
+                else if (ClasePermiso.Permiso("Ingreso", "Módulo", "Gestión de usuarios", Convert.ToInt32(Session["UserId"].ToString().Trim())) <= 0)
+                {
+                    Session.Add("Message", "No tiene permisos para acceder al módulo de Gestión de usuarios.");
+                    Response.Redirect("Pedido.aspx");
+                }
                 else
                 {
                     cargarFiltros();
+                    cargarPermisos();
                     cargarUsuarios("");
                     ViewState["Ordenamiento"] = "ASC";
                 }
@@ -31,6 +37,7 @@ namespace MCWebHogar.ControlPedidos
             else
             {
                 string opcion = Page.Request.Params["__EVENTTARGET"];
+                string argument = Page.Request.Params["__EVENTARGUMENT"];
                 if (opcion.Contains("TXT_Buscar"))
                 {
                     cargarUsuarios("");
@@ -44,6 +51,7 @@ namespace MCWebHogar.ControlPedidos
             Session.RemoveAll();
             Response.Redirect("../Default.aspx");
         }
+        
         private void cargarFiltros()
         {
             DT.DT1.Clear();
@@ -68,9 +76,22 @@ namespace MCWebHogar.ControlPedidos
             DDL_Rol.DataValueField = "IDRol";
             DDL_Rol.DataBind();
         }
+        
+        private void cargarPermisos()
+        {
+            DT.DT1.Clear();
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "CargarPermisos", SqlDbType.VarChar);
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "PER00_Permisos");
+            DDL_Modulo.DataSource = Result;
+            DDL_Modulo.DataTextField = "Modulo";
+            DDL_Modulo.DataValueField = "Modulo";
+            DDL_Modulo.DataBind();
+        }
         #endregion
 
         #region Usuarios
+        #region Mantenimiento usuarios
         private DataTable cargarUsuariosConsulta()
         {
             DT.DT1.Clear();
@@ -279,6 +300,16 @@ namespace MCWebHogar.ControlPedidos
                     string script = "abrirModalCrearUsuario();";
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_CrearUsuario_OnClick", script, true);
                 }
+                else if (e.CommandName == "permisos") 
+                {
+                    HDF_IDUsuarioPermisos.Value = idUsuario.ToString().Trim();
+                    title_Permisos.InnerHtml = "Asignar permisos al usuario: " + DGV_ListaUsuarios.DataKeys[rowIndex].Values[5].ToString().Trim();
+
+                    verPermisosUsuario();
+
+                    string script = "abrirModalPermisosUsuario();";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_PermisosUsuario_OnClick", script, true);
+                }
             }
         }
 
@@ -354,5 +385,198 @@ namespace MCWebHogar.ControlPedidos
             }
         }
         #endregion
+
+        #region Permisos
+        private void verPermisosUsuario()
+        {
+            DT.DT1.Clear();
+
+            DT.DT1.Rows.Add("@IDUsuario", Convert.ToInt32(HDF_IDUsuarioPermisos.Value), SqlDbType.Int);
+            DT.DT1.Rows.Add("@Modulo", DDL_Modulo.SelectedValue, SqlDbType.VarChar);
+
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "PermisosSinAsignar", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "PER00_Permisos");
+
+            DGV_PermisosSinAsignar.DataSource = Result;
+            DGV_PermisosSinAsignar.DataBind();
+
+            DT.DT1.Clear();
+
+            DT.DT1.Rows.Add("@IDUsuario", Convert.ToInt32(HDF_IDUsuarioPermisos.Value), SqlDbType.Int);
+            DT.DT1.Rows.Add("@Modulo", DDL_Modulo.SelectedValue, SqlDbType.VarChar);
+
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "PermisosAsignados", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "PER00_Permisos");
+
+            DGV_PermisosAsignados.DataSource = Result;
+            DGV_PermisosAsignados.DataBind();
+            UpdatePanel_ModalPermisosUsuario.Update();
+            UpdatePanel_TablaPermisos.Update();
+        }
+        
+        protected void DDL_Modulo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            verPermisosUsuario();
+        }
+
+        #region Permisos sin asignar
+        protected void DGV_PermisosSinAsignar_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            DT.DT1.Clear();
+
+            DT.DT1.Rows.Add("@IDUsuario", Convert.ToInt32(HDF_IDUsuarioPermisos.Value), SqlDbType.Int);
+            DT.DT1.Rows.Add("@Modulo", DDL_Modulo.SelectedValue, SqlDbType.VarChar);
+
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "PermisosSinAsignar", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "PER00_Permisos");
+
+            if (ViewState["Ordenamiento"].ToString().Trim() == "ASC")
+            {
+                ViewState["Ordenamiento"] = "DESC";
+            }
+            else
+            {
+                ViewState["Ordenamiento"] = "ASC";
+            }
+            Result.DefaultView.Sort = e.SortExpression + " " + ViewState["Ordenamiento"].ToString().Trim();
+            if (Result != null && Result.Rows.Count > 0)
+            {
+                if (Result.Rows[0][0].ToString().Trim() == "ERROR")
+                {
+                    return;
+                }
+                else
+                {
+                    DGV_PermisosSinAsignar.DataSource = Result;
+                    DGV_PermisosSinAsignar.DataBind();
+                    UpdatePanel_ModalPermisosUsuario.Update();
+                }
+            }
+            else
+            {
+                DGV_PermisosSinAsignar.DataSource = Result;
+                DGV_PermisosSinAsignar.DataBind();
+                UpdatePanel_ModalPermisosUsuario.Update();
+            }
+        }
+
+        protected void DGV_PermisosSinAsignar_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName != "Sort")
+            {
+                int rowIndex = Convert.ToInt32(e.CommandArgument);
+                asignarPermiso(rowIndex);
+            }
+        }
+
+        protected void DGV_PermisosSinAsignar_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                e.Row.Attributes["style"] = "cursor:pointer;";                
+            }
+        }
+
+        private void asignarPermiso(int index)
+        {
+            int idPermiso = Convert.ToInt32(DGV_PermisosSinAsignar.DataKeys[index].Value.ToString().Trim());
+            DT.DT1.Clear();
+
+            DT.DT1.Rows.Add("@IDUsuario", Convert.ToInt32(HDF_IDUsuarioPermisos.Value), SqlDbType.Int);
+            DT.DT1.Rows.Add("@IDPermiso", idPermiso, SqlDbType.VarChar);
+
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "AsignarPermiso", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "PER00_Permisos");
+
+            verPermisosUsuario();
+        }
+        #endregion
+
+        #region Permisos asignados
+        protected void DGV_PermisosAsignados_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            DT.DT1.Clear();
+
+            DT.DT1.Rows.Add("@IDUsuario", Convert.ToInt32(HDF_IDUsuarioPermisos.Value), SqlDbType.Int);
+            DT.DT1.Rows.Add("@Modulo", DDL_Modulo.SelectedValue, SqlDbType.VarChar);
+
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "PermisosAsignados", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "PER00_Permisos");
+                                              
+            if (ViewState["Ordenamiento"].ToString().Trim() == "ASC")
+            {
+                ViewState["Ordenamiento"] = "DESC";
+            }
+            else
+            {
+                ViewState["Ordenamiento"] = "ASC";
+            }
+            Result.DefaultView.Sort = e.SortExpression + " " + ViewState["Ordenamiento"].ToString().Trim();
+            if (Result != null && Result.Rows.Count > 0)
+            {
+                if (Result.Rows[0][0].ToString().Trim() == "ERROR")
+                {
+                    return;
+                }
+                else
+                {
+                    DGV_PermisosAsignados.DataSource = Result;
+                    DGV_PermisosAsignados.DataBind();
+                    UpdatePanel_ModalPermisosUsuario.Update();
+                }
+            }
+            else
+            {
+                DGV_PermisosAsignados.DataSource = Result;
+                DGV_PermisosAsignados.DataBind();
+                UpdatePanel_ModalPermisosUsuario.Update();
+            }
+        }
+
+        protected void DGV_PermisosAsignados_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName != "Sort")
+            {
+                int rowIndex = Convert.ToInt32(e.CommandArgument);
+                eliminarPermiso(rowIndex);
+            }
+        }
+
+        protected void DGV_PermisosAsignados_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                e.Row.Attributes["style"] = "cursor:pointer;";
+            }
+        }
+
+        private void eliminarPermiso(int index)
+        {
+            int idLinea = Convert.ToInt32(DGV_PermisosAsignados.DataKeys[index].Values[1].ToString().Trim());
+            DT.DT1.Clear();
+
+            DT.DT1.Rows.Add("@IDUsuario", Convert.ToInt32(HDF_IDUsuarioPermisos.Value), SqlDbType.Int);
+            DT.DT1.Rows.Add("@IDLinea", idLinea, SqlDbType.VarChar);
+
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "EliminarPermiso", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "PER00_Permisos");
+
+            verPermisosUsuario();
+        }
+        #endregion
+        #endregion
+        #endregion
     }
-}
+}                                             

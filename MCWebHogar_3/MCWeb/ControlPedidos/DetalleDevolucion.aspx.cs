@@ -646,7 +646,7 @@ namespace MCWebHogar.ControlPedidos
                 ddlDecs.SelectedValue = decs.ToString();
                 ddlCents.SelectedValue = cents.ToString();
 
-                if (TXT_FechaDevolucion.Text != DateTime.Now.ToString("yyyy-MM-dd"))
+                if (TXT_FechaDevolucion.Text != DateTime.Now.ToString("yyyy-MM-dd") && (ClasePermiso.Permiso("Editar", "Acciones", "Editar", Convert.ToInt32(Session["UserId"].ToString().Trim())) <= 0))
                 {
                     cantidad.Enabled = false;
                     cantidad.CssClass = "form-control";

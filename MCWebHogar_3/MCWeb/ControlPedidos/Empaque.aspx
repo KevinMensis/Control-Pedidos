@@ -36,25 +36,13 @@
             document.getElementById('modalloading').style.display = 'none';
         }
 
-        <%--function TXT_FechaEmpaqueDesdeChange() {
-            var fechaEmpaqueDesde = $(<%= TXT_FechaEmpaqueDesde.ClientID %>)[0].value
-            var fechaEmpaqueHasta = $(<%= TXT_FechaEmpaqueHasta.ClientID %>)[0].value
-
-            if (fechaEmpaqueHasta === '1900-01-01') {
-                $(<%= TXT_FechaEmpaqueHasta.ClientID %>)[0].value = fechaEmpaqueDesde
-            }
-            return true
+        function abrirModalEliminarEmpaque() {
+            document.getElementById('BTN_ModalEliminarEmpaque').click()
         }
 
-        function TXT_FechaEmpaqueHastaChange() {
-            var fechaEmpaqueDesde = $(<%= TXT_FechaEmpaqueDesde.ClientID %>)[0].value
-            var fechaEmpaqueHasta = $(<%= TXT_FechaEmpaqueHasta.ClientID %>)[0].value
-
-            if (fechaEmpaqueDesde === '1900-01-01') {
-                $(<%= TXT_FechaEmpaqueDesde.ClientID %>)[0].value = fechaEmpaqueHasta
-            }
-            return true
-        }--%>
+        function cerrarModalEliminarEmpaque() {
+            document.getElementById('BTN_ModalEliminarEmpaque').click()
+        }
     </script>
 </asp:Content>
 
@@ -117,6 +105,12 @@
                             <p>Desechos</p>
                         </a>
                     </li>
+                    <li>
+                        <a href="Insumos.aspx">
+                            <i class="fas fa-box"></i>
+                            <p>Insumos</p>
+                        </a>
+                    </li>
                 </ul>
                 <hr style="width: 230px; color: #2c2c2c;" />
                 <h5 style="text-align: center;">Mantenimiento</h5>
@@ -153,7 +147,7 @@
                         </asp:LinkButton>
                         <a href="https://mensis.cr/" target="_blank" style="margin-top: 0px !important;">
                             <p style="margin-left: 29%; font-size: 7px;">Desarrollado por</p>
-                            <img style="width: 25%; display: block; margin-left: 30%;" src="../Assets/img/logoMensis.png" />
+                            <img style="width: 75%; display: block; margin-left: 10%;" src="https://mensis.cr/svg/logos/logoMensis.jpg" />
                         </a>
                     </li>
                 </ul>
@@ -171,7 +165,7 @@
                                     <ContentTemplate> 
                                         <div class="row">                         
                                             <div class="input-group no-border col-md-4">
-                                                <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar número empaque..." OnTextChanged="TXT_FiltrarEmpaques_OnTextChanged" AutoPostBack="true"></asp:TextBox>
+                                                <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar número Empaque..." OnTextChanged="TXT_FiltrarEmpaques_OnTextChanged" AutoPostBack="true"></asp:TextBox>
                                                 <div class="input-group-append">
                                                     <div class="input-group-text">
                                                         <i class="nc-icon nc-zoom-split"></i>
@@ -183,7 +177,7 @@
                                                 <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaCreacionDesde" runat="server" TextMode="Date" OnTextChanged="TXT_FiltrarEmpaques_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
                                             </div>
                                             <div class="input-group no-border col-md-4" style="text-align: right; display: inline-block;">
-                                                <asp:Button ID="BTN_CrearEmpaques" style="margin: 0px;" runat="server" Text="Crear nuevo empaque" CssClass="btn btn-secondary" OnClick="BTN_CrearEmpaques_Click"></asp:Button>                                    
+                                                <asp:Button ID="BTN_CrearEmpaques" style="margin: 0px;" runat="server" Text="Crear nuevo Empaque" CssClass="btn btn-secondary" OnClick="BTN_CrearEmpaques_Click"></asp:Button>                                    
                                             </div>
                                         </div>
                                     </ContentTemplate>
@@ -199,7 +193,7 @@
                                                 OnRowCommand="DGV_ListaEmpaques_RowCommand"
                                                 OnRowDataBound="DGV_ListaEmpaques_OnRowDataBound">
                                                 <Columns>
-                                                    <asp:BoundField DataField="NumeroEmpaque" SortExpression="IDEmpaque" ItemStyle-ForeColor="black" HeaderText="Número empaque" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                    <asp:BoundField DataField="NumeroEmpaque" SortExpression="IDEmpaque" ItemStyle-ForeColor="black" HeaderText="Número Empaque" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                     <asp:BoundField DataField="Nombre" SortExpression="Nombre" HeaderText="Solicitante" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                
                                                     <asp:BoundField DataField="FEmpaque" SortExpression="FEmpaque" HeaderText="Fecha" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                
                                                     <asp:TemplateField>
@@ -211,6 +205,10 @@
                                                                 CommandName="VerDetalle"
                                                                 CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
                                                                 Text="Ver detalles" AutoPostBack="true" />
+                                                            <asp:Button class="btn btn-outline-danger btn-round" ID="BTN_Eliminar" runat="server"
+                                                                CommandName="Eliminar"
+                                                                CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
+                                                                Text="Eliminar" AutoPostBack="true" />
                                                         </ItemTemplate>
                                                         <ItemStyle HorizontalAlign="Center" />
                                                     </asp:TemplateField>
@@ -225,5 +223,33 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <button type="button" id="BTN_ModalEliminarEmpaque" data-toggle="modal" data-target="#ModalEliminarEmpaque" style="visibility: hidden;">open</button>
+
+    <div class="modal bd-example-modal-lg" id="ModalEliminarEmpaque" tabindex="-1" role="dialog" aria-labelledby="popEliminarEmpaque" aria-hidden="true">
+        <asp:UpdatePanel ID="UpdatePanel_EliminarEmpaque" runat="server" UpdateMode="Conditional">
+            <ContentTemplate>
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <asp:HiddenField ID="HDF_IDEmpaque" runat="server" Value="0" Visible="true" /> 
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h5 class="modal-title" runat="server">Eliminar el Empaque</h5>
+                        </div>
+                        <div class="modal-body">                            
+                            <p>¿Está seguro que desea eliminar el Empaque?</p>
+                            <p>La acción es irreversible y los productos agregados se eliminarán también.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <asp:Button ID="BTN_CerrarModalEliminarEmpaque" UseSubmitBehavior="false" runat="server" Text="Cancelar" data-dismiss="modal" CssClass="btn btn-primary" />
+                            <asp:Button ID="BTN_EliminarEmpaque" runat="server" UseSubmitBehavior="false" Text="Eliminar" CssClass="btn btn-danger" OnClick="BTN_EliminarEmpaque_Click" />
+                        </div>
+                    </div>
+                </div>
+            </ContentTemplate>
+        </asp:UpdatePanel>
     </div>
 </asp:Content>

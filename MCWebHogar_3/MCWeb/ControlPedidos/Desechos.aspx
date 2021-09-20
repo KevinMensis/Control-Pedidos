@@ -36,25 +36,13 @@
             document.getElementById('modalloading').style.display = 'none';
         }
 
-        <%--function TXT_FechaDesechoDesdeChange() {
-            var fechaDesechoDesde = $(<%= TXT_FechaDesechoDesde.ClientID %>)[0].value
-            var fechaDesechoHasta = $(<%= TXT_FechaDesechoHasta.ClientID %>)[0].value
-
-            if (fechaDesechoHasta === '1900-01-01') {
-                $(<%= TXT_FechaDesechoHasta.ClientID %>)[0].value = fechaDesechoDesde
-            }
-            return true
+        function abrirModalEliminarDesecho() {
+            document.getElementById('BTN_ModalEliminarDesecho').click()
         }
 
-        function TXT_FechaDesechoHastaChange() {
-            var fechaDesechoDesde = $(<%= TXT_FechaDesechoDesde.ClientID %>)[0].value
-            var fechaDesechoHasta = $(<%= TXT_FechaDesechoHasta.ClientID %>)[0].value
-
-            if (fechaDesechoDesde === '1900-01-01') {
-                $(<%= TXT_FechaDesechoDesde.ClientID %>)[0].value = fechaDesechoHasta
-            }
-            return true
-        }--%>
+        function cerrarModalEliminarDesecho() {
+            document.getElementById('BTN_ModalEliminarDesecho').click()
+        }
     </script>
 </asp:Content>
 
@@ -117,6 +105,12 @@
                             <p>Desechos</p>
                         </a>
                     </li>
+                    <li>
+                        <a href="Insumos.aspx">
+                            <i class="fas fa-box"></i>
+                            <p>Insumos</p>
+                        </a>
+                    </li>
                 </ul>
                 <hr style="width: 230px; color: #2c2c2c;" />
                 <h5 style="text-align: center;">Mantenimiento</h5>
@@ -153,7 +147,7 @@
                         </asp:LinkButton>
                         <a href="https://mensis.cr/" target="_blank" style="margin-top: 0px !important;">
                             <p style="margin-left: 29%; font-size: 7px;">Desarrollado por</p>
-                            <img style="width: 25%; display: block; margin-left: 30%;" src="../Assets/img/logoMensis.png" />
+                            <img style="width: 75%; display: block; margin-left: 10%;" src="https://mensis.cr/svg/logos/logoMensis.jpg" />
                         </a>
                     </li>
                 </ul>
@@ -219,6 +213,10 @@
                                                                 CommandName="VerDetalle"
                                                                 CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
                                                                 Text="Ver detalles" AutoPostBack="true" />
+                                                            <asp:Button class="btn btn-outline-danger btn-round" ID="BTN_Eliminar" runat="server"
+                                                                CommandName="Eliminar"
+                                                                CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
+                                                                Text="Eliminar" AutoPostBack="true" />
                                                         </ItemTemplate>
                                                         <ItemStyle HorizontalAlign="Center" />
                                                     </asp:TemplateField>
@@ -233,5 +231,33 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <button type="button" id="BTN_ModalEliminarDesecho" data-toggle="modal" data-target="#ModalEliminarDesecho" style="visibility: hidden;">open</button>
+
+    <div class="modal bd-example-modal-lg" id="ModalEliminarDesecho" tabindex="-1" role="dialog" aria-labelledby="popEliminarDesecho" aria-hidden="true">
+        <asp:UpdatePanel ID="UpdatePanel_EliminarDesecho" runat="server" UpdateMode="Conditional">
+            <ContentTemplate>
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <asp:HiddenField ID="HDF_IDDesecho" runat="server" Value="0" Visible="true" /> 
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h5 class="modal-title" runat="server">Eliminar el Desecho</h5>
+                        </div>
+                        <div class="modal-body">                            
+                            <p>¿Está seguro que desea eliminar el Desecho?</p>
+                            <p>La acción es irreversible y los productos agregados se eliminarán también.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <asp:Button ID="BTN_CerrarModalEliminarDesecho" UseSubmitBehavior="false" runat="server" Text="Cancelar" data-dismiss="modal" CssClass="btn btn-primary" />
+                            <asp:Button ID="BTN_EliminarDesecho" runat="server" UseSubmitBehavior="false" Text="Eliminar" CssClass="btn btn-danger" OnClick="BTN_EliminarDesecho_Click" />
+                        </div>
+                    </div>
+                </div>
+            </ContentTemplate>
+        </asp:UpdatePanel>
     </div>
 </asp:Content>

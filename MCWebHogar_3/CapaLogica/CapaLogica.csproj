@@ -61,9 +61,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entidades\EficienciaEnergetica\DatosHistoricos.cs" />
-    <Compile Include="Entidades\EficienciaEnergetica\DatosRefrigeradores.cs" />
-    <Compile Include="Entidades\EficienciaEnergetica\OpcionesFiltro.cs" />
+    <Compile Include="Entidades\ControlPedidos\DatosHistoricos.cs" />
     <Compile Include="GestorDataDT.cs" />
     <Compile Include="GestorDatos.cs" />
     <Compile Include="GestorSQLserver.cs" />
@@ -78,7 +76,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Entidades\ControlPedidos\" />
     <Folder Include="Reportes\" />
   </ItemGroup>
   <PropertyGroup>

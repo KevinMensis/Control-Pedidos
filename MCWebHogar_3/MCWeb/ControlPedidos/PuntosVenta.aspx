@@ -113,6 +113,12 @@
                             <p>Desechos</p>
                         </a>
                     </li>
+                    <li>
+                        <a href="Insumos.aspx">
+                            <i class="fas fa-box"></i>
+                            <p>Insumos</p>
+                        </a>
+                    </li>
                 </ul>
                 <hr style="width: 230px; color: #2c2c2c;" />
                 <h5 style="text-align: center;">Mantenimiento</h5>
@@ -149,7 +155,7 @@
                         </asp:LinkButton>
                         <a href="https://mensis.cr/" target="_blank" style="margin-top: 0px !important;">
                             <p style="margin-left: 29%; font-size: 7px;">Desarrollado por</p>
-                            <img style="width: 25%; display: block; margin-left: 30%;" src="../Assets/img/logoMensis.png" />
+                            <img style="width: 75%; display: block; margin-left: 10%;" src="https://mensis.cr/svg/logos/logoMensis.jpg" />
                         </a>
                     </li>
                 </ul>
@@ -191,6 +197,7 @@
                                                 <asp:BoundField DataField="DescripcionPuntoVenta" SortExpression="DescripcionPuntoVenta" HeaderText="Descripción" ItemStyle-HorizontalAlign="Center" ItemStyle-ForeColor="black"></asp:BoundField>
                                                 <asp:BoundField DataField="UbicacionPuntoVenta" SortExpression="UbicacionPuntoVenta" HeaderText="Ubicación" ItemStyle-HorizontalAlign="Center" ItemStyle-ForeColor="black"></asp:BoundField>
                                                 <asp:BoundField DataField="PorcentajeDescuento" SortExpression="PorcentajeDescuento" HeaderText="Porcentaje Descuento" ItemStyle-HorizontalAlign="Center" ItemStyle-ForeColor="black"></asp:BoundField>
+                                                <asp:BoundField DataField="PedidoRecibido" SortExpression="PedidoRecibido" HeaderText="Crear pedido recibido" ItemStyle-HorizontalAlign="Center" ItemStyle-ForeColor="black"></asp:BoundField>
                                                 <asp:TemplateField>
                                                     <HeaderTemplate>
                                                         <asp:Label ID="LBL_Acciones" runat="server" Text="Acciones"></asp:Label>
@@ -251,11 +258,15 @@
                                 </div>                                
                             </div> 
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <label for="TXT_PorcentajeDescuento">Porcentaje Descuento:</label>
                                     <asp:TextBox ID="TXT_PorcentajeDescuento" runat="server" CssClass="form-control" TextMode="Number"></asp:TextBox>
-                                </div>                                
-                            </div>                                                       
+                                </div>   
+                                <div class="col-md-6" style="padding-top: 1%;">
+                                    <asp:CheckBox ID="CHK_CrearPedidoRecibido" runat="server" CssClass="form-check-input" />
+                                    <label for="CHK_CrearPedidoRecibido"> Crear pedido recibido</label>
+                                </div>                             
+                            </div>                                                    
                         </div>
                         <div class="modal-footer">
                             <asp:Button ID="BTN_CerrarModalCrearPuntoVenta" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-primary" />
