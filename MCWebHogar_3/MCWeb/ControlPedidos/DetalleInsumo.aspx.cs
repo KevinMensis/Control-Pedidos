@@ -57,6 +57,34 @@ namespace MCWebHogar.ControlPedidos
                 {
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Buscar_OnTextChanged", "cargarFiltros();estilosElementosBloqueados();", true);
                 }
+                if (opcion.Contains("DDL_ImpresorasLoad"))
+                {
+                    DataTable dt = new DataTable();
+                    dt.Clear();
+                    dt.Columns.Add("Text");
+                    dt.Columns.Add("Value");
+
+                    string printer = Session["Printer"].ToString().Trim();
+                    string[] nombresImpresoras = argument.Split(',');
+
+                    dt.Rows.Add("Seleccione", "Seleccione");
+
+                    foreach (string impresora in nombresImpresoras)
+                    {
+                        dt.Rows.Add(impresora, impresora);
+                    }
+
+                    DDL_Impresoras.DataSource = dt;
+                    DDL_Impresoras.DataTextField = "Text";
+                    DDL_Impresoras.DataValueField = "Value";
+                    DDL_Impresoras.DataBind();
+                    UpdatePanel_SeleccionarImpresora.Update();
+
+                    DDL_Impresoras.SelectedValue = printer;
+
+                    string script = "estilosElementosBloqueados();abrirModalSeleccionarImpresora();";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDDL_Impresoras", script, true);
+                }
             }
         }
 
@@ -85,6 +113,37 @@ namespace MCWebHogar.ControlPedidos
 
             DT.DT1.Clear();
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "CargarPuntosVentaSelect", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP02_0001");
+
+            if (Result != null && Result.Rows.Count > 0)
+            {
+                DDL_PuntoVenta.DataSource = Result;
+                DDL_PuntoVenta.DataTextField = "DescripcionPuntoVenta";
+                DDL_PuntoVenta.DataValueField = "IDPuntoVenta";
+                DDL_PuntoVenta.DataBind();
+            }
+
+            DT.DT1.Clear();
+            DT.DT1.Rows.Add("@IDInsumo", HDF_IDInsumo.Value, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "CargarPuntosVentaInsumo", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP02_0001");
+
+            if (Result != null && Result.Rows.Count > 0)
+            {
+                DataView dv = new DataView(Result);
+                dv.RowFilter = "IDPuntoVenta <> 0";
+                LB_PuntoVenta.DataSource = dv;
+                LB_PuntoVenta.DataTextField = "DescripcionPuntoVenta";
+                LB_PuntoVenta.DataValueField = "IDPuntoVenta";
+                LB_PuntoVenta.DataBind();
+            }
+
+            DT.DT1.Clear();
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
             DT.DT1.Rows.Add("@TipoSentencia", "CargarCategorias", SqlDbType.VarChar);
 
             Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP03_Categoria_001");
@@ -93,6 +152,13 @@ namespace MCWebHogar.ControlPedidos
             LB_Categoria.DataTextField = "DescripcionCategoria";
             LB_Categoria.DataValueField = "IDCategoria";
             LB_Categoria.DataBind();
+        }
+        protected void DDL_Impresoras_OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            string printer = DDL_Impresoras.SelectedValue;
+            Session["Printer"] = printer;
+            string script = "estilosElementosBloqueados();cerrarModalSeleccionarImpresora();alertifysuccess('Se ha seleccionado la impresora: " + printer + "');";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDDL_Impresoras_OnSelectedIndexChanged", script, true);
         }
         #endregion
 
@@ -336,8 +402,14 @@ namespace MCWebHogar.ControlPedidos
                 CHK_Producto.Checked = false;
                 TXT_CantidadAgregar.Text = "0";
             }
-
+            DDL_PuntoVenta.SelectedValue = "0";
+            DGV_ListaProductosSinAgregar.Enabled = false;
+            TXT_BuscarProductosSinAsignar.Enabled = false;
+            LB_Categoria.Enabled = false;
+            BTN_Agregar.Enabled = false;
             UpdatePanel_ListaProductosSinAgregar.Update();
+            UpdatePanel_ModalAgregarProductos.Update();
+
             ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptAgregarProductos", "abrirModalAgregarProductos();estilosElementosBloqueados();", true);
             return;
         }
@@ -364,6 +436,8 @@ namespace MCWebHogar.ControlPedidos
             #endregion
 
             DT.DT1.Rows.Add("@InsumoID", HDF_IDInsumo.Value, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@PuntoVentaID", DDL_PuntoVenta.SelectedValue, SqlDbType.VarChar);
+
             DT.DT1.Rows.Add("@CategoriasFiltro", categorias, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@DescripcionProducto", TXT_BuscarProductosSinAsignar.Text, SqlDbType.VarChar);
 
@@ -401,7 +475,26 @@ namespace MCWebHogar.ControlPedidos
 
         protected void FiltrarProductos_OnClick(object sender, EventArgs e)
         {
-            cargarProductosSinAsignar("productosMarcados();");
+            if (DDL_PuntoVenta.SelectedValue == "0")
+            {
+                DGV_ListaProductosSinAgregar.Enabled = false;
+                TXT_BuscarProductosSinAsignar.Enabled = false;
+                LB_Categoria.Enabled = false;
+                BTN_Agregar.Enabled = false;
+                UpdatePanel_ListaProductosSinAgregar.Update();
+                UpdatePanel_ModalAgregarProductos.Update();
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptAgregarProductos", "estilosElementosBloqueados();cargarFiltros();", true);
+            }
+            else
+            {
+                DGV_ListaProductosSinAgregar.Enabled = true;
+                TXT_BuscarProductosSinAsignar.Enabled = true;
+                LB_Categoria.Enabled = true;
+                BTN_Agregar.Enabled = true;
+                UpdatePanel_ListaProductosSinAgregar.Update();
+                UpdatePanel_ModalAgregarProductos.Update();
+                cargarProductosSinAsignar("productosMarcados();");
+            }
         }
 
         protected void DGV_ListaProductosSinAsignar_Sorting(object sender, GridViewSortEventArgs e)
@@ -451,7 +544,7 @@ namespace MCWebHogar.ControlPedidos
         }
 
         [WebMethod()]
-        public static string BTN_Agregar_Click(string idInsumo, int idProducto, int idUsuario, decimal cantidadProducto, string usuario)
+        public static string BTN_Agregar_Click(string idInsumo, int idPuntoVenta, int idProducto, int idUsuario, decimal cantidadProducto, string usuario)
         {        
             CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
             DataTable Result = new DataTable();
@@ -459,6 +552,7 @@ namespace MCWebHogar.ControlPedidos
             DT.DT1.Clear();
 
             DT.DT1.Rows.Add("@InsumoID", idInsumo, SqlDbType.Int);
+            DT.DT1.Rows.Add("@PuntoVentaID", idPuntoVenta, SqlDbType.Int);
             DT.DT1.Rows.Add("@ProductoID", idProducto, SqlDbType.Int);
             DT.DT1.Rows.Add("@UsuarioID", idUsuario, SqlDbType.Int);
             DT.DT1.Rows.Add("@CantidadInsumo", cantidadProducto, SqlDbType.Decimal);
@@ -480,6 +574,24 @@ namespace MCWebHogar.ControlPedidos
         
         public void cargarProductosInsumo()
         {
+            string puntosVenta = "";
+
+            #region Puntos Venta
+            foreach (ListItem l in LB_PuntoVenta.Items)
+            {
+                if (l.Selected)
+                {
+                    puntosVenta += "'" + l.Value + "',";
+                }
+            }
+            puntosVenta = puntosVenta.TrimEnd(',');
+            if (puntosVenta != "")
+            {
+                DT.DT1.Rows.Add("@FiltrarSucursales", 1, SqlDbType.Int);
+                DT.DT1.Rows.Add("@FiltroSucursales", puntosVenta, SqlDbType.VarChar);
+            }
+            #endregion
+
             DT.DT1.Clear();
             DT.DT1.Rows.Add("@InsumoID", HDF_IDInsumo.Value, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@Buscar", TXT_Buscar.Text, SqlDbType.VarChar);
@@ -500,6 +612,9 @@ namespace MCWebHogar.ControlPedidos
                     DGV_ListaProductosInsumo.DataSource = Result;
                     DGV_ListaProductosInsumo.DataBind();
                     UpdatePanel_ListaProductosInsumo.Update();
+                    DGV_DetalleInsumo.DataSource = Result;
+                    DGV_DetalleInsumo.DataBind();
+                    UpdatePanel_DetalleInsumo.Update();
                     string script = "estilosElementosBloqueados();cargarFiltros();";
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductosInsumo", script, true);
                 }
@@ -509,6 +624,9 @@ namespace MCWebHogar.ControlPedidos
                 DGV_ListaProductosInsumo.DataSource = Result;
                 DGV_ListaProductosInsumo.DataBind();
                 UpdatePanel_ListaProductosInsumo.Update();
+                DGV_DetalleInsumo.DataSource = Result;
+                DGV_DetalleInsumo.DataBind();
+                UpdatePanel_DetalleInsumo.Update();
                 string script = "estilosElementosBloqueados();cargarFiltros();";
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductosInsumo", script, true);
             }
@@ -649,6 +767,26 @@ namespace MCWebHogar.ControlPedidos
             Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP21_0001");
 
             return "correct";
+        }
+
+        protected void BTN_AbrirModalDetalleInsumo_Click(object sender, EventArgs e)
+        {
+            cargarProductosInsumo();
+            string printer = Session["Printer"].ToString().Trim();
+            TXT_NombreImpresora.Text = printer;
+            UpdatePanel_DetalleInsumo.Update();
+            string script = "abrirModalDetalleInsumo();estilosElementosBloqueados();cargarFiltros();";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_AbrirModalDetalleInsumo_Click", script, true);
+        }
+
+        protected void BTN_ImprimirDetalleInsumo_Click(object sender, EventArgs e)
+        {
+            string fechaInsumo = TXT_FechaInsumo.Text;
+            decimal monto = Convert.ToDecimal(TXT_MontoInsumo.Text);
+            string montoInsumo = string.Format("{0:n0}", monto);
+            string printer = TXT_NombreImpresora.Text.Trim();
+            string script = "estilosElementosBloqueados();imprimir('" + montoInsumo + "', '" + fechaInsumo + "', '" + TXT_CodigoInsumo.Text + "', '" + printer + "');";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_ImprimirDetalleEmapque_Click", script, true);
         }
         #endregion
         #endregion

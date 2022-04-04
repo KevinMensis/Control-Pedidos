@@ -190,8 +190,12 @@
                                     </div>
                                     <div class="input-group no-border col-md-6" style="text-align: right; display: inline-block;">
                                         <asp:Button ID="BTN_CrearProducto" style="margin: 0px;" runat="server" Text="Crear nuevo producto" CssClass="btn btn-secondary" OnClick="BTN_CrearProducto_OnClick"></asp:Button>
+                                        <asp:Button ID="BTN_DescargarProducto" runat="server" UseSubmitBehavior="false" Text="Descargar productos" CssClass="btn btn-info" OnClientClick="activarloading();desactivarloading();" OnClick="BTN_DescargarProducto_OnClick"></asp:Button>
                                     </div>
                                 </ContentTemplate>
+                                <Triggers>
+                                    <asp:PostBackTrigger ControlID="BTN_DescargarProducto" />
+                                </Triggers>
                             </asp:UpdatePanel> 
                             <div class="table">
                                 <asp:UpdatePanel ID="UpdatePanel_ListaProductos" runat="server" UpdateMode="Conditional" style="margin-top: 7rem;">

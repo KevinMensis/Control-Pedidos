@@ -1,8 +1,3 @@
-C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\obj\Debug\MCWebHogar.csprojResolveAssemblyReference.cache
-C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\obj\Debug\Interop.AcroPDFLib.dll
-C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\obj\Debug\MCWebHogar.csproj.ResolveComReference.cache
-C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\obj\Debug\RdlCompile.cache
-C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\obj\Debug\RdlCompile.compiled
 C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\bin\MCWebHogar.dll.config
 C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\bin\MCWebHogar.dll
 C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\bin\MCWebHogar.pdb
@@ -10,5 +5,10 @@ C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\bin
 C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\bin\CapaLogica.dll
 C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\bin\CapaDatos.pdb
 C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\bin\CapaLogica.pdb
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\obj\Debug\MCWebHogar.csprojResolveAssemblyReference.cache
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\obj\Debug\Interop.AcroPDFLib.dll
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\obj\Debug\MCWebHogar.csproj.ResolveComReference.cache
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\obj\Debug\RdlCompile.cache
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\obj\Debug\RdlCompile.compiled
 C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\obj\Debug\MCWebHogar.dll
 C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\obj\Debug\MCWebHogar.pdb

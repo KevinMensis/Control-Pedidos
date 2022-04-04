@@ -1,6 +1,8 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -77,7 +79,7 @@ namespace MCWebHogar.ControlPedidos
         #endregion
 
         #region Productos
-        private DataTable cargarProductosConsulta()
+        private DataTable cargarProductosConsulta(string consulta)
         {
             DT.DT1.Clear();
 
@@ -114,7 +116,7 @@ namespace MCWebHogar.ControlPedidos
             DT.DT1.Rows.Add("@DescripcionProducto", TXT_Buscar.Text, SqlDbType.VarChar);
 
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@TipoSentencia", "CargarProductosAll", SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", consulta, SqlDbType.VarChar);
             
             //  if (LBL_Filtro.Text == "Filtros: ")
             //  {
@@ -146,7 +148,7 @@ namespace MCWebHogar.ControlPedidos
                 }
                 else
                 {
-                    Result = cargarProductosConsulta();
+                    Result = cargarProductosConsulta("CargarProductosAll");
                     DGV_ListaProductos.DataSource = Result;
                     DGV_ListaProductos.DataBind();
                     UpdatePanel_ListaProductos.Update();
@@ -154,7 +156,7 @@ namespace MCWebHogar.ControlPedidos
             }
             else
             {
-                Result = cargarProductosConsulta();
+                Result = cargarProductosConsulta("CargarProductosAll");
                 DGV_ListaProductos.DataSource = Result;
                 DGV_ListaProductos.DataBind();
                 UpdatePanel_ListaProductos.Update();
@@ -166,7 +168,7 @@ namespace MCWebHogar.ControlPedidos
 
         private void cargarProductos(string ejecutar)
         {
-            Result = cargarProductosConsulta();
+            Result = cargarProductosConsulta("CargarProductosAll");
 
             if (Result != null && Result.Rows.Count > 0)
             {
@@ -193,7 +195,7 @@ namespace MCWebHogar.ControlPedidos
 
         protected void FiltrarProductos_OnClick(object sender, EventArgs e)
         {
-            Result = cargarProductosConsulta();
+            Result = cargarProductosConsulta("CargarProductosAll");
 
             if (Result != null && Result.Rows.Count > 0)
             {
@@ -221,7 +223,7 @@ namespace MCWebHogar.ControlPedidos
 
         protected void DGV_ListaProductos_Sorting(object sender, GridViewSortEventArgs e)
         {
-            Result = cargarProductosConsulta();
+            Result = cargarProductosConsulta("CargarProductosAll");
 
             if (ViewState["Ordenamiento"].ToString().Trim() == "ASC")
             {
@@ -384,6 +386,37 @@ namespace MCWebHogar.ControlPedidos
                 script += "alertifywarning('No se ha guardado el producto. Por favor, intente nuevamente');";
                 cargarProductos(script);
             }
+        }
+
+        protected void BTN_DescargarProducto_OnClick(object sender, EventArgs e)        
+        {
+            Result = cargarProductosConsulta("CargarProductosReporte");
+
+            if (Result.Rows.Count <= 0)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerControlScriptBTN_DescargarProducto_OnClick", "desactivarloading();alertifyerror('No hay registros para descargar.');", true);
+                return;
+            }
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(Result, "Productos");
+
+                Response.Clear();
+                Response.Buffer = true;
+                Response.Charset = "";
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", "attachment;filename=Productos.xlsx");
+                using (MemoryStream MyMemoryStream = new MemoryStream())
+                {
+                    wb.SaveAs(MyMemoryStream);
+                    MyMemoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+            }
+            UpdatePanel_ListaProductos.Update();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerControlScriptBTN_DescargarProducto_OnClick", "desactivarloading();cargarFiltros();", true);
         }
         #endregion
     }

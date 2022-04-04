@@ -1538,6 +1538,7 @@
     <Content Include="ControlPedidos\ReportesTemp\ReporteDesecho.pdf" />
     <Content Include="ControlPedidos\ReportesTemp\ReporteDevolucion.pdf" />
     <Content Include="ControlPedidos\ReportesTemp\ReporteEmpaque.pdf" />
+    <Content Include="ControlPedidos\ReportesTemp\Reporte.pdf" />
     <None Include="DataSets\DS_ControlPedidos.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DS_ControlPedidos.Designer.cs</LastGenOutput>
@@ -1571,10 +1572,14 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="rptInsumo.rdlc" />
     <EmbeddedResource Include="rptEmpaque.rdlc" />
     <EmbeddedResource Include="rptDevolucion.rdlc" />
     <EmbeddedResource Include="rptODP.rdlc" />
     <EmbeddedResource Include="rptDesecho.rdlc" />
+    <EmbeddedResource Include="rptReporteDetalle.rdlc" />
+    <EmbeddedResource Include="rptReporte.rdlc" />
+    <EmbeddedResource Include="rptReportePedido.rdlc" />
     <EmbeddedResource Include="rptPedido.rdlc" />
   </ItemGroup>
   <PropertyGroup>

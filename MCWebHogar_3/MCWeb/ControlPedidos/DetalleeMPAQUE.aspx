@@ -8,7 +8,19 @@
     <title>Detalle Empaque</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <style>
+        .ir-arriba {
+            display:block;
+            background-repeat:no-repeat;
+            font-size:20px;
+            color:black;
+            cursor:pointer;
+            position:fixed;
+            bottom:10px;
+            right:10px;
+            z-index:2;
+        }
     </style>
+    <script src="../Assets/js/qz-tray.js"></script>
     <script type="text/javascript">
         var productosAgregar;
 
@@ -45,6 +57,22 @@
         function cerrarModalAgregarProductos() {
             productosAgregar = new Map();
             document.getElementById('BTN_ModalAgregarProductos').click()
+        }
+
+        function abrirModalSeleccionarImpresora() {
+            document.getElementById('BTN_ModalSeleccionarImpresora').click()
+        }
+
+        function cerrarModalSeleccionarImpresora() {
+            document.getElementById('BTN_ModalSeleccionarImpresora').click()
+        }
+
+        function abrirModalDetalleEmpaque() {
+            document.getElementById('BTN_ModalDetalleEmpaque').click()
+        }
+
+        function cerrarModalDetalleEmpaque() {
+            document.getElementById('BTN_ModalDetalleEmpaque').click()
         }
 
         function TXT_Cantidad_onKeyUp(txtCantidad, e) {
@@ -254,6 +282,112 @@
             });
 
         }
+
+        function imprimir(montoEmpaque, fechaEmpaque, codigoEmpaque, printer) {
+            imprimir2(montoEmpaque, fechaEmpaque, codigoEmpaque, printer, 0, 31);
+        }
+
+        function imprimir2(montoEmpaque, fechaEmpaque, codigoEmpaque, printer, index, indexFin) {
+            var listaProductos = 'Content_DGV_DetalleEmpaque';
+            var table, tbody, i, rowLen, row, j, colLen, cell, resultHTML;
+
+            resultHTML = '<tbody><tr class="table" align="center" style="border-color:#51CBCE;">'
+
+            table = document.getElementById(listaProductos);
+            tbody = table.tBodies[0];
+            var pag = index / 30 + 1
+            var totalPags = Math.trunc(tbody.rows.length / 30)
+            totalPags += 0 < tbody.rows.length % 30 ? 1 : 0
+
+            if (index < tbody.rows.length) {
+                for (i = index, rowLen = tbody.rows.length; i < rowLen; i++) {
+                    if (i < indexFin) {
+                        row = tbody.rows[i];
+                        for (j = 0, colLen = row.cells.length; j < colLen; j++) {
+                            cell = row.cells[j];
+                            if (i == 0) {
+                                if (j == 0 || j == 1 || j == 2) {
+                                    resultHTML += '<th scope="col">' + cell.innerHTML + '</th>'
+                                }
+                            } else {
+                                if (j == 0) {
+                                    resultHTML += '</tr><tr>'
+                                    resultHTML += '<td align="center" style="color:Black;"><strong>' + cell.innerHTML + '</strong></td>'
+                                } else if (j == 1) {
+                                    resultHTML += '<td align="center" style="color:Black;"><strong>' + cell.innerHTML + '</strong></td>'
+                                } else if (j == 2) {
+                                    resultHTML += '<td align="center" style="color:Black;"><strong>' + cell.innerHTML + '</strong></td>'
+                                    resultHTML += '</tr>'
+                                }
+                            }
+                        }
+                    }
+                }
+
+                resultHTML += '</tbody>'
+
+                var d = new Date(),
+                year = d.getFullYear(),
+                month = d.getMonth() + 1,
+                day = d.getDate(),
+                hours = d.getHours(),
+                minute = d.getMinutes(),
+                second = d.getSeconds(),
+                ap = 'AM';
+                if (hours > 11) { ap = 'PM'; }
+                if (hours > 12) { hours = hours - 12; }
+                if (hours == 0) { hours = 12; }
+                if (month < 10) { month = "0" + month; }
+                if (day < 10) { day = "0" + day; }
+                if (minute < 10) { minute = "0" + minute; }
+
+                var fecha = day + '/' + month + '/' + year + ' ' + hours + ':' + minute + ' ' + ap
+
+                qz.websocket.connect().then(function () {
+                    return qz.printers.find(printer);
+                }).then(function (found) {
+                    var config = qz.configs.create(found);
+                    var data = [{
+                        type: 'pixel',
+                        format: 'html',
+                        flavor: 'plain',
+                        data: '<html>' +
+                                '<head><title>' + document.title + '</title></head>' +
+                                '<body>' +
+                                    '<h2><strong>' + codigoEmpaque + ' - ' + 'Fecha empaque: ' + fechaEmpaque + '</strong></h2>' +
+                                    '<table>' + resultHTML + '</table><br />' +
+                                    '<h2><strong>Total:</strong> ' + montoEmpaque + '</h2>' +
+                                    '<h3 style="text-align: center;"><strong> *** FIN *** </strong></h3>' +
+                                    '<h4 style="text-align: left;"><strong> Página: ' + pag + ' de ' + totalPags + '</strong></h4><br />' +
+                                    '<h4 style="text-align: left;"><strong> Tiquete generado el: ' + fecha + '</strong></h4><br />' +
+                                '</body>' +
+                               '</html>'
+                    }];
+                    return qz.print(config, data).catch(function (e) { console.error(e); });
+                }).catch(function (error) {
+                    alert(error);
+                }).finally(function () {
+                    return qz.websocket.disconnect().then(function () {
+                        imprimir2(montoEmpaque, fechaEmpaque, codigoEmpaque, printer, index + 30, indexFin + 30);
+                    });
+                });
+            } else {
+                cerrarModalDetalleEmpaque();
+                alertifysuccess('Impresión finalizada.');
+            }
+        }
+
+        function configurarImpresora() {
+            qz.websocket.connect().then(function () {
+                return qz.printers.find();
+            }).then(function (found) {
+                __doPostBack('DDL_ImpresorasLoad', found)
+            }).catch(function (error) {
+                alert(error);
+            }).finally(function () {
+                return qz.websocket.disconnect()
+            });
+        }
         
         function estilosElementosBloqueados() {
             document.getElementById('<%= TXT_CodigoEmpaque.ClientID %>').classList.remove('aspNetDisabled')
@@ -268,6 +402,8 @@
             document.getElementById('<%= TXT_HoraEmpaque.ClientID %>').classList.add('form-control')
             document.getElementById('<%= DDL_Propietario.ClientID %>').classList.remove('aspNetDisabled')
             document.getElementById('<%= DDL_Propietario.ClientID %>').classList.add('form-control')
+            document.getElementById('<%= TXT_NombreImpresora.ClientID %>').classList.remove('aspNetDisabled')
+            document.getElementById('<%= TXT_NombreImpresora.ClientID %>').classList.add('form-control')
         }
 
         function cargarFiltros() {
@@ -287,6 +423,12 @@
         <asp:Label runat="server" ID="LBL_GenerandoInforme" style="color: white;" Text="Generando informe espere por favor..."></asp:Label>
     </div>
     <div id="fade2" class="overlayload"></div>
+    <a class="ir-arriba"  href="javascript:configurarImpresora();" title="Impresora">
+        <span class="fa-stack">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-print fa-stack-1x fa-inverse"></i>
+        </span>
+    </a>
     <div class="wrapper">
         <asp:HiddenField ID="HDF_UsuarioID" runat="server" Value="0" Visible="true" />
         <asp:HiddenField ID="HDF_IDUsuario" runat="server" Value="0" Visible="true" />
@@ -444,6 +586,7 @@
                                     <div class="form-row"> 
                                         <div class="col-md-6">                                       
                                             <asp:Button UseSubmitBehavior="false" ID="BTN_AgregarProducto" runat="server" Text="Agregar productos" CssClass="btn btn-secondary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_CargarProductos_Click"></asp:Button>                                        
+                                            <asp:Button ID="BTN_AbrirModalDetalleEmpaque" runat="server" UseSubmitBehavior="false" Text="Imprimir empaque" CssClass="btn btn-info" OnClick="BTN_AbrirModalDetalleEmpaque_Click"></asp:Button>                                            
                                         </div>                                        
                                         <div class="col-md-6" style="text-align: right;"> 
                                             <asp:Button UseSubmitBehavior="false" ID="BTN_ReporteEmpaque" runat="server" Text="Reporte Empaque" CssClass="btn btn-secondary" OnClientClick="activarloading();estilosElementosBloqueados();" OnClick="BTN_ReporteEmpaque_Click"></asp:Button>                                                                                
@@ -619,6 +762,87 @@
                         <div class="modal-footer">
                             <asp:Button UseSubmitBehavior="false" ID="BTN_CerrarModalCrearPedido" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-primary" />
                             <asp:Button UseSubmitBehavior="false" ID="BTN_Agregar" runat="server" Text="Agregar" CssClass="btn btn-secondary" OnClientClick="cargarProductosAgregar();" />
+                        </div>
+                    </div>
+                </div>
+            </ContentTemplate>
+        </asp:UpdatePanel>
+    </div>
+
+    <button type="button" id="BTN_ModalDetalleEmpaque" data-toggle="modal" data-target="#ModalDetalleEmpaque" style="visibility: hidden;">open</button>
+
+    <div class="modal bd-example-modal-lg" id="ModalDetalleEmpaque" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="popDetalleEmpaque" aria-hidden="true">
+        <asp:UpdatePanel ID="UpdatePanel_ModalDetalleEmpaque" runat="server" UpdateMode="Conditional">
+            <ContentTemplate>
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h5 class="modal-title" runat="server">Detalle empaque</h5>
+                        </div>
+                        <div class="modal-body">                            
+                            <div class="table-responsive" id="tableCategorias">
+                                <asp:UpdatePanel ID="UpdatePanel_DetalleEmpaque" runat="server" UpdateMode="Conditional">
+                                    <ContentTemplate>
+                                        <div class="col-md-6" style="margin-bottom: 2rem;">
+                                            <label for="TXT_NombreImpresora">Nombre impresora</label>
+                                            <asp:TextBox class="form-control" ID="TXT_NombreImpresora" runat="server" Enabled="false"></asp:TextBox>
+                                        </div>
+                                        <br />
+                                        <br />
+                                        <asp:GridView ID="DGV_DetalleEmpaque" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
+                                            AutoGenerateColumns="false" DataKeyNames="IDEmpaqueDetalle,EmpaqueID,ProductoID,Categoria" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
+                                            ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros.">
+                                            <Columns>                                         
+                                                <asp:BoundField DataField="DescripcionProducto" HeaderText="Nombre producto" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                <asp:BoundField DataField="CantidadEmpaque" HeaderText="Cantidad empaque" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
+                                                <asp:BoundField DataField="PrecioProducto" HeaderText="Precio unitario" DataFormatString="{0:n2}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
+                                            </Columns>
+                                        </asp:GridView>
+                                    </ContentTemplate>
+                                </asp:UpdatePanel>
+                            </div>
+                        </div>
+                        <div class="modal-footer">                            
+                            <div style="text-align: right;">
+                                <asp:Button ID="BTN_CerrarModalDetallePedido" UseSubmitBehavior="false" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-primary" />  
+                                <asp:Button ID="BTN_ImprimirDetallePedido" UseSubmitBehavior="false" runat="server" Text="Imprimir" CssClass="btn btn-secondary" OnClick="BTN_ImprimirDetalleEmpaque_Click" />                              
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ContentTemplate>
+        </asp:UpdatePanel>
+    </div>
+
+    <button type="button" id="BTN_ModalSeleccionarImpresora" data-toggle="modal" data-target="#ModalSeleccionarImpresora" style="visibility: hidden;">open</button>
+
+    <div class="modal bd-example-modal-md" id="ModalSeleccionarImpresora" tabindex="-1" role="dialog" aria-labelledby="popSeleccionarImpresora" aria-hidden="true">
+        <asp:UpdatePanel ID="UpdatePanel_SeleccionarImpresora" runat="server" UpdateMode="Conditional">
+            <ContentTemplate>
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h5 class="modal-title" runat="server">Seleccionar impresora</h5>
+                        </div>
+                        <div class="modal-body">   
+                            <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                                <ContentTemplate>                         
+                                    <div style="text-align: left;">
+                                        <asp:DropDownList class="form-control" ID="DDL_Impresoras" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DDL_Impresoras_OnSelectedIndexChanged"></asp:DropDownList>
+                                    </div>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
+                        </div>
+                        <div class="modal-footer">
+                            <div style="text-align: right;">
+                                <asp:Button ID="BTN_CerrarModalSeleccionarImpresora" UseSubmitBehavior="false" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-secondary" />                                
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -58,6 +58,34 @@ namespace MCWebHogar.ControlPedidos
                 {
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Buscar_OnTextChanged", "cargarFiltros();estilosElementosBloqueados();", true);
                 }
+                if (opcion.Contains("DDL_ImpresorasLoad"))
+                {
+                    DataTable dt = new DataTable();
+                    dt.Clear();
+                    dt.Columns.Add("Text");
+                    dt.Columns.Add("Value");
+
+                    string printer = Session["Printer"].ToString().Trim();
+                    string[] nombresImpresoras = argument.Split(',');
+
+                    dt.Rows.Add("Seleccione", "Seleccione");
+
+                    foreach (string impresora in nombresImpresoras)
+                    {
+                        dt.Rows.Add(impresora, impresora);
+                    }
+
+                    DDL_Impresoras.DataSource = dt;
+                    DDL_Impresoras.DataTextField = "Text";
+                    DDL_Impresoras.DataValueField = "Value";
+                    DDL_Impresoras.DataBind();
+                    UpdatePanel_SeleccionarImpresora.Update();
+
+                    DDL_Impresoras.SelectedValue = printer;
+
+                    string script = "estilosElementosBloqueados();abrirModalSeleccionarImpresora();";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDDL_Impresoras", script, true);
+                }
             }
         }
 
@@ -125,6 +153,13 @@ namespace MCWebHogar.ControlPedidos
             LB_Categoria.DataTextField = "DescripcionCategoria";
             LB_Categoria.DataValueField = "IDCategoria";
             LB_Categoria.DataBind();
+        }
+        protected void DDL_Impresoras_OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            string printer = DDL_Impresoras.SelectedValue;
+            Session["Printer"] = printer;
+            string script = "estilosElementosBloqueados();cerrarModalSeleccionarImpresora();alertifysuccess('Se ha seleccionado la impresora: " + printer + "');";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDDL_Impresoras_OnSelectedIndexChanged", script, true);
         }
         #endregion
 
@@ -575,6 +610,9 @@ namespace MCWebHogar.ControlPedidos
                     DGV_ListaProductosDesecho.DataSource = Result;
                     DGV_ListaProductosDesecho.DataBind();
                     UpdatePanel_ListaProductosDesecho.Update();
+                    DGV_DetalleDesecho.DataSource = Result;
+                    DGV_DetalleDesecho.DataBind();
+                    UpdatePanel_DetalleDesecho.Update();
                     string script = "estilosElementosBloqueados();cargarFiltros();";
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductosDesecho", script, true);
                 }
@@ -584,6 +622,9 @@ namespace MCWebHogar.ControlPedidos
                 DGV_ListaProductosDesecho.DataSource = Result;
                 DGV_ListaProductosDesecho.DataBind();
                 UpdatePanel_ListaProductosDesecho.Update();
+                DGV_DetalleDesecho.DataSource = Result;
+                DGV_DetalleDesecho.DataBind();
+                UpdatePanel_DetalleDesecho.Update();
                 string script = "estilosElementosBloqueados();cargarFiltros();";
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductosDesecho", script, true);
             }
@@ -760,7 +801,27 @@ namespace MCWebHogar.ControlPedidos
             Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP17_0001");
 
             return "correct";
-        }        
+        }
+
+        protected void BTN_AbrirModalDetalleDesecho_Click(object sender, EventArgs e)
+        {
+            cargarProductosDesecho();
+            string printer = Session["Printer"].ToString().Trim();
+            TXT_NombreImpresora.Text = printer;
+            UpdatePanel_DetalleDesecho.Update();
+            string script = "abrirModalDetalleDesecho();estilosElementosBloqueados();cargarFiltros();";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_AbrirModalDetalleDesecho_Click", script, true);
+        }
+
+        protected void BTN_ImprimirDetalleDesecho_Click(object sender, EventArgs e)
+        {
+            string fechaDesecho = TXT_FechaDesecho.Text;
+            decimal monto = Convert.ToDecimal(TXT_MontoDesecho.Text);
+            string montoDesecho = string.Format("{0:n0}", monto);
+            string printer = TXT_NombreImpresora.Text.Trim();
+            string script = "estilosElementosBloqueados();imprimir('" + montoDesecho + "', '" + fechaDesecho + "', '" + TXT_CodigoDesecho.Text + "', '" + printer + "');";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_ImprimirDetalleEmapque_Click", script, true);
+        }
         #endregion
         #endregion
     }

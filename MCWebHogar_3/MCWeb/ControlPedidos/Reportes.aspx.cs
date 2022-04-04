@@ -46,9 +46,17 @@ namespace MCWebHogar.ControlPedidos
                 {
                     cargarDetalleCantidad();
                 }
+                if (opcion.Contains("detalleEmpaqueInsumo"))
+                {
+                    cargarDetalleEmpaqueInsumo();
+                }
                 if (opcion.Contains("detalleSemanal"))
                 {
                     cargarDetalleSemana();
+                }
+                if (opcion.Contains("detalleODPDiario"))
+                {
+                    cargarDetalleODP();
                 }
             }
         }
@@ -222,6 +230,7 @@ namespace MCWebHogar.ControlPedidos
             DataTable ResultEmpaque = new DataTable();
             DataTable ResultDesechos = new DataTable();
             DataTable ResultDevoluciones = new DataTable();
+            DataTable ResultInsumos = new DataTable();
             string puntosVenta = "";
             string plantaProduccion = "";
 
@@ -283,6 +292,9 @@ namespace MCWebHogar.ControlPedidos
                 DT.DT1.Rows[DT.DT1.Rows.Count - 1][1] = "ReporteExcelDevoluciones";
                 ResultDevoluciones = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP_Reportes_0001");
 
+                DT.DT1.Rows[DT.DT1.Rows.Count - 1][1] = "ReporteExcelInsumos";
+                ResultInsumos = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP_Reportes_0001");
+
                 using (XLWorkbook wb = new XLWorkbook())
                 {
                     wb.Worksheets.Add(Result, "Reporte");
@@ -290,6 +302,7 @@ namespace MCWebHogar.ControlPedidos
                     wb.Worksheets.Add(ResultEmpaque, "ReporteEmpaque");
                     wb.Worksheets.Add(ResultDesechos, "ReporteDesechos");
                     wb.Worksheets.Add(ResultDevoluciones, "ReporteDevoluciones");
+                    wb.Worksheets.Add(ResultInsumos, "ReporteInsumos");
 
                     Response.Clear();
                     Response.Buffer = true;
@@ -581,6 +594,67 @@ namespace MCWebHogar.ControlPedidos
             }
         }
 
+        private DataTable consultaDetalle()
+        {
+            string modulo = HDF_Detalle.Value;
+            CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
+            
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString().Trim(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@fechaDesde", TXT_FechaDesde.Text, SqlDbType.Date);
+            DT.DT1.Rows.Add("@fechaHasta", TXT_FechaHasta.Text + " 23:59:59", SqlDbType.DateTime);
+            DT.DT1.Rows.Add("@Dia", HDF_Dia.Value, SqlDbType.VarChar);
+
+            Dia.InnerText = HDF_Dia.Value;
+             
+            switch (modulo)
+            {
+                case "Empaque":
+                    DT.DT1.Rows.Add("@TipoSentencia", "DetalleEmpaqueDiario", SqlDbType.VarChar);
+                    break;
+                case "Insumo":
+                    DT.DT1.Rows.Add("@TipoSentencia", "DetalleInsumoDiario", SqlDbType.VarChar);
+                    break;
+            }
+
+            return CapaLogica.GestorDatos.Consultar(DT.DT1, "CP_Reportes_0001");
+        }
+
+        private void cargarDetalleEmpaqueInsumo()
+        {
+            DataTable Result = consultaDetalle();
+
+            string usuario = Session["UserID"].ToString().Trim();
+            string cargar = "cargarFiltros();cargarGraficos(" + usuario + ");";
+
+            if (Result != null && Result.Rows.Count > 0)
+            {
+                if (Result.Rows[0][0].ToString().Trim() == "ERROR")
+                {
+                    return;
+                }
+                else
+                {
+                    modalCantidadDetalleTitle.InnerText = "Detalle " + HDF_Detalle.Value;
+                    DGV_Detalle.DataSource = Result;
+                    DGV_Detalle.DataBind();
+                    UpdatePanel_ModalDetalle.Update();
+                    UpdatePanel_Detalle.Update();
+                    string script = "cargarFiltros();abrirModalDetalle();" + cargar;
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarDetalleEmpaqueInsumo", script, true);                    
+                }
+            }
+            else
+            {
+                modalCantidadDetalleTitle.InnerText = "Detalle " + HDF_Detalle.Value;
+                DGV_Detalle.DataSource = Result;
+                DGV_Detalle.DataBind();
+                UpdatePanel_ModalDetalle.Update();
+                UpdatePanel_Detalle.Update();
+                string script = "cargarFiltros();abrirModalDetalle();" + cargar;
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarDetalleEmpaqueInsumo", script, true);                
+            }
+        }
+
         private DataTable consultaDetalleSemanal()
         {
             string modulo = HDF_Detalle.Value;
@@ -717,6 +791,11 @@ namespace MCWebHogar.ControlPedidos
             }
         }
 
+        private void cargarDetalleODP()
+        {
+
+        }
+
         protected void DGV_DetalleCantidad_Sorting(object sender, GridViewSortEventArgs e)
         {
             Result = consultaDetalleCantidad();
@@ -804,6 +883,313 @@ namespace MCWebHogar.ControlPedidos
         }
         #endregion
 
+        #region Reportes PDFs
+        protected void BTN_ImprimirReportePedido_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                MCWebHogar.DataSets.DSSolicitud dsReportePedido = new MCWebHogar.DataSets.DSSolicitud();
+
+                Result = new DataTable();
+                Result.Columns.Add("Detalle", typeof(string));
+                Result.Columns.Add("PlantaProduccion", typeof(string));
+                Result.Columns.Add("PuntoVenta", typeof(string));
+                Result.Columns.Add("FechaDesde", typeof(DateTime));
+                Result.Columns.Add("FechaHasta", typeof(DateTime));
+
+                Result.Rows.Add(HDF_Detalle.Value, plantaProduccionCantidadPedido.InnerText.Replace("Plantas producción: ", "").Replace("Planta producción: ", "").Replace("'", ""),
+                                puntoVentaCantidadPedido.InnerText.Replace("Puntos venta: ", "").Replace("Punto venta: ", "").Replace("'", ""), TXT_FechaDesde.Text, TXT_FechaHasta.Text);
+
+                dsReportePedido.Tables["DT_EncabezadoReporte"].Merge(Result, true, MissingSchemaAction.Ignore);
+
+                DT.DT1.Clear();
+                
+                Result = consultaDetalleCantidad();
+                if (Result.Rows.Count == 0)
+                {
+                    DataTable dt = new DataTable();
+                    dt.Columns.Add("ProductoID");
+                    dt.Columns.Add("DescripcionProducto");
+                    dt.Rows.Add("1", "No hay registros.");
+                    dsReportePedido.Tables["DT_DetalleReporte"].Merge(dt, true, MissingSchemaAction.Ignore);
+                }
+                else
+                {
+                    dsReportePedido.Tables["DT_DetalleReporte"].Merge(Result, true, MissingSchemaAction.Ignore);
+                }
+
+                DataTable DT_Encabezado = new DataTable();
+
+                DT_Encabezado.Columns.Add("Codigo");
+                DT_Encabezado.Columns.Add("Descripcion");
+                DT_Encabezado.Columns.Add("Procedure");
+                DT_Encabezado.Columns.Add("rpt");
+                DT_Encabezado.Columns.Add("DataSet");
+                DT_Encabezado.Columns.Add("DTName");
+
+                DT_Encabezado.TableName = "Encabezado";
+                DT_Encabezado.Rows.Add("01", "Datos Encabezado", "EE_Reports", "MCWebHogar.rptReportePedido.rdlc", "DT_EncabezadoReporte", "DT_EncabezadoReporte");
+                DT_Encabezado.Rows.Add("01", "Datos Encabezado", "EE_Reports", "MCWebHogar.rptReportePedido.rdlc", "DT_DetalleReporte", "DT_DetalleReporte");
+
+                Microsoft.Reporting.WebForms.ReportViewer ReportViewer1 = new Microsoft.Reporting.WebForms.ReportViewer();
+
+                ReportViewer1.LocalReport.EnableExternalImages = true;
+                ReportViewer1.LocalReport.DataSources.Clear();
+
+                string report = "";
+                foreach (DataRow dr in DT_Encabezado.Rows)
+                {
+                    FileStream fsReporte = null;
+                    string nombre = dr["rpt"].ToString().Trim().Replace(".rdlc", "").Replace("MCWebHogar.", "");
+                    ReportViewer1.ProcessingMode = Microsoft.Reporting.WebForms.ProcessingMode.Local;
+
+                    fsReporte = new FileStream(Server.MapPath(@"..\" + nombre + ".rdlc"), FileMode.Open, FileAccess.Read);
+
+                    ReportViewer1.LocalReport.LoadReportDefinition(fsReporte);
+
+                    ReportViewer1.LocalReport.ReportPath = Server.MapPath(String.Format("{0}.rdlc", @"..\" + nombre));
+
+                    report = dr["DTName"].ToString().Trim();
+                    foreach (DataTable dt in dsReportePedido.Tables)
+                    {
+                        if (dt.Rows.Count > 0 && dt.TableName.Trim() == report)
+                        {
+                            ReportViewer1.LocalReport.DataSources.Add(new Microsoft.Reporting.WebForms.ReportDataSource(dr["DataSet"].ToString().Trim(), (DataTable)dt));
+                        }
+                    }
+                }
+
+                ReportViewer1.LocalReport.EnableExternalImages = true;
+                ReportViewer1.LocalReport.EnableHyperlinks = true;
+
+                Microsoft.Reporting.WebForms.Warning[] warnings;
+                string[] streamIds;
+                string mimeType = String.Empty;
+                string encoding = String.Empty;
+                string extension = string.Empty;
+                byte[] bytes2 = ReportViewer1.LocalReport.Render("PDF", null, out mimeType, out encoding, out extension, out streamIds, out warnings);
+                //Generamos archivo en el servidor
+                string strCurrentDir2 = Server.MapPath(".") + "\\ReportesTemp\\";
+                string strFilePDF2 = "Reporte.pdf";
+                string strFilePathPDF2 = strCurrentDir2 + strFilePDF2;
+                using (FileStream fs = new FileStream(strFilePathPDF2, FileMode.Create))
+                {
+                    fs.Write(bytes2, 0, bytes2.Length);
+                }
+                string direccion = "/ControlPedidos/ReportesTemp/" + strFilePDF2;
+                string _open = "window.open('" + direccion + "'  , '_blank');desactivarloading();estilosElementosBloqueados();";
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerControlScript", _open, true);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        protected void BTN_ImprimirReporte_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                MCWebHogar.DataSets.DSSolicitud dsReportePedido = new MCWebHogar.DataSets.DSSolicitud();
+
+                Result = new DataTable();
+                Result.Columns.Add("Detalle", typeof(string));
+                Result.Columns.Add("PlantaProduccion", typeof(string));
+                Result.Columns.Add("PuntoVenta", typeof(string));
+                Result.Columns.Add("FechaDesde", typeof(DateTime));
+                Result.Columns.Add("FechaHasta", typeof(DateTime));
+
+                Result.Rows.Add(HDF_Detalle.Value, plantaProduccionCantidad.InnerText.Replace("Plantas producción: ", "").Replace("Planta producción: ", "").Replace("'", ""),
+                                puntoVentaCantidad.InnerText.Replace("Puntos venta: ", "").Replace("Punto venta: ", "").Replace("'", ""), TXT_FechaDesde.Text, TXT_FechaHasta.Text);
+
+                dsReportePedido.Tables["DT_EncabezadoReporte"].Merge(Result, true, MissingSchemaAction.Ignore);
+
+                DT.DT1.Clear();
+
+                Result = consultaDetalleCantidad();
+                if (Result.Rows.Count == 0)
+                {
+                    DataTable dt = new DataTable();
+                    dt.Columns.Add("ProductoID");
+                    dt.Columns.Add("DescripcionProducto");
+                    dt.Rows.Add("1", "No hay registros.");
+                    dsReportePedido.Tables["DT_DetalleReporte"].Merge(dt, true, MissingSchemaAction.Ignore);
+                }
+                else
+                {
+                    dsReportePedido.Tables["DT_DetalleReporte"].Merge(Result, true, MissingSchemaAction.Ignore);
+                }
+
+                DataTable DT_Encabezado = new DataTable();
+
+                DT_Encabezado.Columns.Add("Codigo");
+                DT_Encabezado.Columns.Add("Descripcion");
+                DT_Encabezado.Columns.Add("Procedure");
+                DT_Encabezado.Columns.Add("rpt");
+                DT_Encabezado.Columns.Add("DataSet");
+                DT_Encabezado.Columns.Add("DTName");
+
+                DT_Encabezado.TableName = "Encabezado";
+                DT_Encabezado.Rows.Add("01", "Datos Encabezado", "EE_Reports", "MCWebHogar.rptReporte.rdlc", "DT_EncabezadoReporte", "DT_EncabezadoReporte");
+                DT_Encabezado.Rows.Add("01", "Datos Encabezado", "EE_Reports", "MCWebHogar.rptReporte.rdlc", "DT_DetalleReporte", "DT_DetalleReporte");
+
+                Microsoft.Reporting.WebForms.ReportViewer ReportViewer1 = new Microsoft.Reporting.WebForms.ReportViewer();
+
+                ReportViewer1.LocalReport.EnableExternalImages = true;
+                ReportViewer1.LocalReport.DataSources.Clear();
+
+                string report = "";
+                foreach (DataRow dr in DT_Encabezado.Rows)
+                {
+                    FileStream fsReporte = null;
+                    string nombre = dr["rpt"].ToString().Trim().Replace(".rdlc", "").Replace("MCWebHogar.", "");
+                    ReportViewer1.ProcessingMode = Microsoft.Reporting.WebForms.ProcessingMode.Local;
+
+                    fsReporte = new FileStream(Server.MapPath(@"..\" + nombre + ".rdlc"), FileMode.Open, FileAccess.Read);
+
+                    ReportViewer1.LocalReport.LoadReportDefinition(fsReporte);
+
+                    ReportViewer1.LocalReport.ReportPath = Server.MapPath(String.Format("{0}.rdlc", @"..\" + nombre));
+
+                    report = dr["DTName"].ToString().Trim();
+                    foreach (DataTable dt in dsReportePedido.Tables)
+                    {
+                        if (dt.Rows.Count > 0 && dt.TableName.Trim() == report)
+                        {
+                            ReportViewer1.LocalReport.DataSources.Add(new Microsoft.Reporting.WebForms.ReportDataSource(dr["DataSet"].ToString().Trim(), (DataTable)dt));
+                        }
+                    }
+                }
+
+                ReportViewer1.LocalReport.EnableExternalImages = true;
+                ReportViewer1.LocalReport.EnableHyperlinks = true;
+
+                Microsoft.Reporting.WebForms.Warning[] warnings;
+                string[] streamIds;
+                string mimeType = String.Empty;
+                string encoding = String.Empty;
+                string extension = string.Empty;
+                byte[] bytes2 = ReportViewer1.LocalReport.Render("PDF", null, out mimeType, out encoding, out extension, out streamIds, out warnings);
+                //Generamos archivo en el servidor
+                string strCurrentDir2 = Server.MapPath(".") + "\\ReportesTemp\\";
+                string strFilePDF2 = "Reporte.pdf";
+                string strFilePathPDF2 = strCurrentDir2 + strFilePDF2;
+                using (FileStream fs = new FileStream(strFilePathPDF2, FileMode.Create))
+                {
+                    fs.Write(bytes2, 0, bytes2.Length);
+                }
+                string direccion = "/ControlPedidos/ReportesTemp/" + strFilePDF2;
+                string _open = "window.open('" + direccion + "'  , '_blank');desactivarloading();estilosElementosBloqueados();";
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerControlScript", _open, true);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        protected void BTN_ImprimirReporteEmpaqueInsumo_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                MCWebHogar.DataSets.DSSolicitud dsReportePedido = new MCWebHogar.DataSets.DSSolicitud();
+
+                Result = new DataTable();
+                Result.Columns.Add("Detalle", typeof(string));
+                Result.Columns.Add("PlantaProduccion", typeof(string));
+                Result.Columns.Add("PuntoVenta", typeof(string));
+                Result.Columns.Add("FechaDesde", typeof(DateTime));
+                Result.Columns.Add("FechaHasta", typeof(DateTime));
+
+                Result.Rows.Add(HDF_Detalle.Value, "", "", TXT_FechaDesde.Text, TXT_FechaHasta.Text);
+
+                dsReportePedido.Tables["DT_EncabezadoReporte"].Merge(Result, true, MissingSchemaAction.Ignore);
+
+                DT.DT1.Clear();
+                HDF_Dia.Value = "";
+                Result = consultaDetalle();
+                if (Result.Rows.Count == 0)
+                {
+                    DataTable dt = new DataTable();
+                    dt.Columns.Add("ProductoID");
+                    dt.Columns.Add("DescripcionProducto");
+                    dt.Rows.Add("1", "No hay registros.");
+                    dsReportePedido.Tables["DT_DetalleReporte"].Merge(dt, true, MissingSchemaAction.Ignore);
+                }
+                else
+                {
+                    dsReportePedido.Tables["DT_DetalleReporte"].Merge(Result, true, MissingSchemaAction.Ignore);
+                }
+
+                DataTable DT_Encabezado = new DataTable();
+
+                DT_Encabezado.Columns.Add("Codigo");
+                DT_Encabezado.Columns.Add("Descripcion");
+                DT_Encabezado.Columns.Add("Procedure");
+                DT_Encabezado.Columns.Add("rpt");
+                DT_Encabezado.Columns.Add("DataSet");
+                DT_Encabezado.Columns.Add("DTName");
+
+                DT_Encabezado.TableName = "Encabezado";
+                DT_Encabezado.Rows.Add("01", "Datos Encabezado", "EE_Reports", "MCWebHogar.rptReporteDetalle.rdlc", "DT_EncabezadoReporte", "DT_EncabezadoReporte");
+                DT_Encabezado.Rows.Add("01", "Datos Encabezado", "EE_Reports", "MCWebHogar.rptReporteDetalle.rdlc", "DT_DetalleReporte", "DT_DetalleReporte");
+
+                Microsoft.Reporting.WebForms.ReportViewer ReportViewer1 = new Microsoft.Reporting.WebForms.ReportViewer();
+
+                ReportViewer1.LocalReport.EnableExternalImages = true;
+                ReportViewer1.LocalReport.DataSources.Clear();
+
+                string report = "";
+                foreach (DataRow dr in DT_Encabezado.Rows)
+                {
+                    FileStream fsReporte = null;
+                    string nombre = dr["rpt"].ToString().Trim().Replace(".rdlc", "").Replace("MCWebHogar.", "");
+                    ReportViewer1.ProcessingMode = Microsoft.Reporting.WebForms.ProcessingMode.Local;
+
+                    fsReporte = new FileStream(Server.MapPath(@"..\" + nombre + ".rdlc"), FileMode.Open, FileAccess.Read);
+
+                    ReportViewer1.LocalReport.LoadReportDefinition(fsReporte);
+
+                    ReportViewer1.LocalReport.ReportPath = Server.MapPath(String.Format("{0}.rdlc", @"..\" + nombre));
+
+                    report = dr["DTName"].ToString().Trim();
+                    foreach (DataTable dt in dsReportePedido.Tables)
+                    {
+                        if (dt.Rows.Count > 0 && dt.TableName.Trim() == report)
+                        {
+                            ReportViewer1.LocalReport.DataSources.Add(new Microsoft.Reporting.WebForms.ReportDataSource(dr["DataSet"].ToString().Trim(), (DataTable)dt));
+                        }
+                    }
+                }
+
+                ReportViewer1.LocalReport.EnableExternalImages = true;
+                ReportViewer1.LocalReport.EnableHyperlinks = true;
+
+                Microsoft.Reporting.WebForms.Warning[] warnings;
+                string[] streamIds;
+                string mimeType = String.Empty;
+                string encoding = String.Empty;
+                string extension = string.Empty;
+                byte[] bytes2 = ReportViewer1.LocalReport.Render("PDF", null, out mimeType, out encoding, out extension, out streamIds, out warnings);
+                //Generamos archivo en el servidor
+                string strCurrentDir2 = Server.MapPath(".") + "\\ReportesTemp\\";
+                string strFilePDF2 = "Reporte" + HDF_Detalle.Value + ".pdf";
+                string strFilePathPDF2 = strCurrentDir2 + strFilePDF2;
+                using (FileStream fs = new FileStream(strFilePathPDF2, FileMode.Create))
+                {
+                    fs.Write(bytes2, 0, bytes2.Length);
+                }
+                string direccion = "/ControlPedidos/ReportesTemp/" + strFilePDF2;
+                string _open = "window.open('" + direccion + "'  , '_blank');desactivarloading();estilosElementosBloqueados();";
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerControlScript", _open, true);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        #endregion
+
         #region Graficos
         protected void Recargar_Click(object sender, EventArgs e)
         {
@@ -852,6 +1238,52 @@ namespace MCWebHogar.ControlPedidos
 
                     dh.dia = dr["FechaPedido"].ToString().Trim();
                     dh.cantidadPedidos = Convert.ToInt32(dr["CantidadPedidos"].ToString().Trim());
+
+                    lista.Add(dh);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return lista;
+        }
+
+        [WebMethod()]
+        public static List<DatosHistoricos> cargarGraficoOrdenProduccion(string idUsuario, string fechaDesde, string fechaHasta, string idsPuntoVenta, string idsPlantasProduccion)
+        {
+            List<DatosHistoricos> lista = new List<DatosHistoricos>();
+            CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
+            DataTable Result = new DataTable();
+
+            DT.DT1.Clear();
+            try
+            {
+                if (idsPuntoVenta != "")
+                {
+                    DT.DT1.Rows.Add("@FiltrarSucursales", 1, SqlDbType.Int);
+                    DT.DT1.Rows.Add("@FiltroSucursales", idsPuntoVenta.TrimEnd(','), SqlDbType.VarChar);
+                }
+                if (idsPlantasProduccion != "")
+                {
+                    DT.DT1.Rows.Add("@FiltrarPlantasProduccion", 1, SqlDbType.Int);
+                    DT.DT1.Rows.Add("@FiltroPlantasProduccion", idsPlantasProduccion.TrimEnd(','), SqlDbType.VarChar);
+                }
+                DT.DT1.Rows.Add("@Usuario", idUsuario, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@fechaDesde", fechaDesde, SqlDbType.Date);
+                DT.DT1.Rows.Add("@fechaHasta", fechaHasta, SqlDbType.DateTime);
+                DT.DT1.Rows.Add("@TipoSentencia", "CargarGraficoOrdenProduccion", SqlDbType.VarChar);
+
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP_Reportes_0001");
+
+                foreach (DataRow dr in Result.Rows)
+                {
+                    DatosHistoricos dh = new DatosHistoricos();
+
+                    dh.dia = dr["FechaODP"].ToString().Trim();
+                    dh.plantaProduccion = dr["DescripcionPlantaProduccion"].ToString().Trim();
+                    dh.cantidadPedidos = Convert.ToInt32(dr["Cantidad"].ToString().Trim());
+                    dh.montoPedidos = Convert.ToInt32(dr["Monto"].ToString().Trim());
 
                     lista.Add(dh);
                 }
@@ -1116,6 +1548,76 @@ namespace MCWebHogar.ControlPedidos
                     dh.cantidadRecibido = Convert.ToInt32(dr["CantidadRecibida"].ToString().Trim());
                     dh.montoRecibido = Convert.ToInt32(dr["MontoPedidoRecibido"].ToString().Trim());
                     
+                    lista.Add(dh);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return lista;
+        }
+
+        [WebMethod()]
+        public static List<DatosHistoricos> cargarGraficoEmpaque(string idUsuario, string fechaDesde, string fechaHasta)
+        {
+            List<DatosHistoricos> lista = new List<DatosHistoricos>();
+            CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
+            DataTable Result = new DataTable();
+
+            DT.DT1.Clear();
+            try
+            {                
+                DT.DT1.Rows.Add("@Usuario", idUsuario, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@fechaDesde", fechaDesde, SqlDbType.Date);
+                DT.DT1.Rows.Add("@fechaHasta", fechaHasta, SqlDbType.DateTime);
+                DT.DT1.Rows.Add("@TipoSentencia", "CargarGraficoEmpaque", SqlDbType.VarChar);
+
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP_Reportes_0001");
+
+                foreach (DataRow dr in Result.Rows)
+                {
+                    DatosHistoricos dh = new DatosHistoricos();
+
+                    dh.dia = dr["FechaEmpaque"].ToString().Trim();
+                    dh.cantidadEmpaque = Convert.ToInt32(dr["Cantidad"].ToString().Trim());
+                    dh.montoEmpaque = Convert.ToInt32(dr["Monto"].ToString().Trim());
+
+                    lista.Add(dh);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return lista;
+        }
+
+        [WebMethod()]
+        public static List<DatosHistoricos> cargarGraficoInsumo(string idUsuario, string fechaDesde, string fechaHasta)
+        {
+            List<DatosHistoricos> lista = new List<DatosHistoricos>();
+            CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
+            DataTable Result = new DataTable();
+
+            DT.DT1.Clear();
+            try
+            {
+                DT.DT1.Rows.Add("@Usuario", idUsuario, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@fechaDesde", fechaDesde, SqlDbType.Date);
+                DT.DT1.Rows.Add("@fechaHasta", fechaHasta, SqlDbType.DateTime);
+                DT.DT1.Rows.Add("@TipoSentencia", "CargarGraficoInsumo", SqlDbType.VarChar);
+
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP_Reportes_0001");
+
+                foreach (DataRow dr in Result.Rows)
+                {
+                    DatosHistoricos dh = new DatosHistoricos();
+
+                    dh.dia = dr["FechaInsumo"].ToString().Trim();
+                    dh.cantidadInsumo = Convert.ToInt32(dr["Cantidad"].ToString().Trim());
+                    dh.montoInsumo = Convert.ToInt32(dr["Monto"].ToString().Trim());
+
                     lista.Add(dh);
                 }
             }

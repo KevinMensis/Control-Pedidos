@@ -18,8 +18,12 @@ namespace CapaLogica.Entidades.ControlPedidos
         public int cantidadRecibido { get; set; }
         public int cantidadDevolucion { get; set; }
         public int cantidadDesecho { get; set; }
+        public int cantidadEmpaque { get; set; }
+        public int cantidadInsumo { get; set; }
         public int montoPedidos { get; set; }
         public int montoDespacho { get; set; }
         public int montoRecibido { get; set; }
+        public int montoEmpaque { get; set; }
+        public int montoInsumo { get; set; }
     }
 }

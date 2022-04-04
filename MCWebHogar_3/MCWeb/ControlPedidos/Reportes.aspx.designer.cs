@@ -265,6 +265,15 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.GridView DGV_DetalleCantidad;
         
         /// <summary>
+        /// BTN_ImprimirReporte control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_ImprimirReporte;
+        
+        /// <summary>
         /// UpdatePanel_ModalDetalleCantidadPedido control.
         /// </summary>
         /// <remarks>
@@ -335,6 +344,15 @@ namespace MCWebHogar.ControlPedidos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView DGV_DetalleCantidadPedido;
+        
+        /// <summary>
+        /// BTN_ImprimirReportePedido control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_ImprimirReportePedido;
         
         /// <summary>
         /// UpdatePanel_ModalDetalleSemana control.
@@ -434,5 +452,59 @@ namespace MCWebHogar.ControlPedidos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView DGV_Pedidos;
+        
+        /// <summary>
+        /// UpdatePanel_ModalDetalle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_ModalDetalle;
+        
+        /// <summary>
+        /// modalCantidadDetalleTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl modalCantidadDetalleTitle;
+        
+        /// <summary>
+        /// Dia control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Dia;
+        
+        /// <summary>
+        /// UpdatePanel_Detalle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_Detalle;
+        
+        /// <summary>
+        /// DGV_Detalle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView DGV_Detalle;
+        
+        /// <summary>
+        /// BTN_ImprimirDetalle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_ImprimirDetalle;
     }
 }

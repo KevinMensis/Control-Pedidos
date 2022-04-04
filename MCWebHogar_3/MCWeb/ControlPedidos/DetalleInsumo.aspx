@@ -8,7 +8,19 @@
     <title>Detalle Insumo</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <style>
+        .ir-arriba {
+            display:block;
+            background-repeat:no-repeat;
+            font-size:20px;
+            color:black;
+            cursor:pointer;
+            position:fixed;
+            bottom:10px;
+            right:10px;
+            z-index:2;
+        }
     </style>
+    <script src="../Assets/js/qz-tray.js"></script>
     <script type="text/javascript">
         var productosAgregar;
 
@@ -45,6 +57,22 @@
         function cerrarModalAgregarProductos() {
             productosAgregar = new Map();
             document.getElementById('BTN_ModalAgregarProductos').click()
+        }
+
+        function abrirModalSeleccionarImpresora() {
+            document.getElementById('BTN_ModalSeleccionarImpresora').click()
+        }
+
+        function cerrarModalSeleccionarImpresora() {
+            document.getElementById('BTN_ModalSeleccionarImpresora').click()
+        }
+
+        function abrirModalDetalleInsumo() {
+            document.getElementById('BTN_ModalDetalleInsumo').click()
+        }
+
+        function cerrarModalDetalleInsumo() {
+            document.getElementById('BTN_ModalDetalleInsumo').click()
         }
 
         function TXT_Cantidad_onKeyUp(txtCantidad, e) {
@@ -198,43 +226,157 @@
             var usuario = document.getElementById('Content_HDF_IDUsuario').value;
             var idUsuario = document.getElementById('Content_HDF_UsuarioID').value;
             var idInsumo = document.getElementById('Content_HDF_IDInsumo').value;
-            var promises = [];
-            productosAgregar.forEach(function (valor, clave) {
-                promises.push(
-                    $.ajax({
-                        type: "POST",
-                        contentType: "application/json; charset=utf-8",
-                        url: "DetalleInsumo.aspx/BTN_Agregar_Click",
-                        data: JSON.stringify({
-                            "idInsumo": idInsumo,
-                            "idProducto": clave,
-                            "idUsuario": idUsuario,
-                            "cantidadProducto": valor,
-                            "usuario": usuario
-                        }),
-                        dataType: "json",
-                        success: function (Result) {
-                            console.dir(Result)
-                        },
-                        error: function (Result) {
-                            alert("ERROR " + Result.status + ' ' + Result.statusText);
-                        }
-                    })
-                )
-            })
-            Promise.all(promises).then(function () {
-                if (productosAgregar.size > 0) {
-                    cerrarModalAgregarProductos();
-                    __doPostBack('CargarInsumo')
-                    alertifysuccess('Productos agregados con éxito.');
-                    desactivarloading();
-                } else {
-                    alertifywarning('Por favor, seleccione al menos un producto.');
-                    cargarFiltros();
-                    desactivarloading();
-                }
-            });
+            var idPuntoVenta = document.getElementById('Content_DDL_PuntoVenta').value;
+            if (idPuntoVenta !== 0 && idPuntoVenta !== "0") {
+                var promises = [];
+                productosAgregar.forEach(function (valor, clave) {
+                    promises.push(
+                        $.ajax({
+                            type: "POST",
+                            contentType: "application/json; charset=utf-8",
+                            url: "DetalleInsumo.aspx/BTN_Agregar_Click",
+                            data: JSON.stringify({
+                                "idInsumo": idInsumo,
+                                "idPuntoVenta": idPuntoVenta,
+                                "idProducto": clave,
+                                "idUsuario": idUsuario,
+                                "cantidadProducto": valor,
+                                "usuario": usuario
+                            }),
+                            dataType: "json",
+                            success: function (Result) {
+                                console.dir(Result)
+                            },
+                            error: function (Result) {
+                                alert("ERROR " + Result.status + ' ' + Result.statusText);
+                            }
+                        })
+                    )
+                })
+                Promise.all(promises).then(function () {
+                    if (productosAgregar.size > 0) {
+                        cerrarModalAgregarProductos();
+                        __doPostBack('CargarInsumo')
+                        alertifysuccess('Productos agregados con éxito.');
+                        desactivarloading();
+                    } else {
+                        alertifywarning('Por favor, seleccione al menos un producto.');
+                        cargarFiltros();
+                        desactivarloading();
+                    }
+                });
+            } else {
+                cargarFiltros();
+                desactivarloading();
+                document.getElementById('Content_DDL_PuntoVenta').focus();
+                alertifywarning('Por favor, seleccione el punto de venta.');
+            }
+        }
 
+        function imprimir(montoInsumo, fechaInsumo, codigoInsumo, printer) {
+            imprimir2(montoInsumo, fechaInsumo, codigoInsumo, printer, 0, 31);
+        }
+
+        function imprimir2(montoInsumo, fechaInsumo, codigoInsumo, printer, index, indexFin) {
+            var listaProductos = 'Content_DGV_DetalleInsumo';
+            var table, tbody, i, rowLen, row, j, colLen, cell, resultHTML;
+
+            resultHTML = '<tbody><tr class="table" align="center" style="border-color:#51CBCE;">'
+
+            table = document.getElementById(listaProductos);
+            tbody = table.tBodies[0];
+            var pag = index / 30 + 1
+            var totalPags = Math.trunc(tbody.rows.length / 30)
+            totalPags += 0 < tbody.rows.length % 30 ? 1 : 0
+
+            if (index < tbody.rows.length) {
+                for (i = index, rowLen = tbody.rows.length; i < rowLen; i++) {
+                    if (i < indexFin) {
+                        row = tbody.rows[i];
+                        for (j = 0, colLen = row.cells.length; j < colLen; j++) {
+                            cell = row.cells[j];
+                            if (i == 0) {
+                                if (j == 0 || j == 1 || j == 2) {
+                                    resultHTML += '<th scope="col">' + cell.innerHTML + '</th>'
+                                }
+                            } else {
+                                if (j == 0) {
+                                    resultHTML += '</tr><tr>'
+                                    resultHTML += '<td align="center" style="color:Black;"><strong>' + cell.innerHTML + '</strong></td>'
+                                } else if (j == 1) {
+                                    resultHTML += '<td align="center" style="color:Black;"><strong>' + cell.innerHTML + '</strong></td>'
+                                } else if (j == 2) {
+                                    resultHTML += '<td align="center" style="color:Black;"><strong>' + cell.innerHTML + '</strong></td>'
+                                    resultHTML += '</tr>'
+                                }
+                            }
+                        }
+                    }
+                }
+
+                resultHTML += '</tbody>'
+
+                var d = new Date(),
+                year = d.getFullYear(),
+                month = d.getMonth() + 1,
+                day = d.getDate(),
+                hours = d.getHours(),
+                minute = d.getMinutes(),
+                second = d.getSeconds(),
+                ap = 'AM';
+                if (hours > 11) { ap = 'PM'; }
+                if (hours > 12) { hours = hours - 12; }
+                if (hours == 0) { hours = 12; }
+                if (month < 10) { month = "0" + month; }
+                if (day < 10) { day = "0" + day; }
+                if (minute < 10) { minute = "0" + minute; }
+
+                var fecha = day + '/' + month + '/' + year + ' ' + hours + ':' + minute + ' ' + ap
+
+                qz.websocket.connect().then(function () {
+                    return qz.printers.find(printer);
+                }).then(function (found) {
+                    var config = qz.configs.create(found);
+                    var data = [{
+                        type: 'pixel',
+                        format: 'html',
+                        flavor: 'plain',
+                        data: '<html>' +
+                                '<head><title>' + document.title + '</title></head>' +
+                                '<body>' +
+                                    '<h2><strong>' + codigoInsumo + ' - ' + 'Fecha Insumo: ' + fechaInsumo + '</strong></h2>' +
+                                    '<table>' + resultHTML + '</table><br />' +
+                                    '<h2><strong>Total:</strong> ' + montoInsumo + '</h2>' +
+                                    '<h3 style="text-align: center;"><strong> *** FIN *** </strong></h3>' +
+                                    '<h4 style="text-align: left;"><strong> Página: ' + pag + ' de ' + totalPags + '</strong></h4><br />' +
+                                    '<h4 style="text-align: left;"><strong> Tiquete generado el: ' + fecha + '</strong></h4><br />' +
+                                '</body>' +
+                               '</html>'
+                    }];
+                    return qz.print(config, data).catch(function (e) { console.error(e); });
+                }).catch(function (error) {
+                    alert(error);
+                }).finally(function () {
+                    return qz.websocket.disconnect().then(function () {
+                        imprimir2(montoInsumo, fechaInsumo, codigoInsumo, printer, index + 30, indexFin + 30);
+                    });
+                });
+            } else {
+                cerrarModalDetalleInsumo();
+                alertifysuccess('Impresión finalizada.');
+            }
+        }
+
+        function configurarImpresora() {
+            qz.websocket.connect().then(function () {
+                return qz.printers.find();
+            }).then(function (found) {
+                __doPostBack('DDL_ImpresorasLoad', found)
+            }).catch(function (error) {
+                alert(error);
+            }).finally(function () {
+                return qz.websocket.disconnect()
+            });
         }
         
         function estilosElementosBloqueados() {
@@ -250,10 +392,13 @@
             document.getElementById('<%= TXT_HoraInsumo.ClientID %>').classList.add('form-control')
             document.getElementById('<%= DDL_Propietario.ClientID %>').classList.remove('aspNetDisabled')
             document.getElementById('<%= DDL_Propietario.ClientID %>').classList.add('form-control')
+            document.getElementById('<%= TXT_NombreImpresora.ClientID %>').classList.remove('aspNetDisabled')
+            document.getElementById('<%= TXT_NombreImpresora.ClientID %>').classList.add('form-control')
         }
 
         function cargarFiltros() {
             $(<%= LB_Categoria.ClientID %>).SumoSelect({ selectAll: true, placeholder: 'Categoria' })
+            $(<%= LB_PuntoVenta.ClientID %>).SumoSelect({ selectAll: true, placeholder: 'Punto venta' })
         }
 
         $(document).ready(function () {
@@ -269,6 +414,12 @@
         <asp:Label runat="server" ID="LBL_GenerandoInforme" style="color: white;" Text="Generando informe espere por favor..."></asp:Label>
     </div>
     <div id="fade2" class="overlayload"></div>
+    <a class="ir-arriba"  href="javascript:configurarImpresora();" title="Impresora">
+        <span class="fa-stack">
+            <i class="fa fa-circle fa-stack-2x"></i>
+            <i class="fa fa-print fa-stack-1x fa-inverse"></i>
+        </span>
+    </a>
     <div class="wrapper">
         <asp:HiddenField ID="HDF_UsuarioID" runat="server" Value="0" Visible="true" />
         <asp:HiddenField ID="HDF_IDUsuario" runat="server" Value="0" Visible="true" />
@@ -426,6 +577,7 @@
                                     <div class="form-row"> 
                                         <div class="col-md-6">                                       
                                             <asp:Button UseSubmitBehavior="false" ID="BTN_AgregarProducto" runat="server" Text="Agregar productos" CssClass="btn btn-secondary" OnClientClick="estilosElementosBloqueados();" OnClick="BTN_CargarProductos_Click"></asp:Button>                                        
+                                            <asp:Button ID="BTN_AbrirModalDetalleInsumo" runat="server" UseSubmitBehavior="false" Text="Imprimir insumo" CssClass="btn btn-info" OnClick="BTN_AbrirModalDetalleInsumo_Click"></asp:Button>                                            
                                         </div>                                        
                                         <div class="col-md-6" style="text-align: right;"> 
                                             <asp:Button UseSubmitBehavior="false" ID="BTN_ReporteInsumo" runat="server" Text="Reporte insumo" CssClass="btn btn-secondary" OnClientClick="activarloading();estilosElementosBloqueados();" OnClick="BTN_ReporteInsumo_Click"></asp:Button>                                                                                
@@ -450,6 +602,9 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="input-group no-border col-md-3">     
+                                            <asp:ListBox class="form-control" runat="server" ID="LB_PuntoVenta" SelectionMode="Multiple" OnTextChanged="TXT_Buscar_OnTextChanged" AutoPostBack="true"></asp:ListBox>
+                                        </div>
                                     </ContentTemplate>
                                 </asp:UpdatePanel>
                             </div>
@@ -467,6 +622,7 @@
                                                 <asp:BoundField DataField="DescripcionProducto" SortExpression="DescripcionProducto" HeaderText="Nombre producto" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="CostoProducto" SortExpression="CostoProducto" HeaderText="Costo producto" DataFormatString="{0:n2}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="PrecioProducto" SortExpression="PrecioProducto" HeaderText="Precio producto" DataFormatString="{0:n2}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
+                                                <asp:BoundField DataField="DescripcionPuntoVenta" SortExpression="DescripcionPuntoVenta" HeaderText="Punto venta" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:TemplateField>
                                                     <HeaderTemplate>
                                                         <asp:Label ID="LBL_Cantidad" runat="server" Text="Cantidad insumo"></asp:Label>
@@ -505,7 +661,7 @@
                         </div>
                         <div class="modal-body"> 
                             <div class="row">
-                                <div class="col-md-5">
+                                <div class="col-md-4">
                                     <div class="input-group no-border">
                                         <asp:TextBox class="form-control" ID="TXT_BuscarProductosSinAsignar" runat="server" placeholder="Buscar..." OnTextChanged="FiltrarProductos_OnClick" AutoPostBack="true"></asp:TextBox>
                                         <div class="input-group-append">
@@ -514,6 +670,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <asp:DropDownList class="form-control" ID="DDL_PuntoVenta" runat="server" OnSelectedIndexChanged="FiltrarProductos_OnClick" AutoPostBack="true"></asp:DropDownList>
                                 </div>
                                 <div class="col-md-3">
                                     <asp:ListBox class="form-control" runat="server" ID="LB_Categoria" SelectionMode="Multiple" OnTextChanged="FiltrarProductos_OnClick" AutoPostBack="true"></asp:ListBox>
@@ -560,6 +719,87 @@
                         <div class="modal-footer">
                             <asp:Button UseSubmitBehavior="false" ID="BTN_CerrarModalCrearPedido" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-primary" />
                             <asp:Button UseSubmitBehavior="false" ID="BTN_Agregar" runat="server" Text="Agregar" CssClass="btn btn-secondary" OnClientClick="cargarProductosAgregar();" />
+                        </div>
+                    </div>
+                </div>
+            </ContentTemplate>
+        </asp:UpdatePanel>
+    </div>
+
+    <button type="button" id="BTN_ModalDetalleInsumo" data-toggle="modal" data-target="#ModalDetalleInsumo" style="visibility: hidden;">open</button>
+
+    <div class="modal bd-example-modal-lg" id="ModalDetalleInsumo" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="popDetalleInsumo" aria-hidden="true">
+        <asp:UpdatePanel ID="UpdatePanel_ModalDetalleInsumo" runat="server" UpdateMode="Conditional">
+            <ContentTemplate>
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h5 class="modal-title" runat="server">Detalle Insumo</h5>
+                        </div>
+                        <div class="modal-body">                            
+                            <div class="table-responsive" id="tableCategorias">
+                                <asp:UpdatePanel ID="UpdatePanel_DetalleInsumo" runat="server" UpdateMode="Conditional">
+                                    <ContentTemplate>
+                                        <div class="col-md-6" style="margin-bottom: 2rem;">
+                                            <label for="TXT_NombreImpresora">Nombre impresora</label>
+                                            <asp:TextBox class="form-control" ID="TXT_NombreImpresora" runat="server" Enabled="false"></asp:TextBox>
+                                        </div>
+                                        <br />
+                                        <br />
+                                        <asp:GridView ID="DGV_DetalleInsumo" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
+                                            AutoGenerateColumns="false" DataKeyNames="IDInsumoDetalle,InsumoID,ProductoID,Categoria" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
+                                            ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros.">
+                                            <Columns>                                         
+                                                <asp:BoundField DataField="DescripcionProducto" HeaderText="Nombre producto" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                <asp:BoundField DataField="CantidadInsumo" HeaderText="Cantidad Insumo" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
+                                                <asp:BoundField DataField="PrecioProducto" HeaderText="Precio unitario" DataFormatString="{0:n2}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
+                                            </Columns>
+                                        </asp:GridView>
+                                    </ContentTemplate>
+                                </asp:UpdatePanel>
+                            </div>
+                        </div>
+                        <div class="modal-footer">                            
+                            <div style="text-align: right;">
+                                <asp:Button ID="BTN_CerrarModalDetallePedido" UseSubmitBehavior="false" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-primary" />  
+                                <asp:Button ID="BTN_ImprimirDetallePedido" UseSubmitBehavior="false" runat="server" Text="Imprimir" CssClass="btn btn-secondary" OnClick="BTN_ImprimirDetalleInsumo_Click" />                              
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ContentTemplate>
+        </asp:UpdatePanel>
+    </div>
+
+    <button type="button" id="BTN_ModalSeleccionarImpresora" data-toggle="modal" data-target="#ModalSeleccionarImpresora" style="visibility: hidden;">open</button>
+
+    <div class="modal bd-example-modal-md" id="ModalSeleccionarImpresora" tabindex="-1" role="dialog" aria-labelledby="popSeleccionarImpresora" aria-hidden="true">
+        <asp:UpdatePanel ID="UpdatePanel_SeleccionarImpresora" runat="server" UpdateMode="Conditional">
+            <ContentTemplate>
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h5 class="modal-title" runat="server">Seleccionar impresora</h5>
+                        </div>
+                        <div class="modal-body">   
+                            <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                                <ContentTemplate>                         
+                                    <div style="text-align: left;">
+                                        <asp:DropDownList class="form-control" ID="DDL_Impresoras" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DDL_Impresoras_OnSelectedIndexChanged"></asp:DropDownList>
+                                    </div>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
+                        </div>
+                        <div class="modal-footer">
+                            <div style="text-align: right;">
+                                <asp:Button ID="BTN_CerrarModalSeleccionarImpresora" UseSubmitBehavior="false" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-secondary" />                                
+                            </div>
                         </div>
                     </div>
                 </div>

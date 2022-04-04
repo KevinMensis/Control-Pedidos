@@ -179,6 +179,186 @@
             });
         }
 
+        function gracficoEmpaque(dias, montos) {
+            Highcharts.chart('containerEmpaque', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Cantidad empaque'
+                },
+                plotOptions: {
+                    series: {
+                        cursor: 'pointer',
+                        point: {
+                            events: {
+                                click: function (e) {
+                                    detalleEmpaqueInsumo('Empaque', this.category)
+                                }
+                            }
+                        }
+                    },
+                    column: {
+                        dataLabels: {
+                            align: 'left',
+                            enabled: true,
+                            rotation: 270,
+                            x: 2,
+                            y: -10
+                        }
+                    }
+                },
+                xAxis: {
+                    categories: dias
+                },
+                yAxis: {
+                    allowDecimals: false,
+                    title: {
+                        text: ''
+                    }
+                },
+                credits: {
+                    enabled: false
+                },
+                series: montos
+            });
+        }
+
+        function gracficoInsumo(dias, montos) {
+            Highcharts.chart('containerInsumo', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Cantidad insumo'
+                },
+                plotOptions: {
+                    series: {
+                        cursor: 'pointer',
+                        point: {
+                            events: {
+                                click: function (e) {
+                                    detalleEmpaqueInsumo('Insumo', this.category)
+                                }
+                            }
+                        }
+                    },
+                    column: {
+                        dataLabels: {
+                            align: 'left',
+                            enabled: true,
+                            rotation: 270,
+                            x: 2,
+                            y: -10
+                        }
+                    }
+                },
+                xAxis: {
+                    categories: dias
+                },
+                yAxis: {
+                    allowDecimals: false,
+                    title: {
+                        text: ''
+                    }
+                },
+                credits: {
+                    enabled: false
+                },
+                series: montos
+            });
+        }
+
+        function graficoCantidadODP(dias, montos) {
+            Highcharts.chart('containerCantidadOrdenesProduccion', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Cantidad orden producción'
+                },
+                plotOptions: {
+                    series: {
+                        cursor: 'pointer',
+                        point: {
+                            events: {
+                                click: function (e) {
+                                    detalleProduccionDiaria('ODP', this.category, e.point.series.name)
+                                }
+                            }
+                        }
+                    },
+                    column: {
+                        dataLabels: {
+                            align: 'left',
+                            enabled: true,
+                            rotation: 270,
+                            x: 2,
+                            y: -10
+                        }
+                    }
+                },
+                xAxis: {
+                    categories: dias
+                },
+                yAxis: {
+                    allowDecimals: false,
+                    title: {
+                        text: ''
+                    }
+                },
+                credits: {
+                    enabled: false
+                },
+                series: montos
+            });
+        }
+
+        function graficoMontosODP(dias, montos) {
+            Highcharts.chart('containerMontoOrdenesProduccion', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Montos orden producción'
+                },
+                plotOptions: {
+                    series: {
+                        cursor: 'pointer',
+                        point: {
+                            events: {
+                                click: function (e) {
+                                    detalleProduccionDiaria('ODP', this.category, e.point.series.name)
+                                }
+                            }
+                        }
+                    },
+                    column: {
+                        dataLabels: {
+                            align: 'left',
+                            enabled: true,
+                            rotation: 270,
+                            x: 2,
+                            y: -10
+                        }
+                    }
+                },
+                xAxis: {
+                    categories: dias
+                },
+                yAxis: {
+                    allowDecimals: false,
+                    title: {
+                        text: ''
+                    }
+                },
+                credits: {
+                    enabled: false
+                },
+                series: montos
+            });
+        }
+
         function graficoMontoPedidos(puntosVenta, montos) {
             Highcharts.chart('containerMontoPedido', {
                 chart: {
@@ -663,6 +843,129 @@
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
+                url: "Reportes.aspx/cargarGraficoEmpaque",
+                data: JSON.stringify({
+                    "idUsuario": idUsuario,
+                    "fechaDesde": fechaDesde,
+                    "fechaHasta": fechaHasta,
+                }),
+                dataType: "json",
+                success: function (Result) {                                     
+                    var listaDias = []
+                    var detalle = ['Cantidad Empaque']
+                    var datos = []
+                    for (var i in Result.d) {
+                        if (!listaDias.includes(Result.d[i].dia)) {
+                            listaDias.push(Result.d[i].dia)
+                        }
+                    }
+
+                    var values = []                        
+                    for (var dia in listaDias) {
+                        var index = 0
+                        var index = (dia * 1)
+
+                        values.push(Result.d[index].cantidadEmpaque)
+                    }
+                    var array = { name: 'Cantidad empaque', data: values };
+                    datos.push(array)
+                    
+                    gracficoEmpaque(listaDias, datos)
+                },
+                error: function (Result) {
+                    alert("ERROR " + Result.status + ' ' + Result.statusText);
+                }
+            })
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "Reportes.aspx/cargarGraficoInsumo",
+                data: JSON.stringify({
+                    "idUsuario": idUsuario,
+                    "fechaDesde": fechaDesde,
+                    "fechaHasta": fechaHasta,
+                }),
+                dataType: "json",
+                success: function (Result) {
+                    var listaDias = []
+                    var detalle = ['Cantidad Insumo']
+                    var datos = []
+                    for (var i in Result.d) {
+                        if (!listaDias.includes(Result.d[i].dia)) {
+                            listaDias.push(Result.d[i].dia)
+                        }
+                    }
+
+                    var values = []
+                    for (var dia in listaDias) {
+                        var index = 0
+                        var index = (dia * 1)
+
+                        values.push(Result.d[index].cantidadInsumo)
+                    }
+                    var array = { name: 'Cantidad insumo', data: values };
+                    datos.push(array)
+
+                    gracficoInsumo(listaDias, datos)
+                },
+                error: function (Result) {
+                    alert("ERROR " + Result.status + ' ' + Result.statusText);
+                }
+            })
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "Reportes.aspx/cargarGraficoOrdenProduccion",
+                data: JSON.stringify({
+                    "idUsuario": idUsuario,
+                    "fechaDesde": fechaDesde,
+                    "fechaHasta": fechaHasta,
+                    "idsPuntoVenta": idsPuntosVenta,
+                    "idsPlantasProduccion": idsPlantasProduccion,
+                }),
+                dataType: "json",
+                success: function (Result) {
+                    var listaDias = []
+                    var plantasProduccion = []
+                    var datos = []
+                    var datosMontos = []
+                    for (var i in Result.d) {
+                        if (!listaDias.includes(Result.d[i].dia)) {
+                            listaDias.push(Result.d[i].dia)
+                        }
+                        if (!plantasProduccion.includes(Result.d[i].plantaProduccion)) {
+                            plantasProduccion.push(Result.d[i].plantaProduccion)
+                        }
+                    }
+
+                    for (planta in plantasProduccion) {
+                        var values = []
+                        var valuesMontos = []
+                        for (var dia in listaDias) {
+                            var index = 0
+                            var index = (planta * 1) * plantasProduccion.length + (dia * 1)
+
+                            values.push(Result.d[index].cantidadPedidos)
+                            valuesMontos.push(Result.d[index].montoPedidos)
+                        }
+                        var array = { name: plantasProduccion[planta], data: values };
+                        var arrayMontos = { name: plantasProduccion[planta], data: valuesMontos };
+                        datos.push(array)
+                        datosMontos.push(arrayMontos)
+                    }
+                    graficoCantidadODP(listaDias, datos)
+                    graficoMontosODP(listaDias, datosMontos)
+                },
+                error: function (Result) {
+                    alert("ERROR " + Result.status + ' ' + Result.statusText);
+                }
+            })
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
                 url: "Reportes.aspx/cargarGraficoPedidosPuntoVenta",
                 data: JSON.stringify({
                     "idUsuario": idUsuario,
@@ -910,12 +1213,30 @@
             __doPostBack('detalleCantidad')
         }
 
+        function detalleEmpaqueInsumo(modulo, dia) {           
+            $(<%= HDF_Detalle.ClientID %>)[0].value = modulo
+            $(<%= HDF_Dia.ClientID %>)[0].value = dia
+            __doPostBack('detalleEmpaqueInsumo')
+        }
+
+        function detalleProduccionDiaria(modulo, puntoVenta, plantaProduccion) {
+            console.log(modulo, puntoVenta, plantaProduccion)
+        }
+
         function abrirModalDetalleCantidad() {
             document.getElementById('BTN_ModalDetalleCantidad').click()
         }
 
         function cerrarModalDetalleCantidad() {
             document.getElementById('BTN_ModalDetalleCantidad').click()
+        }
+
+        function abrirModalDetalle() {
+            document.getElementById('BTN_ModalDetalle').click()
+        }
+
+        function cerrarModalDetalle() {
+            document.getElementById('BTN_ModalDetalle').click()
         }
 
         function abrirModalDetalleCantidadPedido() {
@@ -1216,6 +1537,22 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row" id="CardOrdenesProduccion">
+                            <div class="col-md-6">
+                                <div class="card card-chart">
+                                    <figure class="highcharts-figure">
+                                        <div id="containerCantidadOrdenesProduccion"></div>
+                                    </figure>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card card-chart">
+                                    <figure class="highcharts-figure">
+                                        <div id="containerMontoOrdenesProduccion"></div>
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row" id="CardMontos">
                             <div class="col-md-4">
                                 <div class="card card-chart">
@@ -1285,6 +1622,22 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row" id="CardEmpaqueInsumos">
+                            <div class="col-md-6">
+                                <div class="card card-chart">
+                                    <figure class="highcharts-figure">
+                                        <div id="containerEmpaque"></div>                                       
+                                    </figure>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card card-chart">
+                                    <figure class="highcharts-figure">
+                                        <div id="containerInsumo"></div>                                       
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1325,6 +1678,11 @@
                                         </asp:GridView>
                                     </ContentTemplate>
                                 </asp:UpdatePanel>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" style="text-align: right;">
+                                    <asp:Button ID="BTN_ImprimirReporte" runat="server" UseSubmitBehavior="false" Text="Imprimir reporte" CssClass="btn btn-info" OnClientClick="activarloading();" OnClick="BTN_ImprimirReporte_Click"></asp:Button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1371,6 +1729,11 @@
                                         </asp:GridView>
                                     </ContentTemplate>
                                 </asp:UpdatePanel>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" style="text-align: right;">
+                                    <asp:Button ID="BTN_ImprimirReportePedido" runat="server" UseSubmitBehavior="false" Text="Imprimir reporte" CssClass="btn btn-info" OnClientClick="activarloading();" OnClick="BTN_ImprimirReportePedido_Click"></asp:Button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1478,6 +1841,51 @@
                                         </asp:GridView>
                                     </ContentTemplate>
                                 </asp:UpdatePanel>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ContentTemplate>
+        </asp:UpdatePanel>
+    </div>
+
+    <button type="button" id="BTN_ModalDetalle" data-toggle="modal" data-target="#ModalDetalle" style="visibility: hidden;">open</button>
+
+    <div class="modal bd-example-modal-lg" id="ModalDetalle" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="popDetalle" aria-hidden="true">
+        <asp:UpdatePanel ID="UpdatePanel_ModalDetalle" runat="server" UpdateMode="Conditional">
+            <ContentTemplate>
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h5 class="modal-title" runat="server" id="modalCantidadDetalleTitle"></h5>
+                            <p runat="server" id="Dia"></p>
+                        </div>
+                        <div class="modal-body">                            
+                            <div class="table-responsive">
+                                <asp:UpdatePanel ID="UpdatePanel_Detalle" runat="server" UpdateMode="Conditional">
+                                    <ContentTemplate>                                        
+                                        <asp:GridView ID="DGV_Detalle" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
+                                            AutoGenerateColumns="false" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
+                                            ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true"
+                                            >
+                                            <Columns>                                         
+                                                <asp:BoundField DataField="Fecha" SortExpression="Fecha" HeaderText="Día" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Left"></asp:BoundField>
+                                                <asp:BoundField DataField="DescripcionCategoria" SortExpression="DescripcionCategoria" HeaderText="Categoría" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Left"></asp:BoundField>
+                                                <asp:BoundField DataField="DescripcionProducto" SortExpression="DescripcionProducto" HeaderText="Nombre producto" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                <asp:BoundField DataField="Cantidad" SortExpression="Cantidad" HeaderText="Cantidad" ItemStyle-ForeColor="black" DataFormatString="{0:n0}" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
+                                                <asp:BoundField DataField="Monto" SortExpression="Monto" HeaderText="Monto" ItemStyle-ForeColor="black" DataFormatString="{0:n0}" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
+                                            </Columns>
+                                        </asp:GridView>
+                                    </ContentTemplate>
+                                </asp:UpdatePanel>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" style="text-align: right;">
+                                    <asp:Button ID="BTN_ImprimirDetalle" runat="server" UseSubmitBehavior="false" Text="Imprimir reporte" CssClass="btn btn-info" OnClientClick="activarloading();" OnClick="BTN_ImprimirReporteEmpaqueInsumo_Click"></asp:Button>
+                                </div>
                             </div>
                         </div>
                     </div>
