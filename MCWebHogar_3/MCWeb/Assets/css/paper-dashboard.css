@@ -10138,6 +10138,7 @@ body {
   font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
+  padding-right: 0px !important;
 }
 
 .main {
@@ -12058,7 +12059,7 @@ img {
 }
 
 .progress-bar {
-  background-color: #51cbce;
+  background-color: #fbc658;
 }
 
 .progress-bar-primary {

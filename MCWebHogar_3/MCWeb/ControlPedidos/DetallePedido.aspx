@@ -1,4 +1,4 @@
-﻿    <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DetallePedido.aspx.cs" MasterPageFile="~/MenuPrincipal.Master" Inherits="MCWebHogar.ControlPedidos.DetallePedido" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DetallePedido.aspx.cs" MasterPageFile="~/MenuPrincipal.Master" Inherits="MCWebHogar.ControlPedidos.DetallePedido" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajax" %>
 
@@ -534,6 +534,12 @@
                         <a href="Insumos.aspx">
                             <i class="fas fa-box"></i>
                             <p>Insumos</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../GestionProveedores/Proveedores.aspx">
+                            <i class="fas fa-cart-plus"></i>
+                            <p>Proveedores</p>
                         </a>
                     </li>
                 </ul>

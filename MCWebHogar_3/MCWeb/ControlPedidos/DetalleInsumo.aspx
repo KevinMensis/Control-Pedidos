@@ -483,6 +483,12 @@
                             <p>Insumos</p>
                         </a>
                     </li>
+                    <li>
+                        <a href="../GestionProveedores/Proveedores.aspx">
+                            <i class="fas fa-cart-plus"></i>
+                            <p>Proveedores</p>
+                        </a>
+                    </li>
                 </ul>
                 <hr style="width: 230px; color: #2c2c2c;" />
                 <h5 style="text-align: center;">Mantenimiento</h5>

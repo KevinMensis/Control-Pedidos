@@ -25,5 +25,6 @@ namespace CapaLogica.Entidades.ControlPedidos
         public int montoRecibido { get; set; }
         public int montoEmpaque { get; set; }
         public int montoInsumo { get; set; }
+        public decimal precioUnitario { get; set; }
     }
 }

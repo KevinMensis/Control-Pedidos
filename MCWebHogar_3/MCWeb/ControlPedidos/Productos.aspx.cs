@@ -388,7 +388,7 @@ namespace MCWebHogar.ControlPedidos
             }
         }
 
-        protected void BTN_DescargarProducto_OnClick(object sender, EventArgs e)        
+        protected void BTN_DescargarProducto_OnClick(object sender, EventArgs e)
         {
             Result = cargarProductosConsulta("CargarProductosReporte");
 
