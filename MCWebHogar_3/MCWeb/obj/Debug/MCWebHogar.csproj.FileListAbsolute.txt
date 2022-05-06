@@ -3,6 +3,7 @@ C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\bin
 C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\bin\MCWebHogar.pdb
 C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\bin\CapaDatos.dll
 C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\bin\CapaLogica.dll
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\bin\OpenPop.dll
 C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\bin\CapaDatos.pdb
 C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\bin\CapaLogica.pdb
 C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\obj\Debug\MCWebHogar.csprojResolveAssemblyReference.cache
