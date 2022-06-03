@@ -31,6 +31,24 @@ namespace MCWebHogar.GestionProveedores {
         protected global::System.Web.UI.WebControls.Label LBL_GenerandoInforme;
         
         /// <summary>
+        /// li_MiKFe control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl li_MiKFe;
+        
+        /// <summary>
+        /// li_Esteban control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl li_Esteban;
+        
+        /// <summary>
         /// LNK_CerrarSession control.
         /// </summary>
         /// <remarks>
@@ -38,6 +56,15 @@ namespace MCWebHogar.GestionProveedores {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton LNK_CerrarSession;
+        
+        /// <summary>
+        /// H1_Title control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl H1_Title;
         
         /// <summary>
         /// BTN_Sincronizar control.

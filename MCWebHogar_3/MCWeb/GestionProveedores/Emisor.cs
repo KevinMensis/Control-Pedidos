@@ -10,8 +10,10 @@ namespace MCWebHogar.ControlPedidos.Proveedores
     {
         public string nombre { get; set; }
         public string nombreComercial { get; set; }
+        public string nombreComercialReceptor { get; set; }
         public string tipoIdentificacion { get; set; }
         public string numeroIdentificacion { get; set; }
+        public string numeroIdentificacionReceptor { get; set; }
         public string provincia { get; set; }
         public string canton { get; set; }
         public string distrito { get; set; }
@@ -29,9 +31,11 @@ namespace MCWebHogar.ControlPedidos.Proveedores
             DT.DT1.Clear();
 
             DT.DT1.Rows.Add("@NumeroIdentificacion", this.numeroIdentificacion, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@NumeroIdentificacionReceptor", this.numeroIdentificacionReceptor, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@TipoIdentificacion", this.tipoIdentificacion, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@Nombre", this.nombre, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@NombreComercial", this.nombreComercial, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@NombreComercialReceptor", this.nombreComercialReceptor, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@CorreoEmisor", this.correoEmisor, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@Telefono", this.telefono, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@Provincia", this.provincia, SqlDbType.VarChar);

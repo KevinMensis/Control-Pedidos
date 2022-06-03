@@ -23,6 +23,7 @@ namespace MCWebHogar.ControlPedidos.Proveedores
         public DateTime fechaFactura { get; set; }
         public string claveFactura { get; set; }
         public string identificacionEmisor { get; set; }
+        public string identificacionReceptor { get; set; }
 
         CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
         DataTable Result = new DataTable();
@@ -47,7 +48,8 @@ namespace MCWebHogar.ControlPedidos.Proveedores
 
             DT.DT1.Rows.Add("@Fecha", this.fechaFactura, SqlDbType.DateTime);
             DT.DT1.Rows.Add("@ClaveFactura", this.claveFactura, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@CodigoEmisor", this.identificacionEmisor, SqlDbType.VarChar); 
+            DT.DT1.Rows.Add("@CodigoEmisor", this.identificacionEmisor, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@NumeroIdentificacionReceptor", this.identificacionReceptor, SqlDbType.VarChar); 
 
             DT.DT1.Rows.Add("@Usuario", "", SqlDbType.VarChar);
             DT.DT1.Rows.Add("@TipoSentencia", "Insertar", SqlDbType.VarChar);

@@ -42,6 +42,12 @@ namespace MCWebHogar.ControlPedidos
                 {
                     cargarUsuarios("");
                 }
+                else if (opcion.Contains("Identificacion"))
+                {
+                    string identificacion = opcion.Split(';')[1];
+                    Session["IdentificacionReceptor"] = identificacion;
+                    Response.Redirect("../GestionProveedores/Proveedores.aspx", true);
+                }
             }
         }
 

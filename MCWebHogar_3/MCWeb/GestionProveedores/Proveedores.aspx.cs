@@ -17,11 +17,24 @@ namespace MCWebHogar.GestionProveedores
     {
         CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
         DataTable Result = new DataTable();
+        string identificacionReceptor = "";
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            identificacionReceptor = Session["IdentificacionReceptor"].ToString().Trim();
+            
             if (!Page.IsPostBack)
             {
+                if (identificacionReceptor == "3101485961")
+                {
+                    li_MiKFe.Attributes.Add("class", "active");
+                    H1_Title.InnerText = "La Priedra Calisa SA - Proveedores";
+                }
+                else if (identificacionReceptor == "115210651")
+                {
+                    li_Esteban.Attributes.Add("class", "active");
+                    H1_Title.InnerText = "Panadería La Central - Proveedores";
+                }
                 if (Session["UserId"] == null)
                 {
                     Response.Redirect("../Default.aspx", true);
@@ -45,6 +58,12 @@ namespace MCWebHogar.GestionProveedores
                 if (opcion.Contains("TXT_Buscar"))
                 {
                     cargarEmisores("");
+                }
+                else if (opcion.Contains("Identificacion"))
+                {
+                    string identificacion = opcion.Split(';')[1];
+                    Session["IdentificacionReceptor"] = identificacion;
+                    Response.Redirect("../GestionProveedores/Proveedores.aspx", true);
                 }
             }
         }
@@ -105,6 +124,7 @@ namespace MCWebHogar.GestionProveedores
 
             //DT.DT1.Rows.Add("@CategoriasFiltro", categorias, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@NombreComercial", TXT_Buscar.Text, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@NumeroIdentificacionReceptor", identificacionReceptor, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@IDEmisor", HDF_IDEmisor.Value, SqlDbType.VarChar);
 
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
@@ -377,11 +397,11 @@ namespace MCWebHogar.GestionProveedores
 
             using (XLWorkbook wb = new XLWorkbook())
             {
-                wb.Worksheets.Add(Result, "Emisores");
+                wb.Worksheets.Add(Result, "Proveedores");
                 wb.Worksheets.Add(ResultUnidadesMedida, "UnidadesMedida");
-                wb.Worksheets.Add(ResultFacturas, "FacturasEmisor");
-                wb.Worksheets.Add(ResultProductos, "ProductosEmisor");
-                wb.Worksheets.Add(ResultHistorico, "HistoricoEmisor");
+                wb.Worksheets.Add(ResultFacturas, "FacturasProveedor");
+                wb.Worksheets.Add(ResultProductos, "ProductosProveedor");
+                wb.Worksheets.Add(ResultHistorico, "HistoricoProveedor");
 
                 Response.Clear();
                 Response.Buffer = true;
@@ -459,6 +479,7 @@ namespace MCWebHogar.GestionProveedores
 
             DT.DT1.Rows.Add("@FiltrarEmisor", 1, SqlDbType.Int);            
             DT.DT1.Rows.Add("@EmisoresFiltro", HDF_IDEmisor.Value, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@NumeroIdentificacionReceptor", identificacionReceptor, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@NumeroConsecutivoFactura", "", SqlDbType.VarChar);
 
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);

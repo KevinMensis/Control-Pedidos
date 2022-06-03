@@ -44,8 +44,16 @@
             document.getElementById('BTN_ModalVerProductos').click()
         }
 
+        function seleccionarReceptor(receptor) {
+            if (receptor === "MiKFe") {
+                __doPostBack('Identificacion;3101485961')
+            } else if (receptor === "Esteban") {
+                __doPostBack('Identificacion;115210651')
+            }
+        }
+
         function cargarFiltros() {
-            $(<%= LB_Emisores.ClientID %>).SumoSelect({ selectAll: true, placeholder: 'Emisor' })
+            $(<%= LB_Emisores.ClientID %>).SumoSelect({ selectAll: true, placeholder: 'Proveedor' })
         }
 
         $(document).ready(function () {
@@ -119,10 +127,16 @@
                             <p>Insumos</p>
                         </a>
                     </li>
-                    <li class="active">
-                        <a href="Proveedores.aspx">
+                    <li id="li_MiKFe" runat="server">
+                        <a href="#" onclick="seleccionarReceptor('MiKFe');">
                             <i class="fas fa-cart-plus"></i>
-                            <p>Proveedores</p>
+                            <p>Proveedores - Mi K Fe</p>
+                        </a>
+                    </li>
+                    <li id="li_Esteban" runat="server">
+                        <a href="#" onclick="seleccionarReceptor('Esteban');">
+                            <i class="fas fa-cart-plus"></i>
+                            <p>Proveedores - Esteban</p>
                         </a>
                     </li>
                 </ul>
@@ -159,10 +173,6 @@
                             <i class="fas fa-sign-out-alt"></i>
                             <p>Cerrar sessión</p>
                         </asp:LinkButton>
-                        <a href="https://mensis.cr/" target="_blank" style="margin-top: 0px !important;">
-                            <p style="margin-left: 29%; font-size: 7px;">Desarrollado por</p>
-                            <img style="width: 75%; display: block; margin-left: 10%;" src="https://mensis.cr/svg/logos/logoMensis.jpg" />
-                        </a>
                     </li>
                 </ul>
             </div>
@@ -173,7 +183,7 @@
                     <!-- Page Heading -->
                     <div class="row">
                         <div class="input-group no-border col-md-6" style="text-align: left; display: inline-block;">
-                            <h1 class="h3 mb-2 text-gray-800">Facturas</h1>
+                            <h1 class="h3 mb-2 text-gray-800" runat="server" id="H1_Title">Facturas</h1>
                         </div>
                         <div class="input-group no-border col-md-6" style="text-align: right; display: inline-block;">
                             <asp:LinkButton ID="BTN_Sincronizar" runat="server" CssClass="btn btn-secundary" OnClick="BTN_Sincronizar_Click" OnClientClick="activarloading();">
@@ -188,7 +198,7 @@
                                     <div class="row" style="height: 50px;">                            
                                         <div class="input-group no-border col-md-3" style="text-align:center; display: block;">
                                             <a href="Proveedores.aspx" class="btn btn-primary">
-                                                <i class="fas fa-cart-plus"></i> Emisores
+                                                <i class="fas fa-cart-plus"></i> Proveedores
                                             </a>
                                         </div>       
                                         <div class="input-group no-border col-md-3" style="text-align:center; display: block;">
@@ -253,7 +263,7 @@
                                                     </ItemTemplate>
                                                     <ItemStyle HorizontalAlign="Center" />
                                                 </asp:TemplateField>                                              
-                                                <asp:BoundField DataField="NombreComercial" SortExpression="NombreComercial" HeaderText="Emisor" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
+                                                <asp:BoundField DataField="NombreComercial" SortExpression="NombreComercial" HeaderText="Proveedor" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
                                                 <asp:BoundField DataField="NumeroConsecutivoFactura" SortExpression="NumeroConsecutivoFactura" HeaderText="Número factura" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                
                                                 <asp:BoundField DataField="FechaFactura" SortExpression="FechaFactura" HeaderText="Fecha factura" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="FechaSincronizacion" SortExpression="FechaSincronizacion" HeaderText="Fecha sincronizacion" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
@@ -292,7 +302,7 @@
                                     <asp:HiddenField ID="HDF_IDFactura" runat="server" Value="0" />
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <label for="TXT_NombreComercial">Nombre emisor:</label>
+                                            <label for="TXT_NombreComercial">Nombre proveedor:</label>
                                             <asp:TextBox ID="TXT_NombreComercial" runat="server" CssClass="form-control" Enabled="false"></asp:TextBox>
                                         </div>
                                         <div class="col-md-6">

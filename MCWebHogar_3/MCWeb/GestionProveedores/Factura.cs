@@ -11,6 +11,7 @@ namespace MCWebHogar.ControlPedidos.Proveedores
         public string claveFactura { get; set; }
         public string numeroConsecuetivoFactura { get; set; }
         public string identificacionEmisor { get; set; }
+        public string identificacionReceptor { get; set; }
         public DateTime fechaFactura { get; set; }
         public decimal totalGravado { get; set; }
         public decimal totalExento { get; set; }
@@ -29,6 +30,7 @@ namespace MCWebHogar.ControlPedidos.Proveedores
             DT.DT1.Clear();
 
             DT.DT1.Rows.Add("@ClaveFactura", this.claveFactura, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@NumeroIdentificacionReceptor", this.identificacionReceptor, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@NumeroConsecutivoFactura", this.numeroConsecuetivoFactura, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@CodigoEmisor", this.identificacionEmisor, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@FechaFactura", this.fechaFactura, SqlDbType.DateTime);

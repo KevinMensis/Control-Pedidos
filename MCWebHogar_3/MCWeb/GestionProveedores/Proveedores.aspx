@@ -5,7 +5,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Emisores</title>
+    <title>Proveedores</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <style>
         
@@ -176,6 +176,14 @@
             });
         }
 
+        function seleccionarReceptor(receptor) {
+            if (receptor === "MiKFe") {
+                __doPostBack('Identificacion;3101485961')
+            } else if (receptor === "Esteban") {
+                __doPostBack('Identificacion;115210651')
+            }
+        }
+
         function validarEditarEmisor() {
             return true
         }
@@ -258,10 +266,16 @@
                             <p>Insumos</p>
                         </a>
                     </li>
-                    <li class="active">
-                        <a href="Proveedores.aspx">
+                    <li id="li_MiKFe" runat="server">
+                        <a href="#" onclick="seleccionarReceptor('MiKFe');">
                             <i class="fas fa-cart-plus"></i>
-                            <p>Proveedores</p>
+                            <p>Proveedores - Mi K Fe</p>
+                        </a>
+                    </li>
+                    <li id="li_Esteban" runat="server">
+                        <a href="#" onclick="seleccionarReceptor('Esteban');">
+                            <i class="fas fa-cart-plus"></i>
+                            <p>Proveedores - Esteban</p>
                         </a>
                     </li>
                 </ul>
@@ -298,10 +312,6 @@
                             <i class="fas fa-sign-out-alt"></i>
                             <p>Cerrar sessión</p>
                         </asp:LinkButton>
-                        <a href="https://mensis.cr/" target="_blank" style="margin-top: 0px !important;">
-                            <p style="margin-left: 29%; font-size: 7px;">Desarrollado por</p>
-                            <img style="width: 75%; display: block; margin-left: 10%;" src="https://mensis.cr/svg/logos/logoMensis.jpg" />
-                        </a>
                     </li>
                 </ul>
             </div>
@@ -312,7 +322,7 @@
                     <!-- Page Heading -->
                     <div class="row">
                         <div class="input-group no-border col-md-6" style="text-align: left; display: inline-block;">
-                            <h1 class="h3 mb-2 text-gray-800">Emisores</h1>
+                            <h1 class="h3 mb-2 text-gray-800" runat="server" id="H1_Title">Proveedores</h1>
                         </div>
                         <div class="input-group no-border col-md-6" style="text-align: right; display: inline-block;">
                             <asp:LinkButton ID="BTN_Sincronizar" runat="server" CssClass="btn btn-secundary" OnClick="BTN_Sincronizar_Click" OnClientClick="activarloading();">
@@ -327,7 +337,7 @@
                                     <div class="row" style="height: 50px;">   
                                         <div class="input-group no-border col-md-3" style="text-align:center; display: block;">
                                             <a href="Proveedores.aspx" class="btn btn-info">
-                                                <i class="fas fa-cart-plus"></i> Emisores
+                                                <i class="fas fa-cart-plus"></i> Proveedores
                                             </a>
                                         </div>       
                                         <div class="input-group no-border col-md-3" style="text-align:center; display: block;">
@@ -356,7 +366,7 @@
                                         </div>
                                     </div>                                    
                                     <div class="input-group no-border col-md-6" style="text-align: right; display: inline-block;">
-                                        <asp:Button ID="BTN_DescargarEmisores" runat="server" UseSubmitBehavior="false" Text="Descargar emisores" CssClass="btn btn-info" OnClientClick="activarloading();desactivarloading();" OnClick="BTN_DescargarEmisores_OnClick" AutoPostBack="true"></asp:Button>
+                                        <asp:Button ID="BTN_DescargarEmisores" runat="server" UseSubmitBehavior="false" Text="Descargar proveedores" CssClass="btn btn-info" OnClientClick="activarloading();desactivarloading();" OnClick="BTN_DescargarEmisores_OnClick" AutoPostBack="true"></asp:Button>
                                     </div>
                                 </ContentTemplate>
                                 <Triggers>

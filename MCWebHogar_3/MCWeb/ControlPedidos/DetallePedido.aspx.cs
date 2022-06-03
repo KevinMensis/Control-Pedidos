@@ -89,6 +89,12 @@ namespace MCWebHogar.ControlPedidos
                     string script = "estilosElementosBloqueados();abrirModalSeleccionarImpresora();";
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDDL_Impresoras", script, true);
                 }
+                if (opcion.Contains("Identificacion"))
+                {
+                    string identificacion = opcion.Split(';')[1];
+                    Session["IdentificacionReceptor"] = identificacion;
+                    Response.Redirect("../GestionProveedores/Proveedores.aspx", true);
+                }
             }
         }
 

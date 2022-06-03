@@ -247,60 +247,63 @@
 
         function freezeFacturaHeader() {
             var GridId = "<%= DGV_ListaFacturas.ClientID %>";
+            var idEmisor = document.getElementById('<%= HDF_IDEmisor.ClientID %>').value
 
-            var idFactura = document.getElementById('<%= HDF_IDFactura.ClientID %>').value
+            if (idEmisor !== "0") {
+                var idFactura = document.getElementById('<%= HDF_IDFactura.ClientID %>').value
 
-            var ScrollHeight = 500;
-            if (idFactura != "0") {
-                ScrollHeight = 100;
-            }
-
-            var grid = document.getElementById(GridId);
-            var gridWidth = grid.offsetWidth;
-            var gridHeight = grid.offsetHeight;
-            var headerCellWidths = new Array();
-            for (var i = 0; i < grid.getElementsByTagName("TH").length; i++) {
-                headerCellWidths[i] = grid.getElementsByTagName("TH")[i].offsetWidth;
-            }
-            grid.parentNode.appendChild(document.createElement("div"));
-            var parentDiv = grid.parentNode;
-
-            var table = document.createElement("table");
-            for (i = 0; i < grid.attributes.length; i++) {
-                if (grid.attributes[i].specified && grid.attributes[i].name != "id") {
-                    table.setAttribute(grid.attributes[i].name, grid.attributes[i].value);
+                var ScrollHeight = 500;
+                if (idFactura != "0") {
+                    ScrollHeight = 100;
                 }
-            }
-            table.style.cssText = grid.style.cssText;
-            table.style.width = gridWidth + "px";
-            table.appendChild(document.createElement("tbody"));
-            table.getElementsByTagName("tbody")[0].appendChild(grid.getElementsByTagName("TR")[0]);
-            var cells = table.getElementsByTagName("TH");
 
-            var gridRow = grid.getElementsByTagName("TR")[0];
-            for (var i = 0; i < cells.length; i++) {
-                var width;
-                if (headerCellWidths[i] > gridRow.getElementsByTagName("TD")[i].offsetWidth) {
-                    width = headerCellWidths[i];
+                var grid = document.getElementById(GridId);
+                var gridWidth = grid.offsetWidth;
+                var gridHeight = grid.offsetHeight;
+                var headerCellWidths = new Array();
+                for (var i = 0; i < grid.getElementsByTagName("TH").length; i++) {
+                    headerCellWidths[i] = grid.getElementsByTagName("TH")[i].offsetWidth;
                 }
-                else {
-                    width = gridRow.getElementsByTagName("TD")[i].offsetWidth;
-                }
-                cells[i].style.width = parseInt(width - 3) + "px";
-                gridRow.getElementsByTagName("TD")[i].style.width = parseInt(width - 3) + "px";
-            }
-            parentDiv.removeChild(grid);
+                grid.parentNode.appendChild(document.createElement("div"));
+                var parentDiv = grid.parentNode;
 
-            var dummyHeader = document.createElement("div");
-            dummyHeader.appendChild(table);
-            parentDiv.appendChild(dummyHeader);
-            var scrollableDiv = document.createElement("div");
-            if (parseInt(gridHeight) > ScrollHeight) {
-                gridWidth = parseInt(gridWidth) + 12;
+                var table = document.createElement("table");
+                for (i = 0; i < grid.attributes.length; i++) {
+                    if (grid.attributes[i].specified && grid.attributes[i].name != "id") {
+                        table.setAttribute(grid.attributes[i].name, grid.attributes[i].value);
+                    }
+                }
+                table.style.cssText = grid.style.cssText;
+                table.style.width = gridWidth + "px";
+                table.appendChild(document.createElement("tbody"));
+                table.getElementsByTagName("tbody")[0].appendChild(grid.getElementsByTagName("TR")[0]);
+                var cells = table.getElementsByTagName("TH");
+
+                var gridRow = grid.getElementsByTagName("TR")[0];
+                for (var i = 0; i < cells.length; i++) {
+                    var width;
+                    if (headerCellWidths[i] > gridRow.getElementsByTagName("TD")[i].offsetWidth) {
+                        width = headerCellWidths[i];
+                    }
+                    else {
+                        width = gridRow.getElementsByTagName("TD")[i].offsetWidth;
+                    }
+                    cells[i].style.width = parseInt(width - 3) + "px";
+                    gridRow.getElementsByTagName("TD")[i].style.width = parseInt(width - 3) + "px";
+                }
+                parentDiv.removeChild(grid);
+
+                var dummyHeader = document.createElement("div");
+                dummyHeader.appendChild(table);
+                parentDiv.appendChild(dummyHeader);
+                var scrollableDiv = document.createElement("div");
+                if (parseInt(gridHeight) > ScrollHeight) {
+                    gridWidth = parseInt(gridWidth) + 12;
+                }
+                scrollableDiv.style.cssText = "overflow:auto;height:" + ScrollHeight + "px;width:" + gridWidth + "px";
+                scrollableDiv.appendChild(grid);
+                parentDiv.appendChild(scrollableDiv);
             }
-            scrollableDiv.style.cssText = "overflow:auto;height:" + ScrollHeight + "px;width:" + gridWidth + "px";
-            scrollableDiv.appendChild(grid);
-            parentDiv.appendChild(scrollableDiv);
         }
 
         function freezeProductoHeader() {
@@ -534,6 +537,14 @@
             parentDiv.appendChild(scrollableDiv);
         }
 
+        function seleccionarReceptor(receptor) {
+            if (receptor === "MiKFe") {
+                __doPostBack('Identificacion;3101485961')
+            } else if (receptor === "Esteban") {
+                __doPostBack('Identificacion;115210651')
+            }
+        }
+
         $(document).ready(function () {
         });
     </script>
@@ -608,10 +619,16 @@
                             <p>Insumos</p>
                         </a>
                     </li>
-                    <li class="active">
-                        <a href="Proveedores.aspx">
+                    <li id="li_MiKFe" runat="server">
+                        <a href="#" onclick="seleccionarReceptor('MiKFe');">
                             <i class="fas fa-cart-plus"></i>
-                            <p>Proveedores</p>
+                            <p>Proveedores - Mi K Fe</p>
+                        </a>
+                    </li>
+                    <li id="li_Esteban" runat="server">
+                        <a href="#" onclick="seleccionarReceptor('Esteban');">
+                            <i class="fas fa-cart-plus"></i>
+                            <p>Proveedores - Esteban</p>
                         </a>
                     </li>
                 </ul>
@@ -648,10 +665,6 @@
                             <i class="fas fa-sign-out-alt"></i>
                             <p>Cerrar sessión</p>
                         </asp:LinkButton>
-                        <a href="https://mensis.cr/" target="_blank" style="margin-top: 0px !important;">
-                            <p style="margin-left: 29%; font-size: 7px;">Desarrollado por</p>
-                            <img style="width: 75%; display: block; margin-left: 10%;" src="https://mensis.cr/svg/logos/logoMensis.jpg" />
-                        </a>
                     </li>
                 </ul>
             </div>
@@ -662,7 +675,7 @@
                     <!-- Page Heading -->
                     <div class="row">
                         <div class="input-group no-border col-md-6" style="text-align: left; display: inline-block;">
-                            <h1 class="h3 mb-2 text-gray-800">Reportes</h1>
+                            <h1 class="h3 mb-2 text-gray-800" runat="server" id="H1_Title">Reportes</h1>
                         </div>
                         <div class="input-group no-border col-md-6" style="text-align: right; display: inline-block;">
                             <asp:LinkButton ID="BTN_Sincronizar" runat="server" CssClass="btn btn-secundary" OnClick="BTN_Sincronizar_Click" OnClientClick="activarloading();">
@@ -680,7 +693,7 @@
                                     <div class="row" style="height: 50px;">
                                         <div class="input-group no-border col-md-3" style="text-align: center; display: block;">
                                             <a href="Proveedores.aspx" class="btn btn-primary">
-                                                <i class="fas fa-cart-plus"></i> Emisores
+                                                <i class="fas fa-cart-plus"></i> Proveedores
                                             </a>
                                         </div>
                                         <div class="input-group no-border col-md-3" style="text-align: center; display: block;">
@@ -724,7 +737,7 @@
                                 <div class="col-md-12">
                                     <div class="card" style="border: solid; border-color: #00BB2D;">
                                         <div class="card-header">
-                                            <h4 style="text-align: center;" class="card-title">Emisores </h4>
+                                            <h4 style="text-align: center;" class="card-title">Proveedores </h4>
                                         </div>
                                         <div class="card-body">
                                             <asp:UpdatePanel ID="UpdatePanel_EmisoresHead" runat="server" UpdateMode="Conditional">
@@ -790,7 +803,7 @@
                                                         <asp:GridView ID="DGV_ListaFacturas" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
                                                             AutoGenerateColumns="False" DataKeyNames="IDFactura,EmisorID,ClaveFactura,NumeroConsecutivoFactura,FechaFactura,FechaSincronizacion,NombreComercial,TotalVenta,TotalDescuento,TotalImpuesto,TotalComprobante"
                                                             HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None" ShowHeaderWhenEmpty="true" ShowFooter="true"
-                                                            EmptyDataText="No hay registros." AllowSorting="true"
+                                                            EmptyDataText="Seleccione un proveedor para visualizar sus facturas." AllowSorting="true"
                                                             OnSorting="DGV_ListaFacturas_Sorting"
                                                             OnRowDataBound="DGV_ListaFacturas_RowDataBound"
                                                             OnRowCommand="DGV_ListaFacturas_RowCommand">

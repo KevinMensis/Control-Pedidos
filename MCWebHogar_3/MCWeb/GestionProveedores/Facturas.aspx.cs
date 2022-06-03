@@ -16,11 +16,24 @@ namespace MCWebHogar.GestionProveedores
     {
         CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
         DataTable Result = new DataTable();
+        string identificacionReceptor = "";
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            identificacionReceptor = Session["IdentificacionReceptor"].ToString().Trim();
+
             if (!Page.IsPostBack)
             {
+                if (identificacionReceptor == "3101485961")
+                {
+                    li_MiKFe.Attributes.Add("class", "active");
+                    H1_Title.InnerText = "La Priedra Calisa SA - Facturas";
+                }
+                else if (identificacionReceptor == "115210651")
+                {
+                    li_Esteban.Attributes.Add("class", "active");
+                    H1_Title.InnerText = "Panadería La Central - Facturas";
+                }
                 if (Session["UserId"] == null)
                 {
                     Response.Redirect("../Default.aspx", true);
@@ -44,6 +57,12 @@ namespace MCWebHogar.GestionProveedores
                 {
                     cargarFacturas("");
                 }
+                else if (opcion.Contains("Identificacion"))
+                {
+                    string identificacion = opcion.Split(';')[1];
+                    Session["IdentificacionReceptor"] = identificacion;
+                    Response.Redirect("../GestionProveedores/Proveedores.aspx", true);
+                }
             }
         }
 
@@ -58,6 +77,7 @@ namespace MCWebHogar.GestionProveedores
         {
             DT.DT1.Clear();
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@NumeroIdentificacionReceptor", identificacionReceptor, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@TipoSentencia", "CargarEmisores", SqlDbType.VarChar);
 
             Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "GP01_0001");
@@ -158,6 +178,7 @@ namespace MCWebHogar.GestionProveedores
             #endregion
 
             DT.DT1.Rows.Add("@EmisoresFiltro", emisores, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@NumeroIdentificacionReceptor", identificacionReceptor, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@NumeroConsecutivoFactura", TXT_Buscar.Text, SqlDbType.VarChar);
 
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);

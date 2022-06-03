@@ -33,6 +33,16 @@ namespace MCWebHogar.ControlPedidos
                     ViewState["Ordenamiento"] = "ASC";
                 }
             }
+            else
+            {
+                string opcion = Page.Request.Params["__EVENTTARGET"];
+                if (opcion.Contains("Identificacion"))
+                {
+                    string identificacion = opcion.Split(';')[1];
+                    Session["IdentificacionReceptor"] = identificacion;
+                    Response.Redirect("../GestionProveedores/Proveedores.aspx", true);
+                }
+            }
         }
 
         #region General

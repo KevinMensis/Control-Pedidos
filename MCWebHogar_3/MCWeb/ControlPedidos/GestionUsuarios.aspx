@@ -54,6 +54,14 @@
             document.getElementById('BTN_ModalPermisosUsuario').click()
         }
 
+        function seleccionarReceptor(receptor) {
+            if (receptor === "MiKFe") {
+                __doPostBack('Identificacion;3101485961')
+            } else if (receptor === "Esteban") {
+                __doPostBack('Identificacion;115210651')
+            }
+        }
+
         function validarCrearUsuario() {
 
         }
@@ -134,9 +142,15 @@
                         </a>
                     </li>
                     <li>
-                        <a href="../GestionProveedores/Proveedores.aspx">
+                        <a href="#" onclick="seleccionarReceptor('MiKFe');">
                             <i class="fas fa-cart-plus"></i>
-                            <p>Proveedores</p>
+                            <p>Proveedores - Mi K Fe</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="seleccionarReceptor('Esteban');">
+                            <i class="fas fa-cart-plus"></i>
+                            <p>Proveedores - Esteban</p>
                         </a>
                     </li>
                 </ul>
@@ -173,10 +187,6 @@
                             <i class="fas fa-sign-out-alt"></i>
                             <p>Cerrar sessión</p>
                         </asp:LinkButton>
-                        <a href="https://mensis.cr/" target="_blank" style="margin-top: 0px !important;">
-                            <p style="margin-left: 29%; font-size: 7px;">Desarrollado por</p>
-                            <img style="width: 75%; display: block; margin-left: 10%;" src="https://mensis.cr/svg/logos/logoMensis.jpg" />
-                        </a>
                     </li>
                 </ul>
             </div>

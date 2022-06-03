@@ -146,6 +146,7 @@ namespace MCWebHogar.ControlPedidos.Proveedores
                 string fourthTag = "";
                 string claveFactura = "";
                 string codigoEmisor = "";
+                string identificacionReceptor = "";
                 DateTime fechaFactura = Convert.ToDateTime("1900-01-01");
 
                 // string[] files = Directory.GetFiles(Path.Combine(directoryName, @"Facturas"));
@@ -168,6 +169,7 @@ namespace MCWebHogar.ControlPedidos.Proveedores
                             fourthTag = "";
                             claveFactura = "";
                             codigoEmisor = "";
+                            identificacionReceptor = "";
                             fechaFactura = Convert.ToDateTime("1900-01-01");
 
                             bool stop = false;
@@ -260,6 +262,11 @@ namespace MCWebHogar.ControlPedidos.Proveedores
                                                 emisor.nombre = reader.ReadString();
                                                 secondTag = "";
                                             }
+                                            if (firstTag == "Receptor")
+                                            {
+                                                emisor.nombreComercialReceptor = reader.ReadString();
+                                                secondTag = "";
+                                            }
                                             break;
                                         case "Tipo":
                                             if (firstTag == "Emisor")
@@ -277,7 +284,9 @@ namespace MCWebHogar.ControlPedidos.Proveedores
                                             }
                                             else if (firstTag == "Receptor" && secondTag == "Identificacion")
                                             {
-                                                stop = reader.ReadString() != "3101485961";
+                                                emisor.numeroIdentificacionReceptor = reader.ReadString();
+                                                identificacionReceptor = emisor.numeroIdentificacionReceptor;
+                                                stop = emisor.numeroIdentificacionReceptor != "3101485961" && emisor.numeroIdentificacionReceptor != "115210651";
                                                 thirdTag = "";
                                             }
                                             break;
@@ -285,6 +294,11 @@ namespace MCWebHogar.ControlPedidos.Proveedores
                                             if (firstTag == "Emisor")
                                             {
                                                 emisor.nombreComercial = reader.ReadString();
+                                                secondTag = "";
+                                            }
+                                            if (firstTag == "Receptor")
+                                            {
+                                                emisor.nombreComercialReceptor = reader.ReadString();
                                                 secondTag = "";
                                             }
                                             break;
@@ -410,12 +424,13 @@ namespace MCWebHogar.ControlPedidos.Proveedores
                                         fourthTag = "";
                                     switch (reader.Name.ToString())
                                     {
-                                        case "Emisor":
+                                        case "Receptor":
                                             emisor.GuardarEmisor();
                                             emisor = new Emisor();
                                             break;
                                         case "ResumenFactura":
                                             factura.identificacionEmisor = codigoEmisor;
+                                            factura.identificacionReceptor = identificacionReceptor;
                                             factura.GuardarFactura();
                                             factura = new Factura();
                                             stop = true;
@@ -424,6 +439,7 @@ namespace MCWebHogar.ControlPedidos.Proveedores
                                             linea.fechaFactura = fechaFactura;
                                             linea.claveFactura = claveFactura;
                                             linea.identificacionEmisor = codigoEmisor;
+                                            linea.identificacionReceptor = identificacionReceptor;
                                             linea.GuardarLineaDetalle();
                                             linea = new LineaDetalle();
                                             break;
