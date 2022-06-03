@@ -62,6 +62,7 @@ namespace MCWebHogar.ControlPedidos.Proveedores
             int i = 0;
             try
             {
+                List<string> listaEmails = new Email().CargarEmails();
                 Pop3Client pop3Client;
 
                 pop3Client = new Pop3Client();
@@ -87,40 +88,54 @@ namespace MCWebHogar.ControlPedidos.Proveedores
                     }
                     
                     mail.MessageID = message.Headers.MessageId;
-                    int mailID = mail.GuardarEmail();
 
-                    List<MessagePart> attachmentList = message.FindAllAttachments();
-                    if (attachmentList.Count > 0)
-                    {
-                        if (mailID > 0)
+                    bool encontrado = false;
+                    
+                    foreach (string messageID in listaEmails) {
+                        if (mail.MessageID == messageID)
                         {
-                            for (int j = 0; j < attachmentList.Count; j++)
+                            encontrado = true;
+                            break;
+                        }
+                    }
+
+                    if (!encontrado)
+                    {
+                        int mailID = mail.GuardarEmail();
+
+                        List<MessagePart> attachmentList = message.FindAllAttachments();
+                        if (attachmentList.Count > 0)
+                        {
+                            if (mailID > 0)
                             {
-                                string FileName = attachmentList[j].FileName.Trim();
-                                Attachment attachment = new Attachment();
-                                attachment.MailID = mailID;
-                                attachment.FileName = FileName;
-
-                                try
+                                for (int j = 0; j < attachmentList.Count; j++)
                                 {
-                                    if (attachmentList[j] != null)
+                                    string FileName = attachmentList[j].FileName.Trim();
+                                    Attachment attachment = new Attachment();
+                                    attachment.MailID = mailID;
+                                    attachment.FileName = FileName;
+
+                                    try
                                     {
-                                        byte[] content = attachmentList[j].Body;
-
-                                        // Save file to server path  
-                                        string[] stringParts = FileName.Split(new char[] { '.' });
-                                        string strType = stringParts[1];
-
-                                        if (strType == "xml")
+                                        if (attachmentList[j] != null)
                                         {
-                                            string directoryName = HttpContext.Current.Server.MapPath("~");
-                                            File.WriteAllBytes(Path.Combine(directoryName, @"Facturas", FileName), attachmentList[j].Body);
-                                            attachment.GuardarAttachment();
+                                            byte[] content = attachmentList[j].Body;
+
+                                            // Save file to server path  
+                                            string[] stringParts = FileName.Split(new char[] { '.' });
+                                            string strType = stringParts[1];
+
+                                            if (strType == "xml")
+                                            {
+                                                string directoryName = HttpContext.Current.Server.MapPath("~");
+                                                File.WriteAllBytes(Path.Combine(directoryName, @"Facturas", FileName), attachmentList[j].Body);
+                                                attachment.GuardarAttachment();
+                                            }
                                         }
                                     }
-                                }
-                                catch (Exception ex)
-                                {                            
+                                    catch (Exception ex)
+                                    {
+                                    }
                                 }
                             }
                         }

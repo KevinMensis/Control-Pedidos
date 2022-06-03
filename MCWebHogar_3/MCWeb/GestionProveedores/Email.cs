@@ -16,6 +16,27 @@ namespace MCWebHogar.GestionProveedores
         CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
         DataTable Result = new DataTable();
 
+        public List<string> CargarEmails()
+        {
+            List<string> listaEmails = new List<string>();
+            DT.DT1.Clear();
+
+            DT.DT1.Rows.Add("@Usuario", "", SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "CargarEmail", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "GP00_Mail_0001");
+
+            if (Result != null && Result.Rows.Count > 0)
+            {
+                foreach (DataRow dr in Result.Rows)
+                {
+                    string messageID = dr["MessageID"].ToString().Trim();
+                    listaEmails.Add(messageID);
+                }
+            }
+            return listaEmails;
+        }
+
         public int GuardarEmail()
         {
             DT.DT1.Clear();
