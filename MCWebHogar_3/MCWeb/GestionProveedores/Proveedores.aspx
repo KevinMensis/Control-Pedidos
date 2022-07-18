@@ -176,6 +176,81 @@
             });
         }
 
+        function graficoCantidadFacturas(dias, datos) {
+            Highcharts.chart('containerCantidadFacturas', {
+                chart: {
+                    type: 'line'
+                },
+                title: {
+                    text: 'Cantidad de facturas'
+                },
+                yAxis: {
+                    title: {
+                        text: ''
+                    }
+                },
+                xAxis: {
+                    categories: dias
+                },
+                plotOptions: {
+                    series: {
+                        cursor: 'pointer',
+                        point: {
+                            events: {
+                                click: function () {
+                                    console.log('Fecha: ' + this.category);
+                                }
+                            }
+                        }
+                    },
+                    column: {
+                        dataLabels: {
+                            align: 'left',
+                            enabled: true,
+                            rotation: 270,
+                            x: 2,
+                            y: -10
+                        }
+                    }
+                },
+                series: [{
+                    name: '',
+                    data: datos
+                }]
+            });
+        }
+
+        function cargarGraficos(idUsuario, idEmisor) {
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "Proveedores.aspx/cargarGraficoFacturas",
+                data: JSON.stringify({
+                    "idUsuario": idUsuario,
+                    "idEmisor": idEmisor,
+                }),
+                dataType: "json",
+                success: function (Result) {
+                    listaDias = []
+                    listaCantidad = []
+                    var cantidad = 0
+
+                    for (var i in Result.d) {
+                        var dia = Result.d[i].dia
+                        cantidad = Result.d[i].cantidadFacturas
+
+                        listaDias.push(dia)
+                        listaCantidad.push(cantidad)
+                        
+                    }
+                    graficoCantidadFacturas(listaDias, listaCantidad)
+                },
+                error: function (Result) {
+                    alert("ERROR " + Result.status + ' ' + Result.statusText);
+                }
+            })
+        }
+
         function seleccionarReceptor(receptor) {
             if (receptor === "MiKFe") {
                 __doPostBack('Identificacion;3101485961')
@@ -357,14 +432,17 @@
                                         </div>    
                                     </div>
                                     <hr />                   
-                                    <div class="input-group no-border col-md-6">
+                                    <div class="input-group no-border col-md-4">
                                         <asp:TextBox class="form-control" ID="TXT_Buscar" runat="server" placeholder="Buscar..." OnTextChanged="FiltrarEmisores_OnClick" AutoPostBack="true"></asp:TextBox>
                                         <div class="input-group-append">
                                             <div class="input-group-text">
                                                 <i class="nc-icon nc-zoom-split"></i>
                                             </div>
                                         </div>
-                                    </div>                                    
+                                    </div> 
+                                    <div class="col-md-2">                                        
+                                        <asp:DropDownList class="form-control" style="font-size: 18px;" ID="DDL_Activo" runat="server" OnSelectedIndexChanged="FiltrarEmisores_OnClick" AutoPostBack="true"></asp:DropDownList>
+                                    </div>                                   
                                     <div class="input-group no-border col-md-6" style="text-align: right; display: inline-block;">
                                         <asp:Button ID="BTN_DescargarEmisores" runat="server" UseSubmitBehavior="false" Text="Descargar proveedores" CssClass="btn btn-info" OnClientClick="activarloading();desactivarloading();" OnClick="BTN_DescargarEmisores_OnClick" AutoPostBack="true"></asp:Button>
                                     </div>
@@ -541,6 +619,13 @@
                         <div class="modal-body">
                             <asp:UpdatePanel ID="UpdatePanel_ListaFacturas" runat="server" UpdateMode="Conditional">
                                 <ContentTemplate>
+                                    <div class="col-md-12">
+                                        <div class="card card-chart">
+                                            <figure class="highcharts-figure">
+                                                <div id="containerCantidadFacturas"></div>
+                                            </figure>
+                                        </div>
+                                    </div>
                                     <asp:GridView ID="DGV_ListaFacturas" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
                                         AutoGenerateColumns="False" DataKeyNames="IDFactura,ClaveFactura,NumeroConsecutivoFactura,FechaFactura,FechaSincronizacion,NombreComercial,TotalVenta,TotalDescuento,TotalImpuesto,TotalComprobante" 
                                         HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None" ShowHeaderWhenEmpty="true" 

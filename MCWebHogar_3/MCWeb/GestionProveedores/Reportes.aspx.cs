@@ -70,17 +70,7 @@ namespace MCWebHogar.GestionProveedores
             {
                 string opcion = Page.Request.Params["__EVENTTARGET"];
                 string argument = Page.Request.Params["__EVENTARGUMENT"];
-                if ((opcion.Contains("DGV_ListaEmisores") && argument.Contains("Select$")) ||
-                    (opcion.Contains("DGV_ListaFacturas") && argument.Contains("Select$")) ||
-                    (opcion.Contains("DGV_ListaProductos") && argument.Contains("Select$")) ||
-                    (opcion.Contains("DGV_ComprasMensualesCantidad") && argument.Contains("Select$")) ||
-                    (opcion.Contains("DGV_ComprasMensualesCostos") && argument.Contains("Select$")) ||
-                    (opcion.Contains("TXT_Buscar")) || (opcion.Contains("LB_Categorias")) || (opcion.Contains("DDL_TipoProducto")) ||
-                    (opcion.Contains("TXT_FechaDesde")) || (opcion.Contains("TXT_FechaHasta")))
-                {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargar", "activarloading();", true);
-                }
-                else if (opcion.Contains("Identificacion"))
+                if (opcion.Contains("Identificacion"))
                 {
                     string identificacion = opcion.Split(';')[1];
                     Session["IdentificacionReceptor"] = identificacion;
@@ -200,10 +190,11 @@ namespace MCWebHogar.GestionProveedores
             DT.DT1.Rows.Add("@DetalleProducto", TXT_BuscarProducto.Text, SqlDbType.VarChar);
             #endregion
 
-            DT.DT1.Rows.Add("@NumeroIdentificacionReceptor", identificacionReceptor, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@IDEmisor", HDF_IDEmisor.Value, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@IDFactura", HDF_IDFactura.Value, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@IDProducto", HDF_IDProducto.Value, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@NumeroIdentificacionReceptor", identificacionReceptor, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoProducto", DDL_TipoProducto.SelectedValue, SqlDbType.Int);
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
             DT.DT1.Rows.Add("@TipoSentencia", consulta, SqlDbType.VarChar);
 
@@ -310,53 +301,60 @@ namespace MCWebHogar.GestionProveedores
         #region Facturas
         private DataTable cargarFacturasConsulta(string consulta)
         {
-            DT.DT1.Clear();
-
-            #region Fechas
-            DateTime hoy = DateTime.Now;
-            string mes = hoy.Month < 10 ? "0" + Convert.ToString(hoy.Month) : Convert.ToString(hoy.Month);
-            string dia = hoy.Day < 10 ? "0" + Convert.ToString(hoy.Day) : Convert.ToString(hoy.Day);
-            string fechaDesde = "1900-01-01";
-            string fechaHasta = "1900-01-01";
-
-            try
+            if (HDF_IDEmisor.Value != "0")
             {
-                fechaDesde = Convert.ToDateTime(TXT_FechaDesde.Text).ToString();
+                DT.DT1.Clear();
+
+                #region Fechas
+                DateTime hoy = DateTime.Now;
+                string mes = hoy.Month < 10 ? "0" + Convert.ToString(hoy.Month) : Convert.ToString(hoy.Month);
+                string dia = hoy.Day < 10 ? "0" + Convert.ToString(hoy.Day) : Convert.ToString(hoy.Day);
+                string fechaDesde = "1900-01-01";
+                string fechaHasta = "1900-01-01";
+
+                try
+                {
+                    fechaDesde = Convert.ToDateTime(TXT_FechaDesde.Text).ToString();
+                }
+                catch (Exception e)
+                {
+                    fechaDesde = Convert.ToString(hoy.Year) + "-01-01";
+                }
+                try
+                {
+                    hoy = Convert.ToDateTime(TXT_FechaHasta.Text);
+                    mes = hoy.Month < 10 ? "0" + Convert.ToString(hoy.Month) : Convert.ToString(hoy.Month);
+                    dia = hoy.Day < 10 ? "0" + Convert.ToString(hoy.Day) : Convert.ToString(hoy.Day);
+                    fechaHasta = Convert.ToString(hoy.Year) + "-" + mes + "-" + dia;
+                }
+                catch (Exception e)
+                {
+                    fechaHasta = Convert.ToString(hoy.Year) + "-" + mes + "-" + dia;
+                }
+
+                DT.DT1.Rows.Add("@fechaDesde", fechaDesde, SqlDbType.Date);
+                DT.DT1.Rows.Add("@fechaHasta", fechaHasta + " 23:59:59", SqlDbType.DateTime);
+                #endregion
+
+                #region Busqueda
+                DT.DT1.Rows.Add("@NombreComercial", TXT_BuscarEmisor.Text, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@NumeroConsecutivoFactura", TXT_BuscarFactura.Text, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@DetalleProducto", TXT_BuscarProducto.Text, SqlDbType.VarChar);
+                #endregion
+
+                DT.DT1.Rows.Add("@EmisorID", HDF_IDEmisor.Value, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@NumeroIdentificacionReceptor", identificacionReceptor, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@IDFactura", HDF_IDFactura.Value, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@IDProducto", HDF_IDProducto.Value, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", consulta, SqlDbType.VarChar);
+
+                return CapaLogica.GestorDatos.Consultar(DT.DT1, "GP02_0001");
             }
-            catch (Exception e)
+            else
             {
-                fechaDesde = Convert.ToString(hoy.Year) + "-01-01";
+                return null;
             }
-            try
-            {
-                hoy = Convert.ToDateTime(TXT_FechaHasta.Text);
-                mes = hoy.Month < 10 ? "0" + Convert.ToString(hoy.Month) : Convert.ToString(hoy.Month);
-                dia = hoy.Day < 10 ? "0" + Convert.ToString(hoy.Day) : Convert.ToString(hoy.Day);
-                fechaHasta = Convert.ToString(hoy.Year) + "-" + mes + "-" + dia;
-            }
-            catch (Exception e)
-            {
-                fechaHasta = Convert.ToString(hoy.Year) + "-" + mes + "-" + dia;
-            }
-
-            DT.DT1.Rows.Add("@fechaDesde", fechaDesde, SqlDbType.Date);
-            DT.DT1.Rows.Add("@fechaHasta", fechaHasta + " 23:59:59", SqlDbType.DateTime);
-            #endregion
-
-            #region Busqueda
-            DT.DT1.Rows.Add("@NombreComercial", TXT_BuscarEmisor.Text, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@NumeroConsecutivoFactura", TXT_BuscarFactura.Text, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@DetalleProducto", TXT_BuscarProducto.Text, SqlDbType.VarChar);
-            #endregion
-
-            DT.DT1.Rows.Add("@EmisorID", HDF_IDEmisor.Value, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@NumeroIdentificacionReceptor", identificacionReceptor, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@IDFactura", HDF_IDFactura.Value, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@IDProducto", HDF_IDProducto.Value, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@TipoSentencia", consulta, SqlDbType.VarChar);
-
-            return CapaLogica.GestorDatos.Consultar(DT.DT1, "GP02_0001");
         }
 
         private void cargarFacturas()
@@ -472,7 +470,6 @@ namespace MCWebHogar.GestionProveedores
                 if (e.CommandName == "Select")
                 {
                     HDF_IDFactura.Value = HDF_IDFactura.Value != "0" ? "0" : idFactura.ToString();
-                    HDF_IDEmisor.Value = HDF_IDFactura.Value != "0" ? "0" : idEmisor.ToString();
                     HDF_IDProducto.Value = HDF_IDFactura.Value != "0" ? "0" : HDF_IDProducto.Value;
 
                     cargarEmisores();
@@ -488,86 +485,93 @@ namespace MCWebHogar.GestionProveedores
         #region Productos
         private DataTable cargarProductosConsulta(string consulta)
         {
-            DT.DT1.Clear();
+            if (HDF_IDEmisor.Value != "0")
+            {
+                DT.DT1.Clear();
 
-            #region Fechas
-            DateTime hoy = DateTime.Now;
-            string mes = hoy.Month < 10 ? "0" + Convert.ToString(hoy.Month) : Convert.ToString(hoy.Month);
-            string dia = hoy.Day < 10 ? "0" + Convert.ToString(hoy.Day) : Convert.ToString(hoy.Day);
-            string fechaDesde = "1900-01-01";
-            string fechaHasta = "1900-01-01";
+                #region Fechas
+                DateTime hoy = DateTime.Now;
+                string mes = hoy.Month < 10 ? "0" + Convert.ToString(hoy.Month) : Convert.ToString(hoy.Month);
+                string dia = hoy.Day < 10 ? "0" + Convert.ToString(hoy.Day) : Convert.ToString(hoy.Day);
+                string fechaDesde = "1900-01-01";
+                string fechaHasta = "1900-01-01";
 
-            try
-            {
-                fechaDesde = Convert.ToDateTime(TXT_FechaDesde.Text).ToString();
-            }
-            catch (Exception e)
-            {
-                fechaDesde = Convert.ToString(hoy.Year) + "-01-01";
-            }
-            try
-            {
-                hoy = Convert.ToDateTime(TXT_FechaHasta.Text);
-                mes = hoy.Month < 10 ? "0" + Convert.ToString(hoy.Month) : Convert.ToString(hoy.Month);
-                dia = hoy.Day < 10 ? "0" + Convert.ToString(hoy.Day) : Convert.ToString(hoy.Day);
-                fechaHasta = Convert.ToString(hoy.Year) + "-" + mes + "-" + dia;
-            }
-            catch (Exception e)
-            {
-                fechaHasta = Convert.ToString(hoy.Year) + "-" + mes + "-" + dia;
-            }
-
-            DT.DT1.Rows.Add("@fechaDesde", fechaDesde, SqlDbType.Date);
-            DT.DT1.Rows.Add("@fechaHasta", fechaHasta + " 23:59:59", SqlDbType.DateTime);
-            #endregion
-
-            #region Categorias
-            string categorias = "";
-            string categoriasText = "";
-            foreach (ListItem l in LB_Categorias.Items)
-            {
-                if (l.Selected)
+                try
                 {
-                    categorias += "'" + l.Value + "',";
-                    categoriasText += l.Text + ",";
+                    fechaDesde = Convert.ToDateTime(TXT_FechaDesde.Text).ToString();
                 }
-            }
-            categorias = categorias.TrimEnd(',');
-            categoriasText = categoriasText.TrimEnd(',');
-            if (categoriasText != "")
-            {
-                DT.DT1.Rows.Add("@FiltrarCategoria", 1, SqlDbType.Int);
-            }
-            #endregion
+                catch (Exception e)
+                {
+                    fechaDesde = Convert.ToString(hoy.Year) + "-01-01";
+                }
+                try
+                {
+                    hoy = Convert.ToDateTime(TXT_FechaHasta.Text);
+                    mes = hoy.Month < 10 ? "0" + Convert.ToString(hoy.Month) : Convert.ToString(hoy.Month);
+                    dia = hoy.Day < 10 ? "0" + Convert.ToString(hoy.Day) : Convert.ToString(hoy.Day);
+                    fechaHasta = Convert.ToString(hoy.Year) + "-" + mes + "-" + dia;
+                }
+                catch (Exception e)
+                {
+                    fechaHasta = Convert.ToString(hoy.Year) + "-" + mes + "-" + dia;
+                }
 
-            #region Tipo Producto
-            switch (DDL_TipoProducto.SelectedValue)
-            {
-                case "1":
-                    DT.DT1.Rows.Add("@EsMateriaPrima", 1, SqlDbType.Int);
-                    break;
-                case "2":
-                    DT.DT1.Rows.Add("@EsVenta", 1, SqlDbType.Int);
-                    break;
-            }
-            #endregion
+                DT.DT1.Rows.Add("@fechaDesde", fechaDesde, SqlDbType.Date);
+                DT.DT1.Rows.Add("@fechaHasta", fechaHasta + " 23:59:59", SqlDbType.DateTime);
+                #endregion
 
-            #region Busqueda
-            DT.DT1.Rows.Add("@NombreComercial", TXT_BuscarEmisor.Text, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@NumeroConsecutivoFactura", TXT_BuscarFactura.Text, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@DetalleProducto", TXT_BuscarProducto.Text, SqlDbType.VarChar);
-            #endregion
+                #region Categorias
+                string categorias = "";
+                string categoriasText = "";
+                foreach (ListItem l in LB_Categorias.Items)
+                {
+                    if (l.Selected)
+                    {
+                        categorias += "'" + l.Value + "',";
+                        categoriasText += l.Text + ",";
+                    }
+                }
+                categorias = categorias.TrimEnd(',');
+                categoriasText = categoriasText.TrimEnd(',');
+                if (categoriasText != "")
+                {
+                    DT.DT1.Rows.Add("@FiltrarCategoria", 1, SqlDbType.Int);
+                }
+                #endregion
 
-            DT.DT1.Rows.Add("@IDProducto", HDF_IDProducto.Value, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@EmisorID", HDF_IDEmisor.Value, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@NumeroIdentificacionReceptor", identificacionReceptor, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@FacturaID", HDF_IDFactura.Value, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@CategoriasFiltro", categorias, SqlDbType.VarChar);
+                #region Tipo Producto
+                switch (DDL_TipoProducto.SelectedValue)
+                {
+                    case "1":
+                        DT.DT1.Rows.Add("@EsMateriaPrima", 1, SqlDbType.Int);
+                        break;
+                    case "2":
+                        DT.DT1.Rows.Add("@EsVenta", 1, SqlDbType.Int);
+                        break;
+                }
+                #endregion
 
-            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@TipoSentencia", consulta, SqlDbType.VarChar);
+                #region Busqueda
+                DT.DT1.Rows.Add("@NombreComercial", TXT_BuscarEmisor.Text, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@NumeroConsecutivoFactura", TXT_BuscarFactura.Text, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@DetalleProducto", TXT_BuscarProducto.Text, SqlDbType.VarChar);
+                #endregion
+
+                DT.DT1.Rows.Add("@IDProducto", HDF_IDProducto.Value, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@EmisorID", HDF_IDEmisor.Value, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@NumeroIdentificacionReceptor", identificacionReceptor, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@FacturaID", HDF_IDFactura.Value, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@CategoriasFiltro", categorias, SqlDbType.VarChar);
+
+                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", consulta, SqlDbType.VarChar);
                                                     
-            return CapaLogica.GestorDatos.Consultar(DT.DT1, "GP03_0001");
+                return CapaLogica.GestorDatos.Consultar(DT.DT1, "GP03_0001");
+            }
+            else
+            {
+                return null;
+            }
         }
 
         private void cargarProductos()
@@ -653,7 +657,6 @@ namespace MCWebHogar.GestionProveedores
                 {
                     HDF_IDProducto.Value = HDF_IDProducto.Value != "0" ? "0" : idProducto.ToString();
                     HDF_IDFactura.Value = HDF_IDProducto.Value != "0" ? "0" : HDF_IDFactura.Value;
-                    HDF_IDEmisor.Value = HDF_IDProducto.Value != "0" ? "0" : HDF_IDEmisor.Value;
 
                     string usuario = Session["UserID"].ToString().Trim();
                     string cargar = "";
@@ -735,86 +738,93 @@ namespace MCWebHogar.GestionProveedores
         #region Histórico
         private DataTable cargarProductosDetalleConsulta(string consulta)
         {
-            DT.DT1.Clear();
+            if (HDF_IDEmisor.Value != "0")
+            {
+                DT.DT1.Clear();
 
-            #region Fechas
-            DateTime hoy = DateTime.Now;
-            string mes = hoy.Month < 10 ? "0" + Convert.ToString(hoy.Month) : Convert.ToString(hoy.Month);
-            string dia = hoy.Day < 10 ? "0" + Convert.ToString(hoy.Day) : Convert.ToString(hoy.Day);
-            string fechaDesde = "1900-01-01";
-            string fechaHasta = "1900-01-01";
+                #region Fechas
+                DateTime hoy = DateTime.Now;
+                string mes = hoy.Month < 10 ? "0" + Convert.ToString(hoy.Month) : Convert.ToString(hoy.Month);
+                string dia = hoy.Day < 10 ? "0" + Convert.ToString(hoy.Day) : Convert.ToString(hoy.Day);
+                string fechaDesde = "1900-01-01";
+                string fechaHasta = "1900-01-01";
 
-            try
-            {
-                fechaDesde = Convert.ToDateTime(TXT_FechaDesde.Text).ToString();
-            }
-            catch (Exception e)
-            {
-                fechaDesde = Convert.ToString(hoy.Year) + "-01-01";
-            }
-            try
-            {
-                hoy = Convert.ToDateTime(TXT_FechaHasta.Text);
-                mes = hoy.Month < 10 ? "0" + Convert.ToString(hoy.Month) : Convert.ToString(hoy.Month);
-                dia = hoy.Day < 10 ? "0" + Convert.ToString(hoy.Day) : Convert.ToString(hoy.Day);
-                fechaHasta = Convert.ToString(hoy.Year) + "-" + mes + "-" + dia;
-            }
-            catch (Exception e)
-            {
-                fechaHasta = Convert.ToString(hoy.Year) + "-" + mes + "-" + dia;
-            }
-
-            DT.DT1.Rows.Add("@fechaDesde", fechaDesde, SqlDbType.Date);
-            DT.DT1.Rows.Add("@fechaHasta", fechaHasta + " 23:59:59", SqlDbType.DateTime);
-            #endregion
-
-            #region Categorias
-            string categorias = "";
-            string categoriasText = "";
-            foreach (ListItem l in LB_Categorias.Items)
-            {
-                if (l.Selected)
+                try
                 {
-                    categorias += "'" + l.Value + "',";
-                    categoriasText += l.Text + ",";
+                    fechaDesde = Convert.ToDateTime(TXT_FechaDesde.Text).ToString();
                 }
+                catch (Exception e)
+                {
+                    fechaDesde = Convert.ToString(hoy.Year) + "-01-01";
+                }
+                try
+                {
+                    hoy = Convert.ToDateTime(TXT_FechaHasta.Text);
+                    mes = hoy.Month < 10 ? "0" + Convert.ToString(hoy.Month) : Convert.ToString(hoy.Month);
+                    dia = hoy.Day < 10 ? "0" + Convert.ToString(hoy.Day) : Convert.ToString(hoy.Day);
+                    fechaHasta = Convert.ToString(hoy.Year) + "-" + mes + "-" + dia;
+                }
+                catch (Exception e)
+                {
+                    fechaHasta = Convert.ToString(hoy.Year) + "-" + mes + "-" + dia;
+                }
+
+                DT.DT1.Rows.Add("@fechaDesde", fechaDesde, SqlDbType.Date);
+                DT.DT1.Rows.Add("@fechaHasta", fechaHasta + " 23:59:59", SqlDbType.DateTime);
+                #endregion
+
+                #region Categorias
+                string categorias = "";
+                string categoriasText = "";
+                foreach (ListItem l in LB_Categorias.Items)
+                {
+                    if (l.Selected)
+                    {
+                        categorias += "'" + l.Value + "',";
+                        categoriasText += l.Text + ",";
+                    }
+                }
+                categorias = categorias.TrimEnd(',');
+                categoriasText = categoriasText.TrimEnd(',');
+                if (categoriasText != "")
+                {
+                    DT.DT1.Rows.Add("@FiltrarCategoria", 1, SqlDbType.Int);
+                }
+                #endregion
+
+                #region Tipo Producto
+                switch (DDL_TipoProducto.SelectedValue)
+                {
+                    case "1":
+                        DT.DT1.Rows.Add("@EsMateriaPrima", 1, SqlDbType.Int);
+                        break;
+                    case "2":
+                        DT.DT1.Rows.Add("@EsVenta", 1, SqlDbType.Int);
+                        break;
+                }
+                #endregion
+
+                #region Busqueda
+                DT.DT1.Rows.Add("@NombreComercial", TXT_BuscarEmisor.Text, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@NumeroConsecutivoFactura", TXT_BuscarFactura.Text, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@DetalleProducto", TXT_BuscarProducto.Text, SqlDbType.VarChar);
+                #endregion
+
+                DT.DT1.Rows.Add("@ProductoID", HDF_IDProducto.Value, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@EmisorID", HDF_IDEmisor.Value, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@NumeroIdentificacionReceptor", identificacionReceptor, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@FacturaID", HDF_IDFactura.Value, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@CategoriasFiltro", categorias, SqlDbType.VarChar);
+
+                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", consulta, SqlDbType.VarChar);
+
+                return CapaLogica.GestorDatos.Consultar(DT.DT1, "GP04_0001");
             }
-            categorias = categorias.TrimEnd(',');
-            categoriasText = categoriasText.TrimEnd(',');
-            if (categoriasText != "")
+            else
             {
-                DT.DT1.Rows.Add("@FiltrarCategoria", 1, SqlDbType.Int);
+                return null;
             }
-            #endregion
-
-            #region Tipo Producto
-            switch (DDL_TipoProducto.SelectedValue)
-            {
-                case "1":
-                    DT.DT1.Rows.Add("@EsMateriaPrima", 1, SqlDbType.Int);
-                    break;
-                case "2":
-                    DT.DT1.Rows.Add("@EsVenta", 1, SqlDbType.Int);
-                    break;
-            }
-            #endregion
-
-            #region Busqueda
-            DT.DT1.Rows.Add("@NombreComercial", TXT_BuscarEmisor.Text, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@NumeroConsecutivoFactura", TXT_BuscarFactura.Text, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@DetalleProducto", TXT_BuscarProducto.Text, SqlDbType.VarChar);
-            #endregion
-
-            DT.DT1.Rows.Add("@ProductoID", HDF_IDProducto.Value, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@EmisorID", HDF_IDEmisor.Value, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@NumeroIdentificacionReceptor", identificacionReceptor, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@FacturaID", HDF_IDFactura.Value, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@CategoriasFiltro", categorias, SqlDbType.VarChar);
-
-            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@TipoSentencia", consulta, SqlDbType.VarChar);
-
-            return CapaLogica.GestorDatos.Consultar(DT.DT1, "GP04_0001");
         }
 
         private void cargarProductosDetalle(string ejecutar)
@@ -884,86 +894,97 @@ namespace MCWebHogar.GestionProveedores
         #region ComprasMensuales
         private DataTable cargarComprasMensualesConsulta(string consulta)
         {
-            DT.DT1.Clear();
+            if (HDF_IDEmisor.Value != "0")
+            {
+                BTN_ImprimirComprasMensuales.Visible = true;
+                UpdatePanel_ComprasMensualesHeader.Update();
+                DT.DT1.Clear();
 
-            #region Fechas
-            DateTime hoy = DateTime.Now;
-            string mes = hoy.Month < 10 ? "0" + Convert.ToString(hoy.Month) : Convert.ToString(hoy.Month);
-            string dia = hoy.Day < 10 ? "0" + Convert.ToString(hoy.Day) : Convert.ToString(hoy.Day);
-            string fechaDesde = "1900-01-01";
-            string fechaHasta = "1900-01-01";
+                #region Fechas
+                DateTime hoy = DateTime.Now;
+                string mes = hoy.Month < 10 ? "0" + Convert.ToString(hoy.Month) : Convert.ToString(hoy.Month);
+                string dia = hoy.Day < 10 ? "0" + Convert.ToString(hoy.Day) : Convert.ToString(hoy.Day);
+                string fechaDesde = "1900-01-01";
+                string fechaHasta = "1900-01-01";
 
-            try
-            {
-                fechaDesde = Convert.ToDateTime(TXT_FechaDesde.Text).ToString();
-            }
-            catch (Exception e)
-            {
-                fechaDesde = Convert.ToString(hoy.Year) + "-01-01";
-            }
-            try
-            {
-                hoy = Convert.ToDateTime(TXT_FechaHasta.Text);
-                mes = hoy.Month < 10 ? "0" + Convert.ToString(hoy.Month) : Convert.ToString(hoy.Month);
-                dia = hoy.Day < 10 ? "0" + Convert.ToString(hoy.Day) : Convert.ToString(hoy.Day);
-                fechaHasta = Convert.ToString(hoy.Year) + "-" + mes + "-" + dia;
-            }
-            catch (Exception e)
-            {
-                fechaHasta = Convert.ToString(hoy.Year) + "-" + mes + "-" + dia;
-            }
-
-            DT.DT1.Rows.Add("@fechaDesde", fechaDesde, SqlDbType.Date);
-            DT.DT1.Rows.Add("@fechaHasta", fechaHasta + " 23:59:59", SqlDbType.DateTime);
-            #endregion
-
-            #region Categorias
-            string categorias = "";
-            string categoriasText = "";
-            foreach (ListItem l in LB_Categorias.Items)
-            {
-                if (l.Selected)
+                try
                 {
-                    categorias += "'" + l.Value + "',";
-                    categoriasText += l.Text + ",";
+                    fechaDesde = Convert.ToDateTime(TXT_FechaDesde.Text).ToString();
                 }
+                catch (Exception e)
+                {
+                    fechaDesde = Convert.ToString(hoy.Year) + "-01-01";
+                }
+                try
+                {
+                    hoy = Convert.ToDateTime(TXT_FechaHasta.Text);
+                    mes = hoy.Month < 10 ? "0" + Convert.ToString(hoy.Month) : Convert.ToString(hoy.Month);
+                    dia = hoy.Day < 10 ? "0" + Convert.ToString(hoy.Day) : Convert.ToString(hoy.Day);
+                    fechaHasta = Convert.ToString(hoy.Year) + "-" + mes + "-" + dia;
+                }
+                catch (Exception e)
+                {
+                    fechaHasta = Convert.ToString(hoy.Year) + "-" + mes + "-" + dia;
+                }
+
+                DT.DT1.Rows.Add("@fechaDesde", fechaDesde, SqlDbType.Date);
+                DT.DT1.Rows.Add("@fechaHasta", fechaHasta + " 23:59:59", SqlDbType.DateTime);
+                #endregion
+
+                #region Categorias
+                string categorias = "";
+                string categoriasText = "";
+                foreach (ListItem l in LB_Categorias.Items)
+                {
+                    if (l.Selected)
+                    {
+                        categorias += "'" + l.Value + "',";
+                        categoriasText += l.Text + ",";
+                    }
+                }
+                categorias = categorias.TrimEnd(',');
+                categoriasText = categoriasText.TrimEnd(',');
+                if (categoriasText != "")
+                {
+                    DT.DT1.Rows.Add("@FiltrarCategoria", 1, SqlDbType.Int);
+                }
+                #endregion
+
+                #region Tipo Producto
+                switch (DDL_TipoProducto.SelectedValue)
+                {
+                    case "1":
+                        DT.DT1.Rows.Add("@EsMateriaPrima", 1, SqlDbType.Int);
+                        break;
+                    case "2":
+                        DT.DT1.Rows.Add("@EsVenta", 1, SqlDbType.Int);
+                        break;
+                }
+                #endregion
+
+                #region Busqueda
+                DT.DT1.Rows.Add("@NombreComercial", TXT_BuscarEmisor.Text, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@NumeroConsecutivoFactura", TXT_BuscarFactura.Text, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@DetalleProducto", TXT_BuscarProducto.Text, SqlDbType.VarChar);
+                #endregion
+
+                DT.DT1.Rows.Add("@ProductoID", HDF_IDProducto.Value, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@EmisorID", HDF_IDEmisor.Value, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@NumeroIdentificacionReceptor", identificacionReceptor, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@FacturaID", HDF_IDFactura.Value, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@CategoriasFiltro", categorias, SqlDbType.VarChar);
+
+                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", consulta, SqlDbType.VarChar);
+
+                return CapaLogica.GestorDatos.Consultar(DT.DT1, "GP04_0001");
             }
-            categorias = categorias.TrimEnd(',');
-            categoriasText = categoriasText.TrimEnd(',');
-            if (categoriasText != "")
+            else
             {
-                DT.DT1.Rows.Add("@FiltrarCategoria", 1, SqlDbType.Int);
+                BTN_ImprimirComprasMensuales.Visible = false;
+                UpdatePanel_ComprasMensualesHeader.Update();
+                return null;
             }
-            #endregion
-
-            #region Tipo Producto
-            switch (DDL_TipoProducto.SelectedValue)
-            {
-                case "1":
-                    DT.DT1.Rows.Add("@EsMateriaPrima", 1, SqlDbType.Int);
-                    break;
-                case "2":
-                    DT.DT1.Rows.Add("@EsVenta", 1, SqlDbType.Int);
-                    break;
-            }
-            #endregion
-
-            #region Busqueda
-            DT.DT1.Rows.Add("@NombreComercial", TXT_BuscarEmisor.Text, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@NumeroConsecutivoFactura", TXT_BuscarFactura.Text, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@DetalleProducto", TXT_BuscarProducto.Text, SqlDbType.VarChar);
-            #endregion
-
-            DT.DT1.Rows.Add("@ProductoID", HDF_IDProducto.Value, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@EmisorID", HDF_IDEmisor.Value, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@NumeroIdentificacionReceptor", identificacionReceptor, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@FacturaID", HDF_IDFactura.Value, SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@CategoriasFiltro", categorias, SqlDbType.VarChar);
-
-            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
-            DT.DT1.Rows.Add("@TipoSentencia", consulta, SqlDbType.VarChar);
-
-            return CapaLogica.GestorDatos.Consultar(DT.DT1, "GP04_0001");
         }
 
         private void cargarComprasMensuales()
@@ -1025,9 +1046,9 @@ namespace MCWebHogar.GestionProveedores
             }
             else
             {
-                DGV_ComprasMensualesCostos.DataSource = Result;
-                DGV_ComprasMensualesCostos.DataBind();
-                UpdatePanel_ComprasMensualesCostos.Update();
+                DGV_ComprasMensualesCantidad.DataSource = Result;
+                DGV_ComprasMensualesCantidad.DataBind();
+                UpdatePanel_ComprasMensualesCantidad.Update();
 
                 DGV_ComprasMensualesCostos.DataSource = Result;
                 DGV_ComprasMensualesCostos.DataBind();
@@ -1068,7 +1089,6 @@ namespace MCWebHogar.GestionProveedores
                 {
                     HDF_IDProducto.Value = HDF_IDProducto.Value != "0" ? "0" : idProducto.ToString();
                     HDF_IDFactura.Value = HDF_IDProducto.Value != "0" ? "0" : HDF_IDFactura.Value;
-                    HDF_IDEmisor.Value = HDF_IDProducto.Value != "0" ? "0" : HDF_IDEmisor.Value;
                         
                     cargarEmisores();
                     cargarFacturas();
@@ -1090,7 +1110,6 @@ namespace MCWebHogar.GestionProveedores
                 {
                     HDF_IDProducto.Value = HDF_IDProducto.Value != "0" ? "0" : idProducto.ToString();
                     HDF_IDFactura.Value = HDF_IDProducto.Value != "0" ? "0" : HDF_IDFactura.Value;
-                    HDF_IDEmisor.Value = HDF_IDProducto.Value != "0" ? "0" : HDF_IDEmisor.Value;
 
                     cargarEmisores();
                     cargarFacturas();
@@ -1098,6 +1117,87 @@ namespace MCWebHogar.GestionProveedores
                     cargarComprasMensuales();
                     cargarProductosDetalle("freezeEmisorHeader();freezeFacturaHeader();freezeProductoHeader();freezeProductoDetalleHeader();freezeComprasMensualesCantidadHeader();freezeComprasMensualesCostosHeader();");
                 }
+            }
+        }
+
+        protected void BTN_ImprimirComprasMensuales_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                MCWebHogar.DataSets.DSSolicitud dsReportecompras = new MCWebHogar.DataSets.DSSolicitud();
+
+                Result = cargarComprasMensualesConsulta("ImprimirReporteProductoMensual");
+                if (Result.Rows.Count == 0)
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerControlScript", "alertifywarning('No hay datos para mostrar');desactivarloading();", true);
+                    return;
+                }
+                dsReportecompras.Tables["DT_DetalleCompras"].Merge(Result, true, MissingSchemaAction.Ignore);
+
+                DataTable DT_Encabezado = new DataTable();
+
+                DT_Encabezado.Columns.Add("Codigo");
+                DT_Encabezado.Columns.Add("Descripcion");
+                DT_Encabezado.Columns.Add("Procedure");
+                DT_Encabezado.Columns.Add("rpt");
+                DT_Encabezado.Columns.Add("DataSet");
+                DT_Encabezado.Columns.Add("DTName");
+
+                DT_Encabezado.TableName = "Encabezado";
+                DT_Encabezado.Rows.Add("01", "Datos Encabezado", "EE_Reports", "MCWebHogar.rptCompras.rdlc", "DT_DetalleCompras", "DT_DetalleCompras");
+
+                Microsoft.Reporting.WebForms.ReportViewer ReportViewer1 = new Microsoft.Reporting.WebForms.ReportViewer();
+
+                ReportViewer1.LocalReport.EnableExternalImages = true;
+                ReportViewer1.LocalReport.DataSources.Clear();
+
+                string report = "";
+                foreach (DataRow dr in DT_Encabezado.Rows)
+                {
+                    FileStream fsReporte = null;
+                    string nombre = dr["rpt"].ToString().Trim().Replace(".rdlc", "").Replace("MCWebHogar.", "");
+                    ReportViewer1.ProcessingMode = Microsoft.Reporting.WebForms.ProcessingMode.Local;
+
+                    fsReporte = new FileStream(Server.MapPath(@"..\" + nombre + ".rdlc"), FileMode.Open, FileAccess.Read);
+
+                    ReportViewer1.LocalReport.LoadReportDefinition(fsReporte);
+
+                    ReportViewer1.LocalReport.ReportPath = Server.MapPath(String.Format("{0}.rdlc", @"..\" + nombre));
+
+                    report = dr["DTName"].ToString().Trim();
+                    foreach (DataTable dt in dsReportecompras.Tables)
+                    {
+                        if (dt.Rows.Count > 0 && dt.TableName.Trim() == report)
+                        {
+                            ReportViewer1.LocalReport.DataSources.Add(new Microsoft.Reporting.WebForms.ReportDataSource(dr["DataSet"].ToString().Trim(), (DataTable)dt));
+                        }
+                    }
+                }
+
+                ReportViewer1.LocalReport.EnableExternalImages = true;
+                ReportViewer1.LocalReport.EnableHyperlinks = true;
+
+                Microsoft.Reporting.WebForms.Warning[] warnings;
+                string[] streamIds;
+                string mimeType = String.Empty;
+                string encoding = String.Empty;
+                string extension = string.Empty;
+                byte[] bytes2 = ReportViewer1.LocalReport.Render("PDF", null, out mimeType, out encoding, out extension, out streamIds, out warnings);
+                //Generamos archivo en el servidor
+                string strCurrentDir2 = Server.MapPath(".") + "\\ReportesTemp\\";
+                string strFilePDF2 = "ReporteCompras.pdf";
+                string strFilePathPDF2 = strCurrentDir2 + strFilePDF2;
+                using (FileStream fs = new FileStream(strFilePathPDF2, FileMode.Create))
+                {
+                    fs.Write(bytes2, 0, bytes2.Length);
+                }
+                string direccion = "/GestionProveedores/ReportesTemp/" + strFilePDF2;
+                string _open = "window.open('" + direccion + "'  , '_blank');desactivarloading();";
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerControlScript", _open, true);
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
         #endregion

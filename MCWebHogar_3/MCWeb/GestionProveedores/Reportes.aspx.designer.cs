@@ -256,6 +256,24 @@ namespace MCWebHogar.GestionProveedores {
         protected global::System.Web.UI.WebControls.GridView DGV_ListaProductos;
         
         /// <summary>
+        /// UpdatePanel_ComprasMensualesHeader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_ComprasMensualesHeader;
+        
+        /// <summary>
+        /// BTN_ImprimirComprasMensuales control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_ImprimirComprasMensuales;
+        
+        /// <summary>
         /// UpdatePanel_ComprasMensualesCantidad control.
         /// </summary>
         /// <remarks>

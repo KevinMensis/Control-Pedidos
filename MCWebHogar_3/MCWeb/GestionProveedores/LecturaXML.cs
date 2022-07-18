@@ -67,7 +67,7 @@ namespace MCWebHogar.ControlPedidos.Proveedores
 
                 pop3Client = new Pop3Client();
                 pop3Client.Connect("pop.gmail.com", 995, true);
-                pop3Client.Authenticate("recent:facturas.mikfe@gmail.com", "facturas2022");
+                pop3Client.Authenticate("recent:facturas.mikfe@gmail.com", "lthwhslisnuixitj");
                 // pop3Client.Authenticate("recent:facturacion.mikfecr@gmail.com", "facturas2022");                
                 
                 int count = pop3Client.GetMessageCount();
@@ -110,7 +110,7 @@ namespace MCWebHogar.ControlPedidos.Proveedores
                             {
                                 for (int j = 0; j < attachmentList.Count; j++)
                                 {
-                                    string FileName = attachmentList[j].FileName.Trim();
+                                    string FileName = attachmentList[j].FileName.Replace('/', ' ').Trim();
                                     Attachment attachment = new Attachment();
                                     attachment.MailID = mailID;
                                     attachment.FileName = FileName;
@@ -123,7 +123,7 @@ namespace MCWebHogar.ControlPedidos.Proveedores
 
                                             // Save file to server path  
                                             string[] stringParts = FileName.Split(new char[] { '.' });
-                                            string strType = stringParts[1];
+                                            string strType = stringParts[stringParts.Length - 1];
 
                                             if (strType == "xml")
                                             {

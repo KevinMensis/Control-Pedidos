@@ -890,7 +890,7 @@
                                                     <ContentTemplate>
                                                         <asp:GridView ID="DGV_ListaProductos" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
                                                             AutoGenerateColumns="False" DataKeyNames="IDProducto,PrecioUnitario,PorcentajeImpuesto,FacturaID" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
-                                                            ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true"
+                                                            ShowHeaderWhenEmpty="true" EmptyDataText="Seleccione un proveedor para visualizar sus productos." AllowSorting="true"
                                                             OnSorting="DGV_ListaProductos_Sorting"
                                                             OnRowDataBound="DGV_ListaProductos_RowDataBound"
                                                             OnRowCommand="DGV_ListaProductos_RowCommand">
@@ -918,16 +918,27 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="card" style="border: solid; border-color: #51bcda">
-                                        <div class="card-header">
-                                            <h4 style="text-align: center;" class="card-title">Compras mensuales cantidad </h4>
-                                        </div>
+                                        <asp:UpdatePanel ID="UpdatePanel_ComprasMensualesHeader" runat="server" UpdateMode="Conditional">
+                                            <ContentTemplate>
+                                                <div class="card-header">
+                                                    <div class="form-row">
+                                                        <div class="col-md-9">
+                                                            <h4 style="text-align: center;" class="card-title">Compras mensuales cantidad </h4>
+                                                        </div>
+                                                        <div class="col-md-3" style="text-align: right;">
+                                                            <asp:Button ID="BTN_ImprimirComprasMensuales" runat="server" UseSubmitBehavior="false" Text="Imprimir" CssClass="btn btn-info" OnClientClick="activarloading();" OnClick="BTN_ImprimirComprasMensuales_Click" Visible="false"></asp:Button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ContentTemplate>
+                                        </asp:UpdatePanel>
                                         <div class="card-body">
                                             <div class="table">
                                                 <asp:UpdatePanel ID="UpdatePanel_ComprasMensualesCantidad" runat="server" UpdateMode="Conditional">
                                                     <ContentTemplate>
                                                         <asp:GridView ID="DGV_ComprasMensualesCantidad" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
                                                             AutoGenerateColumns="False" DataKeyNames="ProductoID" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
-                                                            ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true"
+                                                            ShowHeaderWhenEmpty="true" EmptyDataText="Seleccione un proveedor para visualizar sus productos." AllowSorting="true"
                                                             OnRowDataBound="DGV_ComprasMensualesCantidad_RowDataBound"
                                                             OnRowCommand="DGV_ComprasMensualesCantidad_RowCommand">
                                                         </asp:GridView>
@@ -950,7 +961,7 @@
                                                     <ContentTemplate>
                                                         <asp:GridView ID="DGV_ComprasMensualesCostos" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
                                                             AutoGenerateColumns="false" DataKeyNames="ProductoID" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
-                                                            ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true"
+                                                            ShowHeaderWhenEmpty="true" EmptyDataText="Seleccione un proveedor para visualizar sus productos." AllowSorting="true"
                                                             OnRowDataBound="DGV_ComprasMensualesCostos_RowDataBound"
                                                             OnRowCommand="DGV_ComprasMensualesCostos_RowCommand">
                                                         </asp:GridView>

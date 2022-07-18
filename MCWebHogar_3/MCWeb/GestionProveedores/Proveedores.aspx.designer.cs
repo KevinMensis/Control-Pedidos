@@ -103,6 +103,15 @@ namespace MCWebHogar.GestionProveedores {
         protected global::System.Web.UI.WebControls.TextBox TXT_Buscar;
         
         /// <summary>
+        /// DDL_Activo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DDL_Activo;
+        
+        /// <summary>
         /// BTN_DescargarEmisores control.
         /// </summary>
         /// <remarks>

@@ -1,4 +1,5 @@
-﻿using ClosedXML.Excel;
+﻿using CapaLogica.Entidades.ControlPedidos;
+using ClosedXML.Excel;
 using MCWebHogar.ControlPedidos;
 using MCWebHogar.ControlPedidos.Proveedores;
 using System;
@@ -46,6 +47,7 @@ namespace MCWebHogar.GestionProveedores
                 }
                 else
                 {
+                    cargarFiltros();
                     cargarEmisores("");
                     HDF_IDUsuario.Value = Session["Usuario"].ToString();
                     ViewState["Ordenamiento"] = "ASC";
@@ -86,6 +88,26 @@ namespace MCWebHogar.GestionProveedores
             string script = "desactivarloading();alertifysuccess('Sincronizacion completada');";
             ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_Sincronizar_Click", script, true);
         }
+
+        private void cargarFiltros()
+        {
+            DataTable dt = new DataTable();
+            dt.Clear();
+            dt.Columns.Add("Value");
+            dt.Columns.Add("Text");
+
+            dt.Rows.Add(2, "Estado -Todos-");
+            dt.Rows.Add(1, "Activos");
+            dt.Rows.Add(0, "Desactivos");
+
+            DDL_Activo.DataSource = dt;
+            DDL_Activo.DataTextField = "Text";
+            DDL_Activo.DataValueField = "Value";
+            DDL_Activo.DataBind();
+
+            UpdatePanel_FiltrosEmisores.Update();
+        }
+
         #endregion 
       
         #region Emisores
@@ -125,6 +147,7 @@ namespace MCWebHogar.GestionProveedores
             //DT.DT1.Rows.Add("@CategoriasFiltro", categorias, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@NombreComercial", TXT_Buscar.Text, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@NumeroIdentificacionReceptor", identificacionReceptor, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@Activo", DDL_Activo.SelectedValue, SqlDbType.Int);
             DT.DT1.Rows.Add("@IDEmisor", HDF_IDEmisor.Value, SqlDbType.VarChar);
 
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
@@ -288,7 +311,9 @@ namespace MCWebHogar.GestionProveedores
                     HDF_IDEmisor.Value = idEmisor.ToString();
                     UpdatePanel_ModalEditarEmisor.Update();
                     H1.InnerText = nombreComercial;
-                    cargarFacturas("abrirModalVerFacturas();");
+                    string usuario = Session["UserID"].ToString().Trim();
+                    string cargar = "cargarGraficos(" + usuario + ", " + idEmisor + ");";
+                    cargarFacturas("abrirModalVerFacturas();" + cargar);
                 }
             }
         }
@@ -374,6 +399,39 @@ namespace MCWebHogar.GestionProveedores
 
             Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "GP01_0002");
             return "correcto";
+        }
+
+        [WebMethod()]
+        public static List<DatosHistoricos> cargarGraficoFacturas(string idUsuario, string idEmisor)
+        {
+            List<DatosHistoricos> lista = new List<DatosHistoricos>();
+            CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
+            DataTable Result = new DataTable();
+
+            DT.DT1.Clear();
+            try
+            {
+                DT.DT1.Rows.Add("@IDEmisor", idEmisor, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@Usuario", idUsuario, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", "CantidadFacturas", SqlDbType.VarChar);
+
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "GP01_0001");
+
+                foreach (DataRow dr in Result.Rows)
+                {
+                    DatosHistoricos dh = new DatosHistoricos();
+
+                    dh.dia = dr["FechaFactura"].ToString().Trim();
+                    dh.cantidadFacturas = Convert.ToInt32(dr["CantidadFacturas"].ToString().Trim());
+
+                    lista.Add(dh);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return lista;
         }
 
         private void descargarReporteEmisores()
