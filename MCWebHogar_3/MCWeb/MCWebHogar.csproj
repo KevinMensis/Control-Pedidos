@@ -890,6 +890,9 @@
     <Content Include="ControlPedidos\DetalleDespacho.aspx" />
     <Content Include="ControlPedidos\DetalleODP.aspx" />
     <Content Include="ControlPedidos\Insumos.aspx" />
+    <Content Include="GestionCostos\Costos.aspx" />
+    <Content Include="GestionCostos\CrearReceta.aspx" />
+    <Content Include="Master\Master.aspx" />
     <Content Include="ControlPedidos\PlantasProduccion.aspx" />
     <Content Include="GestionProveedores\Facturas.aspx" />
     <Content Include="GestionProveedores\Reportes.aspx" />
@@ -1149,6 +1152,27 @@
     </Compile>
     <Compile Include="ControlPedidos\Insumos.aspx.designer.cs">
       <DependentUpon>Insumos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GestionCostos\Costos.aspx.cs">
+      <DependentUpon>Costos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GestionCostos\Costos.aspx.designer.cs">
+      <DependentUpon>Costos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GestionCostos\CrearReceta.aspx.cs">
+      <DependentUpon>CrearReceta.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GestionCostos\CrearReceta.aspx.designer.cs">
+      <DependentUpon>CrearReceta.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\Master.aspx.cs">
+      <DependentUpon>Master.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\Master.aspx.designer.cs">
+      <DependentUpon>Master.aspx</DependentUpon>
     </Compile>
     <Compile Include="ControlPedidos\PlantasProduccion.aspx.cs">
       <DependentUpon>PlantasProduccion.aspx</DependentUpon>

@@ -400,9 +400,15 @@
                             <p>Proveedores - Esteban</p>
                         </a>
                     </li>
+                    <li>
+                        <a href="../GestionCostos/CrearReceta.aspx">
+                            <i class="fas fa-chart-line"></i>
+                            <p>Gestión costos</p>
+                        </a>
+                    </li>
                 </ul>
                 <hr style="width: 230px; color: #2c2c2c;" />
-                <h5 style="text-align: center;">Mantenimiento</h5>
+                <%--<h5 style="text-align: center;">Mantenimiento</h5>--%>
                 <ul class="nav">
                     <li>
                         <a href="../ControlPedidos/Productos.aspx">
@@ -536,6 +542,9 @@
                                                 <asp:BoundField DataField="MontoImpuestoIncluido" SortExpression="MontoImpuestoIncluido" HeaderText="Monto IVAI" DataFormatString="{0:n}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="Porcentaje25" SortExpression="Porcentaje25" HeaderText="25%" ItemStyle-ForeColor="black" DataFormatString="{0:n}" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                                                               
                                                 <asp:BoundField DataField="PrecioVenta" SortExpression="PrecioVenta" HeaderText="Precio venta" ItemStyle-ForeColor="black" DataFormatString="{0:n}" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                                                               
+                                                <asp:BoundField DataField="MedidaUnidades" SortExpression="MedidaUnidades" HeaderText="Unidades" ItemStyle-ForeColor="black" DataFormatString="{0:n}" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                                                               
+                                                <asp:BoundField DataField="CostoKilo" SortExpression="CostoKilo" HeaderText="Costo kilo" ItemStyle-ForeColor="black" DataFormatString="{0:n}" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                                                               
+                                                <asp:BoundField DataField="CostoGramo" SortExpression="CostoGramo" HeaderText="Costo gramo" ItemStyle-ForeColor="black" DataFormatString="{0:n}" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                                                               
                                                 <asp:BoundField DataField="ProductoMateriaPrima" SortExpression="ProductoMateriaPrima" HeaderText="Materia prima" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                                                               
                                                 <asp:BoundField DataField="ProductoVenta" SortExpression="ProductoVenta" HeaderText="Venta" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                                                               
                                                 <asp:TemplateField>

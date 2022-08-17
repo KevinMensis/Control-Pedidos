@@ -181,14 +181,14 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="../GestionCostos/CrearReceta.aspx">
                             <i class="fas fa-chart-line"></i>
-                            <p>Gestión Costos</p>
+                            <p>Gestión costos</p>
                         </a>
                     </li>
                 </ul>
                 <hr style="width: 230px; color: #2c2c2c;" />
-                <h5 style="text-align: center;">Mantenimiento</h5>
+                <%--<h5 style="text-align: center;">Mantenimiento</h5>--%>
                 <ul class="nav">
                     <li>
                         <a href="Productos.aspx">
