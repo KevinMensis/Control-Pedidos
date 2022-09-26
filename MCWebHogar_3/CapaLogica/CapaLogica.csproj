@@ -61,6 +61,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entidades\ConttrolCostos\DatosCostos.cs" />
     <Compile Include="Entidades\ControlPedidos\DatosHistoricos.cs" />
     <Compile Include="GestorDataDT.cs" />
     <Compile Include="GestorDatos.cs" />

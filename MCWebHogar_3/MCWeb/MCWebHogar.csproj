@@ -890,7 +890,10 @@
     <Content Include="ControlPedidos\DetalleDespacho.aspx" />
     <Content Include="ControlPedidos\DetalleODP.aspx" />
     <Content Include="ControlPedidos\Insumos.aspx" />
-    <Content Include="GestionCostos\Costos.aspx" />
+    <Content Include="GestionCostos\CostosIndirectos.aspx" />
+    <Content Include="GestionCostos\VerReceta.aspx" />
+    <Content Include="GestionCostos\ManoObra.aspx" />
+    <Content Include="GestionCostos\ProductosIntermedios.aspx" />
     <Content Include="GestionCostos\CrearReceta.aspx" />
     <Content Include="Master\Master.aspx" />
     <Content Include="ControlPedidos\PlantasProduccion.aspx" />
@@ -1153,12 +1156,33 @@
     <Compile Include="ControlPedidos\Insumos.aspx.designer.cs">
       <DependentUpon>Insumos.aspx</DependentUpon>
     </Compile>
-    <Compile Include="GestionCostos\Costos.aspx.cs">
-      <DependentUpon>Costos.aspx</DependentUpon>
+    <Compile Include="GestionCostos\CostosIndirectos.aspx.cs">
+      <DependentUpon>CostosIndirectos.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="GestionCostos\Costos.aspx.designer.cs">
-      <DependentUpon>Costos.aspx</DependentUpon>
+    <Compile Include="GestionCostos\CostosIndirectos.aspx.designer.cs">
+      <DependentUpon>CostosIndirectos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GestionCostos\VerReceta.aspx.cs">
+      <DependentUpon>VerReceta.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GestionCostos\VerReceta.aspx.designer.cs">
+      <DependentUpon>VerReceta.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GestionCostos\ManoObra.aspx.cs">
+      <DependentUpon>ManoObra.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GestionCostos\ManoObra.aspx.designer.cs">
+      <DependentUpon>ManoObra.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GestionCostos\ProductosIntermedios.aspx.cs">
+      <DependentUpon>ProductosIntermedios.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GestionCostos\ProductosIntermedios.aspx.designer.cs">
+      <DependentUpon>ProductosIntermedios.aspx</DependentUpon>
     </Compile>
     <Compile Include="GestionCostos\CrearReceta.aspx.cs">
       <DependentUpon>CrearReceta.aspx</DependentUpon>
