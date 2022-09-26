@@ -12,3 +12,4 @@ C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\obj
 C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\obj\Release\MCWebHogar.dll
 C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\obj\Release\MCWebHogar.pdb
 C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\obj\Release\MCWebHogar.csprojResolveAssemblyReference.cache
+C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\MCWeb\bin\OpenPop.dll

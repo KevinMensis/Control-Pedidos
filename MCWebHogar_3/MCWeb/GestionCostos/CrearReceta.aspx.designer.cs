@@ -175,6 +175,15 @@ namespace MCWebHogar.GestionCostos {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl H5_Title;
         
         /// <summary>
+        /// H6_Subtitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl H6_Subtitle;
+        
+        /// <summary>
         /// DGV_ListaMateriasPrimasAsignadas control.
         /// </summary>
         /// <remarks>
@@ -182,24 +191,6 @@ namespace MCWebHogar.GestionCostos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView DGV_ListaMateriasPrimasAsignadas;
-        
-        /// <summary>
-        /// LBL_CantidadProducida control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LBL_CantidadProducida;
-        
-        /// <summary>
-        /// TXT_CantidadProducida control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TXT_CantidadProducida;
         
         /// <summary>
         /// LBL_Empleado control.
@@ -238,6 +229,24 @@ namespace MCWebHogar.GestionCostos {
         protected global::System.Web.UI.WebControls.TextBox TXT_CantidadMinutos;
         
         /// <summary>
+        /// BTN_AsignarEmpleado control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton BTN_AsignarEmpleado;
+        
+        /// <summary>
+        /// H6_SubtitleEmpleado control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl H6_SubtitleEmpleado;
+        
+        /// <summary>
         /// DGV_ListaEmpleados control.
         /// </summary>
         /// <remarks>
@@ -245,6 +254,33 @@ namespace MCWebHogar.GestionCostos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView DGV_ListaEmpleados;
+        
+        /// <summary>
+        /// LBL_CantidadProducida control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label LBL_CantidadProducida;
+        
+        /// <summary>
+        /// TXT_CantidadProducida control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TXT_CantidadProducida;
+        
+        /// <summary>
+        /// UpdatePanel_Resumen control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_Resumen;
         
         /// <summary>
         /// H5_Subtitle control.

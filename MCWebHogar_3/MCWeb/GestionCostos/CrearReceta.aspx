@@ -19,8 +19,9 @@
         }
     </style>
     <script type="text/javascript">
-        var productosAgregar;
-        var productosEliminar;
+        var productosAgregar = new Map();
+        var productosIntermedio = new Map();
+        var productosEliminar = new Map();
 
         function alertifysuccess(msj) {
             alertify.notify(msj, 'success', 5, null);
@@ -55,6 +56,22 @@
             }
         }
 
+        function validarMinutos() {
+            var minutos = $(<%= TXT_CantidadMinutos.ClientID %>)[0].value
+            var empleado = $(<%= DDL_Empleado.ClientID %>)[0].value
+            console.log(empleado)
+            if (minutos === '' || minutos === '0' || minutos === 0) {
+                alertifyerror('Por favor, agregue la cantidad de minutos.')
+                return false
+            }
+            if (empleado === '0' || empleado === 0) {
+                alertifyerror('Por favor, seleccione el empleado.')
+                return false
+            }
+
+            return true
+        }
+
         function CHK_Producto_onChange(CHK_Producto) {
             var values = CHK_Producto.childNodes[0].id.split('_')
             var index = values.pop() * 1
@@ -69,10 +86,16 @@
             var HDF_IDProductoMateriaPrima = document.getElementById(id)
             var idProducto = HDF_IDProductoMateriaPrima.value
 
+            var idProductoIntermedio = 'Content_DGV_ListaMateriasPrimas_HDF_ProductoIntermedio_' + index
+            var HDF_ProductoIntermedio = document.getElementById(idProductoIntermedio)
+            var productoIntermedio = HDF_ProductoIntermedio.value
+
             if (CHK_Producto.checked) {
-                productosAgregar.set(idProducto, TXT_Cantidad)
+                productosAgregar.set(idProducto, TXT_Cantidad.value)
+                productosIntermedio.set(idProducto, productoIntermedio)
             } else {
                 productosAgregar.delete(idProducto)
+                productosIntermedio.delete(idProducto)
             }
         }
 
@@ -91,7 +114,7 @@
             var idProducto = HDF_IDProductoMateriaPrimaAsignada.value
 
             if (CHK_Producto.checked) {
-                productosEliminar.set(idProducto, TXT_Cantidad)
+                productosEliminar.set(idProducto, TXT_Cantidad.value)
             } else {
                 productosEliminar.delete(idProducto)
             }
@@ -100,17 +123,23 @@
         function TXT_CantidadAgregar_onKeyUp(txtCantidad, e) {
             var values = txtCantidad.id.split('_')
             var index = values.pop() * 1 + 1
+            console.dir(txtCantidad)
+            console.dir(values)
             if (e.keyCode === 13) {
+                console.log('agregar')
                 var rows = $(<%= DGV_ListaMateriasPrimas.ClientID %>)[0].rows.length - 1
                 var id = ''
+                console.log('index', index)
+                console.log('row', rows)
                 if (index === rows) {
                     id = 'Content_DGV_ListaMateriasPrimas_TXT_MedidaUds_' + 0
                 } else {
                     id = 'Content_DGV_ListaMateriasPrimas_TXT_MedidaUds_' + index
                 }
+                console.dir(id)
                 document.getElementById(id).autofocus = true;
                 document.getElementById(id).focus();
-                document.getElementById(id).select();
+                document.getElementById(id).select();                
             }
         }
 
@@ -118,13 +147,15 @@
             var values = txtCantidad.id.split('_')
             var index = values.pop() * 1 + 1
             if (e.keyCode === 13) {
-                var rows = $(<%= DGV_ListaMateriasPrimasAsignadas.ClientID %>)[0].rows.length - 1
+                console.log('asignada')
+                var rows = $(<%= DGV_ListaMateriasPrimasAsignadas.ClientID %>)[0].rows.length - 2
                 var id = ''
                 if (index === rows) {
                     id = 'Content_DGV_ListaMateriasPrimasAsignadas_TXT_CantidadNecesaria_' + 0
                 } else {
                     id = 'Content_DGV_ListaMateriasPrimasAsignadas_TXT_CantidadNecesaria_' + index
                 }
+                console.dir(id)
                 document.getElementById(id).autofocus = true;
                 document.getElementById(id).focus();
                 document.getElementById(id).select();
@@ -140,6 +171,9 @@
             var HDF_IDProducto = document.getElementById(id)
             var idProducto = HDF_IDProducto.value
             var cantidadProducto = txtCantidad.value * 1
+            var idProductoIntermedio = 'Content_DGV_ListaMateriasPrimas_HDF_ProductoIntermedio_' + index
+            var HDF_ProductoIntermedio = document.getElementById(idProductoIntermedio)
+            var productoIntermedio = HDF_ProductoIntermedio.value
 
             if (cantidadProducto === '' || cantidadProducto === 0 || cantidadProducto === '0') {
                 txtCantidad.value = 1
@@ -151,9 +185,10 @@
             }
             if (cantidadProducto > 0 && cantidadProducto < 1000) {
                 productosAgregar.set(idProducto, cantidadProducto)
+                productosIntermedio.set(idProducto, productoIntermedio)
                 actualizarMedidaUnidadesProductos(idProducto, cantidadProducto)
                 CHK_Producto.checked = true;
-            } 
+            }
         }
 
         function TXT_CantidadNecesaria_onChange(txtCantidad) {
@@ -231,6 +266,7 @@
             var idProductoTerminado = document.getElementById('Content_HDF_IDProductoTerminado').value;
             var promises = [];
             productosAgregar.forEach(function (valor, clave) {
+                var productoIntermedio = productosIntermedio.get(clave)
                 promises.push(
                     $.ajax({
                         type: "POST",
@@ -239,6 +275,7 @@
                         data: JSON.stringify({
                             "idProductoTerminado": idProductoTerminado,
                             "idProductoMateriaPrima": clave,
+                            "productoIntermedio": productoIntermedio,
                             "usuario": usuario
                         }),
                         dataType: "json",
@@ -305,7 +342,7 @@
 
         function actualizarMedidaUnidadesProductos(idProducto, medidaUnidades) {
             var usuario = document.getElementById('Content_HDF_IDUsuario').value;
-            
+
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
@@ -414,6 +451,7 @@
         $(document).ready(function () {
             cargarFiltros();
             productosAgregar = new Map();
+            productosIntermedio = new Map();
             productosEliminar = new Map();
         });
     </script>
@@ -422,7 +460,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
     <div id="modalloading" class="loading">
         <img src="../Assets/img/cargando.gif" width="100" height="100" /><br />
-        <asp:Label runat="server" ID="LBL_GenerandoInforme" style="color: white;" Text="Generando informe espere por favor..."></asp:Label>
+        <asp:Label runat="server" ID="LBL_GenerandoInforme" Style="color: white;" Text="Generando informe espere por favor..."></asp:Label>
     </div>
     <div id="fade2" class="overlayload"></div>
     <div class="wrapper ">
@@ -446,7 +484,7 @@
                     <li>
                         <a href="../ControlPedidos/OrdenesProduccion.aspx">
                             <i class="fas fa-sort"></i>
-                           <p>Ordenes de producción</p>
+                            <p>Ordenes de producción</p>
                         </a>
                     </li>
                     <li>
@@ -551,26 +589,36 @@
                                 <div class="input-group no-border col-md-6" style="text-align: left; display: inline-block;">
                                     <h1 class="h3 mb-2 text-gray-800" runat="server" id="H1_Title">Crear receta</h1>
                                 </div>
-                            </div>                   
+                            </div>
                         </ContentTemplate>
-                    </asp:UpdatePanel> 
+                    </asp:UpdatePanel>
                     <div class="card shadow mb-4">
                         <div class="card-body" style="padding-top: 0px;">
                             <div class="card-body">
                                 <asp:UpdatePanel ID="UpdatePanel_Filtros" runat="server" UpdateMode="Conditional">
                                     <ContentTemplate>
                                         <div class="row">
-                                            <div class="input-group no-border col-md-3" style="text-align: center; display: block;">
-                                                <a href="Costos.aspx" class="btn btn-primary">
-                                                    <i class=""></i>Costos directos
+                                            <div class="input-group no-border col-md-2" style="text-align: center; display: block;">
+                                                <a href="CostosIndirectos.aspx" class="btn btn-primary">
+                                                    <i class=""></i>Costos indirectos
                                                 </a>
                                             </div>
-                                            <div class="input-group no-border col-md-3" style="text-align: center; display: block;">
+                                            <div class="input-group no-border col-md-2" style="text-align: center; display: block;">
+                                                <a href="ManoObra.aspx" class="btn btn-primary">
+                                                    <i class=""></i>Mano de obra
+                                                </a>
+                                            </div>
+                                            <div class="input-group no-border col-md-2" style="text-align: center; display: block;">
+                                                <a href="ProductosIntermedios.aspx" class="btn btn-primary">
+                                                    <i class=""></i>Productos intermedios
+                                                </a>
+                                            </div>
+                                            <div class="input-group no-border col-md-2" style="text-align: center; display: block;">
                                                 <a href="CrearReceta.aspx" class="btn btn-info">
                                                     <i class=""></i>Crear receta
                                                 </a>
                                             </div>
-                                            <div class="input-group no-border col-md-3" style="text-align: center; display: block;">
+                                            <div class="input-group no-border col-md-2" style="text-align: center; display: block;">
                                                 <a href="VerReceta.aspx" class="btn btn-primary">
                                                     <i class=""></i>Ver recetas
                                                 </a>
@@ -578,7 +626,7 @@
                                         </div>
                                         <hr />
                                         <div class="row">
-                                           <%-- <div class="input-group no-border col-md-3" style="text-align: center; display: block;">
+                                            <%-- <div class="input-group no-border col-md-3" style="text-align: center; display: block;">
                                                 Seleccionar producto:
                                             </div>--%>
                                             <div class="input-group no-border col-md-3">
@@ -601,195 +649,230 @@
                             </div>
                             <hr />
                             <div class="table">
-                                <div class="col-md-7">                                        
-                                    <asp:UpdatePanel ID="UpdatePanel_ListaMateriasPrimas" runat="server" UpdateMode="Conditional">
-                                        <ContentTemplate>
-                                            <div class="input-group no-border col-md-4">
-                                                <asp:TextBox class="form-control" ID="TXT_BuscarMateriaPrima" runat="server" placeholder="Buscar materia prima..." OnTextChanged="FiltrarMateriaPrima_OnClick" AutoPostBack="true"></asp:TextBox>
-                                                <div class="input-group-append">
-                                                    <div class="input-group-text">
-                                                        <i class="nc-icon nc-zoom-split"></i>
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <asp:UpdatePanel ID="UpdatePanel_ListaMateriasPrimas" runat="server" UpdateMode="Conditional">
+                                            <ContentTemplate>
+                                                <div class="input-group no-border col-md-4">
+                                                    <asp:TextBox class="form-control" ID="TXT_BuscarMateriaPrima" runat="server" placeholder="Buscar materia prima..." OnTextChanged="FiltrarMateriaPrima_OnClick" AutoPostBack="true"></asp:TextBox>
+                                                    <div class="input-group-append">
+                                                        <div class="input-group-text">
+                                                            <i class="nc-icon nc-zoom-split"></i>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <asp:ListBox class="form-control" runat="server" ID="LB_Emisores" SelectionMode="Multiple" OnTextChanged="FiltrarMateriaPrima_OnClick" AutoPostBack="true"></asp:ListBox>
-                                            </div>
-                                            <asp:GridView ID="DGV_ListaMateriasPrimas" Width="100%" runat="server" CssClass="table-responsive" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
-                                                AutoGenerateColumns="False" DataKeyNames="" 
-                                                HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None" ShowHeaderWhenEmpty="true" 
-                                                EmptyDataText="Seleccione un producto para crear su receta." AllowSorting="true">
-                                                <Columns>
-                                                    <asp:TemplateField>
-                                                        <ItemTemplate>
-                                                            <asp:CheckBox ID="CHK_Producto" runat="server" onchange="CHK_Producto_onChange(this);" />
-                                                            <asp:HiddenField ID="HDF_IDProductoMateriaPrima" runat="server" Value='<%# Eval("IDProductoMateriaPrima") %>' />
-                                                        </ItemTemplate>
-                                                        <ItemStyle HorizontalAlign="Center" />
-                                                        <ItemStyle Width="50px" />
-                                                    </asp:TemplateField>
-                                                    <asp:BoundField DataField="NombreComercial" SortExpression="NombreComercial" HeaderText="Proveedor" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                    <asp:BoundField DataField="DetalleProducto" SortExpression="DetalleProducto" HeaderText="Producto" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                    <asp:BoundField DataField="PorcentajeImpuesto" SortExpression="PorcentajeImpuesto" HeaderText="IVA" DataFormatString="{0:n0}%" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                    <asp:BoundField DataField="MontoImpuestoIncluido" SortExpression="MontoImpuestoIncluido" HeaderText="Monto IVAI" DataFormatString="{0:n}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                    <asp:TemplateField>
-                                                        <HeaderTemplate>
-                                                            <asp:Label ID="LBL_MedidaUds" runat="server" Text="Medida kls"></asp:Label>
-                                                        </HeaderTemplate>
-                                                        <ItemTemplate>
-                                                            <asp:TextBox class="form-control" TextMode="Number" MaxLength="0" min="0" max="999" Style="width: 130%" runat="server" ID="TXT_MedidaUds" Text='<%# Eval("MedidaUnidades") %>' 
-                                                                onkeyup="TXT_CantidadAgregar_onKeyUp(this,event);" onchange="TXT_CantidadAgregar_onChange(this)" />
-                                                        </ItemTemplate>
-                                                        <ItemStyle HorizontalAlign="Center" />
-                                                    </asp:TemplateField>
-                                                    <asp:BoundField DataField="CostoKilo" SortExpression="CostoKilo" HeaderText="Costo kilo" DataFormatString="{0:n}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                    <asp:BoundField DataField="CostoGramo" SortExpression="CostoGramo" HeaderText="Costo gramo" DataFormatString="{0:n}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                </Columns>
-                                            </asp:GridView>
-                                        </ContentTemplate>
-                                    </asp:UpdatePanel>
-                                </div>
-                                <div class="col-md-1" style="padding-top: 17rem;">
-                                    <asp:UpdatePanel ID="UpdatePanel_AsignarMateriaPrima" runat="server" UpdateMode="Conditional">
-                                        <ContentTemplate>                                      
-                                            <div class="input-group no-border col-md-12" style="text-align: center; display: block;">
-                                                <asp:LinkButton UseSubmitBehavior="false" class="btn btn-outline-info btn-round-mant" ID="BTN_Agregar" runat="server" OnClientClick="cargarProductosAgregar();"> 
+                                                <div class="col-md-2">
+                                                    <asp:ListBox class="form-control" runat="server" ID="LB_Emisores" SelectionMode="Multiple" OnTextChanged="FiltrarMateriaPrima_OnClick" AutoPostBack="true"></asp:ListBox>
+                                                </div>
+                                                <asp:GridView ID="DGV_ListaMateriasPrimas" Width="100%" runat="server" CssClass="table-responsive" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
+                                                    AutoGenerateColumns="False" DataKeyNames=""
+                                                    HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None" ShowHeaderWhenEmpty="true"
+                                                    EmptyDataText="Seleccione un producto para crear su receta." AllowSorting="true">
+                                                    <Columns>
+                                                        <asp:TemplateField>
+                                                            <ItemTemplate>
+                                                                <asp:CheckBox ID="CHK_Producto" runat="server" onchange="CHK_Producto_onChange(this);" />
+                                                                <asp:HiddenField ID="HDF_ProductoIntermedio" runat="server" Value='<%# Eval("ProductoIntermdio") %>' />
+                                                                <asp:HiddenField ID="HDF_IDProductoMateriaPrima" runat="server" Value='<%# Eval("IDProductoMateriaPrima") %>' />
+                                                            </ItemTemplate>
+                                                            <ItemStyle HorizontalAlign="Center" />
+                                                            <ItemStyle Width="50px" />
+                                                        </asp:TemplateField>
+                                                        <asp:BoundField DataField="NombreComercial" SortExpression="NombreComercial" HeaderText="Proveedor" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                        <asp:BoundField DataField="DetalleProducto" SortExpression="DetalleProducto" HeaderText="Producto" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                        <asp:BoundField DataField="PorcentajeImpuesto" SortExpression="PorcentajeImpuesto" HeaderText="IVA" DataFormatString="{0:n0}%" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                        <asp:BoundField DataField="MontoImpuestoIncluido" SortExpression="MontoImpuestoIncluido" HeaderText="Monto IVAI" DataFormatString="{0:n}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                        <asp:TemplateField>
+                                                            <HeaderTemplate>
+                                                                <asp:Label ID="LBL_MedidaUds" runat="server" Text="Medida kls"></asp:Label>
+                                                            </HeaderTemplate>
+                                                            <ItemTemplate>
+                                                                <asp:TextBox class="form-control" TextMode="Number" MaxLength="0" min="0" max="999" Style="width: 130%" runat="server" ID="TXT_MedidaUds" Text='<%# Eval("MedidaUnidades") %>'
+                                                                    onkeyup="TXT_CantidadAgregar_onKeyUp(this,event);" onchange="TXT_CantidadAgregar_onChange(this)" />
+                                                            </ItemTemplate>
+                                                            <ItemStyle HorizontalAlign="Center" />
+                                                        </asp:TemplateField>
+                                                        <asp:BoundField DataField="CostoKilo" SortExpression="CostoKilo" HeaderText="Costo kilo" DataFormatString="{0:n}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                        <asp:BoundField DataField="CostoGramo" SortExpression="CostoGramo" HeaderText="Costo gramo" DataFormatString="{0:n}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                    </Columns>
+                                                </asp:GridView>
+                                            </ContentTemplate>
+                                        </asp:UpdatePanel>
+                                    </div>
+                                    <div class="col-md-1" style="padding-top: 17rem;">
+                                        <asp:UpdatePanel ID="UpdatePanel_AsignarMateriaPrima" runat="server" UpdateMode="Conditional">
+                                            <ContentTemplate>
+                                                <div class="input-group no-border col-md-12" style="text-align: center; display: block;">
+                                                    <asp:LinkButton UseSubmitBehavior="false" class="btn btn-outline-info btn-round-mant" ID="BTN_Agregar" runat="server" OnClientClick="cargarProductosAgregar();"> 
                                                 <i class="fas fa-caret-right" style="font-size: xx-large;"></i></asp:LinkButton>
-                                            </div>
-                                            <div class="input-group no-border col-md-12" style="text-align: center; display: block;">
-                                                <asp:LinkButton UseSubmitBehavior="false" class="btn btn-outline-danger btn-round-mant" ID="BTN_Eliminar" runat="server" OnClientClick="cargarProductosEliminar();"> 
+                                                </div>
+                                                <div class="input-group no-border col-md-12" style="text-align: center; display: block;">
+                                                    <asp:LinkButton UseSubmitBehavior="false" class="btn btn-outline-danger btn-round-mant" ID="BTN_Eliminar" runat="server" OnClientClick="cargarProductosEliminar();"> 
                                                 <i class="fas fa-caret-left" style="font-size: xx-large;"></i></asp:LinkButton>
-                                            </div>                                        
-                                        </ContentTemplate>
-                                    </asp:UpdatePanel>
+                                                </div>
+                                            </ContentTemplate>
+                                        </asp:UpdatePanel>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <asp:UpdatePanel ID="UpdatePanel_MateriasPrimasAsignadas" runat="server" UpdateMode="Conditional">
+                                            <ContentTemplate>
+                                                <h5 class="modal-title" runat="server" id="H5_Title" visible="false"></h5>
+                                                <h6 class="modal-title" runat="server" id="H6_Subtitle" visible="false"></h6>
+                                                <asp:GridView ID="DGV_ListaMateriasPrimasAsignadas" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
+                                                    AutoGenerateColumns="False" DataKeyNames="" ShowFooter="true"
+                                                    HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None" ShowHeaderWhenEmpty="true"
+                                                    EmptyDataText="Sin materia prima asignada." AllowSorting="true"
+                                                    OnRowDataBound="DGV_ListaMateriasPrimasAsignadas_RowDataBound">
+                                                    <Columns>
+                                                        <asp:TemplateField>
+                                                            <ItemTemplate>
+                                                                <asp:CheckBox ID="CHK_ProductoMateriaPrimaAsignada" runat="server" onchange="CHK_ProductoEliminar_onChange(this);" />
+                                                                <asp:HiddenField ID="HDF_IDConsecutivoReceta" runat="server" Value='<%# Eval("IDConsecutivoReceta") %>' />
+                                                                <asp:HiddenField ID="HDF_IDProductoMateriaPrimaAsignada" runat="server" Value='<%# Eval("ProductoMateriaPrimaID") %>' />
+                                                            </ItemTemplate>
+                                                            <ItemStyle HorizontalAlign="Center" />
+                                                            <ItemStyle Width="50px" />
+                                                        </asp:TemplateField>
+                                                        <asp:BoundField DataField="DetalleProducto" SortExpression="DetalleProducto" HeaderText="Descripcion" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                        <asp:BoundField DataField="CostoKilo" SortExpression="CostoKilo" HeaderText="Costo x Kilo" DataFormatString="{0:n}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                        <asp:BoundField DataField="CostoGramo" SortExpression="CostoGramo" HeaderText="Costo x Gramo" DataFormatString="{0:n}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                        <asp:TemplateField>
+                                                            <HeaderTemplate>
+                                                                <asp:Label ID="LBL_CantidadNecesaria" runat="server" Text="Cantidad necesaria"></asp:Label>
+                                                            </HeaderTemplate>
+                                                            <ItemTemplate>
+                                                                <asp:TextBox class="form-control" TextMode="Number" MaxLength="0" min="0" max="999" Style="width: 100%" runat="server" ID="TXT_CantidadNecesaria" Text='<%# Eval("CantidadNecesaria") %>'
+                                                                    onkeyup="TXT_CantidadNecesaria_onKeyUp(this,event);" onchange="TXT_CantidadNecesaria_onChange(this)" />
+                                                            </ItemTemplate>
+                                                            <ItemStyle HorizontalAlign="Center" />
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Costo total">
+                                                            <ItemTemplate>
+                                                                <div style="text-align: center;">
+                                                                    <asp:Label ID="LBL_CostoTotal" runat="server" Text='<%# Eval("CostoTotal") %>' DataFormatString="{0:n}" />
+                                                                </div>
+                                                            </ItemTemplate>
+                                                            <FooterTemplate>
+                                                                <asp:Label ID="LBL_FOO_CostoTotal" DataFormatString="{0:n}" runat="server" />
+                                                            </FooterTemplate>
+                                                            <ItemStyle ForeColor="Black" />
+                                                        </asp:TemplateField>
+                                                    </Columns>
+                                                    <FooterStyle BackColor="#cccccc" Font-Bold="True" ForeColor="Black" HorizontalAlign="Center" CssClass="visible-lg" />
+                                                </asp:GridView>
+                                                <br />
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <asp:Label runat="server" ID="LBL_Empleado" Visible="false">Seleccionar empleado:</asp:Label>
+                                                        <asp:DropDownList class="form-control" Style="font-size: 18px;" ID="DDL_Empleado" runat="server" Visible="false"></asp:DropDownList>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <asp:Label ID="LBL_CantidadMinutos" runat="server" Visible="false">Minutos:</asp:Label>
+                                                        <asp:TextBox ID="TXT_CantidadMinutos" runat="server" TextMode="Number" CssClass="form-control" Visible="false" AutoPostBack="true"></asp:TextBox>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <asp:LinkButton UseSubmitBehavior="false" class="btn btn-sm btn-outline-info btn-round-mant" ID="BTN_AsignarEmpleado" runat="server" Visible="false" OnClientClick="return validarMinutos();" OnClick="BTN_AsignarEmpleado_Click"> 
+                                                    <i class="fas fa-plus-circle" style="font-size: xx-large;"></i></asp:LinkButton>
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <h6 class="modal-title" runat="server" id="H6_SubtitleEmpleado" visible="false"></h6>
+                                                <asp:GridView ID="DGV_ListaEmpleados" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
+                                                    AutoGenerateColumns="False" DataKeyNames="IDConsecutivoReceta" ShowFooter="true"
+                                                    HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None" ShowHeaderWhenEmpty="true"
+                                                    EmptyDataText="Sin colaborador asignado." AllowSorting="true"
+                                                    OnRowDataBound="DGV_ListaEmpleados_RowDataBound"
+                                                    OnRowCommand="DGV_ListaEmpleados_RowCommand">
+                                                    <Columns>
+                                                        <asp:TemplateField>
+                                                            <ItemTemplate>
+                                                                <asp:LinkButton UseSubmitBehavior="false" class="btn btn-outline-danger btn-round-mant" ID="BTN_EliminarEmpleado" runat="server"
+                                                                    CommandName="Eliminar"
+                                                                    CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
+                                                                    AutoPostBack="true"> 
+                                                            <i class="fas fa-minus-circle"></i></asp:LinkButton>
+                                                            </ItemTemplate>
+                                                            <ItemStyle HorizontalAlign="Center" />
+                                                            <ItemStyle Width="50px" />
+                                                        </asp:TemplateField>
+                                                        <asp:BoundField DataField="Descripcion" SortExpression="Descripcion" HeaderText="Colaborador" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                        <asp:BoundField DataField="CantidadMinutos" SortExpression="CantidadMinutos" HeaderText="Minutos aplicados" DataFormatString="{0:n}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                        <asp:BoundField DataField="SalarioMinuto" SortExpression="SalarioMinuto" HeaderText="Costo x minuto" DataFormatString="{0:n}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                        <asp:TemplateField HeaderText="Total MOD">
+                                                            <ItemTemplate>
+                                                                <div style="text-align: center;">
+                                                                    <asp:Label ID="LBL_TotalMOD" runat="server" Text='<%# Eval("TotalMOD") %>' DataFormatString="{0:n}" />
+                                                                </div>
+                                                            </ItemTemplate>
+                                                            <FooterTemplate>
+                                                                <asp:Label ID="LBL_FOO_TotalMOD" DataFormatString="{0:n}" runat="server" />
+                                                            </FooterTemplate>
+                                                            <ItemStyle ForeColor="Black" />
+                                                        </asp:TemplateField>
+                                                    </Columns>
+                                                    <FooterStyle BackColor="#cccccc" Font-Bold="True" ForeColor="Black" HorizontalAlign="Center" CssClass="visible-lg" />
+                                                </asp:GridView>
+                                                <br />
+                                                <div class="row">
+                                                    <div class="col-md-9" style="text-align: right;">
+                                                        <asp:Label ID="LBL_CantidadProducida" runat="server" Visible="false">Unidades producidas:</asp:Label>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <asp:TextBox ID="TXT_CantidadProducida" runat="server" TextMode="Number" CssClass="form-control" Visible="false" onchange="TXT_UnidadesProducidas_OnTextChanged();" AutoPostBack="true"></asp:TextBox>
+                                                    </div>
+                                                </div>
+                                                <br />
+                                            </ContentTemplate>
+                                        </asp:UpdatePanel>
+                                    </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <asp:UpdatePanel ID="UpdatePanel_MateriasPrimasAsignadas" runat="server" UpdateMode="Conditional">
-                                        <ContentTemplate>
-                                            <h5 class="modal-title" runat="server" id="H5_Title" visible="false"></h5>
-                                            <asp:GridView ID="DGV_ListaMateriasPrimasAsignadas" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
-                                                AutoGenerateColumns="False" DataKeyNames="" ShowFooter="true"
-                                                HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None" ShowHeaderWhenEmpty="true"
-                                                EmptyDataText="Sin materia prima asignada." AllowSorting="true"
-                                                OnRowDataBound="DGV_ListaMateriasPrimasAsignadas_RowDataBound">
-                                                <Columns>
-                                                    <asp:TemplateField>
-                                                        <ItemTemplate>
-                                                            <asp:CheckBox ID="CHK_ProductoMateriaPrimaAsignada" runat="server" onchange="CHK_ProductoEliminar_onChange(this);" />
-                                                            <asp:HiddenField ID="HDF_IDConsecutivoReceta" runat="server" Value='<%# Eval("IDConsecutivoReceta") %>' />
-                                                            <asp:HiddenField ID="HDF_IDProductoMateriaPrimaAsignada" runat="server" Value='<%# Eval("ProductoMateriaPrimaID") %>' />
-                                                        </ItemTemplate>
-                                                        <ItemStyle HorizontalAlign="Center" />
-                                                        <ItemStyle Width="50px" />
-                                                    </asp:TemplateField>
-                                                    <asp:BoundField DataField="DetalleProducto" SortExpression="DetalleProducto" HeaderText="Descripcion" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                    <asp:BoundField DataField="CostoKilo" SortExpression="CostoKilo" HeaderText="Costo x Kilo" DataFormatString="{0:n}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                    <asp:BoundField DataField="CostoGramo" SortExpression="CostoGramo" HeaderText="Costo x Gramo" DataFormatString="{0:n}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                        
-                                                    <asp:TemplateField>
-                                                        <HeaderTemplate>
-                                                            <asp:Label ID="LBL_CantidadNecesaria" runat="server" Text="Cantidad necesaria"></asp:Label>
-                                                        </HeaderTemplate>
-                                                        <ItemTemplate>
-                                                            <asp:TextBox class="form-control" TextMode="Number" MaxLength="0" min="0" max="999" Style="width: 100%" runat="server" ID="TXT_CantidadNecesaria" Text='<%# Eval("CantidadNecesaria") %>'
-                                                                onkeyup="TXT_CantidadNecesaria_onKeyUp(this,event);" onchange="TXT_CantidadNecesaria_onChange(this)" />
-                                                        </ItemTemplate>
-                                                        <ItemStyle HorizontalAlign="Center" />
-                                                    </asp:TemplateField>
-                                                    <asp:TemplateField HeaderText="Costo total">
-                                                        <ItemTemplate>
-                                                            <div style="text-align: center;">
-                                                                <asp:Label ID="LBL_CostoTotal" runat="server" Text='<%# Eval("CostoTotal") %>' DataFormatString="{0:n}" />
-                                                            </div>
-                                                        </ItemTemplate>
-                                                        <FooterTemplate>
-                                                            <asp:Label ID="LBL_FOO_CostoTotal" DataFormatString="{0:n}" runat="server" />
-                                                        </FooterTemplate>
-                                                        <ItemStyle ForeColor="Black" />
-                                                    </asp:TemplateField>                                                    
-                                                </Columns>
-                                                <FooterStyle BackColor="#cccccc" Font-Bold="True" ForeColor="Black" HorizontalAlign="Center" CssClass="visible-lg" />
-                                            </asp:GridView>
-                                            <div class="row">
-                                                <div class="col-md-9" style="text-align: right;">
-                                                    <asp:Label ID="LBL_CantidadProducida" runat="server" Visible="false">Unidades producidas:</asp:Label>                                                    
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <asp:UpdatePanel ID="UpdatePanel_Resumen" runat="server" UpdateMode="Conditional">
+                                            <ContentTemplate>
+                                                <br />
+                                                <div class="col-md-6">
+                                                    <h5 class="modal-title" runat="server" id="H5_Subtitle" visible="false"></h5>
+                                                    <asp:GridView ID="DGV_ListaCostosProduccion" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
+                                                        AutoGenerateColumns="False" DataKeyNames="" ShowFooter="true"
+                                                        HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None" ShowHeaderWhenEmpty="true"
+                                                        EmptyDataText="Sin costos registrados." AllowSorting="true"
+                                                        OnRowDataBound="DGV_ListaCostosProduccion_RowDataBound">
+                                                        <Columns>
+                                                            <asp:BoundField DataField="Descripcion" SortExpression="Descripcion" HeaderText="Factor" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                            <asp:BoundField DataField="Valor" SortExpression="Valor" HeaderText="Porcentaje" DataFormatString="{0:n2}%" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                            <asp:TemplateField HeaderText="Costo">
+                                                                <ItemTemplate>
+                                                                    <div style="text-align: center;">
+                                                                        <asp:Label ID="LBL_CostoProduccion" runat="server" Text='<%# Eval("CostoProduccion") %>' DataFormatString="{0:n}" />
+                                                                    </div>
+                                                                </ItemTemplate>
+                                                                <FooterTemplate>
+                                                                    <asp:Label ID="LBL_FOO_CostoProduccion" DataFormatString="{0:n}" runat="server" />
+                                                                </FooterTemplate>
+                                                                <ItemStyle ForeColor="Black" />
+                                                            </asp:TemplateField>
+                                                        </Columns>
+                                                        <FooterStyle BackColor="#cccccc" Font-Bold="True" ForeColor="Black" HorizontalAlign="Center" CssClass="visible-lg" />
+                                                    </asp:GridView>
                                                 </div>
-                                                <div class="col-md-3">
-                                                    <asp:TextBox ID="TXT_CantidadProducida" runat="server" TextMode="Number" CssClass="form-control" Visible="false" onchange="TXT_UnidadesProducidas_OnTextChanged();" AutoPostBack="true"></asp:TextBox>
+                                                <div class="col-md-6">
+                                                    <h5 class="modal-title" runat="server" id="H5_Resumen" visible="false"></h5>
+                                                    <asp:GridView ID="DGV_ListaResumen" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
+                                                        AutoGenerateColumns="False" DataKeyNames=""
+                                                        HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None" ShowHeaderWhenEmpty="true"
+                                                        EmptyDataText="Sin registros." AllowSorting="true">
+                                                        <Columns>
+                                                            <asp:BoundField DataField="Descripcion" SortExpression="Descripcion" HeaderText="Descripción" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                            <asp:BoundField DataField="Valor" SortExpression="Valor" HeaderText="" DataFormatString="{0:n}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                            <asp:BoundField DataField="Porcentaje" SortExpression="Porcentaje" HeaderText="" DataFormatString="{0:n}%" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                        </Columns>
+                                                    </asp:GridView>
                                                 </div>
-                                            </div>
-                                            <br />
-                                            <div class="row">
-                                                <div class="col-md-9">                                        
-                                                    <asp:Label runat="server" ID="LBL_Empleado" Visible="false">Seleccionar empleado:</asp:Label>
-                                                    <asp:DropDownList class="form-control" style="font-size: 18px;" ID="DDL_Empleado" runat="server" Visible="false" OnSelectedIndexChanged="DDL_Empleado_OnChange" AutoPostBack="true"></asp:DropDownList>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <asp:Label ID="LBL_CantidadMinutos" runat="server" Visible="false">Cantidad minutos:</asp:Label>
-                                                    <asp:TextBox ID="TXT_CantidadMinutos" runat="server" TextMode="Number" CssClass="form-control" Visible="false" AutoPostBack="true"></asp:TextBox>
-                                                </div>
-                                            </div>
-                                            <asp:GridView ID="DGV_ListaEmpleados" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
-                                                AutoGenerateColumns="False" DataKeyNames="" ShowFooter="true"
-                                                HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None" ShowHeaderWhenEmpty="true"
-                                                EmptyDataText="Sin colaborador asignado." AllowSorting="true"
-                                                OnRowDataBound="DGV_ListaEmpleados_RowDataBound">
-                                                <Columns>                                                    
-                                                    <asp:BoundField DataField="Descripcion" SortExpression="Descripcion" HeaderText="Colaborador" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                    <asp:BoundField DataField="CantidadMinutos" SortExpression="CantidadMinutos" HeaderText="Minutos aplicados" DataFormatString="{0:n}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                    <asp:BoundField DataField="SalarioMinuto" SortExpression="SalarioMinuto" HeaderText="Costo x minuto" DataFormatString="{0:n}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                                                                                                                               
-                                                    <asp:TemplateField HeaderText="Total MOD">
-                                                        <ItemTemplate>
-                                                            <div style="text-align: center;">
-                                                                <asp:Label ID="LBL_TotalMOD" runat="server" Text='<%# Eval("TotalMOD") %>' DataFormatString="{0:n}" />
-                                                            </div>
-                                                        </ItemTemplate>
-                                                        <FooterTemplate>
-                                                            <asp:Label ID="LBL_FOO_TotalMOD" DataFormatString="{0:n}" runat="server" />
-                                                        </FooterTemplate>
-                                                        <ItemStyle ForeColor="Black" />
-                                                    </asp:TemplateField>
-                                                </Columns>
-                                                <FooterStyle BackColor="#cccccc" Font-Bold="True" ForeColor="Black" HorizontalAlign="Center" CssClass="visible-lg" />
-                                            </asp:GridView>
-                                            <br />
-                                            <h5 class="modal-title" runat="server" id="H5_Subtitle" visible="false"></h5>
-                                            <asp:GridView ID="DGV_ListaCostosProduccion" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
-                                                AutoGenerateColumns="False" DataKeyNames="" ShowFooter="true"
-                                                HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None" ShowHeaderWhenEmpty="true"
-                                                EmptyDataText="Sin costos registrados." AllowSorting="true"
-                                                OnRowDataBound="DGV_ListaCostosProduccion_RowDataBound">
-                                                <Columns>                                                    
-                                                    <asp:BoundField DataField="Descripcion" SortExpression="Descripcion" HeaderText="Factor" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                    <asp:BoundField DataField="Valor" SortExpression="Valor" HeaderText="Porcentaje" DataFormatString="{0:n0}%" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                    <asp:TemplateField HeaderText="Costo">
-                                                        <ItemTemplate>
-                                                            <div style="text-align: center;">
-                                                                <asp:Label ID="LBL_CostoProduccion" runat="server" Text='<%# Eval("CostoProduccion") %>' DataFormatString="{0:n}" />
-                                                            </div>
-                                                        </ItemTemplate>
-                                                        <FooterTemplate>
-                                                            <asp:Label ID="LBL_FOO_CostoProduccion" DataFormatString="{0:n}" runat="server" />
-                                                        </FooterTemplate>
-                                                        <ItemStyle ForeColor="Black" />
-                                                    </asp:TemplateField>
-                                                </Columns>
-                                                <FooterStyle BackColor="#cccccc" Font-Bold="True" ForeColor="Black" HorizontalAlign="Center" CssClass="visible-lg" />
-                                            </asp:GridView>
-                                            <br />
-                                            <h5 class="modal-title" runat="server" id="H5_Resumen" visible="false"></h5>
-                                            <asp:GridView ID="DGV_ListaResumen" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
-                                                AutoGenerateColumns="False" DataKeyNames="" 
-                                                HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None" ShowHeaderWhenEmpty="true"
-                                                EmptyDataText="Sin registros." AllowSorting="true">
-                                                <Columns>                                                    
-                                                    <asp:BoundField DataField="Descripcion" SortExpression="Descripcion" HeaderText="Descripción" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                    <asp:BoundField DataField="Valor" SortExpression="Valor" HeaderText="" DataFormatString="{0:n}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
-                                                    <asp:BoundField DataField="Porcentaje" SortExpression="Porcentaje" HeaderText="" DataFormatString="{0:n0}%" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                    
-                                                </Columns>
-                                            </asp:GridView>
-                                        </ContentTemplate>
-                                    </asp:UpdatePanel>
-                                </div>
+                                            </ContentTemplate>
+                                        </asp:UpdatePanel>
+                                    </div>
+                                </div>                                
                             </div>
                         </div>
                     </div>

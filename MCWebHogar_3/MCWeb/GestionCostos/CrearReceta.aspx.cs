@@ -1,4 +1,5 @@
-﻿using MCWebHogar.ControlPedidos;
+﻿using CapaLogica.Entidades.ControlCostos;
+using MCWebHogar.ControlPedidos;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -17,7 +18,7 @@ namespace MCWebHogar.GestionCostos
 
         decimal CostoTotal = 0, TotalMOD = 0, CostoProduccion = 0;
 
-        protected void Page_Load(object sender, EventArgs e)
+        protected void Page_Load(object sender, EventArgs e)        
         {
             if (!Page.IsPostBack)
             {
@@ -105,6 +106,10 @@ namespace MCWebHogar.GestionCostos
         {
             H5_Title.InnerText = "";
             H5_Title.Visible = mostrar;
+            H6_Subtitle.InnerText = "";
+            H6_Subtitle.Visible = mostrar;
+            H6_SubtitleEmpleado.InnerText = "";
+            H6_SubtitleEmpleado.Visible = mostrar;
             H5_Subtitle.InnerText = "";
             H5_Subtitle.Visible = mostrar;
             H5_Resumen.InnerText = "";
@@ -115,6 +120,7 @@ namespace MCWebHogar.GestionCostos
             LBL_Empleado.Visible = mostrar;
             TXT_CantidadMinutos.Visible = mostrar;
             LBL_CantidadMinutos.Visible = mostrar;
+            BTN_AsignarEmpleado.Visible = mostrar;
         }
         #endregion
 
@@ -240,7 +246,9 @@ namespace MCWebHogar.GestionCostos
                     HDF_IDProductoTerminado.Value = idProductoTerminado.ToString();
                     MostrarOcultarElementos(true);
                     H5_Title.InnerText = "Receta de: " + l.Text;
-                    H5_Subtitle.InnerText = "Costos";
+                    H6_Subtitle.InnerText = "Materia prima";
+                    H6_SubtitleEmpleado.InnerText = "Mano de obra directa";
+                    H5_Subtitle.InnerText = "Costos indirectos";
                     H5_Resumen.InnerText = "Resumen";
                     UpdatePanel_Filtros.Update();
                 }
@@ -329,7 +337,7 @@ namespace MCWebHogar.GestionCostos
         }
 
         [WebMethod()]
-        public static string BTN_Agregar_Click(int idProductoTerminado, int idProductoMateriaPrima, string usuario)
+        public static string BTN_Agregar_Click(int idProductoTerminado, int idProductoMateriaPrima, int productoIntermedio, string usuario)
         {
             CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
             DataTable Result = new DataTable();
@@ -338,6 +346,8 @@ namespace MCWebHogar.GestionCostos
 
             DT.DT1.Rows.Add("@ProductoTerminadoID", idProductoTerminado, SqlDbType.Int);
             DT.DT1.Rows.Add("@ProductoMateriaPrimaID", idProductoMateriaPrima, SqlDbType.Int);
+            DT.DT1.Rows.Add("@ProductoIntermedio", 0, SqlDbType.Int);
+            DT.DT1.Rows.Add("@MateriaPrimaIntermedia", productoIntermedio, SqlDbType.Int);
 
             DT.DT1.Rows.Add("@Usuario", usuario, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@TipoSentencia", "AgregarProducto", SqlDbType.VarChar);
@@ -425,7 +435,9 @@ namespace MCWebHogar.GestionCostos
                     HDF_IDProductoTerminado.Value = idProductoTerminado.ToString();
                     MostrarOcultarElementos(true);
                     H5_Title.InnerText = "Receta de: " + l.Text;
-                    H5_Subtitle.InnerText = "Costos";
+                    H6_Subtitle.InnerText = "Materia prima";
+                    H6_SubtitleEmpleado.InnerText = "Mano de obra directa";
+                    H5_Subtitle.InnerText = "Costos indirectos";
                     H5_Resumen.InnerText = "Resumen";
                     UpdatePanel_Filtros.Update();
                 }
@@ -445,16 +457,12 @@ namespace MCWebHogar.GestionCostos
                     {
                         DGV_ListaEmpleados.DataSource = Result;
                         DGV_ListaEmpleados.DataBind();
-                        DDL_Empleado.SelectedValue = Result.Rows[0]["EmpleadoID"].ToString().Trim();
-                        TXT_CantidadMinutos.Text = Result.Rows[0]["CantidadMinutos"].ToString().Trim();
                     }
                 }
                 else
                 {
                     DGV_ListaEmpleados.DataSource = Result;
                     DGV_ListaEmpleados.DataBind();
-                    DDL_Empleado.SelectedValue = "0";
-                    TXT_CantidadMinutos.Text = "";
                 }
             }
             else
@@ -481,7 +489,9 @@ namespace MCWebHogar.GestionCostos
                     HDF_IDProductoTerminado.Value = idProductoTerminado.ToString();
                     MostrarOcultarElementos(true);
                     H5_Title.InnerText = "Receta de: " + l.Text;
-                    H5_Subtitle.InnerText = "Costos";
+                    H6_Subtitle.InnerText = "Materia prima";
+                    H6_SubtitleEmpleado.InnerText = "Mano de obra directa";
+                    H5_Subtitle.InnerText = "Costos indirectos";
                     H5_Resumen.InnerText = "Resumen";
                     UpdatePanel_Filtros.Update();
                 }
@@ -494,6 +504,7 @@ namespace MCWebHogar.GestionCostos
                 DT.DT1.Rows.Add("@ProductoTerminadoID", idProductoTerminado, SqlDbType.Int);
                 DT.DT1.Rows.Add("@EmpleadoID", DDL_Empleado.SelectedValue, SqlDbType.Int);
                 DT.DT1.Rows.Add("@CantidadMinutos", TXT_CantidadMinutos.Text, SqlDbType.Decimal);
+                DT.DT1.Rows.Add("@ProductoIntermedio", 0, SqlDbType.Int);
 
                 DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
                 DT.DT1.Rows.Add("@TipoSentencia", "AgregarEmpleado", SqlDbType.VarChar);
@@ -522,7 +533,31 @@ namespace MCWebHogar.GestionCostos
             }
         }
 
-        protected void DDL_Empleado_OnChange(object sender, EventArgs e)
+        protected void DGV_ListaEmpleados_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName != "Sort")
+            {
+                int rowIndex = Convert.ToInt32(e.CommandArgument);
+                string idConsecutivoReceta = DGV_ListaEmpleados.DataKeys[rowIndex].Value.ToString().Trim();
+
+                if (e.CommandName == "Eliminar")
+                {
+                    DT.DT1.Clear();
+
+                    DT.DT1.Rows.Add("@IDConsecutivoReceta", idConsecutivoReceta, SqlDbType.Int);
+
+                    DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+                    DT.DT1.Rows.Add("@TipoSentencia", "EliminarEmpleado", SqlDbType.VarChar);
+
+                    Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CC03_0001");
+                    cargarMateriasPrimas("");
+                    cargarEmpleados("");
+                    cargarResumen();
+                }
+            }
+        }
+
+        protected void BTN_AsignarEmpleado_Click(object sender, EventArgs e)
         {
             agregarEmpleados();
         }
@@ -583,7 +618,7 @@ namespace MCWebHogar.GestionCostos
                 DGV_ListaCostosProduccion.DataBind();
             }
 
-            UpdatePanel_MateriasPrimasAsignadas.Update();
+            UpdatePanel_Resumen.Update();
         }
 
         protected void DGV_ListaCostosProduccion_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -643,6 +678,9 @@ namespace MCWebHogar.GestionCostos
                     {
                         DGV_ListaResumen.DataSource = Result;
                         DGV_ListaResumen.DataBind();
+                        string usuario = Session["UserID"].ToString().Trim();
+                        string script = "cargarFiltros();";
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcarcargarResumen", script, true);
                     }
                 }
                 else
@@ -657,7 +695,7 @@ namespace MCWebHogar.GestionCostos
                 DGV_ListaResumen.DataBind();
             }
 
-            UpdatePanel_MateriasPrimasAsignadas.Update();
+            UpdatePanel_Resumen.Update();
         }
         #endregion
     }

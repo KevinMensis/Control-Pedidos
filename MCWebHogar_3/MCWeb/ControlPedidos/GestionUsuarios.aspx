@@ -63,7 +63,7 @@
         }
 
         function validarCrearUsuario() {
-
+            return true
         }
 
         function cargarFiltros() {
@@ -325,7 +325,7 @@
                         </div>
                         <div class="modal-footer">
                             <asp:Button UseSubmitBehavior="false" ID="BTN_CerrarModalCrearUsuario" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-primary" />
-                            <asp:Button UseSubmitBehavior="false" ID="BTN_GuardarUsuario" runat="server" Text="Guardar usuario" CssClass="btn btn-secondary" OnClientClick="return validarCrearUsuario();" OnClick="BTN_GuardarUsuario_OnClick" />
+                            <asp:Button UseSubmitBehavior="false" ID="BTN_GuardarUsuario" runat="server" Text="Guardar usuario" CssClass="btn btn-secondary" OnClick="BTN_GuardarUsuario_OnClick" />                            
                         </div>
                     </div>
                 </div>

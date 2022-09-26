@@ -110,7 +110,7 @@ namespace MCWebHogar.ControlPedidos.Proveedores
                             {
                                 for (int j = 0; j < attachmentList.Count; j++)
                                 {
-                                    string FileName = attachmentList[j].FileName.Replace('/', ' ').Trim();
+                                    string FileName = attachmentList[j].FileName.Replace('/', ' ').Replace('º', ' ').Replace('?', ' ').Trim();
                                     Attachment attachment = new Attachment();
                                     attachment.MailID = mailID;
                                     attachment.FileName = FileName;
