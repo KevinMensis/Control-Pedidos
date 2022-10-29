@@ -50,11 +50,7 @@
             } else if (receptor === "Esteban") {
                 __doPostBack('Identificacion;115210651')
             }
-        }
-        
-        function cargarFiltros() {
-            
-        }
+        }        
 
         function graficoCostos(datos) {
             lista = []
@@ -401,8 +397,67 @@
             })
         }
 
+        function freezeMateriasPrimasAsignadasHeader() {
+            console.log('freeze')
+            var GridId = "<%= DGV_ListaMateriasPrimasAsignadas.ClientID %>";
+
+            var ScrollHeight = 500;
+
+            var grid = document.getElementById(GridId);
+            var gridWidth = grid.offsetWidth;
+            var gridHeight = grid.offsetHeight;
+            var headerCellWidths = new Array();
+            for (var i = 0; i < grid.getElementsByTagName("TH").length; i++) {
+                headerCellWidths[i] = grid.getElementsByTagName("TH")[i].offsetWidth;
+            }
+            grid.parentNode.appendChild(document.createElement("div"));
+            var parentDiv = grid.parentNode;
+
+            var table = document.createElement("table");
+            for (i = 0; i < grid.attributes.length; i++) {
+                if (grid.attributes[i].specified && grid.attributes[i].name != "id") {
+                    table.setAttribute(grid.attributes[i].name, grid.attributes[i].value);
+                }
+            }
+            table.style.cssText = grid.style.cssText;
+            table.style.width = gridWidth + "px";
+            table.appendChild(document.createElement("tbody"));
+            table.getElementsByTagName("tbody")[0].appendChild(grid.getElementsByTagName("TR")[0]);
+            var cells = table.getElementsByTagName("TH");
+
+            var gridRow = grid.getElementsByTagName("TR")[0];
+            for (var i = 0; i < cells.length; i++) {
+                var width;
+                if (headerCellWidths[i] > gridRow.getElementsByTagName("TD")[i].offsetWidth) {
+                    width = headerCellWidths[i];
+                }
+                else {
+                    width = gridRow.getElementsByTagName("TD")[i].offsetWidth;
+                }
+                cells[i].style.width = parseInt(width - 3) + "px";
+                gridRow.getElementsByTagName("TD")[i].style.width = parseInt(width - 3) + "px";
+            }
+            parentDiv.removeChild(grid);
+
+            var dummyHeader = document.createElement("div");
+            dummyHeader.appendChild(table);
+            parentDiv.appendChild(dummyHeader);
+            var scrollableDiv = document.createElement("div");
+            if (parseInt(gridHeight) > ScrollHeight) {
+                gridWidth = parseInt(gridWidth) + 12;
+            }
+            scrollableDiv.style.cssText = "overflow:auto;height:" + ScrollHeight + "px;width:" + gridWidth + "px";
+            scrollableDiv.appendChild(grid);
+            parentDiv.appendChild(scrollableDiv);
+        }
+
+        function cargarFiltros() {
+
+        }
+
         $(document).ready(function () {
             cargarFiltros();
+            freezeMateriasPrimasAsignadasHeader();
         });
     </script>
 </asp:Content>
@@ -573,6 +628,11 @@
                                                     <i class=""></i>Ver recetas
                                                 </a>
                                             </div>
+                                            <div class="input-group no-border col-md-2" style="text-align: center; display: block;">
+                                                <asp:LinkButton UseSubmitBehavior="false" ID="BTN_Actualizar" runat="server" CssClass="btn btn-secundary" OnClientClick="activarloading();" OnClick="BTN_ActualizarCostosProductosTerminados_OnClick">
+                                                    <i class="fas fa-sync"></i> Actualizar
+                                                </asp:LinkButton>
+                                            </div>
                                         </div>
                                         <hr />
                                         <div class="row">
@@ -591,7 +651,7 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="table">
+                                            <div class="table-responsive">
                                                 <asp:GridView ID="DGV_ProductosTerminados" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
                                                     AutoGenerateColumns="False" DataKeyNames="IDProductoTerminado,DetalleProducto"
                                                     HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None" ShowHeaderWhenEmpty="true"
@@ -745,7 +805,7 @@
                                                             <asp:BoundField DataField="Valor" SortExpression="Valor" HeaderText="" DataFormatString="{0:n}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                             <asp:BoundField DataField="Porcentaje" SortExpression="Porcentaje" HeaderText="" DataFormatString="{0:n}%" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                         </Columns>
-                                                    </asp:GridView>
+                                                    </asp:GridView>                                                    
                                                 </div>
                                             </ContentTemplate>
                                         </asp:UpdatePanel>

@@ -37,7 +37,7 @@ namespace MCWebHogar.GestionCostos
                 {
                     HDF_IDUsuario.Value = Session["Usuario"].ToString();
                     cargarDDLs();
-                    cargarProductos("");
+                    cargarProductos("freezeMateriasPrimasAsignadasHeader();");
                     cargarMateriasPrimas("");
                     cargarEmpleados("");
                     cargarCostosProduccion();
@@ -50,7 +50,7 @@ namespace MCWebHogar.GestionCostos
                 string opcion = Page.Request.Params["__EVENTTARGET"];
                 if (opcion.Contains("TXT_BuscarProducto"))
                 {
-                    cargarProductos("");
+                    cargarProductos("freezeMateriasPrimasAsignadasHeader();");
                 }
                 else if (opcion.Contains("Identificacion"))
                 {
@@ -86,6 +86,22 @@ namespace MCWebHogar.GestionCostos
             H5_Subtitle.Visible = mostrar;
             H5_Resumen.InnerText = "";
             H5_Resumen.Visible = mostrar;
+        }
+
+        protected void BTN_ActualizarCostosProductosTerminados_OnClick(object sender, EventArgs e)
+        {
+            DT.DT1.Clear();
+
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "ActualizarCostosProductosTerminados", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CC06_0002");
+
+            cargarProductos("freezeMateriasPrimasAsignadasHeader(); desactivarloading();");
+            cargarMateriasPrimas("");
+            cargarEmpleados("");
+            cargarCostosProduccion();
+            cargarResumen();
         }
         #endregion
 
@@ -190,7 +206,7 @@ namespace MCWebHogar.GestionCostos
 
         protected void FiltrarProductos_OnClick(object sender, EventArgs e)
         {
-            cargarProductos("");
+            cargarProductos("freezeMateriasPrimasAsignadasHeader();");
         }
 
         protected void BTN_ReporteProductos_OnClick(object sender, EventArgs e)

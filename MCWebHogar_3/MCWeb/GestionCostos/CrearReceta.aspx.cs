@@ -121,6 +121,20 @@ namespace MCWebHogar.GestionCostos
             TXT_CantidadMinutos.Visible = mostrar;
             LBL_CantidadMinutos.Visible = mostrar;
             BTN_AsignarEmpleado.Visible = mostrar;
+            BTN_ActualizarCostoProducto.Visible = mostrar;
+        }
+
+        protected void BTN_ActualizarCostosProductosTerminados_OnClick(object sender, EventArgs e)
+        {
+            DT.DT1.Clear();
+
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "ActualizarCostosProductosTerminados", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CC06_0002");
+
+            string script = "cargarFiltros(); desactivarloading();";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductos", script, true);
         }
         #endregion
 
@@ -181,6 +195,22 @@ namespace MCWebHogar.GestionCostos
             cargarEmpleados("");
             cargarCostosProduccion();
             cargarResumen();
+        }
+
+        protected void BTN_ActualizarCostoProducto_OnClick(object sender, EventArgs e)
+        {
+            int idProductoTerminado = Convert.ToInt32(HDF_IDProductoTerminado.Value);
+            DT.DT1.Clear();
+
+            DT.DT1.Rows.Add("@IDProductoTerminado", idProductoTerminado, SqlDbType.Int);
+
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "ActualizarProductoTerminado", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CC06_0001");
+
+            string script = "cargarFiltros(); desactivarloading();";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductos", script, true);
         }
         #endregion
 

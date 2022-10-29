@@ -68,6 +68,19 @@ namespace MCWebHogar.GestionCostos
         {
             
         }
+
+        protected void BTN_ActualizarCostosProductosTerminados_OnClick(object sender, EventArgs e)
+        {
+            DT.DT1.Clear();
+
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "ActualizarCostosProductosTerminados", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CC06_0002");
+
+            string script = "cargarFiltros(); desactivarloading();";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductos", script, true);
+        }
         #endregion
 
         #region Costos Producción

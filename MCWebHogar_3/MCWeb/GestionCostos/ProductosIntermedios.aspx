@@ -623,6 +623,11 @@
                                                     <i class=""></i>Ver recetas
                                                 </a>
                                             </div>
+                                            <div class="input-group no-border col-md-2" style="text-align: center; display: block;">
+                                                <asp:LinkButton UseSubmitBehavior="false" ID="BTN_Actualizar" runat="server" CssClass="btn btn-secundary" OnClientClick="activarloading();" OnClick="BTN_ActualizarCostosProductosTerminados_OnClick">
+                                                    <i class="fas fa-sync"></i> Actualizar
+                                                </asp:LinkButton>
+                                            </div>
                                         </div>
                                         <hr /><br />
                                         <div class="input-group no-border col-md-6">
@@ -646,6 +651,20 @@
                                             OnRowDataBound="DGV_ListaProductosIntermedios_RowDataBound"
                                             OnRowCommand="DGV_ListaProductosIntermedios_RowCommand">
                                             <Columns>
+                                                <asp:TemplateField>
+                                                    <HeaderTemplate>
+                                                        <asp:Label ID="LBL_Ver" runat="server" Text="Ver"></asp:Label>
+                                                    </HeaderTemplate>
+                                                    <ItemTemplate>
+                                                        <asp:LinkButton class="btn btn-outline-info btn-round-mant" ID="BTN_VerProductoTerminado" runat="server"
+                                                            CommandName="VerProductoIntermedio"
+                                                            CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
+                                                            AutoPostBack="true"> 
+                                                            <i class="fas fa-eye"></i>
+                                                        </asp:LinkButton>
+                                                    </ItemTemplate>
+                                                    <ItemStyle HorizontalAlign="Center" />
+                                                </asp:TemplateField>
                                                 <asp:BoundField DataField="DetalleProducto" SortExpression="DetalleProducto" HeaderText="Descripcion" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="PorcentajeImpuesto" SortExpression="PorcentajeImpuesto" HeaderText="IVA" DataFormatString="{0:n0}%" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                 <asp:BoundField DataField="MontoImpuestoIncluido" SortExpression="MontoImpuestoIncluido" HeaderText="Monto IVAI" DataFormatString="{0:n}" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                                    

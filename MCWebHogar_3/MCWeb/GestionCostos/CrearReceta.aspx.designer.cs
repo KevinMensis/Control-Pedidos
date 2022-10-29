@@ -67,6 +67,15 @@ namespace MCWebHogar.GestionCostos {
         protected global::System.Web.UI.UpdatePanel UpdatePanel_Filtros;
         
         /// <summary>
+        /// BTN_Actualizar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton BTN_Actualizar;
+        
+        /// <summary>
         /// TXT_BuscarProducto control.
         /// </summary>
         /// <remarks>
@@ -317,5 +326,14 @@ namespace MCWebHogar.GestionCostos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView DGV_ListaResumen;
+        
+        /// <summary>
+        /// BTN_ActualizarCostoProducto control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton BTN_ActualizarCostoProducto;
     }
 }

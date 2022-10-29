@@ -623,6 +623,11 @@
                                                     <i class=""></i>Ver recetas
                                                 </a>
                                             </div>
+                                            <div class="input-group no-border col-md-2" style="text-align: center; display: block;">
+                                                <asp:LinkButton UseSubmitBehavior="false" ID="BTN_Actualizar" runat="server" CssClass="btn btn-secundary" OnClientClick="activarloading();" OnClick="BTN_ActualizarCostosProductosTerminados_OnClick">
+                                                    <i class="fas fa-sync"></i> Actualizar
+                                                </asp:LinkButton>
+                                            </div>
                                         </div>
                                         <hr />
                                         <div class="row">
@@ -868,6 +873,11 @@
                                                             <asp:BoundField DataField="Porcentaje" SortExpression="Porcentaje" HeaderText="" DataFormatString="{0:n}%" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                         </Columns>
                                                     </asp:GridView>
+                                                    <div class="input-group no-border col-md-12" style="text-align: end; display: block;" >
+                                                        <asp:LinkButton UseSubmitBehavior="false" ID="BTN_ActualizarCostoProducto" runat="server" CssClass="btn btn-secundary" OnClick="BTN_ActualizarCostoProducto_OnClick" OnClientClick="activarloading();" Visible="false">
+                                                            <i class="fas fa-sync"></i> Actualizar costo del producto
+                                                        </asp:LinkButton>
+                                                    </div>
                                                 </div>
                                             </ContentTemplate>
                                         </asp:UpdatePanel>

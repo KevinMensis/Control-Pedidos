@@ -67,6 +67,15 @@ namespace MCWebHogar.GestionCostos {
         protected global::System.Web.UI.UpdatePanel UpdatePanel_Filtros;
         
         /// <summary>
+        /// BTN_Actualizar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton BTN_Actualizar;
+        
+        /// <summary>
         /// UpdatePanel_ListaCostos control.
         /// </summary>
         /// <remarks>

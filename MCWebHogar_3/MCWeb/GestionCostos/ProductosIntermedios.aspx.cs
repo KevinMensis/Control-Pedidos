@@ -130,6 +130,19 @@ namespace MCWebHogar.GestionCostos
             TXT_CantidadMinutos.Visible = mostrar;
             LBL_CantidadMinutos.Visible = mostrar;
         }
+
+        protected void BTN_ActualizarCostosProductosTerminados_OnClick(object sender, EventArgs e)
+        {
+            DT.DT1.Clear();
+
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "ActualizarCostosProductosTerminados", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CC06_0002");
+
+            string script = "cargarFiltros(); desactivarloading();";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductos", script, true);
+        }
         #endregion
 
         #region Productos Intermedios
@@ -228,8 +241,8 @@ namespace MCWebHogar.GestionCostos
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                e.Row.Attributes["style"] = "cursor:pointer";
-                e.Row.Attributes["onclick"] = Page.ClientScript.GetPostBackClientHyperlink(DGV_ListaProductosIntermedios, "Select$" + e.Row.RowIndex);
+                // e.Row.Attributes["style"] = "cursor:pointer";
+                // e.Row.Attributes["onclick"] = Page.ClientScript.GetPostBackClientHyperlink(DGV_ListaProductosIntermedios, "Select$" + e.Row.RowIndex);
                 e.Row.Attributes.Add("onmouseover", "this.style.backgroundColor='#ECEBDF'");
                 e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor='#fff'");
             }
@@ -280,7 +293,7 @@ namespace MCWebHogar.GestionCostos
                 string detalleProducto = DGV_ListaProductosIntermedios.DataKeys[rowIndex].Values[2].ToString().Trim();
                 decimal cantidad = Convert.ToDecimal(DGV_ListaProductosIntermedios.DataKeys[rowIndex].Values[1].ToString().Trim());
 
-                if (e.CommandName == "Select")
+                if (e.CommandName == "Select" || e.CommandName == "VerProductoIntermedio")
                 {
                     HDF_IDProductoTerminado.Value = idProductoIntermedio;
                     HDF_DetalleProducto.Value = detalleProducto;
