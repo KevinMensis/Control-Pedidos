@@ -167,7 +167,7 @@ namespace MCWebHogar.GestionCostos
                 {
                     LB_Productos.DataSource = Result;
                     LB_Productos.DataTextField = "DescripcionProducto";
-                    LB_Productos.DataValueField = "IDProducto";
+                    LB_Productos.DataValueField = "IDProducto";                    
                     LB_Productos.DataBind();
                     UpdatePanel_Filtros.Update();
                 }
@@ -191,10 +191,12 @@ namespace MCWebHogar.GestionCostos
 
         protected void LB_Productos_OnClick(object sender, EventArgs e)
         {
+            cargarUnidadesProducidas();
             cargarMateriasPrimas("");
             cargarEmpleados("");
             cargarCostosProduccion();
             cargarResumen();
+            cargarUnidadesProducidas();
         }
 
         protected void BTN_ActualizarCostoProducto_OnClick(object sender, EventArgs e)
@@ -211,6 +213,32 @@ namespace MCWebHogar.GestionCostos
 
             string script = "cargarFiltros(); desactivarloading();";
             ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductos", script, true);
+        }
+
+        private void cargarUnidadesProducidas()
+        {
+            DT.DT1.Clear();
+
+            DT.DT1.Rows.Add("@IDProductoTerminado", HDF_IDProductoTerminado.Value, SqlDbType.Int);
+
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "CargarProductoTerminadoInfo", SqlDbType.VarChar);
+
+            UpdatePanel_Filtros.Update();
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CC06_0001");
+
+            if (Result != null && Result.Rows.Count > 0)
+            {
+                if (Result.Rows[0][0].ToString().Trim() == "ERROR")
+                {
+                    return;
+                }
+                else
+                {
+                    TXT_CantidadProducida.Text = Result.Rows[0]["MedidaUnidades"].ToString().Trim();
+                }
+            }
         }
         #endregion
 
@@ -363,7 +391,28 @@ namespace MCWebHogar.GestionCostos
 
         protected void TXT_UnidadesProducidas_OnTextChanged(object sender, EventArgs e)
         {
-            
+            string cantidad = TXT_CantidadProducida.Text;
+            if (cantidad == "" || cantidad == "0")
+            {
+                string script = "cargarFiltros();alertifyerror('Por favor, ingrese la cantidad de unidades producida.')";
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_UnidadesProducidas_OnTextChanged", script, true);
+            }
+            else
+            {
+                DT.DT1.Clear();
+
+                DT.DT1.Rows.Add("@IDProductoTerminado", HDF_IDProductoTerminado.Value, SqlDbType.Int);
+                DT.DT1.Rows.Add("@MedidaUnidades", Convert.ToDecimal(cantidad), SqlDbType.Decimal);
+
+                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", "ActualizarCantidadProducida", SqlDbType.VarChar);
+
+                UpdatePanel_Filtros.Update();
+
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CC06_0001");
+                cargarCostosProduccion();
+                cargarResumen();
+            }
         }
 
         [WebMethod()]
