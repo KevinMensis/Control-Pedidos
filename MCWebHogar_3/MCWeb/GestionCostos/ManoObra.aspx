@@ -114,6 +114,14 @@
             }
         }
 
+        function abrirModalAgregarEmpleado() {
+            document.getElementById('BTN_ModalAgregarEmpleado').click()
+        }
+
+        function cerrarModalAgregarEmpleado() {
+            document.getElementById('BTN_ModalAgregarEmpleado').click()
+        }
+
         function TXT_Salario_onChange(txtCantidad) {
             var values = txtCantidad.id.split('_')
             var index = values.pop() * 1
@@ -404,7 +412,7 @@
                                             <div class="row">
                                                 <div class="input-group no-border col-md-6" style="text-align: left; display: inline-block;">
                                                     <h1 class="h3 mb-2 text-gray-800" runat="server" id="H1" style="display: initial;">Empleados</h1>
-                                                    <asp:LinkButton UseSubmitBehavior="false" class="btn btn-round-mant" ID="BTN_AgregarEmpleado" runat="server"><i class="fas fa-plus-circle"></i></asp:LinkButton>
+                                                    <asp:LinkButton UseSubmitBehavior="false" class="btn btn-round-mant" ID="BTN_AgregarEmpleado" runat="server" OnClick="BTN_AgregarEmpleado_Click"><i class="fas fa-plus-circle"></i></asp:LinkButton>
                                                 </div>
                                             </div>  
                                             <asp:GridView ID="DGV_ListaEmpleados" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
@@ -412,7 +420,7 @@
                                                 HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None" ShowHeaderWhenEmpty="true" 
                                                 EmptyDataText="No hay empleados que cargar." AllowSorting="true">
                                                 <Columns>
-                                                    <asp:BoundField DataField="Descripcion" SortExpression="Descripcion" HeaderText="Empleado" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                    <asp:BoundField DataField="Descripcion" SortExpression="Descripcion" HeaderText="Descripción puesto" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
                                                     <asp:TemplateField>
                                                         <HeaderTemplate>
                                                             <asp:Label ID="LBL_Salario" runat="server" Text="Salario"></asp:Label>
@@ -443,5 +451,42 @@
                 </div>
             </div>
         </div>
+    </div>
+    
+    <button type="button" id="BTN_ModalAgregarEmpleado" data-toggle="modal" data-target="#ModalAgregarEmpleado" style="visibility: hidden;">open</button>
+
+    <div class="modal bd-example-modal-md" id="ModalAgregarEmpleado" tabindex="-1" role="dialog" aria-labelledby="popAgregarEmpleado" aria-hidden="true">
+        <asp:UpdatePanel ID="UpdatePanel_AgregarEmpleado" runat="server" UpdateMode="Conditional">
+            <ContentTemplate>
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h5 class="modal-title" runat="server" id="Title_ModalEmpleado">Agregar empleado</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="TXT_DetalleFactor">Descripción puesto</label>
+                                    <asp:TextBox class="form-control" ID="TXT_DetalleEmpleado" runat="server"></asp:TextBox>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="TXT_MontoSalario">Salario</label>
+                                    <asp:TextBox class="form-control" ID="TXT_MontoSalario" runat="server" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div style="text-align: right;">
+                                <asp:Button ID="BTN_CerrarModalAgregarEmpleado" UseSubmitBehavior="false" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-primary" />
+                                <asp:Button ID="BTN_GuardarEmpleado" UseSubmitBehavior="false" runat="server" Text="Guardar" CssClass="btn btn-secondary" OnClick="BTN_GuardarEmpleado_Click" />                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ContentTemplate>
+        </asp:UpdatePanel>
     </div>
 </asp:Content>

@@ -180,6 +180,36 @@ namespace MCWebHogar.GestionCostos
             ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarCostos", script, true);
         }
 
+        protected void BTN_AgregarEmpleado_Click(object sender, EventArgs e)
+        {
+            TXT_DetalleEmpleado.Text = "";
+            TXT_MontoSalario.Text = "0";
+            UpdatePanel_AgregarEmpleado.Update();
+
+            string script = "cargarFiltros();abrirModalAgregarEmpleado();";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_AgregarEmpleado_Click", script, true);
+        }
+
+        protected void BTN_GuardarEmpleado_Click(object sender, EventArgs e)
+        {
+            string detalleEmpleado = TXT_DetalleEmpleado.Text;
+            decimal salario = Convert.ToInt32(TXT_MontoSalario.Text);
+
+            CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
+            DataTable Result = new DataTable();
+
+            DT.DT1.Clear();
+            DT.DT1.Rows.Add("@IDEmpleado", 0, SqlDbType.Int);
+            DT.DT1.Rows.Add("@Descripcion", detalleEmpleado, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@Salario", salario, SqlDbType.Decimal);
+
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "InsertarEmpleado", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CC02_0001");
+            cargarCostosEmpleados("cerrarModalAgregarEmpleado();");
+        }
+
         [WebMethod()]
         public static string BTN_ActualizarSalarioEmpleado_Click(int idEmpleado, decimal salario, string usuario)
         {
