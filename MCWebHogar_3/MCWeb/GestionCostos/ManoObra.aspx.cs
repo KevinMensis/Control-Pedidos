@@ -14,11 +14,24 @@ namespace MCWebHogar.GestionCostos
     {
         CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
         DataTable Result = new DataTable();
+        string tipoNegocio = "";
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            tipoNegocio = Session["RecetaNegocio"].ToString().Trim();
+
             if (!Page.IsPostBack)
             {
+                if (tipoNegocio == "panaderia")
+                {
+                    li_panaderia.Attributes.Add("class", "active");
+                    H1_Title.InnerText = "Panadería - " + H1_Title.InnerText;
+                }
+                else if (tipoNegocio == "restaurante")
+                {
+                    li_restaurante.Attributes.Add("class", "active");
+                    H1_Title.InnerText = "Restaurante - " + H1_Title.InnerText;
+                }
                 if (Session["UserId"] == null)
                 {
                     Response.Redirect("../Default.aspx", true);
@@ -53,6 +66,12 @@ namespace MCWebHogar.GestionCostos
                 {
                     cargarCostosProduccion("");
                     cargarCostosEmpleados("");
+                }
+                if (opcion.Contains("Receta"))
+                {
+                    string negocio = opcion.Split(';')[1];
+                    Session["RecetaNegocio"] = negocio;
+                    Response.Redirect("../GestionCostos/CrearReceta.aspx", true);
                 }
             }
         }
@@ -223,6 +242,24 @@ namespace MCWebHogar.GestionCostos
 
             DT.DT1.Rows.Add("@Usuario", usuario, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@TipoSentencia", "ActualizarEmpleado", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CC02_0001");
+            return "correcto";
+        }
+
+        [WebMethod()]
+        public static string BTN_ActualizarDescripcionEmpleado_Click(int idEmpleado, string descripcion, string usuario)
+        {
+            CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
+            DataTable Result = new DataTable();
+
+            DT.DT1.Clear();
+
+            DT.DT1.Rows.Add("@IDEmpleado", idEmpleado, SqlDbType.Int);
+            DT.DT1.Rows.Add("@Descripcion", descripcion, SqlDbType.VarChar);
+
+            DT.DT1.Rows.Add("@Usuario", usuario, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "ActualizarDescripcionEmpleado", SqlDbType.VarChar);
 
             Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CC02_0001");
             return "correcto";

@@ -52,6 +52,10 @@
             }
         }
 
+        function seleccionarNegocio(tipoNegocio) {
+            __doPostBack('Receta;' + tipoNegocio)
+        }
+
         function TXT_Valor_onKeyUp(txtCantidad, e) {
             var values = txtCantidad.id.split('_')
             var index = values.pop() * 1 + 1
@@ -89,6 +93,14 @@
                 document.getElementById(id).autofocus = true;
                 document.getElementById(id).focus();
                 document.getElementById(id).select();
+            }
+        }
+
+        function TXT_Descripcion_onKeyUp(txtDescripcion, e) {            
+            if (e.keyCode === 13) {
+                TXT_Descripcion_onChange(txtDescripcion)
+            } else {
+                return false
             }
         }
 
@@ -130,7 +142,7 @@
             var HDF_IDEmpleado = document.getElementById(id)
             var idEmpleado = HDF_IDEmpleado.value
             var salario = txtCantidad.value.replace(",", "") * 1
-            console.log(salario)
+            
             if (salario === '' || salario === 0 || salario === '0') {
                 txtCantidad.value = 1
             } else {
@@ -141,6 +153,22 @@
             }
             if (salario > 0) {
                 actualizarSalarioEmpleado(idEmpleado, salario)
+            }
+        }
+
+        function TXT_Descripcion_onChange(txtDescripcion) {
+            var values = txtDescripcion.id.split('_')
+            var index = values.pop() * 1
+
+            var id = 'Content_DGV_ListaEmpleados_HDF_IDEmpleado_' + index
+            var HDF_IDEmpleado = document.getElementById(id)
+            var idEmpleado = HDF_IDEmpleado.value
+            var descripcionPuesto = txtDescripcion.value
+
+            if (descripcionPuesto === '') {
+                alertifywarning('Por favor, ingrese la descripción del puesto')
+            } else {
+                actualizarDescripcionEmpleado(idEmpleado, descripcionPuesto)
             }
         }
 
@@ -172,10 +200,32 @@
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
-                url: "Costos.aspx/BTN_ActualizarSalarioEmpleado_Click",
+                url: "ManoObra.aspx/BTN_ActualizarSalarioEmpleado_Click",
                 data: JSON.stringify({
                     "idEmpleado": idEmpleado,
                     "salario": salario,
+                    "usuario": usuario
+                }),
+                dataType: "json",
+                success: function (Result) {
+                    __doPostBack('CargarCostos')
+                },
+                error: function (Result) {
+                    alert("ERROR " + Result.status + ' ' + Result.statusText);
+                }
+            })
+        }
+
+        function actualizarDescripcionEmpleado(idEmpleado, descripcion) {
+            var usuario = document.getElementById('Content_HDF_IDUsuario').value;
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "ManoObra.aspx/BTN_ActualizarDescripcionEmpleado_Click",
+                data: JSON.stringify({
+                    "idEmpleado": idEmpleado,
+                    "descripcion": descripcion,
                     "usuario": usuario
                 }),
                 dataType: "json",
@@ -276,10 +326,16 @@
                             <p>Proveedores - Esteban</p>
                         </a>
                     </li>
-                    <li class="active">
-                        <a href="CrearReceta.aspx">
+                    <li id="li_panaderia" runat="server">
+                        <a href="#" onclick="seleccionarNegocio('panaderia');">
                             <i class="fas fa-chart-line"></i>
-                            <p>Gestión costos</p>
+                            <p>Costos panadería</p>
+                        </a>
+                    </li>
+                    <li id="li_restaurante" runat="server">
+                        <a href="#" onclick="seleccionarNegocio('restaurante');">
+                            <i class="fas fa-chart-line"></i>
+                            <p>Costos restaurante</p>
                         </a>
                     </li>
                 </ul>
@@ -351,7 +407,7 @@
                                             </div>
                                             <div class="input-group no-border col-md-2" style="text-align: center; display: block;">
                                                 <a href="ProductosIntermedios.aspx" class="btn btn-primary">
-                                                    <i class=""></i>Productos intermedios
+                                                    <i class=""></i>Recetas intermedias
                                                 </a>
                                             </div>
                                             <div class="input-group no-border col-md-2" style="text-align: center; display: block;">
@@ -420,14 +476,23 @@
                                                 HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None" ShowHeaderWhenEmpty="true" 
                                                 EmptyDataText="No hay empleados que cargar." AllowSorting="true">
                                                 <Columns>
-                                                    <asp:BoundField DataField="Descripcion" SortExpression="Descripcion" HeaderText="Descripción puesto" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                    <asp:TemplateField>
+                                                        <HeaderTemplate>
+                                                            <asp:Label ID="LBL_Descripcion" runat="server" Text="Descripción del puesto"></asp:Label>
+                                                        </HeaderTemplate>
+                                                        <ItemTemplate>
+                                                            <asp:TextBox class="form-control" MaxLength="0" min="0" Style="width: 100%; text-align: left;" runat="server" ID="TXT_Descripcion" Text='<%# Eval("Descripcion") %>'
+                                                                onkeyup="TXT_Descripcion_onKeyUp(this,event);" onchange="TXT_Descripcion_onChange(this)" />
+                                                        </ItemTemplate>
+                                                        <ItemStyle HorizontalAlign="Center" />
+                                                    </asp:TemplateField>
                                                     <asp:TemplateField>
                                                         <HeaderTemplate>
                                                             <asp:Label ID="LBL_Salario" runat="server" Text="Salario"></asp:Label>
                                                         </HeaderTemplate>
                                                         <ItemTemplate>
                                                             <asp:HiddenField ID="HDF_IDEmpleado" runat="server" Value='<%# Eval("IDEmpleado") %>' />
-                                                            <asp:TextBox class="form-control"  MaxLength="0" min="0" Style="width: 100%; text-align: end;" runat="server" ID="TXT_Salario" Text='<%# Eval("Salario", "{0:n}") %>'
+                                                            <asp:TextBox class="form-control" MaxLength="0" min="0" Style="width: 100%; text-align: end;" runat="server" ID="TXT_Salario" Text='<%# Eval("Salario", "{0:n}") %>'
                                                                 onkeyup="TXT_Salario_onKeyUp(this,event);" onchange="TXT_Salario_onChange(this)" />
                                                         </ItemTemplate>
                                                         <ItemStyle HorizontalAlign="Center" />

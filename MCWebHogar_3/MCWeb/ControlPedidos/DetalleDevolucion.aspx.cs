@@ -96,6 +96,12 @@ namespace MCWebHogar.ControlPedidos
                     Session["IdentificacionReceptor"] = identificacion;
                     Response.Redirect("../GestionProveedores/Proveedores.aspx", true);
                 }
+                if (opcion.Contains("Receta"))
+                {
+                    string negocio = opcion.Split(';')[1];
+                    Session["RecetaNegocio"] = negocio;
+                    Response.Redirect("../GestionCostos/CrearReceta.aspx", true);
+                }
             }
         }
 
@@ -204,6 +210,7 @@ namespace MCWebHogar.ControlPedidos
 
                         BTN_AgregarProducto.Visible = TXT_FechaDevolucion.Text == DateTime.Now.ToString("yyyy-MM-dd");
 
+                        TXT_FechaDevolucion.Enabled = (ClasePermiso.Permiso("Editar", "Acciones", "Editar", Convert.ToInt32(Session["UserId"].ToString().Trim())) > 0);
                         // HDF_EstadoDevolucion.Value = dr["Estado"].ToString().Trim();
 
                         // BTN_ConfirmarDevolucion.Visible = HDF_EstadoDevolucion.Value != "Confirmado";
@@ -432,6 +439,39 @@ namespace MCWebHogar.ControlPedidos
                     Response.Flush();
                     Response.End();
                 }
+            }
+        }
+
+        protected void TXT_FechaDevolucion_OnChange(object sender, EventArgs e)
+        {
+            DT.DT1.Clear();
+
+            DT.DT1.Rows.Add("@IDDevolucion", HDF_IDDevolucion.Value, SqlDbType.Int);
+            DT.DT1.Rows.Add("@fechaDevolucion", TXT_FechaDevolucion.Text + " " + TXT_HoraDevolucion.Text, SqlDbType.VarChar);
+
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "ActualizarFechaDevolucion", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP18_0001");
+
+            if (Result != null && Result.Rows.Count > 0)
+            {
+                if (Result.Rows[0][0].ToString().Trim() == "ERROR")
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_FechaDevolucion_OnChange", "alertifywarning('No se ha modificado la fecha de la Devolucion. Error: " + Result.Rows[0][1].ToString().Trim() + "');", true);
+                    return;
+                }
+                else
+                {
+                    string script = "alertifysuccess('Se ha modificado la fecha de la Devolución.');estilosElementosBloqueados();";
+                    cargarDevolucion(script);
+                    cargarProductosDevolucion();
+                }
+            }
+            else
+            {
+                string script = "alertifywarning('No se ha modificado la fecha de la Devolucion. Por favor, intente de nuevo.');";
+                cargarDevolucion(script);
             }
         }
         #endregion

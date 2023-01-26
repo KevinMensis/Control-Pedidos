@@ -95,6 +95,12 @@ namespace MCWebHogar.ControlPedidos
                     Session["IdentificacionReceptor"] = identificacion;
                     Response.Redirect("../GestionProveedores/Proveedores.aspx", true);
                 }
+                if (opcion.Contains("Receta"))
+                {
+                    string negocio = opcion.Split(';')[1];
+                    Session["RecetaNegocio"] = negocio;
+                    Response.Redirect("../GestionCostos/CrearReceta.aspx", true);
+                }
             }
         }
 
@@ -203,8 +209,10 @@ namespace MCWebHogar.ControlPedidos
                         if (HDF_EstadoPedido.Value != "Preparación")
                         {
                             BTN_AgregarProductos.Visible = false;
+                            BTN_AgregarProductos.Visible = (ClasePermiso.Permiso("Agregar", "Acciones", "Agregar", Convert.ToInt32(Session["UserId"].ToString().Trim())) > 0);
                             BTN_ConfirmarPedido.Visible = false;
                         }
+                        
                         if (Session["NuevoPedido"] != null)
                         {
                             ejecutar += "abrirModalAgregarProductos();";
@@ -768,6 +776,7 @@ namespace MCWebHogar.ControlPedidos
                     ddlCents.Enabled = false;
                     ddlCents.CssClass = "form-control";
                     eliminar.Enabled = false;
+                    eliminar.Visible = false;
                     eliminar.CssClass = "btn btn-outline-danger btn-round";
                 }
             }

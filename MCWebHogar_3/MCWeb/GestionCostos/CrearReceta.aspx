@@ -56,6 +56,10 @@
             }
         }
 
+        function seleccionarNegocio(tipoNegocio) {
+            __doPostBack('Receta;' + tipoNegocio)
+        }
+
         function validarMinutos() {
             var minutos = $(<%= TXT_CantidadMinutos.ClientID %>)[0].value
             var empleado = $(<%= DDL_Empleado.ClientID %>)[0].value
@@ -155,7 +159,6 @@
                 } else {
                     id = 'Content_DGV_ListaMateriasPrimasAsignadas_TXT_CantidadNecesaria_' + index
                 }
-                console.dir(id)
                 document.getElementById(id).autofocus = true;
                 document.getElementById(id).focus();
                 document.getElementById(id).select();
@@ -203,12 +206,12 @@
             if (cantidadNecesaria === '' || cantidadNecesaria === 0 || cantidadNecesaria === '0') {
                 txtCantidad.value = 1
             } else {
-                if (cantidadNecesaria < 0 || cantidadNecesaria > 999) {
+                if (cantidadNecesaria < 0 || cantidadNecesaria > 9999) {
                     cantidadNecesaria = 1
                     txtCantidad.value = 1
                 }
             }
-            if (cantidadNecesaria >= 0 && cantidadNecesaria < 1000) {
+            if (cantidadNecesaria >= 0 && cantidadNecesaria < 10000) {
                 actualizarCantidadNecesariaProductos(idConsecutivoReceta, cantidadNecesaria)
             }
         }
@@ -535,10 +538,16 @@
                             <p>Proveedores - Esteban</p>
                         </a>
                     </li>
-                    <li class="active">
-                        <a href="CrearReceta.aspx">
+                    <li id="li_panaderia" runat="server">
+                        <a href="#" onclick="seleccionarNegocio('panaderia');">
                             <i class="fas fa-chart-line"></i>
-                            <p>Gestión costos</p>
+                            <p>Costos panadería</p>
+                        </a>
+                    </li>
+                    <li id="li_restaurante" runat="server">
+                        <a href="#" onclick="seleccionarNegocio('restaurante');">
+                            <i class="fas fa-chart-line"></i>
+                            <p>Costos restaurante</p>
                         </a>
                     </li>
                 </ul>
@@ -610,7 +619,7 @@
                                             </div>
                                             <div class="input-group no-border col-md-2" style="text-align: center; display: block;">
                                                 <a href="ProductosIntermedios.aspx" class="btn btn-primary">
-                                                    <i class=""></i>Productos intermedios
+                                                    <i class=""></i>Recetas intermedias
                                                 </a>
                                             </div>
                                             <div class="input-group no-border col-md-2" style="text-align: center; display: block;">
@@ -746,7 +755,7 @@
                                                                 <asp:Label ID="LBL_CantidadNecesaria" runat="server" Text="Cantidad necesaria"></asp:Label>
                                                             </HeaderTemplate>
                                                             <ItemTemplate>
-                                                                <asp:TextBox class="form-control" TextMode="Number" MaxLength="0" min="0" max="999" Style="width: 100%" runat="server" ID="TXT_CantidadNecesaria" Text='<%# Eval("CantidadNecesaria") %>'
+                                                                <asp:TextBox class="form-control" TextMode="Number" MaxLength="0" min="0" max="9999" Style="width: 100%" runat="server" ID="TXT_CantidadNecesaria" Text='<%# Eval("CantidadNecesaria") %>'
                                                                     onkeyup="TXT_CantidadNecesaria_onKeyUp(this,event);" onchange="TXT_CantidadNecesaria_onChange(this)" />
                                                             </ItemTemplate>
                                                             <ItemStyle HorizontalAlign="Center" />
@@ -818,8 +827,14 @@
                                                     <FooterStyle BackColor="#cccccc" Font-Bold="True" ForeColor="Black" HorizontalAlign="Center" CssClass="visible-lg" />
                                                 </asp:GridView>
                                                 <br />
-                                                <div class="row">
-                                                    <div class="col-md-9" style="text-align: right;">
+                                                <div class="row">                                                    
+                                                    <div class="col-md-3" style="text-align: right;">
+                                                        <asp:Label ID="LBL_CantidadUnidades" runat="server" Visible="false">Unidades:</asp:Label>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <asp:TextBox ID="TXT_CantidadUnidades" runat="server" TextMode="Number" CssClass="form-control" Visible="false" OnTextChanged="TXT_CantidadUnidades_OnTextChanged" AutoPostBack="true"></asp:TextBox>
+                                                    </div>
+                                                    <div class="col-md-3" style="text-align: right;">
                                                         <asp:Label ID="LBL_CantidadProducida" runat="server" Visible="false">Unidades producidas:</asp:Label>
                                                     </div>
                                                     <div class="col-md-3">

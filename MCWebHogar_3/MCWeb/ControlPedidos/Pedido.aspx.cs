@@ -48,6 +48,12 @@ namespace MCWebHogar.ControlPedidos
                     Session["IdentificacionReceptor"] = identificacion;
                     Response.Redirect("../GestionProveedores/Proveedores.aspx", true);
                 }
+                if (opcion.Contains("Receta"))
+                {
+                    string negocio = opcion.Split(';')[1];
+                    Session["RecetaNegocio"] = negocio;
+                    Response.Redirect("../GestionCostos/CrearReceta.aspx", true);
+                }
             }
         }
 
@@ -363,7 +369,8 @@ namespace MCWebHogar.ControlPedidos
                 if (e.CommandName == "VerDetalle")
                 {
                     Session["IDPedido"] = idPedido;
-                    Response.Redirect("DetallePedido.aspx", true);
+                    // Response.Redirect("DetallePedido.aspx", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDGV_ListaPedidos_RowCommand", "window.open('DetallePedido.aspx','_blank');", true);
                 }                
             }
         }
@@ -443,7 +450,8 @@ namespace MCWebHogar.ControlPedidos
                     else
                     {
                         Session["IDODP"] = idODP;
-                        Response.Redirect("DetalleODP.aspx");
+                        // Response.Redirect("DetalleODP.aspx");
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDDL_Ira_SelectedIndexChanged", "window.open('DetalleODP.aspx','_blank');", true);
                     }                        
                     break;
                 case "Despacho":
@@ -457,7 +465,8 @@ namespace MCWebHogar.ControlPedidos
                     else
                     {
                         Session["IDDespacho"] = idDespacho;
-                        Response.Redirect("DetalleDespacho.aspx");
+                        // Response.Redirect("DetalleDespacho.aspx");
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDDL_Ira_SelectedIndexChanged", "window.open('DetalleDespacho.aspx','_blank');", true);
                     } 
                     break;
                 case "Pedido Recibido":
@@ -471,7 +480,8 @@ namespace MCWebHogar.ControlPedidos
                     else
                     {
                         Session["IDRecibidoPedido"] = idPedidoRecibido;
-                        Response.Redirect("DetallePedidoRecibido.aspx", true);
+                        // Response.Redirect("DetallePedidoRecibido.aspx", true);
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDDL_Ira_SelectedIndexChanged", "window.open('DetallePedidoRecibido.aspx','_blank');", true);
                     } 
                     break;
             }

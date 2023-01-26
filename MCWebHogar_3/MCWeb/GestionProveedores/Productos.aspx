@@ -245,7 +245,15 @@
 
             var detalleProducto = document.getElementById('<%= TXT_DetalleProducto.ClientID %>').value;
             var codigoProductoWebpos = document.getElementById('<%= TXT_CodigoPOS.ClientID %>').value;
+            var medidaUnidades = document.getElementById('<%= TXT_MedidaUnidades.ClientID %>').value;
             var categoria = document.getElementById('<%= DDL_Categoria.ClientID %>').value;
+            var chk_esVenta = document.getElementById('<%= CHK_EsVenta.ClientID %>');
+            var chk_esMateriaPrima = document.getElementById('<%= CHK_EsMateriaPrima.ClientID %>');
+
+            var esVenta = chk_esVenta.checked ? 1 : 0
+            var esMateriaPrima = chk_esMateriaPrima.checked ? 1 : 0
+
+            console.dir(esMateriaPrima)
             var promises = [];
             promises.push(
                 $.ajax({
@@ -256,7 +264,10 @@
                         "idProducto": idProducto,
                         "detalleProducto": detalleProducto,
                         "codigoProductoWebpos": codigoProductoWebpos,
+                        "medidaUnidades": medidaUnidades,
                         "categoria": categoria,
+                        "esVenta": esVenta,
+                        "esMateriaPrima": esMateriaPrima,
                         "usuario": usuario
                     }),
                     dataType: "json",
@@ -293,7 +304,7 @@
             Promise.all(promises).then(function () {
                 cerrarModalEditarProducto();
                 alertifysuccess('Actualizacion exitosa');
-
+                __doPostBack('CargarProductos')
                 // cargarFiltros();
                 // desactivarloading();
             });
@@ -305,6 +316,10 @@
             } else if (receptor === "Esteban") {
                 __doPostBack('Identificacion;115210651')
             }
+        }
+
+        function seleccionarNegocio(tipoNegocio) {
+            __doPostBack('Receta;' + tipoNegocio)
         }
 
         function validarEditarProducto() {
@@ -401,9 +416,15 @@
                         </a>
                     </li>
                     <li>
-                        <a href="../GestionCostos/CrearReceta.aspx">
+                        <a href="#" onclick="seleccionarNegocio('panaderia');">
                             <i class="fas fa-chart-line"></i>
-                            <p>Gestión costos</p>
+                            <p>Costos panadería</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="seleccionarNegocio('restaurante');">
+                            <i class="fas fa-chart-line"></i>
+                            <p>Costos restaurante</p>
                         </a>
                     </li>
                 </ul>
@@ -739,7 +760,25 @@
                                 </div>
                                 <div class="col-md-3">
                                     <label for="TXT_PrecioVenta">Precio venta:</label>
-                                    <asp:TextBox ID="TXT_PrecioVenta" runat="server" CssClass="form-control" TextMode="Number"></asp:TextBox>
+                                    <asp:TextBox ID="TXT_PrecioVenta" runat="server" CssClass="form-control" TextMode="Number" onkeyup="TXT_DetalleProducto_onKeyUp();"></asp:TextBox>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="TXT_MedidaUnidades">Medida unidades (equivalente kls):</label>
+                                    <asp:TextBox ID="TXT_MedidaUnidades" runat="server" CssClass="form-control" TextMode="Number" onkeyup="TXT_DetalleProducto_onKeyUp();"></asp:TextBox>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <asp:CheckBox ID="CHK_EsVenta" runat="server" CssClass="form-check-input" OnChange="TXT_DetalleProducto_onKeyUp();" />
+                                    <label for="CHK_EsVenta"> Es producto de venta</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <asp:CheckBox ID="CHK_EsMateriaPrima" runat="server" CssClass="form-check-input" OnChange="TXT_DetalleProducto_onKeyUp();" />
+                                    <label for="CHK_EsMateriaPrima"> Es producto de materia prima</label>
                                 </div>
                             </div>
                             <br />

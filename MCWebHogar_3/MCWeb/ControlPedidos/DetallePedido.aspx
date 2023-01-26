@@ -341,9 +341,9 @@
 
             table = document.getElementById(listaProductos);
             tbody = table.tBodies[0];
-            var pag = index / 30 + 1
+            var pag = Math.trunc(index / 30 + 1)
             var totalPags = Math.trunc(tbody.rows.length / 30)
-            totalPags += 0 < tbody.rows.length % 30 ? 1 : 0
+            totalPags += 0 < tbody.rows.length % 31 ? 1 : 0
 
             if (index < tbody.rows.length) {
                 for (i = index, rowLen = tbody.rows.length; i < rowLen; i++) {
@@ -413,7 +413,7 @@
                     alert(error);
                 }).finally(function () {
                     return qz.websocket.disconnect().then(function () {
-                        imprimir2(estado, codigoPedido, sucursal, plantaProduccion, printer, categorias, index + 30, indexFin + 30)
+                        imprimir2(estado, codigoPedido, sucursal, plantaProduccion, printer, categorias, index + 31, indexFin + 31)
                     });
                 });
             } else {
@@ -457,6 +457,10 @@
             } else if (receptor === "Esteban") {
                 __doPostBack('Identificacion;115210651')
             }
+        }
+
+        function seleccionarNegocio(tipoNegocio) {
+            __doPostBack('Receta;' + tipoNegocio)
         }
 
         function cargarFiltros() {
@@ -557,9 +561,15 @@
                         </a>
                     </li>
                     <li>
-                        <a href="../GestionCostos/CrearReceta.aspx">
+                        <a href="#" onclick="seleccionarNegocio('panaderia');">
                             <i class="fas fa-chart-line"></i>
-                            <p>Gestión costos</p>
+                            <p>Costos panadería</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="seleccionarNegocio('restaurante');">
+                            <i class="fas fa-chart-line"></i>
+                            <p>Costos restaurante</p>
                         </a>
                     </li>
                 </ul>

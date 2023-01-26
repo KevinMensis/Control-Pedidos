@@ -42,6 +42,12 @@ namespace MCWebHogar.ControlPedidos
                     Session["IdentificacionReceptor"] = identificacion;
                     Response.Redirect("../GestionProveedores/Proveedores.aspx", true);
                 }
+                if (opcion.Contains("Receta"))
+                {
+                    string negocio = opcion.Split(';')[1];
+                    Session["RecetaNegocio"] = negocio;
+                    Response.Redirect("../GestionCostos/CrearReceta.aspx", true);
+                }
             }
         }
 
@@ -139,7 +145,8 @@ namespace MCWebHogar.ControlPedidos
                 if (e.CommandName == "VerDetalle")
                 {
                     Session["IDEmpaque"] = idEmpaque;
-                    Response.Redirect("DetalleEmpaque.aspx", true);
+                    // Response.Redirect("DetalleEmpaque.aspx", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDGV_ListaEmpaques_RowCommand", "window.open('DetalleEmpaque.aspx','_blank');", true);
                 }
                 else if (e.CommandName == "Eliminar")
                 {

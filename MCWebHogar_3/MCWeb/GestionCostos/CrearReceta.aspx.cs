@@ -15,13 +15,26 @@ namespace MCWebHogar.GestionCostos
     {
         CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
         DataTable Result = new DataTable();
+        string tipoNegocio = "";
 
         decimal CostoTotal = 0, TotalMOD = 0, CostoProduccion = 0;
 
         protected void Page_Load(object sender, EventArgs e)        
         {
+            tipoNegocio = Session["RecetaNegocio"].ToString().Trim();
+
             if (!Page.IsPostBack)
             {
+                if (tipoNegocio == "panaderia")
+                {
+                    li_panaderia.Attributes.Add("class", "active");
+                    H1_Title.InnerText = "Panadería - " + H1_Title.InnerText;
+                }
+                else if (tipoNegocio == "restaurante")
+                {
+                    li_restaurante.Attributes.Add("class", "active");
+                    H1_Title.InnerText = "Restaurante - " + H1_Title.InnerText;
+                }
                 if (Session["UserId"] == null)
                 {
                     Response.Redirect("../Default.aspx", true);
@@ -63,6 +76,12 @@ namespace MCWebHogar.GestionCostos
                     string identificacion = opcion.Split(';')[1];
                     Session["IdentificacionReceptor"] = identificacion;
                     Response.Redirect("../GestionProveedores/Proveedores.aspx", true);
+                }
+                if (opcion.Contains("Receta"))
+                {
+                    string negocio = opcion.Split(';')[1];
+                    Session["RecetaNegocio"] = negocio;
+                    Response.Redirect("../GestionCostos/CrearReceta.aspx", true);
                 }
             }
         }
@@ -116,6 +135,8 @@ namespace MCWebHogar.GestionCostos
             H5_Resumen.Visible = mostrar;
             LBL_CantidadProducida.Visible = mostrar;
             TXT_CantidadProducida.Visible = mostrar;
+            LBL_CantidadUnidades.Visible = mostrar;
+            TXT_CantidadUnidades.Visible = mostrar;
             DDL_Empleado.Visible = mostrar;
             LBL_Empleado.Visible = mostrar;
             TXT_CantidadMinutos.Visible = mostrar;
@@ -144,6 +165,7 @@ namespace MCWebHogar.GestionCostos
             DT.DT1.Clear();
                           
             DT.DT1.Rows.Add("@DescripcionProducto", TXT_BuscarProducto.Text, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@Negocio", tipoNegocio, SqlDbType.VarChar);
 
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
             DT.DT1.Rows.Add("@TipoSentencia", consulta, SqlDbType.VarChar);
@@ -237,6 +259,10 @@ namespace MCWebHogar.GestionCostos
                 else
                 {
                     TXT_CantidadProducida.Text = Result.Rows[0]["MedidaUnidades"].ToString().Trim();
+                    TXT_CantidadUnidades.Text = Result.Rows[0]["Unidades"].ToString().Trim();
+                    int esEmpaque = Convert.ToInt32(Result.Rows[0]["ProductoEmpaque"]);
+                    LBL_CantidadUnidades.Visible = esEmpaque == 1;
+                    TXT_CantidadUnidades.Visible = esEmpaque == 1;
                 }
             }
         }
@@ -406,6 +432,33 @@ namespace MCWebHogar.GestionCostos
 
                 DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
                 DT.DT1.Rows.Add("@TipoSentencia", "ActualizarCantidadProducida", SqlDbType.VarChar);
+
+                UpdatePanel_Filtros.Update();
+
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CC06_0001");
+                cargarCostosProduccion();
+                cargarResumen();
+            }
+        }
+
+
+        protected void TXT_CantidadUnidades_OnTextChanged(object sender, EventArgs e)
+        {
+            string unidades = TXT_CantidadUnidades.Text;
+            if (unidades == "" || unidades == "0")
+            {
+                string script = "cargarFiltros();alertifyerror('Por favor, ingrese la cantidad de unidades.')";
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_CantidadUnidades_OnTextChanged", script, true);
+            }
+            else
+            {
+                DT.DT1.Clear();
+
+                DT.DT1.Rows.Add("@IDProductoTerminado", HDF_IDProductoTerminado.Value, SqlDbType.Int);
+                DT.DT1.Rows.Add("@Unidades", Convert.ToDecimal(unidades), SqlDbType.Decimal);
+
+                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", "ActualizarCantidadUnidades", SqlDbType.VarChar);
 
                 UpdatePanel_Filtros.Update();
 

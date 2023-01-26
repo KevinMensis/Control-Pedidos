@@ -22,6 +22,15 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.Label LBL_GenerandoInforme;
         
         /// <summary>
+        /// HDF_IDUsuario control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField HDF_IDUsuario;
+        
+        /// <summary>
         /// HDF_PedidoID control.
         /// </summary>
         /// <remarks>
@@ -184,6 +193,24 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.Button BTN_ImprimirPedidoRecibido;
         
         /// <summary>
+        /// BTN_EditarRecibidoPedido control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_EditarRecibidoPedido;
+        
+        /// <summary>
+        /// BTN_ActivarRecibidoPedido control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_ActivarRecibidoPedido;
+        
+        /// <summary>
         /// BTN_CompletarRecibidoPedido control.
         /// </summary>
         /// <remarks>
@@ -317,5 +344,50 @@ namespace MCWebHogar.ControlPedidos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BTN_ImprimirDetallePedido;
+        
+        /// <summary>
+        /// UpdatePanel_ModalEditarPedidoRecibido control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_ModalEditarPedidoRecibido;
+        
+        /// <summary>
+        /// UpdatePanel_ConsecutivoPedidoRecibido control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_ConsecutivoPedidoRecibido;
+        
+        /// <summary>
+        /// DGV_EditarConsecutivoPedidoRecibido control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView DGV_EditarConsecutivoPedidoRecibido;
+        
+        /// <summary>
+        /// Button1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Button1;
+        
+        /// <summary>
+        /// BTN_Actualizar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_Actualizar;
     }
 }

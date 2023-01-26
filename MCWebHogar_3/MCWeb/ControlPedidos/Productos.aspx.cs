@@ -5,6 +5,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -26,28 +27,41 @@ namespace MCWebHogar.ControlPedidos
                 else if (ClasePermiso.Permiso("Ingreso", "Módulo", "Productos", Convert.ToInt32(Session["UserId"].ToString().Trim())) <= 0)
                 {
                     Session.Add("Message", "No tiene permisos para acceder al módulo de Productos.");
-                    Response.Redirect("Pedido.aspx");
+                    Response.Redirect("Pedido.aspx");                    
                 }
                 else
                 {
+                    HDF_IDUsuario.Value = Session["Usuario"].ToString();
                     cargarFiltros();
                     cargarProductos("");
                     ViewState["Ordenamiento"] = "ASC";
+                    BTN_CargarProductosEliminados.Visible = (ClasePermiso.Permiso("Productos eliminados", "Módulo", "Productos eliminados", Convert.ToInt32(Session["UserId"].ToString().Trim())) > 0);
                 }
             }
             else
             {
                 string opcion = Page.Request.Params["__EVENTTARGET"];
+                string argument = Page.Request.Params["__EVENTARGUMENT"];
                 if (opcion.Contains("TXT_Buscar"))
                 {
                     cargarProductos("");
+                }
+                if (opcion.Contains("CargarProductosAll"))
+                {
+                    cargarProductos("TXT_Orden_Focus('" + argument + "');");
                 }
                 else if (opcion.Contains("Identificacion"))
                 {
                     string identificacion = opcion.Split(';')[1];
                     Session["IdentificacionReceptor"] = identificacion;
                     Response.Redirect("../GestionProveedores/Proveedores.aspx", true);
-                }          
+                }
+                if (opcion.Contains("Receta"))
+                {
+                    string negocio = opcion.Split(';')[1];
+                    Session["RecetaNegocio"] = negocio;
+                    Response.Redirect("../GestionCostos/CrearReceta.aspx", true);
+                }      
             }
         }
 
@@ -175,6 +189,33 @@ namespace MCWebHogar.ControlPedidos
         private void cargarProductos(string ejecutar)
         {
             Result = cargarProductosConsulta("CargarProductosAll");
+
+            if (Result != null && Result.Rows.Count > 0)
+            {
+                if (Result.Rows[0][0].ToString().Trim() == "ERROR")
+                {
+                    return;
+                }
+                else
+                {
+                    DGV_ListaProductos.DataSource = Result;
+                    DGV_ListaProductos.DataBind();
+                    UpdatePanel_ListaProductos.Update();
+                }
+            }
+            else
+            {
+                DGV_ListaProductos.DataSource = Result;
+                DGV_ListaProductos.DataBind();
+                UpdatePanel_ListaProductos.Update();
+            }
+            string script = "cargarFiltros();" + ejecutar;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarProductos", script, true);
+        }
+
+        private void cargarProductosEliminados(string ejecutar)
+        {
+            Result = cargarProductosConsulta("CargarProductosEliminados");
 
             if (Result != null && Result.Rows.Count > 0)
             {
@@ -423,6 +464,38 @@ namespace MCWebHogar.ControlPedidos
             }
             UpdatePanel_ListaProductos.Update();
             ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerControlScriptBTN_DescargarProducto_OnClick", "desactivarloading();cargarFiltros();", true);
+        }
+
+        protected void BTN_CargarProductosEliminados_OnClick(object sender, EventArgs e)
+        {
+            BTN_CargarProductosEliminados.Visible = false;
+            BTN_Volver.Visible = (ClasePermiso.Permiso("Productos eliminados", "Módulo", "Productos eliminados", Convert.ToInt32(Session["UserId"].ToString().Trim())) > 0);
+            cargarProductosEliminados("");
+        }
+
+        protected void BTN_Volver_OnClick(object sender, EventArgs e)
+        {
+            BTN_Volver.Visible = false;
+            BTN_CargarProductosEliminados.Visible = (ClasePermiso.Permiso("Productos eliminados", "Módulo", "Productos eliminados", Convert.ToInt32(Session["UserId"].ToString().Trim())) > 0);
+            cargarProductos("");
+        }
+
+        [WebMethod()]
+        public static string guardarOrdenProducto(string idProducto, int ordenProducto, string usuario)
+        {
+            CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
+            DataTable Result = new DataTable();
+
+            DT.DT1.Clear();
+
+            DT.DT1.Rows.Add("@IDProducto", idProducto, SqlDbType.Int);
+            DT.DT1.Rows.Add("@Orden", ordenProducto, SqlDbType.Int);
+
+            DT.DT1.Rows.Add("@Usuario", usuario, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "OrdenarProducto", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP03_0001");
+            return "correcto";
         }
         #endregion
     }

@@ -14,13 +14,26 @@ namespace MCWebHogar.GestionCostos
     {
         CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
         DataTable Result = new DataTable();
+        string tipoNegocio = "";
 
         decimal CostoTotal = 0, TotalMOD = 0, CostoProduccion = 0;
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            tipoNegocio = Session["RecetaNegocio"].ToString().Trim();
+
             if (!Page.IsPostBack)
             {
+                if (tipoNegocio == "panaderia")
+                {
+                    li_panaderia.Attributes.Add("class", "active");
+                    H1_Title.InnerText = "Panadería - " + H1_Title.InnerText;
+                }
+                else if (tipoNegocio == "restaurante")
+                {
+                    li_restaurante.Attributes.Add("class", "active");
+                    H1_Title.InnerText = "Restaurante - " + H1_Title.InnerText;
+                }
                 if (Session["UserId"] == null)
                 {
                     Response.Redirect("../Default.aspx", true);
@@ -67,6 +80,12 @@ namespace MCWebHogar.GestionCostos
                     string identificacion = opcion.Split(';')[1];
                     Session["IdentificacionReceptor"] = identificacion;
                     Response.Redirect("../GestionProveedores/Proveedores.aspx", true);
+                }
+                if (opcion.Contains("Receta"))
+                {
+                    string negocio = opcion.Split(';')[1];
+                    Session["RecetaNegocio"] = negocio;
+                    Response.Redirect("../GestionCostos/CrearReceta.aspx", true);
                 }
             }
         }
@@ -151,6 +170,7 @@ namespace MCWebHogar.GestionCostos
             DT.DT1.Clear();
 
             DT.DT1.Rows.Add("@DetalleProducto", TXT_BuscarProducto.Text, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@Negocio", tipoNegocio, SqlDbType.VarChar);
 
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
             DT.DT1.Rows.Add("@TipoSentencia", consulta, SqlDbType.VarChar);
@@ -194,9 +214,16 @@ namespace MCWebHogar.GestionCostos
 
         protected void BTN_AgregarProducto_Click(object sender, EventArgs e)
         {
+            HDF_IDProductoTerminado.Value = "0";
             HDF_IDProductoIntermedio.Value = "0";
             Title_ModalProducto.InnerText = "Agregar producto";
             TXT_DetalleProducto.Text = "";
+
+            CHK_EsMateriaPrima.Enabled = true;
+            CHK_EsMateriaPrima.Checked = false;
+            TXT_CostoProducto.Text = "0";
+            TXT_CostoProducto.Visible = false;
+            LBL_CostoProducto.Visible = false;
 
             UpdatePanel_AgregarEditarProducto.Update();
 
@@ -221,6 +248,9 @@ namespace MCWebHogar.GestionCostos
             DT.DT1.Rows.Add("@IDProductoIntermedio", HDF_IDProductoIntermedio.Value, SqlDbType.Int);
             DT.DT1.Rows.Add("@DetalleProducto", TXT_DetalleProducto.Text, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@PorcentajeImpuesto", DDL_ImpuestoIVA.SelectedValue, SqlDbType.Int);
+            DT.DT1.Rows.Add("@PrecioUnitario", TXT_CostoProducto.Text == "" ? "0" : TXT_CostoProducto.Text, SqlDbType.Decimal);
+            DT.DT1.Rows.Add("@EsMateriaPrima", CHK_EsMateriaPrima.Checked, SqlDbType.Bit);
+            DT.DT1.Rows.Add("@Negocio", tipoNegocio, SqlDbType.VarChar);
 
             DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
             if (HDF_IDProductoIntermedio.Value == "0")
@@ -229,7 +259,7 @@ namespace MCWebHogar.GestionCostos
             }
             else
             {
-                DT.DT1.Rows.Add("@TipoSentencia", "ActualizarProductoIntermedio", SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", "ActualizarProducto", SqlDbType.VarChar);
             }
             Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CC04_0001");
             cargarProductos("");
@@ -245,6 +275,11 @@ namespace MCWebHogar.GestionCostos
                 // e.Row.Attributes["onclick"] = Page.ClientScript.GetPostBackClientHyperlink(DGV_ListaProductosIntermedios, "Select$" + e.Row.RowIndex);
                 e.Row.Attributes.Add("onmouseover", "this.style.backgroundColor='#ECEBDF'");
                 e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor='#fff'");
+                LinkButton btnVer = (LinkButton)e.Row.FindControl("BTN_VerProductoTerminado");
+                LinkButton btnEditar = (LinkButton)e.Row.FindControl("BTN_EditarProductoIntermedio");
+                bool esMateriaPrima = Convert.ToBoolean(DGV_ListaProductosIntermedios.DataKeys[e.Row.RowIndex].Values[3]);
+                
+                btnVer.Visible = ! esMateriaPrima;
             }
         }
 
@@ -292,6 +327,9 @@ namespace MCWebHogar.GestionCostos
                 string idProductoIntermedio = DGV_ListaProductosIntermedios.DataKeys[rowIndex].Value.ToString().Trim();
                 string detalleProducto = DGV_ListaProductosIntermedios.DataKeys[rowIndex].Values[2].ToString().Trim();
                 decimal cantidad = Convert.ToDecimal(DGV_ListaProductosIntermedios.DataKeys[rowIndex].Values[1].ToString().Trim());
+                int porcentajeImpuesto = Convert.ToInt32(DGV_ListaProductosIntermedios.DataKeys[rowIndex].Values[4]);
+                decimal precioUnitario = Convert.ToDecimal(DGV_ListaProductosIntermedios.DataKeys[rowIndex].Values[5].ToString().Trim());
+                bool esMateriaPrima = Convert.ToBoolean(DGV_ListaProductosIntermedios.DataKeys[rowIndex].Values[3]);
 
                 if (e.CommandName == "Select" || e.CommandName == "VerProductoIntermedio")
                 {
@@ -300,6 +338,26 @@ namespace MCWebHogar.GestionCostos
                     TXT_CantidadProducida.Text = cantidad.ToString();
                     cargarMateriasPrimas("");
                     cargarEmpleados("");
+                }
+                else if (e.CommandName == "EditarProductoIntermedio")
+                {
+                    HDF_IDProductoTerminado.Value = idProductoIntermedio;
+                    HDF_IDProductoIntermedio.Value = idProductoIntermedio;
+                    HDF_DetalleProducto.Value = detalleProducto;
+                    CHK_EsMateriaPrima.Enabled = false;
+                    LBL_CostoProducto.Visible = esMateriaPrima;
+                    TXT_CostoProducto.Visible = esMateriaPrima;
+                    Title_ModalProducto.InnerText = "Editar producto";
+
+                    TXT_DetalleProducto.Text = detalleProducto;
+                    DDL_ImpuestoIVA.SelectedValue = porcentajeImpuesto.ToString();
+                    CHK_EsMateriaPrima.Checked = esMateriaPrima;
+                    TXT_CostoProducto.Text = precioUnitario.ToString().Replace(",", ".");
+
+                    UpdatePanel_AgregarEditarProducto.Update();
+
+                    string script = "cargarFiltros();abrirModalAgregarEditarProducto();";
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_AgregarProducto_Click", script, true);
                 }
             }
         }
@@ -326,6 +384,16 @@ namespace MCWebHogar.GestionCostos
 
                 Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CC04_0001");
                 cargarProductos("");
+            }
+        }
+
+        protected void CHK_EsMateriaPrima_OnCheckedChanged(object sender, EventArgs e)
+        {
+            TXT_CostoProducto.Visible = CHK_EsMateriaPrima.Checked;
+            LBL_CostoProducto.Visible = CHK_EsMateriaPrima.Checked;
+            if (CHK_EsMateriaPrima.Checked)
+            {
+                TXT_CostoProducto.Text = "0";
             }
         }
         #endregion
@@ -466,7 +534,7 @@ namespace MCWebHogar.GestionCostos
         }
 
         [WebMethod()]
-        public static string BTN_Agregar_Click(int idProductoTerminado, int idProductoMateriaPrima, string usuario)
+        public static string BTN_Agregar_Click(int idProductoTerminado, int idProductoMateriaPrima, int productoIntermedio, string usuario)
         {
             CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
             DataTable Result = new DataTable();
@@ -476,7 +544,7 @@ namespace MCWebHogar.GestionCostos
             DT.DT1.Rows.Add("@ProductoTerminadoID", idProductoTerminado, SqlDbType.Int);
             DT.DT1.Rows.Add("@ProductoMateriaPrimaID", idProductoMateriaPrima, SqlDbType.Int);
             DT.DT1.Rows.Add("@ProductoIntermedio", 1, SqlDbType.Int);
-            DT.DT1.Rows.Add("@MateriaPrimaIntermedia", 0, SqlDbType.Int);
+            DT.DT1.Rows.Add("@MateriaPrimaIntermedia", productoIntermedio, SqlDbType.Int);
 
             DT.DT1.Rows.Add("@Usuario", usuario, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@TipoSentencia", "AgregarProducto", SqlDbType.VarChar);

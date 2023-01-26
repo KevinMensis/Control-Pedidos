@@ -400,6 +400,33 @@ namespace MCWebHogar.GestionProveedores {
         protected global::System.Web.UI.WebControls.TextBox TXT_PrecioVenta;
         
         /// <summary>
+        /// TXT_MedidaUnidades control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TXT_MedidaUnidades;
+        
+        /// <summary>
+        /// CHK_EsVenta control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CHK_EsVenta;
+        
+        /// <summary>
+        /// CHK_EsMateriaPrima control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CHK_EsMateriaPrima;
+        
+        /// <summary>
         /// DGV_UnidadesMedida control.
         /// </summary>
         /// <remarks>

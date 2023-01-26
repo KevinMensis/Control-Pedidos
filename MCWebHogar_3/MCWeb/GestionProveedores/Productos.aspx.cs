@@ -32,7 +32,7 @@ namespace MCWebHogar.GestionProveedores
                 if (identificacionReceptor == "3101485961")
                 {
                     li_MiKFe.Attributes.Add("class", "active");
-                    H1_Title.InnerText = "La Priedra Calisa SA - Productos";
+                    H1_Title.InnerText = "La Piedra Calisa SA - Productos";
                 }
                 else if (identificacionReceptor == "115210651")
                 {
@@ -63,11 +63,21 @@ namespace MCWebHogar.GestionProveedores
                 {
                     cargarProductos("");
                 }
+                else if (opcion.Contains("CargarProductos"))
+                {
+                    cargarProductos("");
+                }
                 else if (opcion.Contains("Identificacion"))
                 {
                     string identificacion = opcion.Split(';')[1];
                     Session["IdentificacionReceptor"] = identificacion;
                     Response.Redirect("../GestionProveedores/Proveedores.aspx", true);
+                }
+                if (opcion.Contains("Receta"))
+                {
+                    string negocio = opcion.Split(';')[1];
+                    Session["RecetaNegocio"] = negocio;
+                    Response.Redirect("../GestionCostos/CrearReceta.aspx", true);
                 }
             }
         }
@@ -130,6 +140,7 @@ namespace MCWebHogar.GestionProveedores
         protected void BTN_Sincronizar_Click(object sender, EventArgs e)
         {            
             LecturaXML xml = new LecturaXML();
+            xml.ReadXML();
             xml.ReadEmails();
             xml.ReadXML();
             cargarProductos("");
@@ -368,6 +379,9 @@ namespace MCWebHogar.GestionProveedores
                             TXT_MontoImpuestoIncluido.Text = String.Format("{0:n}", dr["MontoImpuestoIncluido"]);
                             TXT_Porcentaje25.Text = String.Format("{0:n}", dr["Porcentaje25"]);
                             DDL_Categoria.SelectedValue = dr["CategoriaID"].ToString().Trim();
+                            TXT_MedidaUnidades.Text = String.Format("{0:n}", dr["MedidaUnidades"]);
+                            CHK_EsVenta.Checked = Convert.ToBoolean(dr["EsVenta"]);
+                            CHK_EsMateriaPrima.Checked = Convert.ToBoolean(dr["EsMateriaPrima"]);
                         }
                     }
 
@@ -550,7 +564,7 @@ namespace MCWebHogar.GestionProveedores
         }
 
         [WebMethod()]
-        public static string BTN_GuardarProducto_Click(string idProducto, string detalleProducto, string codigoProductoWebpos, string categoria, string usuario)
+        public static string BTN_GuardarProducto_Click(string idProducto, string detalleProducto, string codigoProductoWebpos, decimal medidaUnidades, string categoria, int esVenta, int esMateriaPrima, string usuario)
         {
             CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
             DataTable Result = new DataTable();
@@ -560,7 +574,10 @@ namespace MCWebHogar.GestionProveedores
             DT.DT1.Rows.Add("@IDProducto", idProducto, SqlDbType.Int);
             DT.DT1.Rows.Add("@DetalleProducto", detalleProducto, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@CodigoProductoWebpos", codigoProductoWebpos, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@MedidaUnidades", medidaUnidades, SqlDbType.Decimal);
             DT.DT1.Rows.Add("@CategoriaID", categoria, SqlDbType.Int);
+            DT.DT1.Rows.Add("@EsVenta", esVenta, SqlDbType.Int);
+            DT.DT1.Rows.Add("@EsMateriaPrima", esMateriaPrima, SqlDbType.Int);
 
             DT.DT1.Rows.Add("@Usuario", usuario, SqlDbType.VarChar);
             DT.DT1.Rows.Add("@TipoSentencia", "Actualizar", SqlDbType.VarChar);

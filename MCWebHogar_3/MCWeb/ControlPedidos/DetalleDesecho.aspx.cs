@@ -92,6 +92,12 @@ namespace MCWebHogar.ControlPedidos
                     Session["IdentificacionReceptor"] = identificacion;
                     Response.Redirect("../GestionProveedores/Proveedores.aspx", true);
                 }
+                if (opcion.Contains("Receta"))
+                {
+                    string negocio = opcion.Split(';')[1];
+                    Session["RecetaNegocio"] = negocio;
+                    Response.Redirect("../GestionCostos/CrearReceta.aspx", true);
+                }
             }
         }
 
@@ -200,6 +206,7 @@ namespace MCWebHogar.ControlPedidos
 
                         BTN_AgregarProducto.Visible = TXT_FechaDesecho.Text == DateTime.Now.ToString("yyyy-MM-dd");
 
+                        TXT_FechaDesecho.Enabled = (ClasePermiso.Permiso("Editar", "Acciones", "Editar", Convert.ToInt32(Session["UserId"].ToString().Trim())) > 0);
                         // HDF_EstadoDesecho.Value = dr["Estado"].ToString().Trim();
 
                         // BTN_ConfirmarDesecho.Visible = HDF_EstadoDesecho.Value != "Confirmado";
@@ -392,6 +399,39 @@ namespace MCWebHogar.ControlPedidos
                     Response.Flush();
                     Response.End();
                 }
+            }
+        }
+
+        protected void TXT_FechaDesecho_OnChange(object sender, EventArgs e)
+        {
+            DT.DT1.Clear();
+
+            DT.DT1.Rows.Add("@IDDesecho", HDF_IDDesecho.Value, SqlDbType.Int);
+            DT.DT1.Rows.Add("@fechaDesecho", TXT_FechaDesecho.Text + " " + TXT_HoraDesecho.Text, SqlDbType.VarChar);
+
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "ActualizarFechaDesecho", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP16_0001");
+
+            if (Result != null && Result.Rows.Count > 0)
+            {
+                if (Result.Rows[0][0].ToString().Trim() == "ERROR")
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_FechaDesecho_OnChange", "alertifywarning('No se ha modificado la fecha del desecho. Error: " + Result.Rows[0][1].ToString().Trim() + "');", true);
+                    return;
+                }
+                else
+                {
+                    string script = "alertifysuccess('Se ha modificado la fecha del Desecho.');estilosElementosBloqueados();";
+                    cargarDesecho(script);
+                    cargarProductosDesecho();
+                }
+            }
+            else
+            {
+                string script = "alertifywarning('No se ha modificado la fecha del Desecho. Por favor, intente de nuevo.');";
+                cargarDesecho(script);
             }
         }
         #endregion

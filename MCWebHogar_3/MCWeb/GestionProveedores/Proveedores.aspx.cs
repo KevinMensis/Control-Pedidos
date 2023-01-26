@@ -29,7 +29,7 @@ namespace MCWebHogar.GestionProveedores
                 if (identificacionReceptor == "3101485961")
                 {
                     li_MiKFe.Attributes.Add("class", "active");
-                    H1_Title.InnerText = "La Priedra Calisa SA - Proveedores";
+                    H1_Title.InnerText = "La Piedra Calisa SA - Proveedores";
                 }
                 else if (identificacionReceptor == "115210651")
                 {
@@ -67,6 +67,12 @@ namespace MCWebHogar.GestionProveedores
                     Session["IdentificacionReceptor"] = identificacion;
                     Response.Redirect("../GestionProveedores/Proveedores.aspx", true);
                 }
+                if (opcion.Contains("Receta"))
+                {
+                    string negocio = opcion.Split(';')[1];
+                    Session["RecetaNegocio"] = negocio;
+                    Response.Redirect("../GestionCostos/CrearReceta.aspx", true);
+                }
             }
         }
 
@@ -80,6 +86,7 @@ namespace MCWebHogar.GestionProveedores
         protected void BTN_Sincronizar_Click(object sender, EventArgs e)
         {
             LecturaXML xml = new LecturaXML();
+            xml.ReadXML();
             UpdatePanel_Progress.Update();
             xml.ReadEmails();
             UpdatePanel_Progress.Update();

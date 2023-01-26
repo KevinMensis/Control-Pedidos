@@ -38,6 +38,7 @@ namespace MCWebHogar.ControlPedidos
                         cargarODP("");
                         cargarCategoriasODP();
                         cargarProductosODP();
+                        cargarPedidosODP("");
                         ViewState["Ordenamiento"] = "ASC";
                         ViewState["OrdenamientoCategorias"] = "ASC";                        
                     }                    
@@ -84,6 +85,12 @@ namespace MCWebHogar.ControlPedidos
                     string identificacion = opcion.Split(';')[1];
                     Session["IdentificacionReceptor"] = identificacion;
                     Response.Redirect("../GestionProveedores/Proveedores.aspx", true);
+                }
+                if (opcion.Contains("Receta"))
+                {
+                    string negocio = opcion.Split(';')[1];
+                    Session["RecetaNegocio"] = negocio;
+                    Response.Redirect("../GestionCostos/CrearReceta.aspx", true);
                 }
             }
         }
@@ -781,6 +788,71 @@ namespace MCWebHogar.ControlPedidos
             ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_ImprimirOrdenProduccion_Click", script, true);
         }
         #endregion
+        #endregion
+
+        #region Pedidos
+        protected DataTable consultaCargarPedidosODP(string consulta)
+        {
+            DT.DT1.Clear();
+
+            DT.DT1.Rows.Add("@IDODP", HDF_IDODP.Value, SqlDbType.VarChar);
+
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", consulta, SqlDbType.VarChar);
+
+            return CapaLogica.GestorDatos.Consultar(DT.DT1, "CP07_0001");
+        }
+
+        private void cargarPedidosODP(string ejecutar)
+        {
+            Result = consultaCargarPedidosODP("CargarPedidosODP");
+
+            if (Result != null && Result.Rows.Count > 0)
+            {
+                if (Result.Rows[0][0].ToString().Trim() == "ERROR")
+                {
+                    return;
+                }
+                else
+                {
+                    DGV_ListaPedidosODP.DataSource = Result;
+                    DGV_ListaPedidosODP.DataBind();
+                    UpdatePanel_DGVPedidosODP.Update();
+                }
+            }
+            else
+            {
+                DGV_ListaPedidosODP.DataSource = Result;
+                DGV_ListaPedidosODP.DataBind();
+                UpdatePanel_DGVPedidosODP.Update();
+            }
+            string script = "estilosElementosBloqueados();" + ejecutar;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptcargarPedidosODP", script, true);
+        }
+
+        protected void DGV_ListaPedidosODP_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                int idPedido = Convert.ToInt32(DGV_ListaPedidosODP.DataKeys[e.Row.RowIndex].Values[1].ToString());
+                DT.DT1.Clear();
+                DT.DT1.Rows.Add("@PedidoID", idPedido, SqlDbType.VarChar);
+
+                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", "CargarProductos", SqlDbType.VarChar);
+
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP05_0001");
+                GridView DGV_ListaProductos = e.Row.FindControl("DGV_ListaProductos") as GridView;
+                DGV_ListaProductos.DataSource = Result;
+                DGV_ListaProductos.DataBind();
+            }
+        }
+
+        protected void BTN_VerDetallePedidos_Click(object sender, EventArgs e)
+        {
+            string script = "abrirModalPedidosODP();estilosElementosBloqueados();";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_VerDetallePedidos_Click", script, true);
+        }
         #endregion
     }
 }

@@ -51,6 +51,10 @@
                 __doPostBack('Identificacion;115210651')
             }
         }
+
+        function seleccionarNegocio(tipoNegocio) {
+            __doPostBack('Receta;' + tipoNegocio)
+        }
     </script>
 </asp:Content>
 
@@ -132,9 +136,15 @@
                         </a>
                     </li>
                     <li>
-                        <a href="../GestionCostos/CrearReceta.aspx">
+                        <a href="#" onclick="seleccionarNegocio('panaderia');">
                             <i class="fas fa-chart-line"></i>
-                            <p>Gestión costos</p>
+                            <p>Costos panadería</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="seleccionarNegocio('restaurante');">
+                            <i class="fas fa-chart-line"></i>
+                            <p>Costos restaurante</p>
                         </a>
                     </li>
                 </ul>

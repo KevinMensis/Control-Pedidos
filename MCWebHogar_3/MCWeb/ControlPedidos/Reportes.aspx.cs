@@ -64,6 +64,12 @@ namespace MCWebHogar.ControlPedidos
                     Session["IdentificacionReceptor"] = identificacion;
                     Response.Redirect("../GestionProveedores/Proveedores.aspx", true);
                 }
+                if (opcion.Contains("Receta"))
+                {
+                    string negocio = opcion.Split(';')[1];
+                    Session["RecetaNegocio"] = negocio;
+                    Response.Redirect("../GestionCostos/CrearReceta.aspx", true);
+                }
             }
         }
 
@@ -422,6 +428,91 @@ namespace MCWebHogar.ControlPedidos
                     }
                 }
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerControlScriptBTN_ReporteExcel_Click", "desactivarloading();cargarFiltros();", true);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        protected void BTN_ReporteExcelEmpaqueInsumo_Click(object sender, EventArgs e)
+        {
+            CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
+            
+            string modulo = HDF_Detalle.Value;
+            
+            string puntosVenta = "";
+            string plantaProduccion = "";
+
+            DT.DT1.Clear();
+
+            #region Puntos Venta
+            foreach (ListItem l in LB_Sucursal.Items)
+            {
+                if (l.Selected)
+                {
+                    puntosVenta += "'" + l.Value + "',";
+                }
+            }
+            puntosVenta = puntosVenta.TrimEnd(',');
+            #endregion
+
+            #region Plantas Produccion
+            foreach (ListItem l in LB_PlantaProduccion.Items)
+            {
+                if (l.Selected)
+                {
+                    plantaProduccion += "'" + l.Value + "',";
+                }
+            }
+            plantaProduccion = plantaProduccion.TrimEnd(',');
+            #endregion
+            try
+            {
+                if (puntosVenta != "")
+                {
+                    DT.DT1.Rows.Add("@FiltrarSucursales", 1, SqlDbType.Int);
+                    DT.DT1.Rows.Add("@FiltroSucursales", puntosVenta.TrimEnd(','), SqlDbType.VarChar);
+                }
+                if (plantaProduccion != "")
+                {
+                    DT.DT1.Rows.Add("@FiltrarPlantasProduccion", 1, SqlDbType.Int);
+                    DT.DT1.Rows.Add("@FiltroPlantasProduccion", plantaProduccion.TrimEnd(','), SqlDbType.VarChar);
+                }
+                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString().Trim(), SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@fechaDesde", TXT_FechaDesde.Text, SqlDbType.Date);
+                DT.DT1.Rows.Add("@fechaHasta", TXT_FechaHasta.Text + " 23:59:59", SqlDbType.DateTime);
+
+                switch (modulo)
+                {
+                    case "Empaque":
+                        DT.DT1.Rows.Add("@TipoSentencia", "ReporteExcelEmpaque", SqlDbType.VarChar);
+                        break;
+                    case "Insumo":
+                        DT.DT1.Rows.Add("@TipoSentencia", "ReporteExcelInsumos", SqlDbType.VarChar);
+                        break;
+                }
+
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP_Reportes_0001");
+
+                using (XLWorkbook wb = new XLWorkbook())
+                {
+                    wb.Worksheets.Add(Result, "Reporte" + modulo);
+                    
+                    Response.Clear();
+                    Response.Buffer = true;
+                    Response.Charset = "";
+                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    Response.AddHeader("content-disposition", "attachment;filename=Reporte" + modulo + ".xlsx");
+                    using (MemoryStream MyMemoryStream = new MemoryStream())
+                    {
+                        wb.SaveAs(MyMemoryStream);
+                        MyMemoryStream.WriteTo(Response.OutputStream);
+                        Response.Flush();
+                        Response.End();
+                    }
+                }
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerControlScriptBTN_ReporteExcelEmpaqueInsumo_Click", "desactivarloading();cargarFiltros();", true);
             }
             catch (Exception ex)
             {
@@ -1204,6 +1295,7 @@ namespace MCWebHogar.ControlPedidos
             string cargar = "cargarFiltros();cargarGraficos(" + usuario + ");";
             ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptRecargar_Click", cargar, true);
         } 
+        
         private void cargarGraficos()
         {
             string usuario = Session["UserID"].ToString().Trim();

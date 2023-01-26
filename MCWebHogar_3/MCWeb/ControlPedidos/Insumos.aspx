@@ -51,6 +51,10 @@
                 __doPostBack('Identificacion;115210651')
             }
         }
+
+        function seleccionarNegocio(tipoNegocio) {
+            __doPostBack('Receta;' + tipoNegocio)
+        }
     </script>
 </asp:Content>
 
@@ -132,9 +136,15 @@
                         </a>
                     </li>
                     <li>
-                        <a href="../GestionCostos/CrearReceta.aspx">
+                        <a href="#" onclick="seleccionarNegocio('panaderia');">
                             <i class="fas fa-chart-line"></i>
-                            <p>Gestión costos</p>
+                            <p>Costos panadería</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="seleccionarNegocio('restaurante');">
+                            <i class="fas fa-chart-line"></i>
+                            <p>Costos restaurante</p>
                         </a>
                     </li>
                 </ul>
@@ -199,10 +209,14 @@
                                                 <asp:TextBox class="form-control" style="flex: auto;" ID="TXT_FechaCreacionDesde" runat="server" TextMode="Date" OnTextChanged="TXT_FiltrarInsumos_OnTextChanged" AutoPostBack="true"></asp:TextBox>                                                
                                             </div>
                                             <div class="input-group no-border col-md-4" style="text-align: right; display: inline-block;">
+                                                <asp:Button ID="BTN_ReporteExcelInsumo" runat="server" UseSubmitBehavior="false" Text="Reporte Excel" CssClass="btn btn-success" OnClick="BTN_ReporteExcelEmpaqueInsumo_Click"></asp:Button>
                                                 <asp:Button ID="BTN_CrearInsumos" style="margin: 0px;" runat="server" Text="Crear nueva lista insumos" CssClass="btn btn-secondary" OnClick="BTN_CrearInsumos_Click"></asp:Button>                                    
                                             </div>
                                         </div>
                                     </ContentTemplate>
+                                    <Triggers>
+                                        <asp:PostBackTrigger ControlID="BTN_ReporteExcelInsumo" />
+                                    </Triggers>
                                 </asp:UpdatePanel>
                                 <br />
                                 <div class="table">

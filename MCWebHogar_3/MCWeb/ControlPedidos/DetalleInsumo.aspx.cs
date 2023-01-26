@@ -91,6 +91,12 @@ namespace MCWebHogar.ControlPedidos
                     Session["IdentificacionReceptor"] = identificacion;
                     Response.Redirect("../GestionProveedores/Proveedores.aspx", true);
                 }
+                if (opcion.Contains("Receta"))
+                {
+                    string negocio = opcion.Split(';')[1];
+                    Session["RecetaNegocio"] = negocio;
+                    Response.Redirect("../GestionCostos/CrearReceta.aspx", true);
+                }
             }
         }
 
@@ -196,7 +202,9 @@ namespace MCWebHogar.ControlPedidos
                         TXT_HoraInsumo.Text = dr["HInsumo"].ToString().Trim();
                         DDL_Propietario.SelectedValue = dr["UsuarioID"].ToString().Trim();
 
-                        BTN_AgregarProducto.Visible = TXT_FechaInsumo.Text == DateTime.Now.ToString("yyyy-MM-dd");
+                        BTN_AgregarProducto.Visible = TXT_FechaInsumo.Text == DateTime.Now.ToString("yyyy-MM-dd") || (ClasePermiso.Permiso("Agregar", "Acciones", "Agregar", Convert.ToInt32(Session["UserId"].ToString().Trim())) > 0);
+
+                        TXT_FechaInsumo.Enabled = (ClasePermiso.Permiso("Editar", "Acciones", "Editar", Convert.ToInt32(Session["UserId"].ToString().Trim())) > 0);
 
                         // HDF_EstadoInsumo.Value = dr["Estado"].ToString().Trim();
 
@@ -391,6 +399,39 @@ namespace MCWebHogar.ControlPedidos
                     Response.Flush();
                     Response.End();
                 }
+            }
+        }
+
+        protected void TXT_FechaInsumo_OnChange(object sender, EventArgs e)
+        {
+            DT.DT1.Clear();
+
+            DT.DT1.Rows.Add("@IDInsumo", HDF_IDInsumo.Value, SqlDbType.Int);
+            DT.DT1.Rows.Add("@fechaInsumo", TXT_FechaInsumo.Text + " " + TXT_HoraInsumo.Text, SqlDbType.VarChar);
+
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "ActualizarFechaInsumo", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP20_0001");
+
+            if (Result != null && Result.Rows.Count > 0)
+            {
+                if (Result.Rows[0][0].ToString().Trim() == "ERROR")
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_ConfirmarInsumo_Click", "alertifywarning('No se ha confirmado el Insumo. Error: " + Result.Rows[0][1].ToString().Trim() + "');", true);
+                    return;
+                }
+                else
+                {
+                    string script = "alertifysuccess('Se ha modificado la fecha del Insumo.');estilosElementosBloqueados();";
+                    cargarInsumo(script);
+                    cargarProductosInsumo();
+                }
+            }
+            else
+            {
+                string script = "alertifywarning('No se ha modificado la fecha del Insumo. Por favor, intente de nuevo.');";
+                cargarInsumo(script);
             }
         }
         #endregion

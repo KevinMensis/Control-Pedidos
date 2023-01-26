@@ -50,7 +50,11 @@
             } else if (receptor === "Esteban") {
                 __doPostBack('Identificacion;115210651')
             }
-        }        
+        }
+
+        function seleccionarNegocio(tipoNegocio) {
+            __doPostBack('Receta;' + tipoNegocio)
+        }
 
         function graficoCostos(datos) {
             lista = []
@@ -540,10 +544,16 @@
                             <p>Proveedores - Esteban</p>
                         </a>
                     </li>
-                    <li class="active">
-                        <a href="CrearReceta.aspx">
+                    <li id="li_panaderia" runat="server">
+                        <a href="#" onclick="seleccionarNegocio('panaderia');">
                             <i class="fas fa-chart-line"></i>
-                            <p>Gestión costos</p>
+                            <p>Costos panadería</p>
+                        </a>
+                    </li>
+                    <li id="li_restaurante" runat="server">
+                        <a href="#" onclick="seleccionarNegocio('restaurante');">
+                            <i class="fas fa-chart-line"></i>
+                            <p>Costos restaurante</p>
                         </a>
                     </li>
                 </ul>
@@ -615,7 +625,7 @@
                                             </div>
                                             <div class="input-group no-border col-md-2" style="text-align: center; display: block;">
                                                 <a href="ProductosIntermedios.aspx" class="btn btn-primary">
-                                                    <i class=""></i>Productos intermedios
+                                                    <i class=""></i>Recetas intermedias
                                                 </a>
                                             </div>
                                             <div class="input-group no-border col-md-2" style="text-align: center; display: block;">

@@ -35,6 +35,7 @@
     display: inline-block;
     position: relative;
     outline: none;
+    width: 100%;
 }
 
     .SumoSelect:focus > .CaptionCont, .SumoSelect:hover > .CaptionCont {

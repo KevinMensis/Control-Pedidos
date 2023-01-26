@@ -59,6 +59,14 @@
             document.getElementById('BTN_ModalOrdenProduccion').click()
         }
 
+        function abrirModalPedidosODP() {
+            document.getElementById('BTN_ModalPedidosODP').click()
+        }
+
+        function cerrarModalPedidosODP() {
+            document.getElementById('BTN_ModalPedidosODP').click()
+        }
+
         function abrirModalSeleccionarImpresora() {
             document.getElementById('BTN_ModalSeleccionarImpresora').click()
         }
@@ -79,9 +87,9 @@
 
             table = document.getElementById(listaProductos);
             tbody = table.tBodies[0];
-            var pag = indexInicio / 30 + 1
+            var pag = Math.trunc(index / 30 + 1)
             var totalPags = Math.trunc(tbody.rows.length / 30)
-            totalPags += 0 < tbody.rows.length % 30 ? 1 : 0
+            totalPags += 0 < tbody.rows.length % 31 ? 1 : 0
 
             if (indexInicio < tbody.rows.length) {
                 for (i = indexInicio, rowLen = tbody.rows.length; i < rowLen; i++) {
@@ -148,7 +156,7 @@
                     alert(error);
                 }).finally(function () {
                     return qz.websocket.disconnect().then(function () {
-                        imprimir2(codigoODP, printer, categoria, index, indexInicio + 30, indexFin + 30)
+                        imprimir2(codigoODP, printer, categoria, index, indexInicio + 31, indexFin + 31)
                     });
                 });
             } else {
@@ -281,6 +289,10 @@
                 __doPostBack('Identificacion;115210651')
             }
         }
+
+        function seleccionarNegocio(tipoNegocio) {
+            __doPostBack('Receta;' + tipoNegocio)
+        }
         
         $(document).ready(function () {
             estilosElementosBloqueados();
@@ -376,9 +388,15 @@
                         </a>
                     </li>
                     <li>
-                        <a href="../GestionCostos/CrearReceta.aspx">
+                        <a href="#" onclick="seleccionarNegocio('panaderia');">
                             <i class="fas fa-chart-line"></i>
-                            <p>Gestión costos</p>
+                            <p>Costos panadería</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="seleccionarNegocio('restaurante');">
+                            <i class="fas fa-chart-line"></i>
+                            <p>Costos restaurante</p>
                         </a>
                     </li>
                 </ul>
@@ -491,6 +509,7 @@
                                             <asp:Button UseSubmitBehavior="false" ID="BTN_ImprimirOrdenProduccion" runat="server" Text="Imprimir orden producción" CssClass="btn btn-info" OnClick="BTN_ImprimirOrdenProduccion_Click"></asp:Button>
                                         </div>
                                         <div class="col-md-6" style="text-align: right;">                                             
+                                            <asp:Button UseSubmitBehavior="false" ID="BTN_VerDetallePedidos" runat="server" Text="Ver pedidos" CssClass="btn btn-primary" OnClick="BTN_VerDetallePedidos_Click"></asp:Button>
                                             <asp:Button UseSubmitBehavior="false" ID="BTN_CompletarODP" runat="server" Text="Completar orden producción" CssClass="btn btn-success" OnClick="BTN_CompletarODP_Click"></asp:Button>
                                         </div>
                                     </div>
@@ -664,6 +683,68 @@
                         <div class="modal-footer">                            
                             <div style="text-align: right;">
                                 <asp:Button UseSubmitBehavior="false" ID="BTN_CerrarModalCrearPedido" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-primary" />                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ContentTemplate>
+        </asp:UpdatePanel>
+    </div>
+
+    <button type="button" id="BTN_ModalPedidosODP" data-toggle="modal" data-target="#ModalPedidosODP" style="visibility: hidden;">open</button>
+
+    <div class="modal bd-example-modal-lg" id="ModalPedidosODP" tabindex="-1" role="dialog" aria-labelledby="popModalPedidosODP" aria-hidden="true">
+        <asp:UpdatePanel ID="UpdatePanel_ModalPedidosODP" runat="server" UpdateMode="Conditional">
+            <ContentTemplate>
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h5 class="modal-title" runat="server">Pedidos de la orden de producción</h5>
+                        </div>
+                        <div class="modal-body">                            
+                            <div class="table-responsive" id="tablePedidosODP">
+                                <asp:UpdatePanel ID="UpdatePanel_DGVPedidosODP" runat="server" UpdateMode="Conditional">
+                                    <ContentTemplate>
+                                        <asp:GridView ID="DGV_ListaPedidosODP" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
+                                            AutoGenerateColumns="False" DataKeyNames="ODPID,PedidoID" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
+                                            ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true"
+                                            OnRowDataBound="DGV_ListaPedidosODP_RowDataBound">
+                                            <Columns>
+                                                <asp:TemplateField>
+                                                    <HeaderTemplate>
+                                                        <asp:Label ID="Lbl_VerDetalle" runat="server" Text="Ver detalle"></asp:Label>
+                                                    </HeaderTemplate>
+                                                    <ItemTemplate>
+                                                        <div class="table" id="tableProductos">
+                                                            <img alt="" style="cursor: pointer" src="../Assets/img/plus.png" />
+                                                            <asp:Panel ID="pnlListaProductos" runat="server" Style="display: none;">
+                                                                <asp:GridView ID="DGV_ListaProductos" runat="server" AutoGenerateColumns="false" DataKeyNames="ProductoID,PedidoID" CssClass="ChildGrid"
+                                                                    HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" 
+                                                                    GridLines="None" ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true">
+                                                                    <Columns>
+                                                                        <asp:BoundField DataField="DescripcionProducto" HeaderText="Nombre producto" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                             
+                                                                        <asp:BoundField DataField="CantidadProduccion" HeaderText="Cantidad solicitada" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                                    </Columns>
+                                                                </asp:GridView>
+                                                            </asp:Panel>
+                                                        </div>
+                                                    </ItemTemplate>
+                                                    <ItemStyle HorizontalAlign="Center" />
+                                                </asp:TemplateField>
+                                                <asp:BoundField DataField="PedidoID" SortExpression="PedidoID" HeaderText="Número pedido" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                <asp:BoundField DataField="DescripcionPuntoVenta" SortExpression="DescripcionPuntoVenta" HeaderText="Punto venta" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                            </Columns>
+                                        </asp:GridView>
+                                    </ContentTemplate>
+                                </asp:UpdatePanel>
+                            </div>
+                        </div>
+                        <div class="modal-footer">                            
+                            <div style="text-align: right;">
+                                <asp:Button UseSubmitBehavior="false" ID="Button1" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-primary" />                                
                             </div>
                         </div>
                     </div>

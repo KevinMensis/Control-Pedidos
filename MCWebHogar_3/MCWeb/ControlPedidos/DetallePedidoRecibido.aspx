@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DetallePedidoRecibido.aspx.cs" MasterPageFile="~/MenuPrincipal.Master" Inherits="MCWebHogar.ControlPedidos.DetallePedidoRecibido" %>
+﻿ <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DetallePedidoRecibido.aspx.cs" MasterPageFile="~/MenuPrincipal.Master" Inherits="MCWebHogar.ControlPedidos.DetallePedidoRecibido" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajax" %>
 
@@ -22,6 +22,8 @@
     </style>
     <script src="../Assets/js/qz-tray.js"></script>
     <script type="text/javascript">
+        var productosAgregar;
+
         function alertifysuccess(msj) {
             alertify.notify(msj, 'success', 5, null);
             return false
@@ -70,6 +72,16 @@
 
         function cerrarModalPedidoRecibido() {
             document.getElementById('BTN_ModalPedidoRecibido').click()
+        }
+
+        function abrirModalEditarPedidoRecibido() {
+            productosAgregar = new Map();
+            document.getElementById('BTN_ModalEditarPedidoRecibido').click()
+        }
+
+        function cerrarModalEditarPedidoRecibido() {
+            productosAgregar = new Map();
+            document.getElementById('BTN_ModalEditarPedidoRecibido').click()
         }
         
         function TXT_Cantidad_onKeyUp(txtCantidad, e) {
@@ -135,6 +147,89 @@
             document.getElementById(txtCantidad).value = cantidadProducto
         }
 
+        function TXT_CantidadRecibida_onKeyUp(txtCantidad, e) {
+            var values = txtCantidad.id.split('_')
+            var index = values.pop() * 1 + 1
+            var consecutivo = values[5] * 1
+
+            if (e.keyCode === 13) {
+                var rows = document.getElementById('Content_DGV_EditarConsecutivoPedidoRecibido_DGV_ListaProductos_' + consecutivo).rows.length - 1
+                var id = ''
+                if (index === rows) {
+                    id = 'Content_DGV_EditarConsecutivoPedidoRecibido_DGV_ListaProductos_' + consecutivo + '_TXT_CantidadAgregar_' + 0
+                } else {
+                    id = 'Content_DGV_EditarConsecutivoPedidoRecibido_DGV_ListaProductos_' + consecutivo + '_TXT_CantidadAgregar_' + index
+                }
+                document.getElementById(id).autofocus = true;
+                document.getElementById(id).focus();
+                document.getElementById(id).select();
+            }
+        }
+
+        function TXT_CantidadRecibida_onChange(txtCantidad) {
+            var values = txtCantidad.id.split('_')
+            var index = values.pop() * 1
+            var consecutivo = values[5] * 1
+
+            var id = 'Content_DGV_EditarConsecutivoPedidoRecibido_DGV_ListaProductos_' + consecutivo + '_HDF_IDRecibidoPedidoDetalle_' + index
+            var HDF_IDRecibidoPedidoDetalle = document.getElementById(id)
+            var idDetallePedidoRecibido = HDF_IDRecibidoPedidoDetalle.value
+            var cantidadProducto = txtCantidad.value * 1
+
+            if (cantidadProducto === '' || cantidadProducto === 0 || cantidadProducto === '0') {
+                txtCantidad.value = 0
+            } else {
+                if (cantidadProducto < 0 || cantidadProducto > 999) {
+                    cantidadProducto = 0
+                    txtCantidad.value = 0
+                }
+            }
+            if (cantidadProducto >= 0 && cantidadProducto < 1000) {
+                productosAgregar.set(idDetallePedidoRecibido, cantidadProducto)
+                console.dir(productosAgregar)
+            }
+        }
+
+        function cargarProductosAgregar() {
+            document.getElementById('Content_LBL_GenerandoInforme').innerText = 'Actualizando cantidades, espere por favor.'
+            activarloading();
+            var usuario = document.getElementById('Content_HDF_IDUsuario').value;
+            var promises = [];
+            productosAgregar.forEach(function (valor, clave) {
+                promises.push(
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: "DetallePedidoRecibido.aspx/BTN_ActualizarCantidad_Click",
+                        data: JSON.stringify({
+                            "idPedidoRecibidoDetalle": clave,
+                            "cantidadProducto": valor,
+                            "usuario": usuario
+                        }),
+                        dataType: "json",
+                        success: function (Result) {
+                            console.dir(Result)
+                        },
+                        error: function (Result) {
+                            alert("ERROR " + Result.status + ' ' + Result.statusText);
+                        }
+                    })
+                )
+            })
+            Promise.all(promises).then(function () {
+                if (productosAgregar.size > 0) {
+                    cerrarModalEditarPedidoRecibido();
+                    __doPostBack('CargarPedidoRecibido')
+                    alertifysuccess('Cantidades actualizadas con éxito.');
+                    desactivarloading();
+                } else {
+                    alertifywarning('Por favor, seleccione al menos un producto para actualizar.');
+                    cargarFiltros();
+                    desactivarloading();
+                }
+            });
+        }
+
         function imprimir(codigoPedido, sucursal, printer) {
             var listaProductos = 'Content_DGV_DetallePedido';
             var categorias = []
@@ -164,9 +259,9 @@
             table = document.getElementById(listaProductos);
             tbody = table.tBodies[0];
 
-            var pag = index / 30 + 1
+            var pag = Math.trunc(index / 30 + 1)
             var totalPags = Math.trunc(tbody.rows.length / 30)
-            totalPags += 0 < tbody.rows.length % 30 ? 1 : 0
+            totalPags += 0 < tbody.rows.length % 31 ? 1 : 0
 
             if (index < tbody.rows.length) {               
                 for (i = index, rowLen = tbody.rows.length; i < rowLen; i++) {
@@ -235,7 +330,7 @@
                     alert(error);
                 }).finally(function () {
                     return qz.websocket.disconnect().then(function () {
-                        imprimir2(codigoPedido, sucursal, printer, index + 30, indexFin + 30)
+                        imprimir2(codigoPedido, sucursal, printer, index + 31, indexFin + 31)
                     });
                 });
             } else {
@@ -299,6 +394,10 @@
             }
         }
 
+        function seleccionarNegocio(tipoNegocio) {
+            __doPostBack('Receta;' + tipoNegocio)
+        }
+
         function estilosElementosBloqueados() {
             document.getElementById('<%= TXT_CodigoRecibidoPedido.ClientID %>').classList.remove('aspNetDisabled')
             document.getElementById('<%= TXT_CodigoRecibidoPedido.ClientID %>').classList.add('form-control')
@@ -334,6 +433,16 @@
 
         $(document).ready(function () {
             estilosElementosBloqueados()
+
+            $(document).on('click', '[src*=plus]', function () {
+                $(this).closest("tr").after("<tr><td></td><td colspan = '999'>" + $(this).next().html() + "</td></tr>")
+                $(this).attr("src", "../Assets/img/minus.png");
+            });
+
+            $(document).on('click', '[src*=minus]', function () {
+                $(this).attr("src", "../Assets/img/plus.png");
+                $(this).closest("tr").next().remove();
+            });
         });
     </script>
 </asp:Content>
@@ -351,6 +460,7 @@
         </span>
     </a>
     <div class="wrapper">
+        <asp:HiddenField ID="HDF_IDUsuario" runat="server" Value="0" Visible="true" />
         <asp:HiddenField ID="HDF_PedidoID" runat="server" Value="0" Visible="false" />
         <asp:HiddenField ID="HDF_IDRecibidoPedido" runat="server" Value="0" Visible="false" />
         <asp:HiddenField ID="HDF_EstadoRecibidoPedido" runat="server" Value="" Visible="false" />
@@ -425,9 +535,15 @@
                         </a>
                     </li>
                     <li>
-                        <a href="../GestionCostos/CrearReceta.aspx">
+                        <a href="#" onclick="seleccionarNegocio('panaderia');">
                             <i class="fas fa-chart-line"></i>
-                            <p>Gestión costos</p>
+                            <p>Costos panadería</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="seleccionarNegocio('restaurante');">
+                            <i class="fas fa-chart-line"></i>
+                            <p>Costos restaurante</p>
                         </a>
                     </li>
                 </ul>
@@ -540,6 +656,8 @@
                                             <asp:Button UseSubmitBehavior="false" ID="BTN_ImprimirPedidoRecibido" runat="server" Text="Imprimir pedido recibido" CssClass="btn btn-info" OnClick="BTN_ImprimirPedidoRecibido_Click"></asp:Button>
                                         </div>                                        
                                         <div class="col-md-6" style="text-align: right;"> 
+                                            <asp:Button UseSubmitBehavior="false" ID="BTN_EditarRecibidoPedido" runat="server" Text="Editar pedido recibido" CssClass="btn btn-info" OnClick="BTN_EditarRecibidoPedido_Click" Visible="false"></asp:Button>
+                                            <asp:Button UseSubmitBehavior="false" ID="BTN_ActivarRecibidoPedido" runat="server" Text="Activar pedido recibido" CssClass="btn btn-success" OnClick="BTN_ActivarRecibidoPedido_Click"></asp:Button>
                                             <asp:Button UseSubmitBehavior="false" ID="BTN_CompletarRecibidoPedido" runat="server" Text="Completar pedido recibido" CssClass="btn btn-success" OnClick="BTN_CompletarRecibidoPedido_Click"></asp:Button>
                                         </div>
                                     </div>
@@ -718,5 +836,87 @@
             </ContentTemplate>
         </asp:UpdatePanel>
     </div>
+    
+    <button type="button" id="BTN_ModalEditarPedidoRecibido" data-toggle="modal" data-target="#ModalEditarPedidoRecibido" style="visibility: hidden;">open</button>
 
+    <div class="modal bd-example-modal-lg" id="ModalEditarPedidoRecibido" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="popModalEditarPedidoRecibido" aria-hidden="true">
+        <asp:UpdatePanel ID="UpdatePanel_ModalEditarPedidoRecibido" runat="server" UpdateMode="Conditional">
+            <ContentTemplate>
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h5 class="modal-title" runat="server">Editar pedido recibido</h5>
+                        </div>
+                        <div class="modal-body">                            
+                            <div class="table-responsive" id="tableConsecutivosPedidoRecibido">
+                                <asp:UpdatePanel ID="UpdatePanel_ConsecutivoPedidoRecibido" runat="server" UpdateMode="Conditional">
+                                    <ContentTemplate>   
+                                        <asp:GridView ID="DGV_EditarConsecutivoPedidoRecibido" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
+                                            AutoGenerateColumns="false" DataKeyNames="Consecutivo,RecibidoPedidoID,PedidoID" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
+                                            ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros."
+                                            OnRowDataBound="DGV_EditarConsecutivoPedidoRecibido_RowDataBound">
+                                            <Columns>           
+                                                <asp:TemplateField>
+                                                    <HeaderTemplate>
+                                                        <asp:Label ID="Lbl_VerDetalle" runat="server" Text="Ver detalle"></asp:Label>
+                                                    </HeaderTemplate>
+                                                    <ItemTemplate>
+                                                        <div class="table" id="tableProductos">
+                                                            <img alt="" style="cursor: pointer" src="../Assets/img/plus.png" />
+                                                            <asp:Panel ID="pnlListaProductos" runat="server" Style="display: none;">
+                                                                <asp:GridView ID="DGV_ListaProductos" runat="server" AutoGenerateColumns="false" DataKeyNames="IDRecibidoPedidoDetalle,IDProducto,DescripcionProducto,Categoria" CssClass="ChildGrid"
+                                                                    HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" 
+                                                                    GridLines="None" ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true">
+                                                                    <Columns>
+                                                                        <asp:TemplateField>                                                                            
+                                                                            <ItemTemplate>
+                                                                                <asp:HiddenField ID="HDF_IDRecibidoPedidoDetalle" runat="server" Value='<%# Eval("IDRecibidoPedidoDetalle") %>' />
+                                                                            </ItemTemplate>
+                                                                        </asp:TemplateField>
+                                                                        <asp:BoundField DataField="DescripcionCategoria" HeaderText="Categoría" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                             
+                                                                        <asp:BoundField DataField="DescripcionProducto" HeaderText="Nombre producto" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                             
+                                                                        <asp:BoundField DataField="CantidadRecibida" HeaderText="Cantidad recibida" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                                        <asp:TemplateField>
+                                                                            <HeaderTemplate>
+                                                                                <asp:Label ID="LBL_Cantidad" runat="server" Text="Actualizar cantidad"></asp:Label>
+                                                                            </HeaderTemplate>
+                                                                            <ItemTemplate>
+                                                                                <asp:TextBox class="form-control" TextMode="Number" MaxLength="0" min="0" max="999" style="width: 100%" runat="server" ID="TXT_CantidadAgregar" 
+                                                                                    onkeyup="TXT_CantidadRecibida_onKeyUp(this,event);" onchange="TXT_CantidadRecibida_onChange(this)" Text='<%#Eval("CantidadRecibida") %>' />
+                                                                            </ItemTemplate>
+                                                                            <ItemStyle HorizontalAlign="Center" />                                                    
+                                                                        </asp:TemplateField>
+                                                                        <asp:BoundField DataField="PrecioProducto" HeaderText="Precio unitario" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                                    </Columns>
+                                                                </asp:GridView>
+                                                            </asp:Panel>
+                                                        </div>
+                                                    </ItemTemplate>
+                                                    <ItemStyle HorizontalAlign="Center" />
+                                                </asp:TemplateField>                               
+                                                <asp:BoundField DataField="NumeroPedidoRecibido" HeaderText="Número pedido recibido" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                <asp:BoundField DataField="NumeroPedido" HeaderText="Número pedido" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                                <asp:BoundField DataField="Linea" HeaderText="Consecutivo" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                               
+                                                <asp:BoundField DataField="CantidadRecibida" HeaderText="Cantidad" ItemStyle-ForeColor="black" ItemStyle-HorizontalAlign="Center"></asp:BoundField>                                               
+                                                <asp:BoundField DataField="MontoPedidoRecibido" HeaderText="Monto" ItemStyle-ForeColor="black" DataFormatString="{0:n2}" ItemStyle-HorizontalAlign="Center"></asp:BoundField>
+                                            </Columns>
+                                        </asp:GridView>                                                        
+                                    </ContentTemplate>
+                                </asp:UpdatePanel>
+                            </div>
+                        </div>
+                        <div class="modal-footer">                            
+                            <div style="text-align: right;">
+                                <asp:Button ID="Button1" UseSubmitBehavior="false" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-primary" />
+                                <asp:Button ID="BTN_Actualizar" runat="server" UseSubmitBehavior="false" Text="Actualizar" CssClass="btn btn-secondary" OnClientClick="cargarProductosAgregar();" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ContentTemplate>
+        </asp:UpdatePanel>
+    </div>
 </asp:Content>

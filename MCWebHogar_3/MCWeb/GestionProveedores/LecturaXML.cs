@@ -68,6 +68,7 @@ namespace MCWebHogar.ControlPedidos.Proveedores
                 pop3Client = new Pop3Client();
                 pop3Client.Connect("pop.gmail.com", 995, true);
                 pop3Client.Authenticate("recent:facturas.mikfe@gmail.com", "lthwhslisnuixitj");
+                // pop3Client.Authenticate("recent:facturas.barcubujuqui@gmail.com", "caqjxdrlmnfmgkrs");
                 // pop3Client.Authenticate("recent:facturacion.mikfecr@gmail.com", "facturas2022");                
                 
                 int count = pop3Client.GetMessageCount();
@@ -99,7 +100,7 @@ namespace MCWebHogar.ControlPedidos.Proveedores
                         }
                     }
 
-                    if (!encontrado)
+                    if (!encontrado || encontrado)
                     {
                         int mailID = mail.GuardarEmail();
 
@@ -150,45 +151,45 @@ namespace MCWebHogar.ControlPedidos.Proveedores
 
         public void ReadXML()
         {
-            // TransferFiles();
-            try
-            {
-                string directoryName = HttpContext.Current.Server.MapPath("~");
+            // TransferFiles();            
+            string directoryName = HttpContext.Current.Server.MapPath("~");
                 
-                string firstTag = "";
-                string secondTag = "";
-                string thirdTag = "";
-                string fourthTag = "";
-                string claveFactura = "";
-                string codigoEmisor = "";
-                string identificacionReceptor = "";
-                DateTime fechaFactura = Convert.ToDateTime("1900-01-01");
+            string firstTag = "";
+            string secondTag = "";
+            string thirdTag = "";
+            string fourthTag = "";
+            string claveFactura = "";
+            string codigoEmisor = "";
+            string identificacionReceptor = "";
+            DateTime fechaFactura = Convert.ToDateTime("1900-01-01");
 
-                // string[] files = Directory.GetFiles(Path.Combine(directoryName, @"Facturas"));
-                DirectoryInfo info = new DirectoryInfo(Path.Combine(directoryName, @"Facturas"));
-                FileInfo[] files = info.GetFiles().OrderBy(p => p.CreationTime).ToArray();
-                foreach (var file in files)
+            // string[] files = Directory.GetFiles(Path.Combine(directoryName, @"Facturas"));
+            DirectoryInfo info = new DirectoryInfo(Path.Combine(directoryName, @"Facturas"));
+            FileInfo[] files = info.GetFiles().OrderBy(p => p.CreationTime).ToArray();
+            foreach (var file in files)
+            {
+                Factura factura = new Factura();
+                Emisor emisor = new Emisor();
+                LineaDetalle linea = new LineaDetalle();
+
+                #region Procesar
+                if (Path.GetExtension(file.Name) == ".xml")
                 {
-                    Factura factura = new Factura();
-                    Emisor emisor = new Emisor();
-                    LineaDetalle linea = new LineaDetalle();
-
-                    #region Procesar
-                    if (Path.GetExtension(file.Name) == ".xml")
+                    using (XmlReader reader = XmlReader.Create(file.FullName))
                     {
-                        using (XmlReader reader = XmlReader.Create(file.FullName))
+                        firstTag = "";
+                        secondTag = "";
+                        thirdTag = "";
+                        fourthTag = "";
+                        claveFactura = "";
+                        codigoEmisor = "";
+                        identificacionReceptor = "";
+                        fechaFactura = Convert.ToDateTime("1900-01-01");
+
+                        bool stop = false;
+
+                        try
                         {
-                            firstTag = "";
-                            secondTag = "";
-                            thirdTag = "";
-                            fourthTag = "";
-                            claveFactura = "";
-                            codigoEmisor = "";
-                            identificacionReceptor = "";
-                            fechaFactura = Convert.ToDateTime("1900-01-01");
-
-                            bool stop = false;
-
                             while (!stop && reader.Read())
                             {
                                 if (reader.IsStartElement())
@@ -462,15 +463,14 @@ namespace MCWebHogar.ControlPedidos.Proveedores
                                 }
                             }
                         }
+                        catch (Exception e)
+                        {
+                        }
                     }
-                    File.Delete(file.FullName);
-                    #endregion
                 }
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-        }
+                File.Delete(file.FullName);
+                #endregion
+             }
+        }        
     }
 }

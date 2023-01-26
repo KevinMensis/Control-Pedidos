@@ -1268,6 +1268,10 @@
             }
         }
 
+        function seleccionarNegocio(tipoNegocio) {
+            __doPostBack('Receta;' + tipoNegocio)
+        }
+
         $(document).ready(function () {
             cargarFiltros();
 
@@ -1362,9 +1366,15 @@
                         </a>
                     </li>
                     <li>
-                        <a href="../GestionCostos/CrearReceta.aspx">
+                        <a href="#" onclick="seleccionarNegocio('panaderia');">
                             <i class="fas fa-chart-line"></i>
-                            <p>Gestión costos</p>
+                            <p>Costos panadería</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="seleccionarNegocio('restaurante');">
+                            <i class="fas fa-chart-line"></i>
+                            <p>Costos restaurante</p>
                         </a>
                     </li>
                 </ul>
@@ -1906,6 +1916,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12" style="text-align: right;">
+                                    <asp:Button ID="BTN_ReporteExcelInsumo" runat="server" UseSubmitBehavior="false" Text="Reporte Excel" CssClass="btn btn-success" OnClientClick="cargarFiltros();" OnClick="BTN_ReporteExcelEmpaqueInsumo_Click"></asp:Button>
                                     <asp:Button ID="BTN_ImprimirDetalle" runat="server" UseSubmitBehavior="false" Text="Imprimir reporte" CssClass="btn btn-info" OnClientClick="activarloading();" OnClick="BTN_ImprimirReporteEmpaqueInsumo_Click"></asp:Button>
                                 </div>
                             </div>
@@ -1913,6 +1924,9 @@
                     </div>
                 </div>
             </ContentTemplate>
+            <Triggers>
+                <asp:PostBackTrigger ControlID="BTN_ReporteExcelInsumo" />
+            </Triggers>
         </asp:UpdatePanel>
     </div>
 </asp:Content>

@@ -1,6 +1,8 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -41,6 +43,12 @@ namespace MCWebHogar.ControlPedidos
                     string identificacion = opcion.Split(';')[1];
                     Session["IdentificacionReceptor"] = identificacion;
                     Response.Redirect("../GestionProveedores/Proveedores.aspx", true);
+                }
+                if (opcion.Contains("Receta"))
+                {
+                    string negocio = opcion.Split(';')[1];
+                    Session["RecetaNegocio"] = negocio;
+                    Response.Redirect("../GestionCostos/CrearReceta.aspx", true);
                 }
             }
         }
@@ -132,7 +140,8 @@ namespace MCWebHogar.ControlPedidos
                 if (e.CommandName == "VerDetalle")
                 {
                     Session["IDInsumo"] = idInsumo;
-                    Response.Redirect("DetalleInsumo.aspx", true);
+                    // Response.Redirect("DetalleInsumo.aspx", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDGV_ListaInsumos_RowCommand", "window.open('DetalleInsumo.aspx','_blank');", true);
                 }
                 else if (e.CommandName == "Eliminar") 
                 {
@@ -268,6 +277,50 @@ namespace MCWebHogar.ControlPedidos
             {
                 HDF_IDInsumo.Value = "0";
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_EliminarInsumo_Clickd", "alertifywarning('No tiene permisos para realizar esta acción.');", true);
+            }
+        }
+        #endregion
+
+        #region Reportes Excel
+        protected void BTN_ReporteExcelEmpaqueInsumo_Click(object sender, EventArgs e)
+        {
+            CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
+
+            DT.DT1.Clear();
+
+            try
+            {
+                string fechaDesde = DateTime.Now.Year + "-" + DateTime.Now.Month + "-01";
+                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString().Trim(), SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@fechaDesde", fechaDesde, SqlDbType.Date);
+                DT.DT1.Rows.Add("@fechaHasta", TXT_FechaCreacionDesde.Text + " 23:59:59", SqlDbType.DateTime);
+
+                DT.DT1.Rows.Add("@TipoSentencia", "ReporteExcelInsumos", SqlDbType.VarChar);
+                
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP_Reportes_0001");
+
+                using (XLWorkbook wb = new XLWorkbook())
+                {
+                    wb.Worksheets.Add(Result, "ReporteInsumo");
+
+                    Response.Clear();
+                    Response.Buffer = true;
+                    Response.Charset = "";
+                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    Response.AddHeader("content-disposition", "attachment;filename=ReporteInsumo.xlsx");
+                    using (MemoryStream MyMemoryStream = new MemoryStream())
+                    {
+                        wb.SaveAs(MyMemoryStream);
+                        MyMemoryStream.WriteTo(Response.OutputStream);
+                        Response.Flush();
+                        Response.End();
+                    }
+                }
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerControlScriptBTN_ReporteExcelEmpaqueInsumo_Click", "desactivarloading();cargarFiltros();", true);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
         #endregion

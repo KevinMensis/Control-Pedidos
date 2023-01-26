@@ -31,6 +31,24 @@ namespace MCWebHogar.GestionCostos {
         protected global::System.Web.UI.WebControls.HiddenField HDF_IDUsuario;
         
         /// <summary>
+        /// li_panaderia control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl li_panaderia;
+        
+        /// <summary>
+        /// li_restaurante control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl li_restaurante;
+        
+        /// <summary>
         /// LNK_CerrarSession control.
         /// </summary>
         /// <remarks>

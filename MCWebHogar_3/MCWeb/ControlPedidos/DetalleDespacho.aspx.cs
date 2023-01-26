@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -25,10 +26,11 @@ namespace MCWebHogar.ControlPedidos
                 {
                     if (Session["IDDespacho"] == null)
                     {
-                        Response.Redirect("OrdenesProduccion.aspx", true);
+                        Response.Redirect("Despacho.aspx", true);
                     }
                     else
                     {
+                        HDF_IDUsuario.Value = Session["Usuario"].ToString();
                         HDF_IDDespacho.Value = Session["IDDespacho"].ToString();
                         cargarDDLs();
                         cargarDespacho("");
@@ -44,6 +46,11 @@ namespace MCWebHogar.ControlPedidos
                 if (opcion.Contains("TXT_Buscar"))
                 {
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptTXT_Buscar_OnTextChanged", "cargarFiltros();estilosElementosBloqueados();", true);
+                }
+                if (opcion.Contains("CargarDespacho"))
+                {
+                    cargarDespacho("");
+                    cargarProductosDespacho();
                 }
                 if (opcion.Contains("DDL_ImpresorasLoad"))
                 {
@@ -78,6 +85,12 @@ namespace MCWebHogar.ControlPedidos
                     string identificacion = opcion.Split(';')[1];
                     Session["IdentificacionReceptor"] = identificacion;
                     Response.Redirect("../GestionProveedores/Proveedores.aspx", true);
+                }
+                if (opcion.Contains("Receta"))
+                {
+                    string negocio = opcion.Split(';')[1];
+                    Session["RecetaNegocio"] = negocio;
+                    Response.Redirect("../GestionCostos/CrearReceta.aspx", true);
                 }
             }
         }
@@ -183,6 +196,7 @@ namespace MCWebHogar.ControlPedidos
                         BTN_ConfirmarDespacho.Text = "Confirmar despacho # " + dr["ConsecutivoDespacho"].ToString().Trim();
 
                         BTN_CompletarDespacho.Visible = HDF_EstadoDespacho.Value == "Preparación";
+                        BTN_ActivarDespacho.Visible = HDF_EstadoDespacho.Value != "Preparación" && (ClasePermiso.Permiso("Editar", "Acciones", "Editar", Convert.ToInt32(Session["UserId"].ToString().Trim())) > 0);
                         
                         LBL_CreadoPor.Text = "Ingresado por: " + dr["QuienIngreso"].ToString().Trim() + ", " + dr["FIngreso"];
                         if (dr["QuienModifico"].ToString().Trim() == "" || dr["FModifico"].ToString().Trim() == "01/01/1900")
@@ -300,6 +314,39 @@ namespace MCWebHogar.ControlPedidos
             else
             {
                 string script = "alertifywarning('No se ha confirmado el despacho.');";
+                cargarDespacho(script);
+            }
+        }
+
+        protected void BTN_ActivarDespacho_Click(object sender, EventArgs e)
+        {
+            DT.DT1.Clear();
+
+            DT.DT1.Rows.Add("@IDDespacho", HDF_IDDespacho.Value, SqlDbType.Int);
+            DT.DT1.Rows.Add("@Estado", "Preparación", SqlDbType.VarChar);
+
+            DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "ConfirmarDespacho", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP10_0001");
+
+            if (Result != null && Result.Rows.Count > 0)
+            {
+                if (Result.Rows[0][0].ToString().Trim() == "ERROR")
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_ActivarDespacho_Click", "alertifywarning('No se ha activado el despacho. Error: " + Result.Rows[0][1].ToString().Trim() + "');", true);
+                    return;
+                }
+                else
+                {
+                    string script = "alertifysuccess('Se ha activado el despacho.');";
+                    cargarDespacho(script);
+                    cargarProductosDespacho();
+                }
+            }
+            else
+            {
+                string script = "alertifywarning('No se ha activado el despacho.');";
                 cargarDespacho(script);
             }
         }
@@ -425,6 +472,9 @@ namespace MCWebHogar.ControlPedidos
                 {
                     DGV_ListaProductos.Enabled = false;
                 }
+
+                Button editar = (Button)e.Row.FindControl("BTN_EditarDespacho");
+                editar.Visible = (ClasePermiso.Permiso("Editar", "Acciones", "Editar", Convert.ToInt32(Session["UserId"].ToString().Trim())) > 0);
             }
         }
         
@@ -474,6 +524,50 @@ namespace MCWebHogar.ControlPedidos
                 UpdatePanel_ModalDetallePedido.Update();
                 string script = "abrirModalDetallePedido();estilosElementosBloqueados();cargarFiltros();";
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_ImprimirDetallePedido_Click", script, true);
+            }
+
+            if (e.CommandName == "Editar")
+            {
+                int index = Convert.ToInt32(e.CommandArgument);
+                int idPedido = Convert.ToInt32(DGV_ListaPedidosDespacho.DataKeys[index].Values[1].ToString());
+                HDF_Pedido.Value = DGV_ListaPedidosDespacho.DataKeys[index].Values[3].ToString();
+                HDF_PuntoVenta.Value = DGV_ListaPedidosDespacho.DataKeys[index].Values[4].ToString();
+                DT.DT1.Clear();
+                DT.DT1.Rows.Add("@DespachoID", HDF_IDDespacho.Value, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@PedidoID", idPedido, SqlDbType.VarChar);
+
+                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", "CargarProductosPedido", SqlDbType.VarChar);
+
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP11_0001");
+
+                int montoDespacho = 0;
+                if (Result.Rows.Count > 0)
+                {
+                    for (int i = 0; i < Result.Rows.Count; i++)
+                    {
+                        int cantidad = Convert.ToInt32(Result.Rows[i]["CantidadDespachada"].ToString());
+                        int precioUnitario = Convert.ToInt32(Result.Rows[i]["PrecioProducto"].ToString());
+                        montoDespacho += cantidad * precioUnitario;
+                    }
+                }
+                HDF_MontoDespacho.Value = string.Format("{0:n0}", montoDespacho);
+
+                DT.DT1.Clear();
+                DT.DT1.Rows.Add("@DespachoID", HDF_IDDespacho.Value, SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@PedidoID", idPedido, SqlDbType.VarChar);
+
+                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", "CargarConsecutivosDespacho", SqlDbType.VarChar);
+
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP11_0001");
+                DGV_EditarConsecutivoDespacho.DataSource = Result;
+                DGV_EditarConsecutivoDespacho.DataBind();
+
+                UpdatePanel_ModalEditarDespacho.Update();
+                UpdatePanel_ConsecutivoDespacho.Update();
+                string script = "abrirModalEditarDespacho();estilosElementosBloqueados();cargarFiltros();";
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptBTN_EditarDespacho_Click", script, true);
             }
         }
        
@@ -557,6 +651,46 @@ namespace MCWebHogar.ControlPedidos
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerScriptDGV_ConsecutivoDespacho_RowCommand", script, true);
                 }
             }
+        }
+
+        protected void DGV_EditarConsecutivoDespacho_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                int consecutivo = Convert.ToInt32(DGV_EditarConsecutivoDespacho.DataKeys[e.Row.RowIndex].Values[0].ToString());
+                int idDespacho = Convert.ToInt32(DGV_EditarConsecutivoDespacho.DataKeys[e.Row.RowIndex].Values[1].ToString());
+                int idPedido = Convert.ToInt32(DGV_EditarConsecutivoDespacho.DataKeys[e.Row.RowIndex].Values[2].ToString());
+                DT.DT1.Clear();
+                DT.DT1.Rows.Add("@Consecutivo", consecutivo, SqlDbType.Int);
+                DT.DT1.Rows.Add("@DespachoID", idDespacho, SqlDbType.Int);
+                DT.DT1.Rows.Add("@PedidoID", idPedido, SqlDbType.Int);
+
+                DT.DT1.Rows.Add("@Usuario", Session["Usuario"].ToString(), SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@TipoSentencia", "CargarProductosConsecutivo", SqlDbType.VarChar);
+
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP11_0001");
+                GridView DGV_ListaProductos = e.Row.FindControl("DGV_ListaProductos") as GridView;
+                DGV_ListaProductos.DataSource = Result;
+                DGV_ListaProductos.DataBind();
+            }
+        }
+
+        [WebMethod()]
+        public static string BTN_ActualizarCantidad_Click(int idDespachoDetalle, int cantidadProducto, string usuario)
+        {
+            CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
+            DataTable Result = new DataTable();
+
+            DT.DT1.Clear();
+
+            DT.DT1.Rows.Add("@IDDespachoDetalle", idDespachoDetalle, SqlDbType.Int);
+            DT.DT1.Rows.Add("@CantidadDespachada", cantidadProducto, SqlDbType.Int);
+
+            DT.DT1.Rows.Add("@Usuario", usuario, SqlDbType.VarChar);
+            DT.DT1.Rows.Add("@TipoSentencia", "ActualizarCantidad", SqlDbType.VarChar);
+
+            Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "CP11_0001");
+            return "correcto";
         }
         #endregion
         #endregion

@@ -14,13 +14,26 @@ namespace MCWebHogar.GestionCostos
     {
         CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
         DataTable Result = new DataTable();
+        string tipoNegocio = "";
 
         decimal PorcentajeTotal = 0;
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            tipoNegocio = Session["RecetaNegocio"].ToString().Trim();
+
             if (!Page.IsPostBack)
             {
+                if (tipoNegocio == "panaderia")
+                {
+                    li_panaderia.Attributes.Add("class", "active");
+                    H1_Title.InnerText = "Panadería - " + H1_Title.InnerText;
+                }
+                else if (tipoNegocio == "restaurante")
+                {
+                    li_restaurante.Attributes.Add("class", "active");
+                    H1_Title.InnerText = "Restaurante - " + H1_Title.InnerText;
+                }
                 if (Session["UserId"] == null)
                 {
                     Response.Redirect("../Default.aspx", true);
@@ -54,6 +67,12 @@ namespace MCWebHogar.GestionCostos
                     string identificacion = opcion.Split(';')[1];
                     Session["IdentificacionReceptor"] = identificacion;
                     Response.Redirect("../GestionProveedores/Proveedores.aspx", true);
+                }
+                if (opcion.Contains("Receta"))
+                {
+                    string negocio = opcion.Split(';')[1];
+                    Session["RecetaNegocio"] = negocio;
+                    Response.Redirect("../GestionCostos/CrearReceta.aspx", true);
                 }
             }
         }

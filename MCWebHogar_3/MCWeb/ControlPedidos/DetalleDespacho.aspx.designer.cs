@@ -22,6 +22,15 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.Label LBL_GenerandoInforme;
         
         /// <summary>
+        /// HDF_IDUsuario control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField HDF_IDUsuario;
+        
+        /// <summary>
         /// HDF_IDDespacho control.
         /// </summary>
         /// <remarks>
@@ -155,6 +164,15 @@ namespace MCWebHogar.ControlPedidos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BTN_ConfirmarDespacho;
+        
+        /// <summary>
+        /// BTN_ActivarDespacho control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_ActivarDespacho;
         
         /// <summary>
         /// BTN_CompletarDespacho control.
@@ -326,5 +344,50 @@ namespace MCWebHogar.ControlPedidos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BTN_CerrarModalDetallePedido;
+        
+        /// <summary>
+        /// UpdatePanel_ModalEditarDespacho control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_ModalEditarDespacho;
+        
+        /// <summary>
+        /// UpdatePanel_ConsecutivoDespacho control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_ConsecutivoDespacho;
+        
+        /// <summary>
+        /// DGV_EditarConsecutivoDespacho control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView DGV_EditarConsecutivoDespacho;
+        
+        /// <summary>
+        /// Button1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Button1;
+        
+        /// <summary>
+        /// BTN_Actualizar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_Actualizar;
     }
 }

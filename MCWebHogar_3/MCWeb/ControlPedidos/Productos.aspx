@@ -56,8 +56,75 @@
             }
         }
 
+        function seleccionarNegocio(tipoNegocio) {
+            __doPostBack('Receta;' + tipoNegocio)
+        }
+
         function cargarFiltros() {
             $(<%= LB_Categoria.ClientID %>).SumoSelect({ selectAll: true, placeholder: 'Categoria' })            
+        }
+
+        function TXT_Orden_Focus(id) {            
+            document.getElementById(id).autofocus = true;
+            document.getElementById(id).focus();
+            document.getElementById(id).select();
+        }
+
+        function TXT_Orden_onKeyUp(txtOrden, e) {
+            var values = txtOrden.id.split('_')
+            var index = values.pop() * 1 + 1
+            if (e.keyCode === 13) {
+                var rows = $(<%= DGV_ListaProductos.ClientID %>)[0].rows.length - 1
+                var id = ''
+                if (index === rows) {
+                    id = 'Content_DGV_ListaProductos_TXT_Orden_' + 0
+                } else {
+                    id = 'Content_DGV_ListaProductos_TXT_Orden_' + index
+                }
+                document.getElementById(id).autofocus = true;
+                document.getElementById(id).focus();
+                document.getElementById(id).select();
+            }
+        }
+
+        function TXT_Orden_onChange(txtOrden) {
+            var values = txtOrden.id.split('_')
+            var index = values.pop() * 1
+
+            var id = 'Content_DGV_ListaProductos_HDF_IDProducto_' + index
+            var HDF_IDProducto = document.getElementById(id)
+            var idProducto = HDF_IDProducto.value
+
+            var newOrden = txtOrden.value
+            var usuario = document.getElementById('Content_HDF_IDUsuario').value;
+
+            if (newOrden !== '') {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "Productos.aspx/guardarOrdenProducto",
+                    data: JSON.stringify({
+                        "idProducto": idProducto,
+                        "ordenProducto": newOrden,
+                        "usuario": usuario
+                    }),
+                    dataType: "json",
+                    success: function (Result) {
+                        console.log(Result)
+                        var rows = $(<%= DGV_ListaProductos.ClientID %>)[0].rows.length - 1
+                        var id = ''
+                        if (index === rows) {
+                            id = 'Content_DGV_ListaProductos_TXT_Orden_' + 0
+                        } else {
+                            id = 'Content_DGV_ListaProductos_TXT_Orden_' + index
+                        }
+                        __doPostBack('CargarProductosAll', id)
+                    },
+                    error: function (Result) {
+                        alert("ERROR " + Result.status + ' ' + Result.statusText);
+                    }
+                })
+            }
         }
 
         $(document).ready(function () {
@@ -75,6 +142,7 @@
     <div id="fade2" class="overlayload"></div>
 
     <div class="wrapper ">
+        <asp:HiddenField ID="HDF_IDUsuario" runat="server" Value="0" Visible="true" />
         <div class="sidebar" data-color="white" data-active-color="danger">
             <div class="sidebar-wrapper scroll" style="overflow-y: auto;">
                 <img style="width: 60%; display: block; margin-left: 30%; margin-top: 3%;" src="../Assets/img/logo.png" />
@@ -146,9 +214,15 @@
                         </a>
                     </li>
                     <li>
-                        <a href="../GestionCostos/CrearReceta.aspx">
+                        <a href="#" onclick="seleccionarNegocio('panaderia');">
                             <i class="fas fa-chart-line"></i>
-                            <p>Gestión costos</p>
+                            <p>Costos panadería</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="seleccionarNegocio('restaurante');">
+                            <i class="fas fa-chart-line"></i>
+                            <p>Costos restaurante</p>
                         </a>
                     </li>
                 </ul>
@@ -211,8 +285,10 @@
                                         <asp:ListBox class="form-control" runat="server" ID="LB_Categoria" SelectionMode="Multiple" OnTextChanged="FiltrarProductos_OnClick" AutoPostBack="true"></asp:ListBox>
                                     </div>
                                     <div class="input-group no-border col-md-6" style="text-align: right; display: inline-block;">
-                                        <asp:Button ID="BTN_CrearProducto" style="margin: 0px;" runat="server" Text="Crear nuevo producto" CssClass="btn btn-secondary" OnClick="BTN_CrearProducto_OnClick"></asp:Button>
+                                        <asp:Button ID="BTN_CrearProducto" UseSubmitBehavior="false" style="margin: 0px;" runat="server" Text="Crear nuevo producto" CssClass="btn btn-secondary" OnClick="BTN_CrearProducto_OnClick"></asp:Button>                                        
                                         <asp:Button ID="BTN_DescargarProducto" runat="server" UseSubmitBehavior="false" Text="Descargar productos" CssClass="btn btn-info" OnClientClick="activarloading();desactivarloading();" OnClick="BTN_DescargarProducto_OnClick"></asp:Button>
+                                        <asp:Button ID="BTN_CargarProductosEliminados" runat="server" UseSubmitBehavior="false" Text="Eliminados" CssClass="btn btn-danger" OnClientClick="activarloading();desactivarloading();" OnClick="BTN_CargarProductosEliminados_OnClick" Visible="false"></asp:Button>
+                                        <asp:Button ID="BTN_Volver" runat="server" UseSubmitBehavior="false" Text="Volver" CssClass="btn btn-success" OnClientClick="activarloading();desactivarloading();" OnClick="BTN_Volver_OnClick" Visible="false"></asp:Button>
                                     </div>
                                 </ContentTemplate>
                                 <Triggers>
@@ -223,12 +299,23 @@
                                 <asp:UpdatePanel ID="UpdatePanel_ListaProductos" runat="server" UpdateMode="Conditional" style="margin-top: 7rem;">
                                     <ContentTemplate>
                                         <asp:GridView ID="DGV_ListaProductos" Width="100%" runat="server" CssClass="table" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center"
-                                            AutoGenerateColumns="False" DataKeyNames="IDProducto,Activo,IDCategoria,CodigoBarra,MedidaVenta,MedidaProduccion,UnidadMedida,EsEmpaque,EsInsumo" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
+                                            AutoGenerateColumns="False" DataKeyNames="IDProducto,Orden,Activo,IDCategoria,CodigoBarra,MedidaVenta,MedidaProduccion,UnidadMedida,EsEmpaque,EsInsumo" HeaderStyle-CssClass="table" BorderWidth="0px" HeaderStyle-BorderColor="#51cbce" GridLines="None"
                                             ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros." AllowSorting="true"
                                             OnSorting="DGV_ListaProductos_Sorting"
                                             OnRowCommand="DGV_ListaProductos_RowCommand"
                                             OnRowDataBound="DGV_ListaProductos_RowDataBound">
                                             <Columns>
+                                                <asp:TemplateField>
+                                                    <HeaderTemplate>
+                                                        <asp:Label ID="LBL_Orden" runat="server" Text="Orden"></asp:Label>
+                                                    </HeaderTemplate>
+                                                    <ItemTemplate>
+                                                        <asp:TextBox class="form-control" TextMode="Number" min="0" max="999999" style="width: 100%" runat="server" ID="TXT_Orden" 
+                                                            onkeyup="TXT_Orden_onKeyUp(this,event);" onchange="TXT_Orden_onChange(this);" Text='<%#Eval("Orden") %>' /> 
+                                                        <asp:HiddenField ID="HDF_IDProducto" runat="server" Value='<%# Eval("IDProducto") %>' />
+                                                    </ItemTemplate>
+                                                    <ItemStyle HorizontalAlign="Center" />
+                                                </asp:TemplateField>
                                                 <asp:BoundField DataField="DescripcionProducto" SortExpression="DescripcionProducto" HeaderText="Descripción" ItemStyle-HorizontalAlign="Center" ItemStyle-ForeColor="black"></asp:BoundField>
                                                 <asp:BoundField DataField="DescripcionCategoria" SortExpression="DescripcionCategoria" HeaderText="Categoría" ItemStyle-HorizontalAlign="Center" ItemStyle-ForeColor="black"></asp:BoundField>
                                                 <asp:BoundField DataField="Costo" SortExpression="Costo" HeaderText="Costo" ItemStyle-HorizontalAlign="Center" DataFormatString="{0:n}" ItemStyle-ForeColor="black"></asp:BoundField>
@@ -239,15 +326,15 @@
                                                         <asp:Label ID="LBL_Acciones" runat="server" Text="Acciones"></asp:Label>
                                                     </HeaderTemplate>
                                                     <ItemTemplate>
-                                                        <asp:Button class="btn btn-outline-success btn-round-mant" ID="BTN_Activar" runat="server"
+                                                        <asp:Button UseSubmitBehavior="false" class="btn btn-outline-success btn-round-mant" ID="BTN_Activar" runat="server"
                                                             CommandName="activar"
                                                             CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
                                                             Text="Activar" AutoPostBack="true" />
-                                                        <asp:Button class="btn btn-outline-primary btn-round-mant" ID="BTN_Editar" runat="server"
+                                                        <asp:Button UseSubmitBehavior="false" class="btn btn-outline-primary btn-round-mant" ID="BTN_Editar" runat="server"
                                                             CommandName="editar"
                                                             CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
                                                             Text="Editar" AutoPostBack="true" />
-                                                        <asp:Button class="btn btn-outline-danger btn-round-mant" ID="BTN_Eliminar" runat="server"
+                                                        <asp:Button UseSubmitBehavior="false" class="btn btn-outline-danger btn-round-mant" ID="BTN_Eliminar" runat="server"
                                                             CommandName="desactivar"
                                                             CommandArgument="<%# ((GridViewRow)Container).RowIndex %>"
                                                             Text="Desactivar" AutoPostBack="true" />
@@ -331,8 +418,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <asp:Button ID="BTN_CerrarModalCrearProducto" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-primary" />
-                            <asp:Button ID="BTN_GuardarProducto" runat="server" Text="Guardar producto" CssClass="btn btn-secondary" OnClientClick="return validarCrearProducto();" OnClick="BTN_GuardarProducto_OnClick" />
+                            <asp:Button ID="BTN_CerrarModalCrearProducto" UseSubmitBehavior="false" runat="server" Text="Cerrar" data-dismiss="modal" CssClass="btn btn-primary" />
+                            <asp:Button ID="BTN_GuardarProducto" runat="server" UseSubmitBehavior="false" Text="Guardar producto" CssClass="btn btn-secondary" OnClick="BTN_GuardarProducto_OnClick" />
                         </div>
                     </div>
                 </div>

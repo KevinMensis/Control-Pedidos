@@ -193,6 +193,15 @@ namespace MCWebHogar.ControlPedidos {
         protected global::System.Web.UI.WebControls.Button BTN_ImprimirOrdenProduccion;
         
         /// <summary>
+        /// BTN_VerDetallePedidos control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_VerDetallePedidos;
+        
+        /// <summary>
         /// BTN_CompletarODP control.
         /// </summary>
         /// <remarks>
@@ -281,6 +290,42 @@ namespace MCWebHogar.ControlPedidos {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BTN_CerrarModalCrearPedido;
+        
+        /// <summary>
+        /// UpdatePanel_ModalPedidosODP control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_ModalPedidosODP;
+        
+        /// <summary>
+        /// UpdatePanel_DGVPedidosODP control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel_DGVPedidosODP;
+        
+        /// <summary>
+        /// DGV_ListaPedidosODP control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView DGV_ListaPedidosODP;
+        
+        /// <summary>
+        /// Button1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Button1;
         
         /// <summary>
         /// UpdatePanel_SeleccionarImpresora control.
