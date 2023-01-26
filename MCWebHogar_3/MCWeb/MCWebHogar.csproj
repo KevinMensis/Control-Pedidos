@@ -882,37 +882,7 @@
     <Content Include="bin\Microsoft.ReportViewer.Common.dll" />
     <Content Include="bin\Microsoft.ReportViewer.ProcessingObjectModel.DLL" />
     <Content Include="bin\Microsoft.ReportViewer.WebForms.DLL" />
-    <Content Include="ControlPedidos\DetalleDevolucion.aspx" />
-    <Content Include="ControlPedidos\DetalleDesecho.aspx" />
-    <Content Include="ControlPedidos\DetalleInsumo.aspx" />
-    <Content Include="ControlPedidos\DetalleEmpaque.aspx" />
-    <Content Include="ControlPedidos\DetallePedidoRecibido.aspx" />
-    <Content Include="ControlPedidos\DetalleDespacho.aspx" />
-    <Content Include="ControlPedidos\DetalleODP.aspx" />
-    <Content Include="ControlPedidos\Insumos.aspx" />
-    <Content Include="GestionCostos\CostosIndirectos.aspx" />
-    <Content Include="GestionCostos\VerReceta.aspx" />
-    <Content Include="GestionCostos\ManoObra.aspx" />
-    <Content Include="GestionCostos\ProductosIntermedios.aspx" />
-    <Content Include="GestionCostos\CrearReceta.aspx" />
-    <Content Include="Master\Master.aspx" />
-    <Content Include="ControlPedidos\PlantasProduccion.aspx" />
-    <Content Include="GestionProveedores\Facturas.aspx" />
-    <Content Include="GestionProveedores\Reportes.aspx" />
-    <Content Include="GestionProveedores\Proveedores.aspx" />
-    <Content Include="GestionProveedores\Productos.aspx" />
-    <Content Include="ControlPedidos\PuntosVenta.aspx" />
-    <Content Include="ControlPedidos\Productos.aspx" />
-    <Content Include="ControlPedidos\GestionUsuarios.aspx" />
-    <Content Include="ControlPedidos\Reportes.aspx" />
-    <Content Include="ControlPedidos\Desechos.aspx" />
-    <Content Include="ControlPedidos\Devoluciones.aspx" />
-    <Content Include="ControlPedidos\PedidosRecibidos.aspx" />
-    <Content Include="ControlPedidos\DetallePedido.aspx" />
-    <Content Include="ControlPedidos\Despacho.aspx" />
-    <Content Include="ControlPedidos\Empaque.aspx" />
-    <Content Include="ControlPedidos\OrdenesProduccion.aspx" />
-    <Content Include="ControlPedidos\Pedido.aspx" />
+    <Content Include="ERP_Solirsa_PDFReports\ReporteManifiesto.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Default.aspx" />
     <Content Include="Assets\img\cargando.gif" />
@@ -1099,234 +1069,17 @@
     <Content Include="Styles\fonts\icomoon.woff" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ControlPedidos\ClasePermiso.cs" />
-    <Compile Include="ControlPedidos\DetalleDevolucion.aspx.cs">
-      <DependentUpon>DetalleDevolucion.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ControlPedidos\DetalleDevolucion.aspx.designer.cs">
-      <DependentUpon>DetalleDevolucion.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ControlPedidos\DetalleDesecho.aspx.cs">
-      <DependentUpon>DetalleDesecho.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ControlPedidos\DetalleDesecho.aspx.designer.cs">
-      <DependentUpon>DetalleDesecho.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ControlPedidos\DetalleInsumo.aspx.cs">
-      <DependentUpon>DetalleInsumo.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ControlPedidos\DetalleInsumo.aspx.designer.cs">
-      <DependentUpon>DetalleInsumo.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ControlPedidos\DetalleEmpaque.aspx.cs">
-      <DependentUpon>DetalleEmpaque.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ControlPedidos\DetalleEmpaque.aspx.designer.cs">
-      <DependentUpon>DetalleEmpaque.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ControlPedidos\DetallePedidoRecibido.aspx.cs">
-      <DependentUpon>DetallePedidoRecibido.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ControlPedidos\DetallePedidoRecibido.aspx.designer.cs">
-      <DependentUpon>DetallePedidoRecibido.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ControlPedidos\DetalleDespacho.aspx.cs">
-      <DependentUpon>DetalleDespacho.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ControlPedidos\DetalleDespacho.aspx.designer.cs">
-      <DependentUpon>DetalleDespacho.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ControlPedidos\DetalleODP.aspx.cs">
-      <DependentUpon>DetalleODP.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ControlPedidos\DetalleODP.aspx.designer.cs">
-      <DependentUpon>DetalleODP.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ControlPedidos\Insumos.aspx.cs">
-      <DependentUpon>Insumos.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ControlPedidos\Insumos.aspx.designer.cs">
-      <DependentUpon>Insumos.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="GestionCostos\CostosIndirectos.aspx.cs">
-      <DependentUpon>CostosIndirectos.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="GestionCostos\CostosIndirectos.aspx.designer.cs">
-      <DependentUpon>CostosIndirectos.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="GestionCostos\VerReceta.aspx.cs">
-      <DependentUpon>VerReceta.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="GestionCostos\VerReceta.aspx.designer.cs">
-      <DependentUpon>VerReceta.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="GestionCostos\ManoObra.aspx.cs">
-      <DependentUpon>ManoObra.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="GestionCostos\ManoObra.aspx.designer.cs">
-      <DependentUpon>ManoObra.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="GestionCostos\ProductosIntermedios.aspx.cs">
-      <DependentUpon>ProductosIntermedios.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="GestionCostos\ProductosIntermedios.aspx.designer.cs">
-      <DependentUpon>ProductosIntermedios.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="GestionCostos\CrearReceta.aspx.cs">
-      <DependentUpon>CrearReceta.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="GestionCostos\CrearReceta.aspx.designer.cs">
-      <DependentUpon>CrearReceta.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Master\Master.aspx.cs">
-      <DependentUpon>Master.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Master\Master.aspx.designer.cs">
-      <DependentUpon>Master.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ControlPedidos\PlantasProduccion.aspx.cs">
-      <DependentUpon>PlantasProduccion.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ControlPedidos\PlantasProduccion.aspx.designer.cs">
-      <DependentUpon>PlantasProduccion.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="GestionProveedores\Attachment.cs" />
-    <Compile Include="GestionProveedores\Email.cs" />
-    <Compile Include="GestionProveedores\Facturas.aspx.cs">
-      <DependentUpon>Facturas.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="GestionProveedores\Facturas.aspx.designer.cs">
-      <DependentUpon>Facturas.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="GestionProveedores\Reportes.aspx.cs">
-      <DependentUpon>Reportes.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="GestionProveedores\Reportes.aspx.designer.cs">
-      <DependentUpon>Reportes.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="GestionProveedores\Proveedores.aspx.cs">
-      <DependentUpon>Proveedores.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="GestionProveedores\Proveedores.aspx.designer.cs">
-      <DependentUpon>Proveedores.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="GestionProveedores\Productos.aspx.cs">
-      <DependentUpon>Productos.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="GestionProveedores\Productos.aspx.designer.cs">
-      <DependentUpon>Productos.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="GestionProveedores\Emisor.cs" />
-    <Compile Include="GestionProveedores\Factura.cs" />
-    <Compile Include="GestionProveedores\LecturaXML.cs" />
-    <Compile Include="GestionProveedores\LineaDetalle.cs" />
-    <Compile Include="ControlPedidos\PuntosVenta.aspx.cs">
-      <DependentUpon>PuntosVenta.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ControlPedidos\PuntosVenta.aspx.designer.cs">
-      <DependentUpon>PuntosVenta.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ControlPedidos\Productos.aspx.cs">
-      <DependentUpon>Productos.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ControlPedidos\Productos.aspx.designer.cs">
-      <DependentUpon>Productos.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ControlPedidos\GestionUsuarios.aspx.cs">
-      <DependentUpon>GestionUsuarios.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ControlPedidos\GestionUsuarios.aspx.designer.cs">
-      <DependentUpon>GestionUsuarios.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ControlPedidos\Reportes.aspx.cs">
-      <DependentUpon>Reportes.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ControlPedidos\Reportes.aspx.designer.cs">
-      <DependentUpon>Reportes.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ControlPedidos\Desechos.aspx.cs">
-      <DependentUpon>Desechos.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ControlPedidos\Desechos.aspx.designer.cs">
-      <DependentUpon>Desechos.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ControlPedidos\Devoluciones.aspx.cs">
-      <DependentUpon>Devoluciones.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ControlPedidos\Devoluciones.aspx.designer.cs">
-      <DependentUpon>Devoluciones.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ControlPedidos\PedidosRecibidos.aspx.cs">
-      <DependentUpon>PedidosRecibidos.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ControlPedidos\PedidosRecibidos.aspx.designer.cs">
-      <DependentUpon>PedidosRecibidos.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ControlPedidos\DetallePedido.aspx.cs">
-      <DependentUpon>DetallePedido.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ControlPedidos\DetallePedido.aspx.designer.cs">
-      <DependentUpon>DetallePedido.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ControlPedidos\Despacho.aspx.cs">
-      <DependentUpon>Despacho.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ControlPedidos\Despacho.aspx.designer.cs">
-      <DependentUpon>Despacho.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ControlPedidos\Empaque.aspx.cs">
-      <DependentUpon>Empaque.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ControlPedidos\Empaque.aspx.designer.cs">
-      <DependentUpon>Empaque.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ControlPedidos\OrdenesProduccion.aspx.cs">
-      <DependentUpon>OrdenesProduccion.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ControlPedidos\OrdenesProduccion.aspx.designer.cs">
-      <DependentUpon>OrdenesProduccion.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ControlPedidos\Pedido.aspx.cs">
-      <DependentUpon>Pedido.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ControlPedidos\Pedido.aspx.designer.cs">
-      <DependentUpon>Pedido.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="DataSets\DS_ControlPedidos.Designer.cs">
-      <DependentUpon>DS_ControlPedidos.xsd</DependentUpon>
+    <Compile Include="DataSets\DS_ERP_Solirsa.Designer.cs">
+      <DependentUpon>DS_ERP_Solirsa.xsd</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="ERP_Solirsa_PDFReports\ReporteManifiesto.aspx.cs">
+      <DependentUpon>ReporteManifiesto.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ERP_Solirsa_PDFReports\ReporteManifiesto.aspx.designer.cs">
+      <DependentUpon>ReporteManifiesto.aspx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -1359,6 +1112,7 @@
     <Folder Include="Assets\vendor\bootstrap\scss\vendor\" />
     <Folder Include="Assets\vendor\fontawesome-free\svgs\brands\" />
     <Folder Include="Assets\vendor\fontawesome-free\svgs\regular\" />
+    <Folder Include="ERP_Solirsa_PDFReports\ReportesTemp\" />
     <Folder Include="Reportes\" />
   </ItemGroup>
   <ItemGroup>
@@ -1619,24 +1373,17 @@
     <Content Include="Assets\vendor\jquery\jquery.min.map" />
     <Content Include="Assets\vendor\jquery\jquery.slim.min.map" />
     <Content Include="bin\MCWebHogar.dll.config" />
-    <Content Include="DataSets\DS_ControlPedidos.xsc">
-      <DependentUpon>DS_ControlPedidos.xsd</DependentUpon>
+    <Content Include="DataSets\DS_ERP_Solirsa.xsc">
+      <DependentUpon>DS_ERP_Solirsa.xsd</DependentUpon>
     </Content>
-    <Content Include="ControlPedidos\ReportesTemp\ReportePedido.pdf" />
-    <Content Include="ControlPedidos\ReportesTemp\ReporteODP.pdf" />
-    <Content Include="ControlPedidos\ReportesTemp\ReporteDesecho.pdf" />
-    <Content Include="ControlPedidos\ReportesTemp\ReporteDevolucion.pdf" />
-    <Content Include="ControlPedidos\ReportesTemp\ReporteEmpaque.pdf" />
-    <Content Include="ControlPedidos\ReportesTemp\Reporte.pdf" />
-    <None Include="DataSets\DS_ControlPedidos.xsd">
+    <None Include="DataSets\DS_ERP_Solirsa.xsd">
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DS_ControlPedidos.Designer.cs</LastGenOutput>
+      <LastGenOutput>DS_ERP_Solirsa.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
-    <Content Include="DataSets\DS_ControlPedidos.xss">
-      <DependentUpon>DS_ControlPedidos.xsd</DependentUpon>
+    <Content Include="DataSets\DS_ERP_Solirsa.xss">
+      <DependentUpon>DS_ERP_Solirsa.xsd</DependentUpon>
     </Content>
-    <Content Include="GestionProveedores\ReportesTemp\ReporteCompras.pdf" />
     <None Include="Properties\PublishProfiles\FTP_Connection.pubxml" />
     <None Include="Properties\PublishProfiles\Mi K Fe Webdeploy.pubxml" />
     <None Include="Properties\PublishProfiles\mikfepz-001-site1.pubxml" />
@@ -1662,16 +1409,8 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="rptCompras.rdlc" />
-    <EmbeddedResource Include="rptInsumo.rdlc" />
-    <EmbeddedResource Include="rptEmpaque.rdlc" />
-    <EmbeddedResource Include="rptDevolucion.rdlc" />
-    <EmbeddedResource Include="rptODP.rdlc" />
-    <EmbeddedResource Include="rptDesecho.rdlc" />
-    <EmbeddedResource Include="rptReporteDetalle.rdlc" />
-    <EmbeddedResource Include="rptReporte.rdlc" />
     <EmbeddedResource Include="rptReportePedido.rdlc" />
-    <EmbeddedResource Include="rptPedido.rdlc" />
+    <EmbeddedResource Include="rptManifest.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
