@@ -126,6 +126,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\img\logoHorizontal_SOLIRSA.jpg" />
     <Content Include="Assets\img\logoMensis.png" />
     <Content Include="bin\AjaxControlToolkit.dll" />
     <Content Include="bin\CapaDatos.dll" />
@@ -186,6 +187,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Assets\img\Reports\Manifest\" />
     <Folder Include="ERP_Solirsa_PDFReports\ReportesTemp\" />
   </ItemGroup>
   <ItemGroup>

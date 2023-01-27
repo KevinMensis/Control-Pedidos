@@ -9,6 +9,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.Services;
 using Microsoft.Reporting.WebForms;
+using System.Net;
 
 namespace MCWebHogar.ERP_Solirsa_PDFReports
 {
@@ -55,8 +56,54 @@ namespace MCWebHogar.ERP_Solirsa_PDFReports
                     return;
                 }
                 dsReportePedido.Tables["DT_ManifestReport_Header"].Merge(Result, true, MissingSchemaAction.Ignore);
+
                 clientSignatureURL = Result.Rows[0]["ClientSignatureURL"].ToString();
+
+                string fileNameSignatureClient = "";
+                string fileNameSignatureEmployee = "";
+
+                if (clientSignatureURL != "")
+                {
+                    string[] stringParts = clientSignatureURL.Split(new char[] { '/' });
+                    fileNameSignatureClient = stringParts[stringParts.Length - 1];
+                    string directoryName = HttpContext.Current.Server.MapPath("~");
+                    string path = Path.Combine(directoryName, @"Assets\img\Reports\Manifest\" + stringParts[5]);
+                    if (!System.IO.Directory.Exists(path))
+                    {
+                        System.IO.Directory.CreateDirectory(path);
+                    }
+                    path = Path.Combine(path, fileNameSignatureClient);
+
+                    using (WebClient webClient = new WebClient())
+                    {
+                        ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+                        ServicePointManager.DefaultConnectionLimit = 9999;
+
+                        webClient.DownloadFile(clientSignatureURL, path);
+                    }
+                }
+                
                 employeeSignatureURL = Result.Rows[0]["EmployeeSignatureURL"].ToString();
+                if (employeeSignatureURL != "")
+                {
+                    string[] stringParts = employeeSignatureURL.Split(new char[] { '/' });
+                    fileNameSignatureEmployee = stringParts[stringParts.Length - 1];
+                    string directoryName = HttpContext.Current.Server.MapPath("~");
+                    string path = Path.Combine(directoryName, @"Assets\img\Reports\Manifest\" + stringParts[5]);
+                    if (!System.IO.Directory.Exists(path))
+                    {
+                        System.IO.Directory.CreateDirectory(path);
+                    }
+                    path = Path.Combine(path, fileNameSignatureEmployee);
+
+                    using (WebClient webClient = new WebClient())
+                    {
+                        ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+                        ServicePointManager.DefaultConnectionLimit = 9999;
+
+                        webClient.DownloadFile(employeeSignatureURL, path);
+                    }
+                }
 
                 DT.DT1.Clear();
                 DT.DT1.Rows.Add("@ManifestID", idManifest, SqlDbType.Int);
@@ -122,10 +169,13 @@ namespace MCWebHogar.ERP_Solirsa_PDFReports
                 ReportViewer1.LocalReport.EnableExternalImages = true;
                 ReportViewer1.LocalReport.EnableHyperlinks = true;
 
-                ReportParameter rp_clientSignature = new ReportParameter("clientSignature", "ClientSignature");
-                ReportParameter rp_clientSignatureURL = new ReportParameter("clientSignatureURL", new Uri(Server.MapPath("~/Assets/img/logoMensis.png")).AbsoluteUri);
+                ReportParameter rp_clientSignatureURL = new ReportParameter("clientSignatureURL", clientSignatureURL != "" ? new Uri(Server.MapPath(@"~/Assets/img/Reports/Manifest/" + fileNameSignatureClient)).AbsoluteUri : "Sin firma");
                 ReportViewer1.LocalReport.SetParameters(rp_clientSignatureURL);
-                ReportViewer1.LocalReport.Refresh();
+
+                ReportParameter rp_employeeSignatureURL = new ReportParameter("employeeSignatureURL", employeeSignatureURL != "" ? new Uri(Server.MapPath(@"~/Assets/img/Reports/Manifest/" + fileNameSignatureEmployee)).AbsoluteUri : "Sin firma");
+                ReportViewer1.LocalReport.SetParameters(rp_employeeSignatureURL);
+                
+                ReportViewer1.LocalReport.Refresh();                
 
                 Microsoft.Reporting.WebForms.Warning[] warnings;
                 string[] streamIds;

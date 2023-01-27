@@ -2,6 +2,21 @@
 <Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <Body>
     <ReportItems>
+      <Rectangle Name="Rectangle1">
+        <KeepTogether>true</KeepTogether>
+        <Top>12.60877cm</Top>
+        <Left>2.81667cm</Left>
+        <Height>2.5cm</Height>
+        <Width>14.95682cm</Width>
+        <Visibility>
+          <Hidden>=(Parameters!clientSignatureURL.Value &lt;&gt; "Sin firma") And (Parameters!employeeSignatureURL.Value &lt;&gt; "Sin firma")</Hidden>
+        </Visibility>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Rectangle>
       <Textbox Name="Textbox128">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
@@ -30,6 +45,7 @@
         <Left>1.02461cm</Left>
         <Height>0.32639in</Height>
         <Width>1.82941in</Width>
+        <ZIndex>1</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -71,7 +87,7 @@
         <Left>11.3157cm</Left>
         <Height>0.93867cm</Height>
         <Width>8.76709cm</Width>
-        <ZIndex>1</ZIndex>
+        <ZIndex>2</ZIndex>
         <Style>
           <Border>
             <Color>#1c5403</Color>
@@ -92,7 +108,7 @@
         <Left>1.13453cm</Left>
         <Height>2.0715cm</Height>
         <Width>7.76112cm</Width>
-        <ZIndex>2</ZIndex>
+        <ZIndex>3</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -129,7 +145,7 @@
         <Left>1.02462cm</Left>
         <Height>0.6cm</Height>
         <Width>8.9135cm</Width>
-        <ZIndex>3</ZIndex>
+        <ZIndex>4</ZIndex>
         <Style>
           <Border>
             <Color>#1c5403</Color>
@@ -172,7 +188,7 @@
         <Left>9.93812cm</Left>
         <Height>0.6cm</Height>
         <Width>10.03476cm</Width>
-        <ZIndex>4</ZIndex>
+        <ZIndex>5</ZIndex>
         <Style>
           <Border>
             <Style>Solid</Style>
@@ -214,7 +230,7 @@
         <Left>1.02462cm</Left>
         <Height>0.6cm</Height>
         <Width>8.9135cm</Width>
-        <ZIndex>5</ZIndex>
+        <ZIndex>6</ZIndex>
         <Style>
           <Border>
             <Color>#1c5403</Color>
@@ -271,7 +287,7 @@
         <Left>9.93812cm</Left>
         <Height>0.6cm</Height>
         <Width>10.03476cm</Width>
-        <ZIndex>6</ZIndex>
+        <ZIndex>7</ZIndex>
         <Style>
           <Border>
             <Color>#1c5403</Color>
@@ -314,7 +330,7 @@
         <Left>1.02461cm</Left>
         <Height>0.6cm</Height>
         <Width>8.9135cm</Width>
-        <ZIndex>7</ZIndex>
+        <ZIndex>8</ZIndex>
         <Style>
           <Border>
             <Color>#1c5403</Color>
@@ -357,7 +373,7 @@
         <Left>9.93811cm</Left>
         <Height>0.6cm</Height>
         <Width>10.03476cm</Width>
-        <ZIndex>8</ZIndex>
+        <ZIndex>9</ZIndex>
         <Style>
           <Border>
             <Color>#1c5403</Color>
@@ -400,7 +416,7 @@
         <Left>1.02461cm</Left>
         <Height>0.6cm</Height>
         <Width>18.94826cm</Width>
-        <ZIndex>9</ZIndex>
+        <ZIndex>10</ZIndex>
         <Style>
           <Border>
             <Color>#1c5403</Color>
@@ -441,7 +457,7 @@
         <Left>1.13453cm</Left>
         <Height>0.32639in</Height>
         <Width>1.82941in</Width>
-        <ZIndex>10</ZIndex>
+        <ZIndex>11</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -643,7 +659,7 @@
         <Left>1.02461cm</Left>
         <Height>1.2cm</Height>
         <Width>18.94826cm</Width>
-        <ZIndex>11</ZIndex>
+        <ZIndex>12</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -678,7 +694,7 @@
         <Left>1.13453cm</Left>
         <Height>0.32639in</Height>
         <Width>1.82941in</Width>
-        <ZIndex>12</ZIndex>
+        <ZIndex>13</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -712,7 +728,7 @@
         <Left>1.13453cm</Left>
         <Height>1.82767cm</Height>
         <Width>18.94826cm</Width>
-        <ZIndex>13</ZIndex>
+        <ZIndex>14</ZIndex>
         <Style>
           <Border>
             <Color>#1c5403</Color>
@@ -753,7 +769,7 @@
         <Left>3.87501cm</Left>
         <Height>0.32639in</Height>
         <Width>1.82941in</Width>
-        <ZIndex>14</ZIndex>
+        <ZIndex>15</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -792,7 +808,7 @@
         <Left>12.15117cm</Left>
         <Height>0.32639in</Height>
         <Width>1.82941in</Width>
-        <ZIndex>15</ZIndex>
+        <ZIndex>16</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -828,7 +844,7 @@
         <Left>2.81667cm</Left>
         <Height>0.6cm</Height>
         <Width>6.62693cm</Width>
-        <ZIndex>16</ZIndex>
+        <ZIndex>17</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -864,7 +880,7 @@
         <Left>11.14656cm</Left>
         <Height>0.6cm</Height>
         <Width>6.62693cm</Width>
-        <ZIndex>17</ZIndex>
+        <ZIndex>18</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -880,7 +896,7 @@
         <Left>2.81667cm</Left>
         <Height>0cm</Height>
         <Width>6.62693cm</Width>
-        <ZIndex>18</ZIndex>
+        <ZIndex>19</ZIndex>
         <Style>
           <Border>
             <Style>Solid</Style>
@@ -892,7 +908,7 @@
         <Left>11.14656cm</Left>
         <Height>0cm</Height>
         <Width>6.62693cm</Width>
-        <ZIndex>19</ZIndex>
+        <ZIndex>20</ZIndex>
         <Style>
           <Border>
             <Style>Solid</Style>
@@ -907,7 +923,10 @@
         <Left>2.81667cm</Left>
         <Height>2.34245cm</Height>
         <Width>6.62693cm</Width>
-        <ZIndex>20</ZIndex>
+        <ZIndex>21</ZIndex>
+        <Visibility>
+          <Hidden>=Parameters!clientSignatureURL.Value = "Sin firma"</Hidden>
+        </Visibility>
         <Style>
           <Border>
             <Style>None</Style>
@@ -915,14 +934,17 @@
         </Style>
       </Image>
       <Image Name="SolirsaSignature">
-        <Source>Embedded</Source>
-        <Value>logoHorizontal_SOLIRSA</Value>
+        <Source>External</Source>
+        <Value>=Parameters!employeeSignatureURL.Value</Value>
         <Sizing>FitProportional</Sizing>
         <Top>12.76632cm</Top>
         <Left>11.14656cm</Left>
         <Height>2.34245cm</Height>
         <Width>6.62693cm</Width>
-        <ZIndex>21</ZIndex>
+        <ZIndex>22</ZIndex>
+        <Visibility>
+          <Hidden>=Parameters!employeeSignatureURL.Value = "Sin firma"</Hidden>
+        </Visibility>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1225,6 +1247,10 @@
   </DataSets>
   <ReportParameters>
     <ReportParameter Name="clientSignatureURL">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="employeeSignatureURL">
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
