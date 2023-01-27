@@ -340,6 +340,10 @@ namespace MCWebHogar.DataSets {
             
             private global::System.Data.DataColumn columnClientAddress;
             
+            private global::System.Data.DataColumn columnClientSignature;
+            
+            private global::System.Data.DataColumn columnEmployeeSignature;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public DT_ManifestReport_HeaderDataTable() {
@@ -479,6 +483,22 @@ namespace MCWebHogar.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ClientSignatureColumn {
+                get {
+                    return this.columnClientSignature;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn EmployeeSignatureColumn {
+                get {
+                    return this.columnEmployeeSignature;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -514,7 +534,7 @@ namespace MCWebHogar.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DT_ManifestReport_HeaderRow AddDT_ManifestReport_HeaderRow(int IDManifest, string ManifestIdentifier, string ClientName, string ContactFullName, string FirstPhoneNumber, string SecondPhoneNumber, string UserName, string ManifestDateFormatString, string Email, string ContactEmail, string ContactName, string AdditionalNotes, string ClientAddress) {
+            public DT_ManifestReport_HeaderRow AddDT_ManifestReport_HeaderRow(int IDManifest, string ManifestIdentifier, string ClientName, string ContactFullName, string FirstPhoneNumber, string SecondPhoneNumber, string UserName, string ManifestDateFormatString, string Email, string ContactEmail, string ContactName, string AdditionalNotes, string ClientAddress, string ClientSignature, string EmployeeSignature) {
                 DT_ManifestReport_HeaderRow rowDT_ManifestReport_HeaderRow = ((DT_ManifestReport_HeaderRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         IDManifest,
@@ -529,7 +549,9 @@ namespace MCWebHogar.DataSets {
                         ContactEmail,
                         ContactName,
                         AdditionalNotes,
-                        ClientAddress};
+                        ClientAddress,
+                        ClientSignature,
+                        EmployeeSignature};
                 rowDT_ManifestReport_HeaderRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDT_ManifestReport_HeaderRow);
                 return rowDT_ManifestReport_HeaderRow;
@@ -565,6 +587,8 @@ namespace MCWebHogar.DataSets {
                 this.columnContactName = base.Columns["ContactName"];
                 this.columnAdditionalNotes = base.Columns["AdditionalNotes"];
                 this.columnClientAddress = base.Columns["ClientAddress"];
+                this.columnClientSignature = base.Columns["ClientSignature"];
+                this.columnEmployeeSignature = base.Columns["EmployeeSignature"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -596,6 +620,10 @@ namespace MCWebHogar.DataSets {
                 base.Columns.Add(this.columnAdditionalNotes);
                 this.columnClientAddress = new global::System.Data.DataColumn("ClientAddress", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnClientAddress);
+                this.columnClientSignature = new global::System.Data.DataColumn("ClientSignature", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnClientSignature);
+                this.columnEmployeeSignature = new global::System.Data.DataColumn("EmployeeSignature", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEmployeeSignature);
                 this.columnIDManifest.Caption = "PedidoID";
                 this.columnFirstPhoneNumber.Caption = "CantidadProduccion";
             }
@@ -1276,6 +1304,40 @@ namespace MCWebHogar.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ClientSignature {
+                get {
+                    try {
+                        return ((string)(this[this.tableDT_ManifestReport_Header.ClientSignatureColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ClientSignature\' in table \'DT_ManifestReport_Header\' is DBN" +
+                                "ull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDT_ManifestReport_Header.ClientSignatureColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string EmployeeSignature {
+                get {
+                    try {
+                        return ((string)(this[this.tableDT_ManifestReport_Header.EmployeeSignatureColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EmployeeSignature\' in table \'DT_ManifestReport_Header\' is D" +
+                                "BNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDT_ManifestReport_Header.EmployeeSignatureColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsIDManifestNull() {
                 return this.IsNull(this.tableDT_ManifestReport_Header.IDManifestColumn);
             }
@@ -1428,6 +1490,30 @@ namespace MCWebHogar.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetClientAddressNull() {
                 this[this.tableDT_ManifestReport_Header.ClientAddressColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsClientSignatureNull() {
+                return this.IsNull(this.tableDT_ManifestReport_Header.ClientSignatureColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetClientSignatureNull() {
+                this[this.tableDT_ManifestReport_Header.ClientSignatureColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsEmployeeSignatureNull() {
+                return this.IsNull(this.tableDT_ManifestReport_Header.EmployeeSignatureColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetEmployeeSignatureNull() {
+                this[this.tableDT_ManifestReport_Header.EmployeeSignatureColumn] = global::System.Convert.DBNull;
             }
         }
         

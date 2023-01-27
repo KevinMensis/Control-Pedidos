@@ -1,6 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ReporteManifiesto.aspx.cs" MasterPageFile="~/MenuPrincipal.Master" Inherits="MCWebHogar.ControlPedidos.DetallePedido" %>
-
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajax" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ReporteManifiesto.aspx.cs" MasterPageFile="~/MenuPrincipal.Master" Inherits="MCWebHogar.ERP_Solirsa_PDFReports.ReporteManifiesto" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <meta charset="utf-8" />

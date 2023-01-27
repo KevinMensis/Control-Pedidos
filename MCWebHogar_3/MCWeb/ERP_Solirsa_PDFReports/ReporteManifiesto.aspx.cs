@@ -8,10 +8,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.Services;
+using Microsoft.Reporting.WebForms;
 
-namespace MCWebHogar.ControlPedidos
+namespace MCWebHogar.ERP_Solirsa_PDFReports
 {
-    public partial class DetallePedido : System.Web.UI.Page
+    public partial class ReporteManifiesto : System.Web.UI.Page
     {
         CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
         DataTable Result = new DataTable();
@@ -20,12 +21,13 @@ namespace MCWebHogar.ControlPedidos
         {
             if (!Page.IsPostBack)
             {
-                ReporteManifiesto();
+                string idManifest = Request.QueryString["idmanifest"].ToString();
+                ManifestReport(idManifest);
             }            
         }
 
-        #region Pedidos        
-        private void ReporteManifiesto()
+        #region Manifiesto        
+        private void ManifestReport(string idManifest)
         {
             try
             {
@@ -36,12 +38,15 @@ namespace MCWebHogar.ControlPedidos
                     Cache.Remove(allCaches.Key.ToString());
                 }
 
+                string clientSignatureURL = "";
+                string employeeSignatureURL = "";
+
                 MCWebHogar.DataSets.DSSolicitud dsReportePedido = new MCWebHogar.DataSets.DSSolicitud();
                 DT.DT1.Clear();
-                DT.DT1.Rows.Add("@IDManifest", 24, SqlDbType.Int);
+                DT.DT1.Rows.Add("@IDManifest", idManifest, SqlDbType.Int);
                 DT.DT1.Rows.Add("@Msg", "", SqlDbType.VarChar);
                 DT.DT1.Rows.Add("@CurrentUser", "kpicado", SqlDbType.VarChar);
-                DT.DT1.Rows.Add("@Sentence", "LoadManifestInfo", SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@Sentence", "LoadManifestReport", SqlDbType.VarChar);
 
                 Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "usp_PRD_Manifest_001");
                 if (Result.Rows.Count == 0)
@@ -50,9 +55,11 @@ namespace MCWebHogar.ControlPedidos
                     return;
                 }
                 dsReportePedido.Tables["DT_ManifestReport_Header"].Merge(Result, true, MissingSchemaAction.Ignore);
+                clientSignatureURL = Result.Rows[0]["ClientSignatureURL"].ToString();
+                employeeSignatureURL = Result.Rows[0]["EmployeeSignatureURL"].ToString();
 
                 DT.DT1.Clear();
-                DT.DT1.Rows.Add("@ManifestID", 24, SqlDbType.Int);
+                DT.DT1.Rows.Add("@ManifestID", idManifest, SqlDbType.Int);
                 DT.DT1.Rows.Add("@Msg", "", SqlDbType.VarChar);
                 DT.DT1.Rows.Add("@CurrentUser", "kpicado", SqlDbType.VarChar);
                 DT.DT1.Rows.Add("@Sentence", "ResumeManifestProducts", SqlDbType.VarChar);
@@ -115,6 +122,11 @@ namespace MCWebHogar.ControlPedidos
                 ReportViewer1.LocalReport.EnableExternalImages = true;
                 ReportViewer1.LocalReport.EnableHyperlinks = true;
 
+                ReportParameter rp_clientSignature = new ReportParameter("clientSignature", "ClientSignature");
+                ReportParameter rp_clientSignatureURL = new ReportParameter("clientSignatureURL", new Uri(Server.MapPath("~/Assets/img/logoMensis.png")).AbsoluteUri);
+                ReportViewer1.LocalReport.SetParameters(rp_clientSignatureURL);
+                ReportViewer1.LocalReport.Refresh();
+
                 Microsoft.Reporting.WebForms.Warning[] warnings;
                 string[] streamIds;
                 string mimeType = String.Empty;
@@ -130,7 +142,7 @@ namespace MCWebHogar.ControlPedidos
                     fs.Write(bytes2, 0, bytes2.Length);
                 }
                 string direccion = "/ERP_Solirsa_PDFReports/ReportesTemp/" + strFilePDF2;
-                string _open = "window.open('" + direccion + "'  , '_blank');";
+                string _open = "window.location.href = '" + direccion + "'";
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerControlScript", _open, true);
             }
             catch (Exception ex)

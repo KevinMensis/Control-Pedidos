@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MCWebHogar.ControlPedidos {
+namespace MCWebHogar.ERP_Solirsa_PDFReports {
     
     
-    public partial class DetallePedido {
+    public partial class ReporteManifiesto {
         
         /// <summary>
         /// HDF_IDManifest control.

@@ -900,9 +900,9 @@
         </Style>
       </Line>
       <Image Name="ClientSignature">
-        <Source>Embedded</Source>
-        <Value>logoHorizontal_SOLIRSA</Value>
-        <Sizing>FitProportional</Sizing>
+        <Source>External</Source>
+        <Value>=Parameters!clientSignatureURL.Value</Value>
+        <Sizing>Fit</Sizing>
         <Top>12.76633cm</Top>
         <Left>2.81667cm</Left>
         <Height>2.34245cm</Height>
@@ -1164,6 +1164,14 @@
           <DataField>ClientAddress</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="ClientSignature">
+          <DataField>ClientSignature</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="EmployeeSignature">
+          <DataField>EmployeeSignature</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>DSSolicitud</rd:DataSetName>
@@ -1215,6 +1223,12 @@
       </rd:DataSetInfo>
     </DataSet>
   </DataSets>
+  <ReportParameters>
+    <ReportParameter Name="clientSignatureURL">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+  </ReportParameters>
   <EmbeddedImages>
     <EmbeddedImage Name="ReporteManifiesto_Encabezado">
       <MIMEType>image/jpeg</MIMEType>
