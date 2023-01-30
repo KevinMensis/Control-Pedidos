@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="solirsa-001-site2" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="AppHostConfig" match="^CapaDatos$" />
+    <parameterEntry kind="ProviderPath" scope="contentPath" match="^C:\\Users\\kevin\\OneDrive\\Documentos\\GitHub\\ERP_GeneratePDF\\MCWebHogar_3\\MCWeb\\obj\\Debug\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^C:\\Users\\kevin\\OneDrive\\Documentos\\GitHub\\ERP_GeneratePDF\\MCWebHogar_3\\MCWeb\\obj\\Debug\\Package\\PackageTmp$" />
+  </parameter>
+  <parameter name="IIS Web Application Pool Name" description="" value="ASP.NET v4.0" tags="">
+    <parameterEntry kind="DeploymentObjectAttribute" scope="application" match="application[@applicationPool='Clr4IntegratedAppPool']/@applicationPool" />
+  </parameter>
+  <parameter name="IisVirtualDirectoryPhysicalPath" description="" value="C:\Users\kevin\OneDrive\Documentos\GitHub\ERP_GeneratePDF\MCWebHogar_3\MCWeb_deploy" tags="PhysicalPath">
+    <parameterEntry kind="DestinationVirtualDirectory" scope=".*" match="^C:\\Users\\kevin\\OneDrive\\Documentos\\GitHub\\ERP_GeneratePDF\\MCWebHogar_3\\MCWeb$" />
+  </parameter>
+  <parameter name="db_a8c525_solirsabakup-Web.config Connection String" description="db_a8c525_solirsabakup Connection String used in web.config by the application to access the database." value="Server=SQL5097.site4now.net;Database=db_a8c525_solirsabakup;User ID=db_a8c525_solirsabakup_admin;Password=desiree15" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\kevin\\OneDrive\\Documentos\\GitHub\\ERP_GeneratePDF\\MCWebHogar_3\\MCWeb\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='db_a8c525_solirsabakup']/@connectionString" />
+  </parameter>
+</parameters>

@@ -19,7 +19,7 @@ namespace MCWebHogar
         {
             if (!IsPostBack)
             {
-                UserDB DB = new UserDB(WebConfigurationManager.ConnectionStrings["db_a8c525_solirsabakup"].ConnectionString, "db_a8c525_solirsabakup");
+                UserDB DB = new UserDB(WebConfigurationManager.ConnectionStrings["db_a8c525_solirsa"].ConnectionString, "db_a8c525_solirsa");
                 GestorAccess.Conectividad(DB);
             }
         }

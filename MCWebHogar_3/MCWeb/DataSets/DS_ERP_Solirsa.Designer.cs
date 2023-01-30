@@ -332,17 +332,17 @@ namespace MCWebHogar.DataSets {
             
             private global::System.Data.DataColumn columnEmail;
             
-            private global::System.Data.DataColumn columnContactEmail;
+            private global::System.Data.DataColumn columnSignatureContactEmail;
             
-            private global::System.Data.DataColumn columnContactName;
+            private global::System.Data.DataColumn columnSignatureContactName;
             
             private global::System.Data.DataColumn columnAdditionalNotes;
-            
-            private global::System.Data.DataColumn columnClientAddress;
             
             private global::System.Data.DataColumn columnClientSignature;
             
             private global::System.Data.DataColumn columnEmployeeSignature;
+            
+            private global::System.Data.DataColumn columnDetailAddress;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -451,17 +451,17 @@ namespace MCWebHogar.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn ContactEmailColumn {
+            public global::System.Data.DataColumn SignatureContactEmailColumn {
                 get {
-                    return this.columnContactEmail;
+                    return this.columnSignatureContactEmail;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn ContactNameColumn {
+            public global::System.Data.DataColumn SignatureContactNameColumn {
                 get {
-                    return this.columnContactName;
+                    return this.columnSignatureContactName;
                 }
             }
             
@@ -470,14 +470,6 @@ namespace MCWebHogar.DataSets {
             public global::System.Data.DataColumn AdditionalNotesColumn {
                 get {
                     return this.columnAdditionalNotes;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn ClientAddressColumn {
-                get {
-                    return this.columnClientAddress;
                 }
             }
             
@@ -494,6 +486,14 @@ namespace MCWebHogar.DataSets {
             public global::System.Data.DataColumn EmployeeSignatureColumn {
                 get {
                     return this.columnEmployeeSignature;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DetailAddressColumn {
+                get {
+                    return this.columnDetailAddress;
                 }
             }
             
@@ -534,7 +534,7 @@ namespace MCWebHogar.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DT_ManifestReport_HeaderRow AddDT_ManifestReport_HeaderRow(int IDManifest, string ManifestIdentifier, string ClientName, string ContactFullName, string FirstPhoneNumber, string SecondPhoneNumber, string UserName, string ManifestDateFormatString, string Email, string ContactEmail, string ContactName, string AdditionalNotes, string ClientAddress, string ClientSignature, string EmployeeSignature) {
+            public DT_ManifestReport_HeaderRow AddDT_ManifestReport_HeaderRow(int IDManifest, string ManifestIdentifier, string ClientName, string ContactFullName, string FirstPhoneNumber, string SecondPhoneNumber, string UserName, string ManifestDateFormatString, string Email, string SignatureContactEmail, string SignatureContactName, string AdditionalNotes, string ClientSignature, string EmployeeSignature, string DetailAddress) {
                 DT_ManifestReport_HeaderRow rowDT_ManifestReport_HeaderRow = ((DT_ManifestReport_HeaderRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         IDManifest,
@@ -546,12 +546,12 @@ namespace MCWebHogar.DataSets {
                         UserName,
                         ManifestDateFormatString,
                         Email,
-                        ContactEmail,
-                        ContactName,
+                        SignatureContactEmail,
+                        SignatureContactName,
                         AdditionalNotes,
-                        ClientAddress,
                         ClientSignature,
-                        EmployeeSignature};
+                        EmployeeSignature,
+                        DetailAddress};
                 rowDT_ManifestReport_HeaderRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDT_ManifestReport_HeaderRow);
                 return rowDT_ManifestReport_HeaderRow;
@@ -583,12 +583,12 @@ namespace MCWebHogar.DataSets {
                 this.columnUserName = base.Columns["UserName"];
                 this.columnManifestDateFormatString = base.Columns["ManifestDateFormatString"];
                 this.columnEmail = base.Columns["Email"];
-                this.columnContactEmail = base.Columns["ContactEmail"];
-                this.columnContactName = base.Columns["ContactName"];
+                this.columnSignatureContactEmail = base.Columns["SignatureContactEmail"];
+                this.columnSignatureContactName = base.Columns["SignatureContactName"];
                 this.columnAdditionalNotes = base.Columns["AdditionalNotes"];
-                this.columnClientAddress = base.Columns["ClientAddress"];
                 this.columnClientSignature = base.Columns["ClientSignature"];
                 this.columnEmployeeSignature = base.Columns["EmployeeSignature"];
+                this.columnDetailAddress = base.Columns["DetailAddress"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -612,18 +612,18 @@ namespace MCWebHogar.DataSets {
                 base.Columns.Add(this.columnManifestDateFormatString);
                 this.columnEmail = new global::System.Data.DataColumn("Email", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnEmail);
-                this.columnContactEmail = new global::System.Data.DataColumn("ContactEmail", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnContactEmail);
-                this.columnContactName = new global::System.Data.DataColumn("ContactName", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnContactName);
+                this.columnSignatureContactEmail = new global::System.Data.DataColumn("SignatureContactEmail", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSignatureContactEmail);
+                this.columnSignatureContactName = new global::System.Data.DataColumn("SignatureContactName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSignatureContactName);
                 this.columnAdditionalNotes = new global::System.Data.DataColumn("AdditionalNotes", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAdditionalNotes);
-                this.columnClientAddress = new global::System.Data.DataColumn("ClientAddress", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnClientAddress);
                 this.columnClientSignature = new global::System.Data.DataColumn("ClientSignature", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnClientSignature);
                 this.columnEmployeeSignature = new global::System.Data.DataColumn("EmployeeSignature", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnEmployeeSignature);
+                this.columnDetailAddress = new global::System.Data.DataColumn("DetailAddress", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDetailAddress);
                 this.columnIDManifest.Caption = "PedidoID";
                 this.columnFirstPhoneNumber.Caption = "CantidadProduccion";
             }
@@ -1236,35 +1236,35 @@ namespace MCWebHogar.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string ContactEmail {
+            public string SignatureContactEmail {
                 get {
                     try {
-                        return ((string)(this[this.tableDT_ManifestReport_Header.ContactEmailColumn]));
+                        return ((string)(this[this.tableDT_ManifestReport_Header.SignatureContactEmailColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'ContactEmail\' in table \'DT_ManifestReport_Header\' is DBNull" +
-                                ".", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'SignatureContactEmail\' in table \'DT_ManifestReport_Header\' " +
+                                "is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDT_ManifestReport_Header.ContactEmailColumn] = value;
+                    this[this.tableDT_ManifestReport_Header.SignatureContactEmailColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string ContactName {
+            public string SignatureContactName {
                 get {
                     try {
-                        return ((string)(this[this.tableDT_ManifestReport_Header.ContactNameColumn]));
+                        return ((string)(this[this.tableDT_ManifestReport_Header.SignatureContactNameColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'ContactName\' in table \'DT_ManifestReport_Header\' is DBNull." +
-                                "", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'SignatureContactName\' in table \'DT_ManifestReport_Header\' i" +
+                                "s DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableDT_ManifestReport_Header.ContactNameColumn] = value;
+                    this[this.tableDT_ManifestReport_Header.SignatureContactNameColumn] = value;
                 }
             }
             
@@ -1282,23 +1282,6 @@ namespace MCWebHogar.DataSets {
                 }
                 set {
                     this[this.tableDT_ManifestReport_Header.AdditionalNotesColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string ClientAddress {
-                get {
-                    try {
-                        return ((string)(this[this.tableDT_ManifestReport_Header.ClientAddressColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'ClientAddress\' in table \'DT_ManifestReport_Header\' is DBNul" +
-                                "l.", e);
-                    }
-                }
-                set {
-                    this[this.tableDT_ManifestReport_Header.ClientAddressColumn] = value;
                 }
             }
             
@@ -1333,6 +1316,23 @@ namespace MCWebHogar.DataSets {
                 }
                 set {
                     this[this.tableDT_ManifestReport_Header.EmployeeSignatureColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string DetailAddress {
+                get {
+                    try {
+                        return ((string)(this[this.tableDT_ManifestReport_Header.DetailAddressColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DetailAddress\' in table \'DT_ManifestReport_Header\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableDT_ManifestReport_Header.DetailAddressColumn] = value;
                 }
             }
             
@@ -1446,26 +1446,26 @@ namespace MCWebHogar.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsContactEmailNull() {
-                return this.IsNull(this.tableDT_ManifestReport_Header.ContactEmailColumn);
+            public bool IsSignatureContactEmailNull() {
+                return this.IsNull(this.tableDT_ManifestReport_Header.SignatureContactEmailColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetContactEmailNull() {
-                this[this.tableDT_ManifestReport_Header.ContactEmailColumn] = global::System.Convert.DBNull;
+            public void SetSignatureContactEmailNull() {
+                this[this.tableDT_ManifestReport_Header.SignatureContactEmailColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsContactNameNull() {
-                return this.IsNull(this.tableDT_ManifestReport_Header.ContactNameColumn);
+            public bool IsSignatureContactNameNull() {
+                return this.IsNull(this.tableDT_ManifestReport_Header.SignatureContactNameColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetContactNameNull() {
-                this[this.tableDT_ManifestReport_Header.ContactNameColumn] = global::System.Convert.DBNull;
+            public void SetSignatureContactNameNull() {
+                this[this.tableDT_ManifestReport_Header.SignatureContactNameColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1478,18 +1478,6 @@ namespace MCWebHogar.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetAdditionalNotesNull() {
                 this[this.tableDT_ManifestReport_Header.AdditionalNotesColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsClientAddressNull() {
-                return this.IsNull(this.tableDT_ManifestReport_Header.ClientAddressColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetClientAddressNull() {
-                this[this.tableDT_ManifestReport_Header.ClientAddressColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1514,6 +1502,18 @@ namespace MCWebHogar.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetEmployeeSignatureNull() {
                 this[this.tableDT_ManifestReport_Header.EmployeeSignatureColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDetailAddressNull() {
+                return this.IsNull(this.tableDT_ManifestReport_Header.DetailAddressColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDetailAddressNull() {
+                this[this.tableDT_ManifestReport_Header.DetailAddressColumn] = global::System.Convert.DBNull;
             }
         }
         

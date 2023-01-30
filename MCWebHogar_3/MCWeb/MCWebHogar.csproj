@@ -205,7 +205,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <Content Include="bin\MCWebHogar.dll.config" />
+    <Content Include="bin\MCWebHogar.dll.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="DataSets\DS_ERP_Solirsa.xsc">
       <DependentUpon>DS_ERP_Solirsa.xsd</DependentUpon>
     </Content>
@@ -217,9 +219,7 @@
     <Content Include="DataSets\DS_ERP_Solirsa.xss">
       <DependentUpon>DS_ERP_Solirsa.xsd</DependentUpon>
     </Content>
-    <None Include="Properties\PublishProfiles\FTP_Connection.pubxml" />
-    <None Include="Properties\PublishProfiles\Mi K Fe Webdeploy.pubxml" />
-    <None Include="Properties\PublishProfiles\mikfepz-001-site1.pubxml" />
+    <None Include="Properties\PublishProfiles\SOLIRSA_Reports.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="AcroPDFLib">

@@ -56,3 +56,10 @@ C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\CapaLogic
 C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\CapaLogica\obj\Release\CapaLogica.csprojResolveAssemblyReference.cache
 C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\CapaLogica\obj\Release\CapaLogica.dll
 C:\Users\kevin\OneDrive\Documentos\GitHub\Control-Pedidos\MCWebHogar_3\CapaLogica\obj\Release\CapaLogica.pdb
+C:\Users\kevin\OneDrive\Documentos\GitHub\ERP_GeneratePDF\MCWebHogar_3\CapaLogica\bin\CapaLogica.dll
+C:\Users\kevin\OneDrive\Documentos\GitHub\ERP_GeneratePDF\MCWebHogar_3\CapaLogica\bin\CapaLogica.pdb
+C:\Users\kevin\OneDrive\Documentos\GitHub\ERP_GeneratePDF\MCWebHogar_3\CapaLogica\bin\CapaDatos.dll
+C:\Users\kevin\OneDrive\Documentos\GitHub\ERP_GeneratePDF\MCWebHogar_3\CapaLogica\bin\CapaDatos.pdb
+C:\Users\kevin\OneDrive\Documentos\GitHub\ERP_GeneratePDF\MCWebHogar_3\CapaLogica\obj\Release\CapaLogica.csprojResolveAssemblyReference.cache
+C:\Users\kevin\OneDrive\Documentos\GitHub\ERP_GeneratePDF\MCWebHogar_3\CapaLogica\obj\Release\CapaLogica.dll
+C:\Users\kevin\OneDrive\Documentos\GitHub\ERP_GeneratePDF\MCWebHogar_3\CapaLogica\obj\Release\CapaLogica.pdb

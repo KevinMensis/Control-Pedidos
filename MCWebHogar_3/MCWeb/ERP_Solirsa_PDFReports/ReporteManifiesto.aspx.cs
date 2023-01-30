@@ -52,7 +52,7 @@ namespace MCWebHogar.ERP_Solirsa_PDFReports
                 Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "usp_PRD_Manifest_001");
                 if (Result.Rows.Count == 0)
                 {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerControlScript", "alertifywarning('No hay datos para mostrar');desactivarloading();estilosElementosBloqueados();", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerControlScript", "alert('No hay datos para mostrar');", true);
                     return;
                 }
                 dsReportePedido.Tables["DT_ManifestReport_Header"].Merge(Result, true, MissingSchemaAction.Ignore);
@@ -169,10 +169,10 @@ namespace MCWebHogar.ERP_Solirsa_PDFReports
                 ReportViewer1.LocalReport.EnableExternalImages = true;
                 ReportViewer1.LocalReport.EnableHyperlinks = true;
 
-                ReportParameter rp_clientSignatureURL = new ReportParameter("clientSignatureURL", clientSignatureURL != "" ? new Uri(Server.MapPath(@"~/Assets/img/Reports/Manifest/" + fileNameSignatureClient)).AbsoluteUri : "Sin firma");
+                ReportParameter rp_clientSignatureURL = new ReportParameter("clientSignatureURL", clientSignatureURL != "" ? new Uri(Server.MapPath(@"~/Assets/img/Reports/Manifest/" + idManifest + "/" + fileNameSignatureClient)).AbsoluteUri : "Sin firma");
                 ReportViewer1.LocalReport.SetParameters(rp_clientSignatureURL);
 
-                ReportParameter rp_employeeSignatureURL = new ReportParameter("employeeSignatureURL", employeeSignatureURL != "" ? new Uri(Server.MapPath(@"~/Assets/img/Reports/Manifest/" + fileNameSignatureEmployee)).AbsoluteUri : "Sin firma");
+                ReportParameter rp_employeeSignatureURL = new ReportParameter("employeeSignatureURL", employeeSignatureURL != "" ? new Uri(Server.MapPath(@"~/Assets/img/Reports/Manifest/" + idManifest + "/" + fileNameSignatureEmployee)).AbsoluteUri : "Sin firma");
                 ReportViewer1.LocalReport.SetParameters(rp_employeeSignatureURL);
                 
                 ReportViewer1.LocalReport.Refresh();                
@@ -185,7 +185,7 @@ namespace MCWebHogar.ERP_Solirsa_PDFReports
                 byte[] bytes2 = ReportViewer1.LocalReport.Render("PDF", null, out mimeType, out encoding, out extension, out streamIds, out warnings);
                 //Generamos archivo en el servidor
                 string strCurrentDir2 = Server.MapPath(".") + "\\ReportesTemp\\";
-                string strFilePDF2 = "ReportePedido.pdf";
+                string strFilePDF2 = "ReporteManifiesto_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".pdf";
                 string strFilePathPDF2 = strCurrentDir2 + strFilePDF2;
                 using (FileStream fs = new FileStream(strFilePathPDF2, FileMode.Create))
                 {
@@ -197,6 +197,7 @@ namespace MCWebHogar.ERP_Solirsa_PDFReports
             }
             catch (Exception ex)
             {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerControlScript", "alert(" + ex.ToString() +");", true);
                 throw;
             }            
         }       

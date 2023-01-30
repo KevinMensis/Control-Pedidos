@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="db_a8c525_solirsabakup-Web.config Connection String" description="db_a8c525_solirsabakup Connection String used in web.config by the application to access the database." defaultValue="Server=SQL5097.site4now.net;Database=db_a8c525_solirsabakup;User ID=db_a8c525_solirsabakup_admin;Password=desiree15" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\kevin\\OneDrive\\Documentos\\GitHub\\ERP_GeneratePDF\\MCWebHogar_3\\MCWeb\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='db_a8c525_solirsabakup']/@connectionString" />
+  </parameter>
+</parameters>

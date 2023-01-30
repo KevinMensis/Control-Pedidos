@@ -61,8 +61,6 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entidades\ConttrolCostos\DatosCostos.cs" />
-    <Compile Include="Entidades\ControlPedidos\DatosHistoricos.cs" />
     <Compile Include="GestorDataDT.cs" />
     <Compile Include="GestorDatos.cs" />
     <Compile Include="GestorSQLserver.cs" />
@@ -76,9 +74,7 @@
       <Name>CapaDatos</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Reportes\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
