@@ -2,21 +2,6 @@
 <Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <Body>
     <ReportItems>
-      <Rectangle Name="Rectangle1">
-        <KeepTogether>true</KeepTogether>
-        <Top>12.60877cm</Top>
-        <Left>2.81667cm</Left>
-        <Height>2.5cm</Height>
-        <Width>14.95682cm</Width>
-        <Visibility>
-          <Hidden>=(Parameters!clientSignatureURL.Value &lt;&gt; "Sin firma") And (Parameters!employeeSignatureURL.Value &lt;&gt; "Sin firma")</Hidden>
-        </Visibility>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-        </Style>
-      </Rectangle>
       <Textbox Name="Textbox128">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
@@ -25,7 +10,7 @@
             <TextRuns>
               <TextRun>
                 <Label>NombreInstitucion</Label>
-                <Value>INFORMACIÓN</Value>
+                <Value>INFORMACIÓN DEL CLIENTE</Value>
                 <Style>
                   <FontFamily>Calibri</FontFamily>
                   <FontSize>14pt</FontSize>
@@ -44,8 +29,7 @@
         <Top>1.07109in</Top>
         <Left>1.02461cm</Left>
         <Height>0.32639in</Height>
-        <Width>1.82941in</Width>
-        <ZIndex>1</ZIndex>
+        <Width>2.61274in</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -62,15 +46,15 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>MANIFIESTO N° </Value>
+                <Value>RECOLECCIÓN N° </Value>
                 <Style>
                   <FontSize>14pt</FontSize>
                   <FontWeight>Bold</FontWeight>
                 </Style>
               </TextRun>
               <TextRun>
-                <Label>ManifestIdentifier</Label>
-                <Value>=First(Fields!ManifestIdentifier.Value, "DT_ManifestReport_Header")</Value>
+                <Label>PickupIdentifier</Label>
+                <Value>=First(Fields!PickupIdentifier.Value, "DT_PickupReport_Header")</Value>
                 <Style>
                   <FontSize>14pt</FontSize>
                   <FontWeight>Bold</FontWeight>
@@ -84,10 +68,10 @@
         </Paragraphs>
         <rd:DefaultName>Textbox4</rd:DefaultName>
         <Top>0.87021cm</Top>
-        <Left>11.3157cm</Left>
+        <Left>10.76537cm</Left>
         <Height>0.93867cm</Height>
-        <Width>8.76709cm</Width>
-        <ZIndex>2</ZIndex>
+        <Width>9.31742cm</Width>
+        <ZIndex>1</ZIndex>
         <Style>
           <Border>
             <Color>#1c5403</Color>
@@ -108,55 +92,13 @@
         <Left>1.13453cm</Left>
         <Height>2.0715cm</Height>
         <Width>7.76112cm</Width>
-        <ZIndex>3</ZIndex>
+        <ZIndex>2</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
           </Border>
         </Style>
       </Image>
-      <Textbox Name="Textbox7">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>FECHA: </Value>
-                <Style>
-                  <FontSize>12pt</FontSize>
-                  <Color>#1c5403</Color>
-                </Style>
-              </TextRun>
-              <TextRun>
-                <Label>ManifestDate</Label>
-                <Value>=First(Fields!ManifestDateFormatString.Value, "DT_ManifestReport_Header")</Value>
-                <Style>
-                  <FontSize>12pt</FontSize>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox7</rd:DefaultName>
-        <Top>2.72057cm</Top>
-        <Left>11.05937cm</Left>
-        <Height>0.6cm</Height>
-        <Width>8.9135cm</Width>
-        <ZIndex>4</ZIndex>
-        <Style>
-          <Border>
-            <Color>#1c5403</Color>
-            <Style>Solid</Style>
-            <Width>1.25pt</Width>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
       <Textbox Name="Textbox8">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
@@ -172,7 +114,7 @@
               </TextRun>
               <TextRun>
                 <Label>ClientName</Label>
-                <Value>=First(Fields!ClientName.Value, "DT_ManifestReport_Header")</Value>
+                <Value>=First(Fields!ClientName.Value, "DT_PickupReport_Header")</Value>
                 <Style>
                   <FontSize>12pt</FontSize>
                 </Style>
@@ -183,10 +125,10 @@
         </Paragraphs>
         <rd:DefaultName>Textbox7</rd:DefaultName>
         <Top>3.72599cm</Top>
-        <Left>1.02462cm</Left>
+        <Left>1.0246cm</Left>
         <Height>0.6cm</Height>
-        <Width>18.94826cm</Width>
-        <ZIndex>5</ZIndex>
+        <Width>18.94827cm</Width>
+        <ZIndex>3</ZIndex>
         <Style>
           <Border>
             <Style>Solid</Style>
@@ -213,7 +155,7 @@
               </TextRun>
               <TextRun>
                 <Label>ContactFullName</Label>
-                <Value>=First(Fields!ContactFullName.Value, "DT_ManifestReport_Header")</Value>
+                <Value>=First(Fields!ContactFullName.Value, "DT_PickupReport_Header")</Value>
                 <Style>
                   <FontSize>12pt</FontSize>
                 </Style>
@@ -226,12 +168,13 @@
         <Top>4.32599cm</Top>
         <Left>1.02462cm</Left>
         <Height>0.6cm</Height>
-        <Width>8.9135cm</Width>
-        <ZIndex>6</ZIndex>
+        <Width>18.94825cm</Width>
+        <ZIndex>4</ZIndex>
         <Style>
           <Border>
             <Color>#1c5403</Color>
             <Style>Solid</Style>
+            <Width>1.25pt</Width>
           </Border>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
@@ -254,7 +197,7 @@
               </TextRun>
               <TextRun>
                 <Label>FirstPhoneNumber</Label>
-                <Value>=First(Fields!FirstPhoneNumber.Value, "DT_ManifestReport_Header")</Value>
+                <Value>=First(Fields!FirstPhoneNumber.Value, "DT_PickupReport_Header")</Value>
                 <Style>
                   <FontSize>12pt</FontSize>
                 </Style>
@@ -268,7 +211,7 @@
               </TextRun>
               <TextRun>
                 <Label>SecondPhoneNumber</Label>
-                <Value>=First(Fields!SecondPhoneNumber.Value, "DT_ManifestReport_Header")</Value>
+                <Value>=First(Fields!SecondPhoneNumber.Value, "DT_PickupReport_Header")</Value>
                 <Style>
                   <FontSize>12pt</FontSize>
                 </Style>
@@ -278,11 +221,11 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox7</rd:DefaultName>
-        <Top>4.32599cm</Top>
-        <Left>9.93812cm</Left>
+        <Top>4.96127cm</Top>
+        <Left>9.93811cm</Left>
         <Height>0.6cm</Height>
         <Width>10.03476cm</Width>
-        <ZIndex>7</ZIndex>
+        <ZIndex>5</ZIndex>
         <Style>
           <Border>
             <Color>#1c5403</Color>
@@ -310,7 +253,7 @@
               </TextRun>
               <TextRun>
                 <Label>Email</Label>
-                <Value>=First(Fields!Email.Value, "DT_ManifestReport_Header")</Value>
+                <Value>=First(Fields!Email.Value, "DT_PickupReport_Header")</Value>
                 <Style>
                   <FontSize>12pt</FontSize>
                 </Style>
@@ -320,53 +263,11 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox7</rd:DefaultName>
-        <Top>4.92599cm</Top>
+        <Top>4.96127cm</Top>
         <Left>1.02461cm</Left>
         <Height>0.6cm</Height>
-        <Width>8.9135cm</Width>
-        <ZIndex>8</ZIndex>
-        <Style>
-          <Border>
-            <Color>#1c5403</Color>
-            <Style>Solid</Style>
-            <Width>1.25pt</Width>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="Textbox12">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>COPIA DE CORREO: </Value>
-                <Style>
-                  <FontSize>12pt</FontSize>
-                  <Color>#1c5403</Color>
-                </Style>
-              </TextRun>
-              <TextRun>
-                <Label>ContactEmail</Label>
-                <Value>=First(Fields!SignatureContactEmail.Value, "DT_ManifestReport_Header")</Value>
-                <Style>
-                  <FontSize>12pt</FontSize>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox7</rd:DefaultName>
-        <Top>4.92599cm</Top>
-        <Left>9.93811cm</Left>
-        <Height>0.6cm</Height>
-        <Width>10.03476cm</Width>
-        <ZIndex>9</ZIndex>
+        <Width>8.91351cm</Width>
+        <ZIndex>6</ZIndex>
         <Style>
           <Border>
             <Color>#1c5403</Color>
@@ -394,7 +295,7 @@
               </TextRun>
               <TextRun>
                 <Label>ClientAddress</Label>
-                <Value>=First(Fields!DetailAddress.Value, "DT_ManifestReport_Header")</Value>
+                <Value>=First(Fields!DetailAddress.Value, "DT_PickupReport_Header")</Value>
                 <Style>
                   <FontSize>12pt</FontSize>
                 </Style>
@@ -405,10 +306,10 @@
         </Paragraphs>
         <rd:DefaultName>Textbox7</rd:DefaultName>
         <Top>5.52599cm</Top>
-        <Left>1.02461cm</Left>
+        <Left>1.02086cm</Left>
         <Height>0.6cm</Height>
         <Width>18.94826cm</Width>
-        <ZIndex>10</ZIndex>
+        <ZIndex>7</ZIndex>
         <Style>
           <Border>
             <Color>#1c5403</Color>
@@ -429,7 +330,7 @@
             <TextRuns>
               <TextRun>
                 <Label>NombreInstitucion</Label>
-                <Value>RESIDUO(S)</Value>
+                <Value>INFORMACIÓN DE LA RECOLECCIÓN</Value>
                 <Style>
                   <FontFamily>Calibri</FontFamily>
                   <FontSize>14pt</FontSize>
@@ -445,11 +346,11 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox121</rd:DefaultName>
-        <Top>2.66419in</Top>
+        <Top>3.41419in</Top>
         <Left>1.13453cm</Left>
         <Height>0.32639in</Height>
-        <Width>1.82941in</Width>
-        <ZIndex>11</ZIndex>
+        <Width>3.46598in</Width>
+        <ZIndex>8</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -460,204 +361,6 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
-      <Tablix Name="Tablix2">
-        <TablixBody>
-          <TablixColumns>
-            <TablixColumn>
-              <Width>2.20975cm</Width>
-            </TablixColumn>
-            <TablixColumn>
-              <Width>16.73851cm</Width>
-            </TablixColumn>
-          </TablixColumns>
-          <TablixRows>
-            <TablixRow>
-              <Height>0.6cm</Height>
-              <TablixCells>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox15">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value>KGS</Value>
-                              <Style>
-                                <FontWeight>Bold</FontWeight>
-                                <Color>White</Color>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style />
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox15</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <BackgroundColor>#1c5403</BackgroundColor>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox17">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value>TIPO DE RESIDUO</Value>
-                              <Style>
-                                <FontWeight>Bold</FontWeight>
-                                <Color>White</Color>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style />
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox17</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <BackgroundColor>#1c5403</BackgroundColor>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-              </TablixCells>
-            </TablixRow>
-            <TablixRow>
-              <Height>0.6cm</Height>
-              <TablixCells>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="ProductWeight">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value>=Fields!ProductWeight.Value</Value>
-                              <Style>
-                                <Format>#,0.00</Format>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Right</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>ProductWeight</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>#1c5403</Color>
-                          <Style>Solid</Style>
-                          <Width>1.25pt</Width>
-                        </Border>
-                        <VerticalAlign>Middle</VerticalAlign>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>3pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Detail">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value>=Fields!Detail.Value</Value>
-                              <Style />
-                            </TextRun>
-                          </TextRuns>
-                          <Style />
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Detail</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>#1c5403</Color>
-                          <Style>Solid</Style>
-                          <Width>1.25pt</Width>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-              </TablixCells>
-            </TablixRow>
-          </TablixRows>
-        </TablixBody>
-        <TablixColumnHierarchy>
-          <TablixMembers>
-            <TablixMember />
-            <TablixMember />
-          </TablixMembers>
-        </TablixColumnHierarchy>
-        <TablixRowHierarchy>
-          <TablixMembers>
-            <TablixMember />
-            <TablixMember>
-              <Group Name="IDManifestProduct">
-                <GroupExpressions>
-                  <GroupExpression>=Fields!IDManifestProduct.Value</GroupExpression>
-                </GroupExpressions>
-              </Group>
-              <SortExpressions>
-                <SortExpression>
-                  <Value>=Fields!IDManifestProduct.Value</Value>
-                </SortExpression>
-              </SortExpressions>
-              <TablixMembers>
-                <TablixMember>
-                  <Group Name="Details" />
-                </TablixMember>
-              </TablixMembers>
-            </TablixMember>
-          </TablixMembers>
-        </TablixRowHierarchy>
-        <DataSetName>DT_ManifestReport_Detail</DataSetName>
-        <Top>7.77245cm</Top>
-        <Left>1.02461cm</Left>
-        <Height>1.2cm</Height>
-        <Width>18.94826cm</Width>
-        <ZIndex>12</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-        </Style>
-      </Tablix>
       <Textbox Name="Textbox130">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
@@ -682,11 +385,11 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox121</rd:DefaultName>
-        <Top>3.73192in</Top>
+        <Top>5.35692in</Top>
         <Left>1.13453cm</Left>
         <Height>0.32639in</Height>
         <Width>1.82941in</Width>
-        <ZIndex>13</ZIndex>
+        <ZIndex>9</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -704,8 +407,15 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
+                <Value>NOTAS: </Value>
+                <Style>
+                  <FontSize>12pt</FontSize>
+                  <Color>#1c5403</Color>
+                </Style>
+              </TextRun>
+              <TextRun>
                 <Label>AdditionalNotes</Label>
-                <Value>=First(Fields!AdditionalNotes.Value, "DT_ManifestReport_Header")</Value>
+                <Value>=First(Fields!AdditionalNotes.Value, "DT_PickupReport_Header")</Value>
                 <Style>
                   <FontSize>12pt</FontSize>
                 </Style>
@@ -715,11 +425,11 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox7</rd:DefaultName>
-        <Top>10.44921cm</Top>
-        <Left>1.13453cm</Left>
-        <Height>1.82767cm</Height>
+        <Top>6.12599cm</Top>
+        <Left>1.02086cm</Left>
+        <Height>1.70067cm</Height>
         <Width>18.94826cm</Width>
-        <ZIndex>14</ZIndex>
+        <ZIndex>10</ZIndex>
         <Style>
           <Border>
             <Color>#1c5403</Color>
@@ -732,77 +442,110 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
-      <Textbox Name="Textbox131">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Label>NombreInstitucion</Label>
-                <Value>FIRMA DEL CLIENTE</Value>
-                <Style>
-                  <FontFamily>Calibri</FontFamily>
-                  <FontSize>14pt</FontSize>
-                  <FontWeight>Bold</FontWeight>
-                  <TextDecoration>None</TextDecoration>
-                  <Color>#1c5403</Color>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style>
-              <TextAlign>Left</TextAlign>
-            </Style>
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox121</rd:DefaultName>
-        <Top>6.08192in</Top>
-        <Left>3.87501cm</Left>
-        <Height>0.32639in</Height>
-        <Width>1.82941in</Width>
-        <ZIndex>15</ZIndex>
+      <Tablix Name="Table_PickupNoes">
+        <TablixBody>
+          <TablixColumns>
+            <TablixColumn>
+              <Width>18.94451cm</Width>
+            </TablixColumn>
+          </TablixColumns>
+          <TablixRows>
+            <TablixRow>
+              <Height>1.72183cm</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Detail">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!Detail.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Detail</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+          </TablixRows>
+        </TablixBody>
+        <TablixColumnHierarchy>
+          <TablixMembers>
+            <TablixMember />
+          </TablixMembers>
+        </TablixColumnHierarchy>
+        <TablixRowHierarchy>
+          <TablixMembers>
+            <TablixMember>
+              <Group Name="Details" />
+            </TablixMember>
+          </TablixMembers>
+        </TablixRowHierarchy>
+        <DataSetName>DT_PickupReport_Notes</DataSetName>
+        <Top>14.8195cm</Top>
+        <Left>1.02462cm</Left>
+        <Height>1.72183cm</Height>
+        <Width>18.94451cm</Width>
+        <ZIndex>11</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
           </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
         </Style>
-      </Textbox>
-      <Textbox Name="Textbox132">
+      </Tablix>
+      <Textbox Name="Textbox15">
         <CanGrow>true</CanGrow>
         <KeepTogether>true</KeepTogether>
         <Paragraphs>
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Label>NombreInstitucion</Label>
-                <Value>FIRMA SOLIRSA</Value>
+                <Value>TIPO DE RECOLECCIÓN: </Value>
                 <Style>
-                  <FontFamily>Calibri</FontFamily>
-                  <FontSize>14pt</FontSize>
-                  <FontWeight>Bold</FontWeight>
-                  <TextDecoration>None</TextDecoration>
+                  <FontSize>12pt</FontSize>
                   <Color>#1c5403</Color>
                 </Style>
               </TextRun>
+              <TextRun>
+                <Label>PickupTypeDetail</Label>
+                <Value>=First(Fields!TypeDetail.Value, "DT_PickupReport_Header")</Value>
+                <Style>
+                  <FontSize>12pt</FontSize>
+                </Style>
+              </TextRun>
             </TextRuns>
-            <Style>
-              <TextAlign>Left</TextAlign>
-            </Style>
+            <Style />
           </Paragraph>
         </Paragraphs>
-        <rd:DefaultName>Textbox121</rd:DefaultName>
-        <Top>6.08192in</Top>
-        <Left>12.15117cm</Left>
-        <Height>0.32639in</Height>
-        <Width>1.82941in</Width>
-        <ZIndex>16</ZIndex>
+        <rd:DefaultName>Textbox7</rd:DefaultName>
+        <Top>9.67746cm</Top>
+        <Left>1.13453cm</Left>
+        <Height>0.6cm</Height>
+        <Width>8.80359cm</Width>
+        <ZIndex>12</ZIndex>
         <Style>
           <Border>
-            <Style>None</Style>
+            <Color>#1c5403</Color>
+            <Style>Solid</Style>
+            <Width>1.25pt</Width>
           </Border>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
@@ -817,28 +560,92 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Label>ContactName</Label>
-                <Value>=First(Fields!SignatureContactName.Value, "DT_ManifestReport_Header")</Value>
+                <Value>FECHA: </Value>
                 <Style>
                   <FontSize>12pt</FontSize>
                   <Color>#1c5403</Color>
                 </Style>
               </TextRun>
+              <TextRun>
+                <Label>PickupDate</Label>
+                <Value>=First(Fields!PickupDateFormatString.Value, "DT_PickupReport_Header")</Value>
+                <Style>
+                  <FontSize>12pt</FontSize>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value xml:space="preserve"> </Value>
+                <Style>
+                  <FontSize>12pt</FontSize>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Label>PickupTime</Label>
+                <Value>=First(Fields!PickupTimeFormatString.Value, "DT_PickupReport_Header")</Value>
+                <Style>
+                  <FontSize>12pt</FontSize>
+                </Style>
+              </TextRun>
             </TextRuns>
-            <Style>
-              <TextAlign>Center</TextAlign>
-            </Style>
+            <Style />
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox7</rd:DefaultName>
-        <Top>16.31237cm</Top>
-        <Left>2.81667cm</Left>
+        <Top>9.67746cm</Top>
+        <Left>9.93812cm</Left>
         <Height>0.6cm</Height>
-        <Width>6.62693cm</Width>
-        <ZIndex>17</ZIndex>
+        <Width>10.031cm</Width>
+        <ZIndex>13</ZIndex>
         <Style>
           <Border>
-            <Style>None</Style>
+            <Color>#1c5403</Color>
+            <Style>Solid</Style>
+            <Width>1.25pt</Width>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox17">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>ENCARGADO: </Value>
+                <Style>
+                  <FontSize>12pt</FontSize>
+                  <Color>#1c5403</Color>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Label>PickupUserName</Label>
+                <Value>=First(Fields!UserName.Value, "DT_PickupReport_Header")</Value>
+                <Style>
+                  <FontSize>12pt</FontSize>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox7</rd:DefaultName>
+        <Top>10.27746cm</Top>
+        <Left>1.13453cm</Left>
+        <Height>0.6cm</Height>
+        <Width>8.80359cm</Width>
+        <ZIndex>14</ZIndex>
+        <Visibility>
+          <Hidden>=Sum(Fields!PickupTypeID.Value, "DT_PickupReport_Header") &lt;&gt; 17</Hidden>
+        </Visibility>
+        <Style>
+          <Border>
+            <Color>#1c5403</Color>
+            <Style>Solid</Style>
+            <Width>1.25pt</Width>
           </Border>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
@@ -853,28 +660,37 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Label>UserName</Label>
-                <Value>=First(Fields!UserName.Value, "DT_ManifestReport_Header")</Value>
+                <Value>VEHÍCULO: </Value>
                 <Style>
                   <FontSize>12pt</FontSize>
                   <Color>#1c5403</Color>
                 </Style>
               </TextRun>
+              <TextRun>
+                <Label>PickupTruck</Label>
+                <Value>=First(Fields!TruckDetail.Value, "DT_PickupReport_Header")</Value>
+                <Style>
+                  <FontSize>12pt</FontSize>
+                </Style>
+              </TextRun>
             </TextRuns>
-            <Style>
-              <TextAlign>Center</TextAlign>
-            </Style>
+            <Style />
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox7</rd:DefaultName>
-        <Top>16.2771cm</Top>
-        <Left>11.14656cm</Left>
+        <Top>10.27746cm</Top>
+        <Left>9.93811cm</Left>
         <Height>0.6cm</Height>
-        <Width>6.62693cm</Width>
-        <ZIndex>18</ZIndex>
+        <Width>10.031cm</Width>
+        <ZIndex>15</ZIndex>
+        <Visibility>
+          <Hidden>=Sum(Fields!PickupTypeID.Value, "DT_PickupReport_Header") &lt;&gt; 17</Hidden>
+        </Visibility>
         <Style>
           <Border>
-            <Style>None</Style>
+            <Color>#1c5403</Color>
+            <Style>Solid</Style>
+            <Width>1.25pt</Width>
           </Border>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
@@ -882,66 +698,354 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
-      <Line Name="Line1">
-        <Top>15.28516cm</Top>
-        <Left>2.81667cm</Left>
-        <Height>0cm</Height>
-        <Width>6.62693cm</Width>
+      <Textbox Name="Textbox19">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>PROVEEDOR: </Value>
+                <Style>
+                  <FontSize>12pt</FontSize>
+                  <Color>#1c5403</Color>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Label>PickupSupplier</Label>
+                <Value>=First(Fields!SupplierName.Value, "DT_PickupReport_Supplier")</Value>
+                <Style>
+                  <FontSize>12pt</FontSize>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox7</rd:DefaultName>
+        <Top>10.87746cm</Top>
+        <Left>1.13453cm</Left>
+        <Height>0.6cm</Height>
+        <Width>8.80359cm</Width>
+        <ZIndex>16</ZIndex>
+        <Visibility>
+          <Hidden>=Sum(Fields!PickupTypeID.Value, "DT_PickupReport_Header") &lt;&gt; 19</Hidden>
+        </Visibility>
+        <Style>
+          <Border>
+            <Color>#1c5403</Color>
+            <Style>Solid</Style>
+            <Width>1.25pt</Width>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox20">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>CHÓFER: </Value>
+                <Style>
+                  <FontSize>12pt</FontSize>
+                  <Color>#1c5403</Color>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Label>PickupSupplierDriver</Label>
+                <Value>=First(Fields!SupplierDriver.Value, "DT_PickupReport_Supplier")</Value>
+                <Style>
+                  <FontSize>12pt</FontSize>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox7</rd:DefaultName>
+        <Top>10.87746cm</Top>
+        <Left>9.93811cm</Left>
+        <Height>0.6cm</Height>
+        <Width>10.031cm</Width>
+        <ZIndex>17</ZIndex>
+        <Visibility>
+          <Hidden>=Sum(Fields!PickupTypeID.Value, "DT_PickupReport_Header") &lt;&gt; 19</Hidden>
+        </Visibility>
+        <Style>
+          <Border>
+            <Color>#1c5403</Color>
+            <Style>Solid</Style>
+            <Width>1.25pt</Width>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox21">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>PLACA: </Value>
+                <Style>
+                  <FontSize>12pt</FontSize>
+                  <Color>#1c5403</Color>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Label>PickupTruckLicense</Label>
+                <Value>=First(Fields!TruckLegalIdentifier.Value, "DT_PickupReport_Supplier")</Value>
+                <Style>
+                  <FontSize>12pt</FontSize>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox7</rd:DefaultName>
+        <Top>11.47746cm</Top>
+        <Left>1.13829cm</Left>
+        <Height>0.6cm</Height>
+        <Width>8.80359cm</Width>
+        <ZIndex>18</ZIndex>
+        <Visibility>
+          <Hidden>=Sum(Fields!PickupTypeID.Value, "DT_PickupReport_Header") &lt;&gt; 19</Hidden>
+        </Visibility>
+        <Style>
+          <Border>
+            <Color>#1c5403</Color>
+            <Style>Solid</Style>
+            <Width>1.25pt</Width>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox22">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>VEHÍCULO: </Value>
+                <Style>
+                  <FontSize>12pt</FontSize>
+                  <Color>#1c5403</Color>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Label>PickupSupplierDriver</Label>
+                <Value>=First(Fields!TruckType.Value, "DT_PickupReport_Supplier")</Value>
+                <Style>
+                  <FontSize>12pt</FontSize>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox7</rd:DefaultName>
+        <Top>11.47746cm</Top>
+        <Left>9.94187cm</Left>
+        <Height>0.6cm</Height>
+        <Width>10.031cm</Width>
         <ZIndex>19</ZIndex>
+        <Visibility>
+          <Hidden>=Sum(Fields!PickupTypeID.Value, "DT_PickupReport_Header") &lt;&gt; 19</Hidden>
+        </Visibility>
         <Style>
           <Border>
+            <Color>#1c5403</Color>
             <Style>Solid</Style>
+            <Width>1.25pt</Width>
           </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
         </Style>
-      </Line>
-      <Line Name="Line2">
-        <Top>15.28516cm</Top>
-        <Left>11.14656cm</Left>
-        <Height>0cm</Height>
-        <Width>6.62693cm</Width>
+      </Textbox>
+      <Textbox Name="Textbox23">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>TELÉFONO: </Value>
+                <Style>
+                  <FontSize>12pt</FontSize>
+                  <Color>#1c5403</Color>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Label>SupplierFirstPhone</Label>
+                <Value>=First(Fields!ContactFirstPhone.Value, "DT_PickupReport_Supplier")</Value>
+                <Style>
+                  <FontSize>12pt</FontSize>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Value> | </Value>
+                <Style>
+                  <FontSize>12pt</FontSize>
+                </Style>
+              </TextRun>
+              <TextRun>
+                <Label>SupplierSecondPhone</Label>
+                <Value>=First(Fields!ContactSecondPhone.Value, "DT_PickupReport_Supplier")</Value>
+                <Style>
+                  <FontSize>12pt</FontSize>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox7</rd:DefaultName>
+        <Top>12.07746cm</Top>
+        <Left>1.13829cm</Left>
+        <Height>0.6cm</Height>
+        <Width>18.83458cm</Width>
         <ZIndex>20</ZIndex>
+        <Visibility>
+          <Hidden>=Sum(Fields!PickupTypeID.Value, "DT_PickupReport_Header") &lt;&gt; 19</Hidden>
+        </Visibility>
         <Style>
           <Border>
+            <Color>#1c5403</Color>
             <Style>Solid</Style>
+            <Width>1.25pt</Width>
           </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
         </Style>
-      </Line>
-      <Image Name="ClientSignature">
-        <Source>External</Source>
-        <Value>=Parameters!clientSignatureURL.Value</Value>
-        <Sizing>Fit</Sizing>
-        <Top>12.76633cm</Top>
-        <Left>2.81667cm</Left>
-        <Height>2.34245cm</Height>
-        <Width>6.62693cm</Width>
+      </Textbox>
+      <Textbox Name="RegresarSOLIRSA">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=IIf(Sum(Fields!ReturnSOLIRSA.Value, "DT_PickupReport_Header") = 1,"Regresar a SOLIRSA","Continuar con siguiente recolección o evento")</Value>
+                <Style>
+                  <FontSize>12pt</FontSize>
+                  <Color>#1c5403</Color>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <Top>8.90107cm</Top>
+        <Left>9.93435cm</Left>
+        <Height>0.6cm</Height>
+        <Width>10.03476cm</Width>
         <ZIndex>21</ZIndex>
         <Visibility>
-          <Hidden>=Parameters!clientSignatureURL.Value = "Sin firma"</Hidden>
+          <Hidden>=Sum(Fields!PickupTypeID.Value, "DT_PickupReport_Header") &lt;&gt; 17</Hidden>
         </Visibility>
         <Style>
           <Border>
-            <Style>None</Style>
+            <Color>#1c5403</Color>
+            <Style>Solid</Style>
+            <Width>1.25pt</Width>
           </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
         </Style>
-      </Image>
-      <Image Name="SolirsaSignature">
-        <Source>External</Source>
-        <Value>=Parameters!employeeSignatureURL.Value</Value>
-        <Sizing>FitProportional</Sizing>
-        <Top>12.76632cm</Top>
-        <Left>11.14656cm</Left>
-        <Height>2.34245cm</Height>
-        <Width>6.62693cm</Width>
+      </Textbox>
+      <Tablix Name="Tablix1">
+        <TablixBody>
+          <TablixColumns>
+            <TablixColumn>
+              <Width>8.80735cm</Width>
+            </TablixColumn>
+          </TablixColumns>
+          <TablixRows>
+            <TablixRow>
+              <Height>0.6cm</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="UserName">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!UserName.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>UserName</rd:DefaultName>
+                      <Visibility>
+                        <Hidden>=Sum(Fields!PickupTypeID.Value, "DT_PickupReport_Header") &lt;&gt; 17</Hidden>
+                      </Visibility>
+                      <Style>
+                        <Border>
+                          <Color>#1c5403</Color>
+                          <Style>Solid</Style>
+                          <Width>1.25pt</Width>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+          </TablixRows>
+        </TablixBody>
+        <TablixColumnHierarchy>
+          <TablixMembers>
+            <TablixMember />
+          </TablixMembers>
+        </TablixColumnHierarchy>
+        <TablixRowHierarchy>
+          <TablixMembers>
+            <TablixMember>
+              <Group Name="Details1" />
+            </TablixMember>
+          </TablixMembers>
+        </TablixRowHierarchy>
+        <DataSetName>DT_PickupReport_Employees</DataSetName>
+        <Top>12.67746cm</Top>
+        <Left>1.13453cm</Left>
+        <Height>0.6cm</Height>
+        <Width>8.80735cm</Width>
         <ZIndex>22</ZIndex>
-        <Visibility>
-          <Hidden>=Parameters!employeeSignatureURL.Value = "Sin firma"</Hidden>
-        </Visibility>
         <Style>
           <Border>
             <Style>None</Style>
           </Border>
         </Style>
-      </Image>
+      </Tablix>
     </ReportItems>
     <Height>17.099cm</Height>
     <Style />
@@ -1008,6 +1112,7 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox126</rd:DefaultName>
+          <Top>0in</Top>
           <Left>0.10584in</Left>
           <Height>0.19444in</Height>
           <Width>2.63542in</Width>
@@ -1119,18 +1224,18 @@
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="DT_ManifestReport_Header">
+    <DataSet Name="DT_PickupReport_Header">
       <Query>
         <DataSourceName>DSSolicitud</DataSourceName>
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
-        <Field Name="IDManifest">
-          <DataField>IDManifest</DataField>
+        <Field Name="IDPickup">
+          <DataField>IDPickup</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="ManifestIdentifier">
-          <DataField>ManifestIdentifier</DataField>
+        <Field Name="PickupIdentifier">
+          <DataField>PickupIdentifier</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="ClientName">
@@ -1141,6 +1246,14 @@
           <DataField>ContactFullName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="DetailAddress">
+          <DataField>DetailAddress</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="AdditionalNotes">
+          <DataField>AdditionalNotes</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="FirstPhoneNumber">
           <DataField>FirstPhoneNumber</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -1149,77 +1262,61 @@
           <DataField>SecondPhoneNumber</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="UserName">
-          <DataField>UserName</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="ManifestDateFormatString">
-          <DataField>ManifestDateFormatString</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
         <Field Name="Email">
           <DataField>Email</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="SignatureContactEmail">
-          <DataField>SignatureContactEmail</DataField>
+        <Field Name="PickupDateFormatString">
+          <DataField>PickupDateFormatString</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="SignatureContactName">
-          <DataField>SignatureContactName</DataField>
+        <Field Name="PickupTimeFormatString">
+          <DataField>PickupTimeFormatString</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="AdditionalNotes">
-          <DataField>AdditionalNotes</DataField>
+        <Field Name="PickupTypeID">
+          <DataField>PickupTypeID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="UserName">
+          <DataField>UserName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="ClientSignature">
-          <DataField>ClientSignature</DataField>
+        <Field Name="TruckDetail">
+          <DataField>TruckDetail</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="EmployeeSignature">
-          <DataField>EmployeeSignature</DataField>
+        <Field Name="TypeDetail">
+          <DataField>TypeDetail</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="DetailAddress">
-          <DataField>DetailAddress</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+        <Field Name="ReturnSOLIRSA">
+          <DataField>ReturnSOLIRSA</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>DSSolicitud</rd:DataSetName>
         <rd:SchemaPath>C:\Users\kevin\OneDrive\Documentos\GitHub\ERP_GeneratePDF\MCWebHogar_3\MCWeb\DataSets\DS_ERP_Solirsa.xsd</rd:SchemaPath>
-        <rd:TableName>DT_ManifestReport_Header</rd:TableName>
+        <rd:TableName>DT_PickupReport_Header</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />
         <rd:TableAdapterName />
       </rd:DataSetInfo>
     </DataSet>
-    <DataSet Name="DT_ManifestReport_Detail">
+    <DataSet Name="DT_PickupReport_Notes">
       <Query>
         <DataSourceName>DSSolicitud</DataSourceName>
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
-        <Field Name="IDManifestProduct">
-          <DataField>IDManifestProduct</DataField>
+        <Field Name="IDPickupNote">
+          <DataField>IDPickupNote</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="ManifestID">
-          <DataField>ManifestID</DataField>
+        <Field Name="PickupID">
+          <DataField>PickupID</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-        <Field Name="CategoryID">
-          <DataField>CategoryID</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-        <Field Name="ProductWeight">
-          <DataField>ProductWeight</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="CategoryDetail">
-          <DataField>CategoryDetail</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="Detail">
           <DataField>Detail</DataField>
@@ -1229,23 +1326,89 @@
       <rd:DataSetInfo>
         <rd:DataSetName>DSSolicitud</rd:DataSetName>
         <rd:SchemaPath>C:\Users\kevin\OneDrive\Documentos\GitHub\ERP_GeneratePDF\MCWebHogar_3\MCWeb\DataSets\DS_ERP_Solirsa.xsd</rd:SchemaPath>
-        <rd:TableName>DT_ManifestReport_Detail</rd:TableName>
+        <rd:TableName>DT_PickupReport_Notes</rd:TableName>
+        <rd:TableAdapterFillMethod />
+        <rd:TableAdapterGetDataMethod />
+        <rd:TableAdapterName />
+      </rd:DataSetInfo>
+    </DataSet>
+    <DataSet Name="DT_PickupReport_Employees">
+      <Query>
+        <DataSourceName>DSSolicitud</DataSourceName>
+        <CommandText>/* Local Query */</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="IDPickupEmployee">
+          <DataField>IDPickupEmployee</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="PickupID">
+          <DataField>PickupID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="UserName">
+          <DataField>UserName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+      <rd:DataSetInfo>
+        <rd:DataSetName>DSSolicitud</rd:DataSetName>
+        <rd:SchemaPath>C:\Users\kevin\OneDrive\Documentos\GitHub\ERP_GeneratePDF\MCWebHogar_3\MCWeb\DataSets\DS_ERP_Solirsa.xsd</rd:SchemaPath>
+        <rd:TableName>DT_PickupReport_Employees</rd:TableName>
+        <rd:TableAdapterFillMethod />
+        <rd:TableAdapterGetDataMethod />
+        <rd:TableAdapterName />
+      </rd:DataSetInfo>
+    </DataSet>
+    <DataSet Name="DT_PickupReport_Supplier">
+      <Query>
+        <DataSourceName>DSSolicitud</DataSourceName>
+        <CommandText>/* Local Query */</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="IDPickupSupplier">
+          <DataField>IDPickupSupplier</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="PickupID">
+          <DataField>PickupID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="SupplierName">
+          <DataField>SupplierName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="SupplierDriver">
+          <DataField>SupplierDriver</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TruckLegalIdentifier">
+          <DataField>TruckLegalIdentifier</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TruckType">
+          <DataField>TruckType</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ContactFirstPhone">
+          <DataField>ContactFirstPhone</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ContactSecondPhone">
+          <DataField>ContactSecondPhone</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+      <rd:DataSetInfo>
+        <rd:DataSetName>DSSolicitud</rd:DataSetName>
+        <rd:SchemaPath>C:\Users\kevin\OneDrive\Documentos\GitHub\ERP_GeneratePDF\MCWebHogar_3\MCWeb\DataSets\DS_ERP_Solirsa.xsd</rd:SchemaPath>
+        <rd:TableName>DT_PickupReport_Supplier</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />
         <rd:TableAdapterName />
       </rd:DataSetInfo>
     </DataSet>
   </DataSets>
-  <ReportParameters>
-    <ReportParameter Name="clientSignatureURL">
-      <DataType>String</DataType>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
-    <ReportParameter Name="employeeSignatureURL">
-      <DataType>String</DataType>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
-  </ReportParameters>
   <EmbeddedImages>
     <EmbeddedImage Name="logoHorizontal_SOLIRSA">
       <MIMEType>image/jpeg</MIMEType>

@@ -13,7 +13,7 @@ using System.Net;
 
 namespace MCWebHogar.ERP_Solirsa_PDFReports
 {
-    public partial class ReporteManifiesto : System.Web.UI.Page
+    public partial class ReporteControlPesaje : System.Web.UI.Page
     {
         CapaLogica.GestorDataDT DT = new CapaLogica.GestorDataDT();
         DataTable Result = new DataTable();
@@ -22,13 +22,13 @@ namespace MCWebHogar.ERP_Solirsa_PDFReports
         {
             if (!Page.IsPostBack)
             {
-                string idManifest = Request.QueryString["idmanifest"].ToString();
-                ManifestReport(idManifest);
+                string idInbounOrder = Request.QueryString["idinboundorder"].ToString();
+                InbounOrderReport(idInbounOrder);
             }            
         }
 
-        #region Manifiesto        
-        private void ManifestReport(string idManifest)
+        #region Control de Pesaje
+        private void InbounOrderReport(string idInbounOrder)
         {
             try
             {
@@ -39,92 +39,43 @@ namespace MCWebHogar.ERP_Solirsa_PDFReports
                     Cache.Remove(allCaches.Key.ToString());
                 }
 
-                string clientSignatureURL = "";
-                string employeeSignatureURL = "";
-                string manifestIdentifier = "";
+                string inboundOrderIdentifier = "";
 
                 MCWebHogar.DataSets.DSSolicitud dsReportePedido = new MCWebHogar.DataSets.DSSolicitud();
                 DT.DT1.Clear();
-                DT.DT1.Rows.Add("@IDManifest", idManifest, SqlDbType.Int);
+                DT.DT1.Rows.Add("@IDInboundOrder", idInbounOrder, SqlDbType.Int);
                 DT.DT1.Rows.Add("@Msg", "", SqlDbType.VarChar);
                 DT.DT1.Rows.Add("@CurrentUser", "kpicado", SqlDbType.VarChar);
-                DT.DT1.Rows.Add("@Sentence", "LoadManifestReport", SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@Sentence", "LoadInboundOrderInfo", SqlDbType.VarChar);
 
-                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "usp_PRD_Manifest_001");
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "usp_PRD_InboundOrder_001");
                 if (Result.Rows.Count == 0)
                 {
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "ServerControlScript", "alert('No hay datos para mostrar');", true);
                     return;
                 }
-                dsReportePedido.Tables["DT_ManifestReport_Header"].Merge(Result, true, MissingSchemaAction.Ignore);
-                manifestIdentifier = Result.Rows[0]["ManifestIdentifier"].ToString();
+                dsReportePedido.Tables["DT_InboundOrderReport_Header"].Merge(Result, true, MissingSchemaAction.Ignore);
 
-                clientSignatureURL = Result.Rows[0]["ClientSignatureURL"].ToString();
-
-                string fileNameSignatureClient = "";
-                string fileNameSignatureEmployee = "";
-
-                if (clientSignatureURL != "")
-                {
-                    string[] stringParts = clientSignatureURL.Split(new char[] { '/' });
-                    fileNameSignatureClient = stringParts[stringParts.Length - 1];
-                    string directoryName = HttpContext.Current.Server.MapPath("~");
-                    string path = Path.Combine(directoryName, @"Assets\img\Reports\Manifest\" + stringParts[5]);
-                    if (!System.IO.Directory.Exists(path))
-                    {
-                        System.IO.Directory.CreateDirectory(path);
-                    }
-                    path = Path.Combine(path, fileNameSignatureClient);
-
-                    using (WebClient webClient = new WebClient())
-                    {
-                        ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
-                        ServicePointManager.DefaultConnectionLimit = 9999;
-
-                        webClient.DownloadFile(clientSignatureURL, path);
-                    }
-                }
-                
-                employeeSignatureURL = Result.Rows[0]["EmployeeSignatureURL"].ToString();
-                if (employeeSignatureURL != "")
-                {
-                    string[] stringParts = employeeSignatureURL.Split(new char[] { '/' });
-                    fileNameSignatureEmployee = stringParts[stringParts.Length - 1];
-                    string directoryName = HttpContext.Current.Server.MapPath("~");
-                    string path = Path.Combine(directoryName, @"Assets\img\Reports\Manifest\" + stringParts[5]);
-                    if (!System.IO.Directory.Exists(path))
-                    {
-                        System.IO.Directory.CreateDirectory(path);
-                    }
-                    path = Path.Combine(path, fileNameSignatureEmployee);
-
-                    using (WebClient webClient = new WebClient())
-                    {
-                        ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
-                        ServicePointManager.DefaultConnectionLimit = 9999;
-
-                        webClient.DownloadFile(employeeSignatureURL, path);
-                    }
-                }
+                inboundOrderIdentifier = Result.Rows[0]["InboundOrderIdentifier"].ToString();
 
                 DT.DT1.Clear();
-                DT.DT1.Rows.Add("@ManifestID", idManifest, SqlDbType.Int);
+                DT.DT1.Rows.Add("@InboundOrderID", idInbounOrder, SqlDbType.Int);
                 DT.DT1.Rows.Add("@Msg", "", SqlDbType.VarChar);
                 DT.DT1.Rows.Add("@CurrentUser", "kpicado", SqlDbType.VarChar);
-                DT.DT1.Rows.Add("@Sentence", "ResumeManifestProducts", SqlDbType.VarChar);
+                DT.DT1.Rows.Add("@Sentence", "ResumeInboundOrderProducts", SqlDbType.VarChar);
 
-                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "usp_PRD_ManifestProduct_001");
+                Result = CapaLogica.GestorDatos.Consultar(DT.DT1, "usp_PRD_InboundOrderProduct_001");
                 if (Result.Rows.Count == 0)
                 {
                     DataTable dt = new DataTable();
-                    dt.Columns.Add("IDManifestProduct");
-                    dt.Columns.Add("Detail");
+                    dt.Columns.Add("IDInbounOrderProduct");
+                    dt.Columns.Add("DetailCategory");
                     dt.Rows.Add("1", "No hay registros.");
-                    dsReportePedido.Tables["DT_ManifestReport_Detail"].Merge(dt, true, MissingSchemaAction.Ignore);
+                    dsReportePedido.Tables["DT_InboundOrderReport_Detail"].Merge(dt, true, MissingSchemaAction.Ignore);
                 }
                 else
                 {
-                    dsReportePedido.Tables["DT_ManifestReport_Detail"].Merge(Result, true, MissingSchemaAction.Ignore);
+                    dsReportePedido.Tables["DT_InboundOrderReport_Detail"].Merge(Result, true, MissingSchemaAction.Ignore);
                 }
 
                 DataTable DT_Encabezado = new DataTable();
@@ -137,8 +88,8 @@ namespace MCWebHogar.ERP_Solirsa_PDFReports
                 DT_Encabezado.Columns.Add("DTName");
 
                 DT_Encabezado.TableName = "Encabezado";
-                DT_Encabezado.Rows.Add("01", "Datos Encabezado", "EE_Reports", "MCWebHogar.rptManifest.rdlc", "DT_ManifestReport_Header", "DT_ManifestReport_Header");
-                DT_Encabezado.Rows.Add("01", "Datos Encabezado", "EE_Reports", "MCWebHogar.rptManifest.rdlc", "DT_ManifestReport_Detail", "DT_ManifestReport_Detail");
+                DT_Encabezado.Rows.Add("01", "Datos Encabezado", "EE_Reports", "MCWebHogar.rptInboundOrder.rdlc", "DT_InboundOrderReport_Header", "DT_InboundOrderReport_Header");
+                DT_Encabezado.Rows.Add("01", "Datos Encabezado", "EE_Reports", "MCWebHogar.rptInboundOrder.rdlc", "DT_InboundOrderReport_Detail", "DT_InboundOrderReport_Detail");
 
                 Microsoft.Reporting.WebForms.ReportViewer ReportViewer1 = new Microsoft.Reporting.WebForms.ReportViewer();
 
@@ -172,12 +123,6 @@ namespace MCWebHogar.ERP_Solirsa_PDFReports
                 ReportViewer1.LocalReport.EnableExternalImages = true;
                 ReportViewer1.LocalReport.EnableHyperlinks = true;
 
-                ReportParameter rp_clientSignatureURL = new ReportParameter("clientSignatureURL", clientSignatureURL != "" ? new Uri(Server.MapPath(@"~/Assets/img/Reports/Manifest/" + idManifest + "/" + fileNameSignatureClient)).AbsoluteUri : "Sin firma");
-                ReportViewer1.LocalReport.SetParameters(rp_clientSignatureURL);
-
-                ReportParameter rp_employeeSignatureURL = new ReportParameter("employeeSignatureURL", employeeSignatureURL != "" ? new Uri(Server.MapPath(@"~/Assets/img/Reports/Manifest/" + idManifest + "/" + fileNameSignatureEmployee)).AbsoluteUri : "Sin firma");
-                ReportViewer1.LocalReport.SetParameters(rp_employeeSignatureURL);
-                
                 ReportViewer1.LocalReport.Refresh();                
 
                 Microsoft.Reporting.WebForms.Warning[] warnings;
@@ -188,7 +133,7 @@ namespace MCWebHogar.ERP_Solirsa_PDFReports
                 byte[] bytes2 = ReportViewer1.LocalReport.Render("PDF", null, out mimeType, out encoding, out extension, out streamIds, out warnings);
                 //Generamos archivo en el servidor
                 string strCurrentDir2 = Server.MapPath(".") + "\\ReportesTemp\\";
-                string strFilePDF2 = "ReporteManifiesto_" + manifestIdentifier + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".pdf";
+                string strFilePDF2 = "ReporteControlPesaje_" + inboundOrderIdentifier + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".pdf";
                 string strFilePathPDF2 = strCurrentDir2 + strFilePDF2;
                 using (FileStream fs = new FileStream(strFilePathPDF2, FileMode.Create))
                 {

@@ -138,6 +138,8 @@
     <Content Include="bin\Microsoft.ReportViewer.Common.dll" />
     <Content Include="bin\Microsoft.ReportViewer.ProcessingObjectModel.DLL" />
     <Content Include="bin\Microsoft.ReportViewer.WebForms.DLL" />
+    <Content Include="ERP_Solirsa_PDFReports\ReporteControlPesaje.aspx" />
+    <Content Include="ERP_Solirsa_PDFReports\ReporteRecoleccion.aspx" />
     <Content Include="ERP_Solirsa_PDFReports\ReporteManifiesto.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Default.aspx" />
@@ -156,6 +158,20 @@
       <DependentUpon>DS_ERP_Solirsa.xsd</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="ERP_Solirsa_PDFReports\ReporteControlPesaje.aspx.cs">
+      <DependentUpon>ReporteControlPesaje.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ERP_Solirsa_PDFReports\ReporteControlPesaje.aspx.designer.cs">
+      <DependentUpon>ReporteControlPesaje.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ERP_Solirsa_PDFReports\ReporteRecoleccion.aspx.cs">
+      <DependentUpon>ReporteRecoleccion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ERP_Solirsa_PDFReports\ReporteRecoleccion.aspx.designer.cs">
+      <DependentUpon>ReporteRecoleccion.aspx</DependentUpon>
     </Compile>
     <Compile Include="ERP_Solirsa_PDFReports\ReporteManifiesto.aspx.cs">
       <DependentUpon>ReporteManifiesto.aspx</DependentUpon>
@@ -242,6 +258,8 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="rptInboundOrder.rdlc" />
+    <EmbeddedResource Include="rptPickup.rdlc" />
     <EmbeddedResource Include="rptManifest.rdlc" />
   </ItemGroup>
   <PropertyGroup>
